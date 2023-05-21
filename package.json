@@ -1,0 +1,64 @@
+{
+  "icon": "assets/terraform_logo.png",
+  "name": "easy-terraform-commands",
+  "displayName": "Advanced Terraform Dashboard",
+  "publisher": "oferkafry",
+  "description": "Easy interactive ui for Terraform",
+  "version": "1.1.89",
+  "engines": {
+    "vscode": "^1.67.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oferca/vscode-ext-tf.git"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "vscode-ext-tf.tfcommand",
+        "title": "Run Terraform Command"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "terraform.action",
+        "key": "cmd+shift+t"
+      },
+      {
+        "command": "terraform.action",
+        "key": "ctrl+shift+t"
+      }
+    ]
+  },
+  "categories": [
+    "Programming Languages",
+    "Other",
+    "Visualization",
+    "Linters",
+    "Testing"
+  ],
+  "keywords": [
+    "devops",
+    "terraform",
+    "tf",
+    "hashicorp",
+    "apply",
+    "plan",
+    "buttons",
+    "output"
+  ],
+  "galleryBanner": {
+    "color": "#C80000",
+    "theme": "dark"
+  },
+  "dependencies": {
+    "find-remove": "^4.1.0",
+    "firebase": "^9.21.0",
+    "readline": "^1.3.0",
+    "vscode-uri": "^3.0.7"
+  }
+}
