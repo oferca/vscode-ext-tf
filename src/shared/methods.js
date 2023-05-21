@@ -145,7 +145,7 @@ module.exports.getProgressMsg = commandId => "Running \"Terraform " + commandId 
 const logOp = async (db, rec) => {
     try{
         const { collection: fsCollection , addDoc } = require("firebase/firestore");
-        var pjson = require(appRoot + '/../package.json');
+        var pjson = require(appRoot + '/../../package.json');
         rec.version = pjson.version;    
         const collection = fsCollection(await db, "tfh")
         try {
