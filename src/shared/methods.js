@@ -39,7 +39,7 @@ const {
 } = require("./constants")
 
 const appRoot = path.resolve(__dirname);
-
+const maxPercentage = 98
 const setLog = async log => {
    db = db || await initFireBase()
    logOp(db, log)
@@ -107,7 +107,7 @@ module.exports.getRawCommand = getRawCommand
 const getBashTFCommand = (commandId, tfOption) => tfOption ? `${getRawCommand(commandId)} -${getOptionKey(commandId)}="${tfOption}"` : commandId
 
 module.exports.tfCommandBashDefinitions = (commandId, tfOption = null,redirect = true) => `
-function line() {echo " ----------------------------------------------";};
+function line() {echo " --------------------------------------------------";};
 finalize.${commandId}(){ 
 export endVscTfPlan=$(date +%s); 
 echo \`expr $endVscTfPlan - "$2"\`> "$1"${"." + timeExt + "; \ "}
@@ -116,13 +116,13 @@ ${redirect ? `if [[ "$tf_output" == *"${successMessage(commandId)}"* ]]; then
     echo "$(cat "$1")"; 
 fi;  ` : "" }
 ${redirect ? `
-echo; line; echo "| Full output available here: ( Cmd + Click ): | "; line;
+echo; line; echo "| Click here to view full output: ( Cmd + Click ): | "; line;
 echo "$1.${noColorExt}"; echo; ` : ``} \
 };
 ${getBashFunctionInvocation(commandId)}(){ 
 clear; 
 export startTSCommand=$(date +%s); 
-echo 'Running: terraform ${tfOption ? addOptionDef(commandId, tfOption) :commandId.replaceAll("."," ") }'; echo; echo "At location:"; pwd; ${redirect ? `echo; echo "To view progress and output logs click hyperlink in notification."; echo;` : ""} echo "Please wait...";
+echo 'Running: terraform ${tfOption ? addOptionDef(commandId, tfOption) :commandId.replaceAll("."," ") }'; echo; echo "At location:"; pwd; ${redirect ? `echo; echo "CLICK HYPERLINK in notification for output logs."; echo;` : ""} echo "Please wait...";
 terraform ${getBashTFCommand(commandId, tfOption)} ${redirect ? " > " + "$1": ""};sleep 0.1; 
 finalize.${commandId} "$1" "$startTSCommand"; 
 } `.replaceAll("\n", "")
@@ -131,11 +131,13 @@ const getBashFunctionInvocation = cmdId => "terraform." + cmdId
 
 module.exports.getBashFunctionInvocation = getBashFunctionInvocation
 
-module.exports.getCompletionPercentage = (barCreationTimestamp, barCompletionTimestamp) => {
+module.exports.getCompletionPercentage = (barCreationTimestamp, barCompletionTimestamp, isDefaultDuration = false) => {
     const now = Date.now()
     const currentProgress = (now - barCreationTimestamp)
-    const estimatedDuration = barCompletionTimestamp - barCreationTimestamp
-    return Math.min(100 *  currentProgress / estimatedDuration, 96)
+    let estimatedDuration = barCompletionTimestamp - barCreationTimestamp
+    if (isDefaultDuration) estimatedDuration = estimatedDuration * ( 1 + currentProgress / estimatedDuration * 1.5) 
+    const percentage = Math.min(100 *  currentProgress / estimatedDuration, maxPercentage)
+    return percentage 
 }
 
 module.exports.getProgressMsg = commandId => "Running \"Terraform " + commandId + "\" in terminal."

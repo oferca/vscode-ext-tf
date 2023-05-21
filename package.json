@@ -4,7 +4,7 @@
   "displayName": "Advanced Terraform Dashboard",
   "publisher": "oferkafry",
   "description": "Easy interactive ui for Terraform",
-  "version": "1.1.89",
+  "version": "1.1.90",
   "engines": {
     "vscode": "^1.67.2"
   },

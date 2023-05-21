@@ -21,7 +21,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     get completionPercentage () {
         return getCompletionPercentage(
             this.barCreationTimestamp,
-            this.barCompletionTimestamp
+            this.barCompletionTimestamp,
+            this.fileHandler.isDefaultDuration 
         ) 
     }
 
