@@ -78,7 +78,7 @@ module.exports.validateSuccessMessage = "The configuration is valid"
 
 module.exports.runLogFileName = "run.log"
 
-module.exports.lastShellDisclaimerKey = "tfLastUnsupportedShellDisclaimerTs"
+module.exports.lastShellDisclaimerKey = "tfLastUnsupportedShellDisclaimer"
 
 module.exports.shellNoticeIntervalSec = 60 * 60 * 24 * 45
 
@@ -93,6 +93,8 @@ module.exports.usedOnceKey = "tfUsedFirstTime"
 module.exports.lastRunKey = "tfLastExec"
 
 module.exports.instructions = "This is a quick launcher menu. To open click the spinning \"Terraform\" button in status bar, or use keyboard shortcuts \"\u2318\u21E7T\" or \"\u2303\u21E7T\" (Cmd/Ctrl + Shift + T)"
+
+module.exports.instructionsEnvVar = "Define needed environmrnt variables (e.g AWS_ACCESS... ) in terminal normally."
 
 module.exports.reminderActionText = "Got it"
 

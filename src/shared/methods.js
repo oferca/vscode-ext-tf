@@ -21,6 +21,7 @@ const {
     tfInitCommandId,
     tfPlanCommandId,
     reminderActionText,
+    instructionsEnvVar,
     initSuccessMessage,
     planSuccessMessage1,
     planSuccessMessage2,
@@ -217,9 +218,9 @@ module.exports.handleFirstActivation = async (context, cb, uniqueId) => {
 
     const terminal = vscode.window.createTerminal();
     terminal.show();
-    terminal.sendText('echo "Define here any environment variables needed to run terraform here ";', true)
     vscode.commands.executeCommand(mainCommandId);
     cb && cb()
+    vscode.window.showInformationMessage( instructionsEnvVar, { title: reminderActionText } );
     vscode.window.showInformationMessage( instructions, { title: reminderActionText } );
     return true
 }
