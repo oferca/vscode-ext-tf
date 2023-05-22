@@ -122,7 +122,7 @@ echo "$1.${noColorExt}"; echo; ` : ``} \
 ${getBashFunctionInvocation(commandId)}(){ 
 clear; 
 export startTSCommand=$(date +%s); 
-echo 'Running: terraform ${tfOption ? addOptionDef(commandId, tfOption) :commandId.replaceAll("."," ") }'; echo; echo "At location:"; pwd; ${redirect ? `echo; echo "CLICK HYPERLINK in notification for output logs."; echo;` : ""} echo "Please wait...";
+echo 'Running: terraform ${tfOption ? addOptionDef(commandId, tfOption) :commandId.replaceAll("."," ") }'; echo; echo "At location:"; pwd; ${redirect ? `echo; echo "Click Hyperlink in notification for output logs."; echo;` : ""} echo "Please wait...";
 terraform ${getBashTFCommand(commandId, tfOption)} ${redirect ? " > " + "$1": ""};sleep 0.1; 
 finalize.${commandId} "$1" "$startTSCommand"; 
 } `.replaceAll("\n", "")
@@ -217,6 +217,7 @@ module.exports.handleFirstActivation = async (context, cb, uniqueId) => {
 
     const terminal = vscode.window.createTerminal();
     terminal.show();
+    terminal.sendText('echo "Define here any environment variables needed to run terraform here ";', true)
     vscode.commands.executeCommand(mainCommandId);
     cb && cb()
     vscode.window.showInformationMessage( instructions, { title: reminderActionText } );

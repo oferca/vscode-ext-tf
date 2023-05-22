@@ -53,7 +53,7 @@ class FileHandler{
 
     async init(cb) {
         const { activeTerminal } = vscode.window
-        if (featuresDisabled(activeTerminal)) return handleShellDisclaimer(activeTerminal, this.context, this.uniqueId)
+        if (featuresDisabled(activeTerminal)) return (cb && cb()) || handleShellDisclaimer(activeTerminal, this.context, this.uniqueId)
         this.context.workspaceState.update(hasSupportedTerminalKey, true);
         const processId = await vscode.window.activeTerminal.processId
         exec(`lsof -p ${processId} | grep cwd`, (...args) => {
