@@ -53,11 +53,15 @@ class FileHandler{
 
     async init(cb) {
         const { activeTerminal } = vscode.window
-        if (featuresDisabled(activeTerminal)) return (cb && cb()) || handleShellDisclaimer(activeTerminal, this.context, this.uniqueId)
+        // if (featuresDisabled(activeTerminal)) return (cb && cb()) || handleShellDisclaimer(activeTerminal, this.context, this.uniqueId)
         this.context.workspaceState.update(hasSupportedTerminalKey, true);
         const processId = await vscode.window.activeTerminal.processId
-        exec(`lsof -p ${processId} | grep cwd`, (...args) => {
-            args.push(cb)
+        
+        const result = await vscode.window.activeTerminal.sendText(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "cwda.txt") -Value $PWD`);
+
+        exec(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "cwda.txt") -Value $PWD`, (...args) => {
+        //    exec(`lsof -p ${processId} | grep cwd`, (...args) => {
+                args.push(cb)
             this.handleDataFolder(...args)
         });
         return true
