@@ -12,7 +12,7 @@ const {
     rootFolderName,
     defaultEstimate,
     hasSupportedTerminalKey
- } = require("./shared/constants")
+} = require("./shared/constants")
 const {
     extractCWD,
     getWarnings,
@@ -24,7 +24,7 @@ const {
     calculateAverageDuration
 } = require("./shared/methods")
 
-class FileHandler{
+class FileHandler {
     mode
     uniqueId
     commandId
@@ -38,36 +38,36 @@ class FileHandler{
     deleteOldFiles() {
         const secondsInDay = 86400
         const secondsInTwoWeeks = 1209600
-        findRemoveSync(this.dataFolder,  {age: { seconds: secondsInDay }, extensions: "." + timeExt});
-        findRemoveSync(this.dataFolder,  {age: { seconds: secondsInDay }, extensions: "." + noColorExt});
-        findRemoveSync(this.dataFolder,  {age: { seconds: secondsInTwoWeeks }, extensions: ".txt"});
+        findRemoveSync(this.dataFolder, { age: { seconds: secondsInDay }, extensions: "." + timeExt });
+        findRemoveSync(this.dataFolder, { age: { seconds: secondsInDay }, extensions: "." + noColorExt });
+        findRemoveSync(this.dataFolder, { age: { seconds: secondsInTwoWeeks }, extensions: ".txt" });
     }
 
-    calculateAverageDuration () {
-       return calculateAverageDuration(this.dataFolder, this.averageFromCmd || this.commandId)
+    calculateAverageDuration() {
+        return calculateAverageDuration(this.dataFolder, this.averageFromCmd || this.commandId)
     }
 
-    get completed (){
-        return fs.existsSync(this.outputFile + "." + timeExt)   
+    get completed() {
+        return fs.existsSync(this.outputFile + "." + timeExt)
     }
 
     async init(cb) {
         const { activeTerminal } = vscode.window
-        // if (featuresDisabled(activeTerminal)) return (cb && cb()) || handleShellDisclaimer(activeTerminal, this.context, this.uniqueId)
+        // if (featuresDisabled(activeTerminal)) return (handleSpinner && handleSpinner()) || handleShellDisclaimer(activeTerminal, this.context, this.uniqueId)
         this.context.workspaceState.update(hasSupportedTerminalKey, true);
         const processId = await vscode.window.activeTerminal.processId
-        
+
         const result = await vscode.window.activeTerminal.sendText(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "cwda.txt") -Value $PWD`);
 
         exec(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "cwda.txt") -Value $PWD`, (...args) => {
-        //    exec(`lsof -p ${processId} | grep cwd`, (...args) => {
-                args.push(cb)
+            //    exec(`lsof -p ${processId} | grep cwd`, (...args) => {
+            args.push(cb)
             this.handleDataFolder(...args)
         });
         return true
     }
 
-    handleDataFolder (error, stdout, stderr, cb) {
+    handleDataFolder(error, stdout, stderr, cb) {
         const subFolderName = extractCWD(stdout)
         this.dataFolder = path.join(os.tmpdir(), rootFolderName, subFolderName)
         if (!fs.existsSync(this.dataFolder)) fs.mkdirSync(this.dataFolder, { recursive: true })
@@ -77,16 +77,16 @@ class FileHandler{
         this.initialized = true
         cb()
     }
-    
-    get isDefaultDuration () {
+
+    get isDefaultDuration() {
         return this.durationEstimate === defaultEstimate
     }
 
-    get outputFileNoColor () {
+    get outputFileNoColor() {
         return this.outputFile + "." + noColorExt
     }
     convertOutputToReadable() {
-        const outputFile= fs.readFileSync(this.outputFile, "utf-8")
+        const outputFile = fs.readFileSync(this.outputFile, "utf-8")
         fs.writeFileSync(
             this.outputFileNoColor,
             removeColors(outputFile)
@@ -103,7 +103,7 @@ class FileHandler{
         } : errorStatus
     }
 
-    constructor(commandId, averageFromCmd, context, uniqueId){
+    constructor(commandId, averageFromCmd, context, uniqueId) {
         this.uniqueId = uniqueId
         this.context = context
         this.commandId = commandId

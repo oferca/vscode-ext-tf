@@ -9,7 +9,6 @@ const {
     timeExt,
     noColorExt,
     lastRunKey,
-    placeHolder,
     usedOnceKey,
     instructions,
     reminderNote,
@@ -39,14 +38,7 @@ const {
     shellNoticeIntervalHasSupportedSec
 } = require("./constants")
 
-const appRoot = path.resolve(__dirname);
 const maxPercentage = 98
-const setLog = async log => {
-   db = db || await initFireBase()
-   logOp(db, log)
-}
-
-module.exports.setLog = setLog
 
 module.exports.extractCWD = stdout => {
     const arr = stdout.split(" ")
@@ -143,24 +135,6 @@ module.exports.getCompletionPercentage = (barCreationTimestamp, barCompletionTim
 
 module.exports.getProgressMsg = commandId => "Running \"Terraform " + commandId + "\" in terminal."
 
-const logOp = async (db, rec) => {
-    try{
-        const { collection: fsCollection , addDoc } = require("firebase/firestore");
-        var pjson = require(appRoot + '/../../package.json');
-        rec.version = pjson.version;    
-        const collection = fsCollection(await db, "tfh")
-        try {
-            await addDoc(collection, rec);
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    catch(e){}
-    return true
-}
-
-module.exports.logOp = logOp
-
 const isUnsupportedShell = terminal =>
     terminal.name.indexOf("pwsh") > -1 ||
     terminal.name.indexOf("cmd") > -1 ||
@@ -192,37 +166,6 @@ const getShellFileName = () => {
 module.exports.getLogFileName = () => {
     const rootFolder = path.join(os.tmpdir(), rootFolderName)
 	return path.join(rootFolder, "run.log")
-}
-
-module.exports.handleFirstActivation = async (context, cb, uniqueId) => {
-    const now = new Date().getTime();
-    const usedOnce = context.workspaceState.get(usedOnceKey) || false;
-    const lastRunTS = context.workspaceState.get(lastRunKey) || 0
-    const timeSinceLastUseSec = (now - lastRunTS) / 1000
-    const shouldRemind = lastRunTS && (timeSinceLastUseSec > intervalUsageReminderSec)
-    if (usedOnce && !shouldRemind) return false
-    const msg = shouldRemind ? reminderNote : thankYouNote
-    await vscode.window.showInformationMessage( msg, { modal: true } );
-    
-    setLog({
-        ts: Date.now(),
-        msg,
-        platform: os.platform(),
-        timeSinceLastUseSec,
-        usedOnce,
-        uniqueId
-    })
-
-    context.workspaceState.update(usedOnceKey, true);
-    if (shouldRemind) context.workspaceState.update(lastRunKey, now)
-
-    const terminal = vscode.window.createTerminal();
-    terminal.show();
-    vscode.commands.executeCommand(mainCommandId);
-    cb && cb()
-    vscode.window.showInformationMessage( instructionsEnvVar, { title: reminderActionText } );
-    vscode.window.showInformationMessage( instructions, { title: reminderActionText } );
-    return true
 }
 
 const unsupportedShellNote = (termianl, hasSupported) => hasSupported ?
@@ -267,36 +210,6 @@ module.exports.handleDeactivation = () => {
 	this.firstActivation = false
 }
 
-const handleActionSelect = (item, actions, uniqueId, context) => {
-    const CommandHandler = actions.find(action => item === action.label).handler
-    const commandHandler = new CommandHandler( context, uniqueId )
-    return commandHandler.execute()
-}
-
- const showQuickPick = async (actions, uniqueId, isFirst = false, cb = null, context) => {
-    cb && cb()
-    let result
-    let tsBefore = 0
-    let tsAfter = 0
-    const labels = actions.map(action => ({
-        label: (action.icon || "") + "  " + action.label,
-        kind: action.kind
-    }))
-
-	while (!result && ((tsAfter - tsBefore) < 1000)){
-        tsBefore = new Date().getTime()
-        result = await vscode.window.showQuickPick(labels, {
-            placeHolder: 'Pick a terraform command to run in terminal (\u2318\u21E7T)',
-            title: "Execute Terraform Command"
-        });
-        tsAfter = new Date().getTime()
-    }
-    
-    if (result) handleActionSelect(result.label.split(") ")[1].trim(), actions, uniqueId, context)
-}
-
-module.exports.showQuickPick = showQuickPick
-
 module.exports.getOption = async (commandId, option) => {
     if (commandId === tfPlanTargetCommandId || commandId === tfApplyTargetCommandId) return await vscode.window.showInputBox({
 		value: option,
@@ -340,21 +253,6 @@ module.exports.getWarnings = outputFile => {
     const warningsArr = outputFile.split("Warning:")
     warningsArr.shift()
     return warningsArr.map(section => section.split("│")[0]).join(", ").replace("╷ ,","")
-}
-
-const createButton = (text, tooltip, commandId ) => {
-    const runButton = vscode.window.createStatusBarItem(1, 0)
-    runButton.text = text
-    runButton.tooltip = tooltip
-    runButton.command = commandId
-    return runButton
-}
-
-module.exports.createTerraformButton = (disposables, reminder = false) => {
-    const button = createButton(`${reminder ? "$(gear~spin)" : "$(terminal)"} Terraform`, placeHolder, mainCommandId)
-	button.show()
-	disposables.push(button)
-    return button
 }
 
 const initFireBase = async () => {
