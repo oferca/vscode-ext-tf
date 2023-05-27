@@ -26,7 +26,7 @@ const {
 
 class FileHandler {
     mode
-    uniqueId
+    logger
     commandId
     outputFile
     dataFolder
@@ -51,9 +51,9 @@ class FileHandler {
         return fs.existsSync(this.outputFile + "." + timeExt)
     }
 
-    async init(cb) {
+    async init() {
         const { activeTerminal } = vscode.window
-        // if (featuresDisabled(activeTerminal)) return (handleSpinner && handleSpinner()) || handleShellDisclaimer(activeTerminal, this.context, this.uniqueId)
+        if (featuresDisabled(activeTerminal)) return handleShellDisclaimer(activeTerminal, this.context, this.logger)
         this.context.workspaceState.update(hasSupportedTerminalKey, true);
         const processId = await vscode.window.activeTerminal.processId
 
@@ -103,8 +103,8 @@ class FileHandler {
         } : errorStatus
     }
 
-    constructor(commandId, averageFromCmd, context, uniqueId) {
-        this.uniqueId = uniqueId
+    constructor(commandId, averageFromCmd, context, logger) {
+        this.logger = logger
         this.context = context
         this.commandId = commandId
         this.averageFromCmd = averageFromCmd

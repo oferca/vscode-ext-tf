@@ -8,19 +8,12 @@ let db
 const { 
     timeExt,
     noColorExt,
-    lastRunKey,
-    usedOnceKey,
-    instructions,
-    reminderNote,
-    thankYouNote,
     tfVarsPostix,
-    mainCommandId,
     rootFolderName,
     tfTargetPostix,
     tfInitCommandId,
     tfPlanCommandId,
     reminderActionText,
-    instructionsEnvVar,
     initSuccessMessage,
     planSuccessMessage1,
     planSuccessMessage2,
@@ -34,7 +27,6 @@ const {
     lastShellDisclaimerKey,
     hasSupportedTerminalKey,
     dontRemindDisclaimerKey,
-    intervalUsageReminderSec,
     shellNoticeIntervalHasSupportedSec
 } = require("./constants")
 
@@ -171,38 +163,6 @@ module.exports.getLogFileName = () => {
 const unsupportedShellNote = (termianl, hasSupported) => hasSupported ?
     `Please note that a bash shell is recommended for using this extension. Consider using your bash terminal instead of current terminal: "${termianl.name}".`
     : `Please note that a bash shell is recommended for using this extension to enable all features. Current terminal: "${termianl.name}". `
-
-module.exports.handleShellDisclaimer = async (activeTerminal, context, uniqueId) => {
-    const now = new Date().getTime();
-    const hasSupportedTerminal = context.workspaceState.get(hasSupportedTerminalKey) || false
-    const lastNoticeTS = context.workspaceState.get(lastShellDisclaimerKey) || 0
-    const timeSinceLastNotice = (now - lastNoticeTS) / 1000
-    const interval = hasSupportedTerminal ? shellNoticeIntervalHasSupportedSec : shellNoticeIntervalSec
-    const timeToShowDisclaimer = timeSinceLastNotice > interval
-    if (!timeToShowDisclaimer) return
-    context.workspaceState.update(lastShellDisclaimerKey, now);
-    const neverRemind = context.workspaceState.get(dontRemindDisclaimerKey) || false
-    if (neverRemind) return
-    const dontRemindStr ='Don\'t remind again'
-    const msg = unsupportedShellNote(activeTerminal, hasSupportedTerminal)
-    const selection = await vscode.window.showInformationMessage(
-        msg,
-        { title: reminderActionText },
-        { title: dontRemindStr }
-        );
-    setLog({
-        ts: now,
-        msg,
-        platform: os.platform(),
-        selection,
-        hasSupportedTerminal,
-        lastNoticeTS,
-        uniqueId
-    })
-    const timeForReDisclaimer = timeSinceLastNotice > shellNoticeIntervalSec
-    if (timeForReDisclaimer) return context.workspaceState.update(dontRemindDisclaimerKey, false);
-    if (selection.title === dontRemindStr) context.workspaceState.update(dontRemindDisclaimerKey, true);
-}
 
 module.exports.handleDeactivation = () => {
     const logFileName = getOSFileName()

@@ -4,8 +4,8 @@ const { tfPlanCommandId } = require("../shared/constants")
 
 class TerraformPlanHandler extends ProgressHandlerPrototype {
 
-    constructor(context, uniqueId, cmdId){
-        super(context, uniqueId, cmdId || tfPlanCommandId);
+    constructor(context, logger, lifecycleManager, cmdId){
+        super(context, logger, lifecycleManager, cmdId || tfPlanCommandId);
     }
 }
 

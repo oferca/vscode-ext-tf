@@ -3,8 +3,8 @@ const { tfPlanTargetCommandId } = require("../shared/constants")
 
 class TerraformPlanTargetHandler extends TerraformPlanHandler {
 
-    constructor(context, uniqueId){
-        super(context, uniqueId, tfPlanTargetCommandId);
+    constructor(context, logger, lifecycleManager){
+        super(context, logger, lifecycleManager, tfPlanTargetCommandId);
         this.redirect = false
         this.addOption = true
     }

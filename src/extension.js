@@ -1,17 +1,21 @@
 const vscode = require('vscode');
-const { handleFirstActivation, createTerraformButton, stopSpinner } = require("./shared/methods")
+const { Logger } = require("./shared/logger")
 const { mainCommandId } = require("./shared/constants")
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
 const { LifecycleManager } = require("./lifecycle/index.js")
 const disposables = []
 
+const disableState = true
+const freshStart = false
+
 async function activate(context) {
 	disposables.forEach(d => d.dispose())
 
-	const lifecycle = new LifecycleManager(context)
-	const actionButton = new ActionButton(context)
-	const launcher = new CommandsLauncher(context)
+    const logger = new Logger()
+	const lifecycleManager = new LifecycleManager(context, logger, disableState, disableState, freshStart ? Math.random() : "")
+	const actionButton = new ActionButton(context, logger)
+	const launcher = new CommandsLauncher(context, logger, lifecycleManager)
 
 	const commandRegistration = vscode.commands.registerCommand(
 		mainCommandId,
@@ -23,8 +27,8 @@ async function activate(context) {
 	disposables.push(commandRegistration)
 	disposables.push(actionButton.init(true))
 
-	const isFirstActivation = await handleFirstActivation(context, launcher.uniqueId)
-	!isFirstActivation && actionButton.init()
+	await lifecycleManager.notifyFirstActivation()
+	!lifecycleManager.isFirstActivation && actionButton.init()
 }
 
 function deactivate() {}

@@ -1,10 +1,12 @@
 const { actions } = require("../shared/actions")
 
 class CommandsLauncher {
+    logger
     uniqueId
     handleSpinner
+    lifecycleManager
 
-    showQuickPick  () {
+    async showQuickPick  () {
         this.handleSpinner && this.handleSpinner()
         let selection
         let tsBefore = 0
@@ -30,13 +32,14 @@ class CommandsLauncher {
     handleActionSelect (selection) {
         const selected = selection.label.split(") ")[1].trim()
         const CommandHandler = actions.find(action => selected === action.label).handler
-        const commandHandler = new CommandHandler( context, uniqueId )
+        const commandHandler = new CommandHandler( context, this.logger, this.lifecycleManager )
         return commandHandler.execute()
     }
     
-    constructor(context){
-        this.uniqueId = new Date().valueOf()
+    constructor(context, logger, lifecycleManager){
+        this.logger = logger
         this.context = context
+        this.lifecycleManager = lifecycleManager
         this.showQuickPick = this.showQuickPick.bind(this)
     }
 }

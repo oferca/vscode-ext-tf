@@ -1,3 +1,4 @@
+const path = require('path');
 const appRoot = path.resolve(__dirname);
 
 class Logger {
@@ -8,14 +9,16 @@ class Logger {
         return this._db 
     }
     
-    log = async (rec) => {
+    async log (rec) {
         try{
             const { collection: fsCollection , addDoc } = require("firebase/firestore");
             var pjson = require(appRoot + '/../../package.json');
             rec.version = pjson.version;    
             const collection = fsCollection(await this.getDb(), "tfh")
             rec.uniqueId = this.uniqueId
-            
+            rec.ts = Date.now()
+            rec.platform = os.platform()
+
             try {
                 await addDoc(collection, rec);
             } catch (e) {
@@ -26,8 +29,8 @@ class Logger {
         return true
     }
     
-    constructor(uniqueId) {
-        this.uniqueId = uniqueId
+    constructor() {
+        this.uniqueId = new Date().valueOf()
     }
 }
 

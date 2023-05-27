@@ -2,8 +2,6 @@ const os = require('os');
 const vscode = require('vscode');
 const { FileHandler } = require("../file-handler")
 const {
-    logOp,
-    setLog,
     getOption,
     getOptionKey,
     initFireBase,
@@ -37,24 +35,22 @@ class CommandHandlerPrototype {
     abort
     redirect = true
     tfOption = null
-    uniqueId
+    logger
     addOption
     commandId
     titleColor
     fileHandler
     averageFromCmd
     activeTerminal
+    lifecycleManager
     textDucumentListener
 
     async logOp() {
         const op = {
-            uId: this.uniqueId,
-            ts: Date.now(),
             cId: this.commandId,
-            platform: os.platform(),
             terminal: this.activeTerminal.name
         }
-        return logOp(this.db, op)
+        return this.logger.log(op)
     }
     async verifyOpenTerminal() {
         const openTerminal = { title: 'Open Terminal' };
@@ -63,11 +59,9 @@ class CommandHandlerPrototype {
             openTerminal
         );
 
-        setLog({
-            ts: Date.now(),
+        this.logger.log({
             openTerminalTxt,
             selection,
-            uniqueId: this.uniqueId,
             commandId: this.commandId 
         })
 
@@ -88,7 +82,7 @@ class CommandHandlerPrototype {
     }
 
     initFileHandler(cb) {
-        this.fileHandler = new FileHandler(this.commandId, this.averageFromCmd, this.context, this.uniqueId)
+        this.fileHandler = new FileHandler(this.commandId, this.averageFromCmd, this.context, this.logger)
         this.fileHandler.init(cb)
     }
 
@@ -140,10 +134,11 @@ class CommandHandlerPrototype {
         return this.fileHandler.outputFile
     }
 
-    constructor(context, uniqueId, commandId) {
+    constructor(context, logger, lifecycleManager, commandId) {
         this.context = context
-        this.uniqueId = uniqueId
+        this.logger = logger
         this.commandId = commandId
+        this.lifecycleManager = lifecycleManager
         this.init = this.init.bind(this)
         this.logOp = this.logOp.bind(this)
         this.runBash = this.runBash.bind(this)

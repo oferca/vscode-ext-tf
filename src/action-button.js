@@ -1,5 +1,5 @@
+const vscode = require('vscode');
 const { mainCommandId, placeHolder } = require("./shared/constants")
-,
 
 class ActionButton {
 
