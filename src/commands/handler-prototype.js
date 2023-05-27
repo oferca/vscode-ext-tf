@@ -108,11 +108,10 @@ class CommandHandlerPrototype {
         return this.fileHandler.outputFile
     }
 
-    constructor(context, logger, lifecycleManager, shellHandler, commandId) {
+    constructor(context, logger, lifecycleManager, commandId) {
         this.context = context
         this.logger = logger
         this.commandId = commandId
-        this.shellHandler = shellHandler
         this.lifecycleManager = lifecycleManager
         this.init = this.init.bind(this)
         this.logOp = this.logOp.bind(this)

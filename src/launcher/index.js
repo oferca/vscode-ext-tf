@@ -37,7 +37,7 @@ class CommandsLauncher {
         const selected = selection.label.split(") ")[1].trim()
         const CommandHandler = actions.find(action => selected === action.label).handler
         
-        const commandHandler = new CommandHandler( this.context, this.logger, this.lifecycleManager, shellHandler )
+        const commandHandler = new CommandHandler( this.context, this.logger, this.lifecycleManager )
         return commandHandler.execute()
     }
     

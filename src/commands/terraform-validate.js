@@ -3,8 +3,8 @@ const { tfValidateCommandId } = require("../shared/constants")
 
 class TerraformValidateHandler extends ProgressHandlerPrototype {
 
-    constructor(context, logger, lifecycleManager, shellHandler){
-        super(context, logger, lifecycleManager, shellHandler, tfValidateCommandId );
+    constructor(context, logger, lifecycleManager){
+        super(context, logger, lifecycleManager, tfValidateCommandId );
     }
 }
 
