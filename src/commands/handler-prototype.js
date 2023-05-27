@@ -71,6 +71,8 @@ class CommandHandlerPrototype {
     }
     async execute() {
         const self = this
+        const now = new Date().getTime();
+        this.lifecycleManager.updateState(lastRunKey, now);
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp()
             if (!vscode.window.activeTerminal) return await self.verifyOpenTerminal()
@@ -86,7 +88,7 @@ class CommandHandlerPrototype {
     }
 
     async getOption() {
-        return await getOption(this.commandId, getDefaultOption(this.commandId))
+        return await getOption(this.commandId, getDefaultOption(this.commandId), this.lifecycleManager.shellType)
     }
 
     async init(step2) {
@@ -112,8 +114,6 @@ class CommandHandlerPrototype {
     }
 
     async runBash() {
-        const now = new Date().getTime();
-        this.lifecycleManager.updateState(lastRunKey, now);
         setTimeout(this.sendCommands, !this.fileHandler.initialized ? 500 : 0)
     }
 

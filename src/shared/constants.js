@@ -58,7 +58,7 @@ module.exports.rootFolderName = "vscode-tf-commands"
 
 module.exports.thankYouNote =  "Thank you for installing Advanced Terraform Dashboard. Let's start your new terraform experience."
 
-module.exports.reminderNote =  "Please note that Quick launch is available to launch terraform commands."
+module.exports.reminderNote =  "Please note that you may use advanced launcher to run terraform commands. Let's start your new terraform experience."
 
 module.exports.mainCommandId = "terraform.action"
 
@@ -78,6 +78,10 @@ module.exports.validateSuccessMessage = "The configuration is valid"
 
 module.exports.runLogFileName = "run.log"
 
+module.exports.powershellType = "powershell"
+
+module.exports.bashType = "bash"
+
 module.exports.lastShellDisclaimerKey = "tfLastUnsupportedShellDisclaimer"
 
 module.exports.shellNoticeIntervalSec = 60 * 60 * 24 * 45
@@ -94,7 +98,7 @@ module.exports.lastRunKey = "tfLastExec"
 
 module.exports.instructions = "This is a quick launcher menu. To open click the spinning \"Terraform\" button in status bar, or use keyboard shortcuts \"\u2318\u21E7T\" or \"\u2303\u21E7T\" (Cmd/Ctrl + Shift + T)"
 
-module.exports.instructionsEnvVar = "Define needed environmrnt variables (e.g AWS_ACCESS... ) in terminal normally."
+module.exports.instructionsEnvVar = "Define needed environment variables (e.g AWS_ACCESS... ) in terminal normally."
 
 module.exports.reminderActionText = "Got it"
 

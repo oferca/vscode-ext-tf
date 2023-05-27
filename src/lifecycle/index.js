@@ -1,23 +1,25 @@
 const vscode = require('vscode');
-const { 
+const {
     lastRunKey,
     usedOnceKey,
     reminderNote,
     thankYouNote,
     instructions,
     mainCommandId,
+    powershellType,
     instructionsEnvVar,
     reminderActionText,
     shellNoticeIntervalSec,
     lastShellDisclaimerKey,
     hasSupportedTerminalKey,
     dontRemindDisclaimerKey,
+    intervalUsageReminderSec,
     shellNoticeIntervalHasSupportedSec
 } = require("../shared/constants")
 
-const { unsupportedShellNote } = require("../shared/methods")
+const { unsupportedShellNote, isPowershell } = require("../shared/methods")
 class LifecycleManager {
-   
+
     now
     context
     usedOnce
@@ -26,14 +28,14 @@ class LifecycleManager {
     activeTerminal
     timeSinceLastUseSec
 
-    get isFirstActivation () {
+    get isFirstActivation() {
         return !(this.usedOnce && !this.shouldRemind)
     }
 
-    async notifyFirstActivation () {
+    async notifyFirstActivation() {
         if (!this.isFirstActivation) return false
         const msg = this.shouldRemind ? reminderNote : thankYouNote
-        await vscode.window.showInformationMessage( msg, { modal: true } );
+        await vscode.window.showInformationMessage(msg, { modal: true });
         const { timeSinceLastUseSec, usedOnce } = this
         await this.logger.log({
             msg,
@@ -45,20 +47,20 @@ class LifecycleManager {
         const terminal = vscode.window.createTerminal();
         terminal.show();
         vscode.commands.executeCommand(mainCommandId);
-    
-        vscode.window.showInformationMessage( instructionsEnvVar, { title: reminderActionText } );
-        vscode.window.showInformationMessage( instructions, { title: reminderActionText } );
+
+        vscode.window.showInformationMessage(instructionsEnvVar, { title: reminderActionText });
+        vscode.window.showInformationMessage(instructions, { title: reminderActionText });
     }
 
-    updateState (key, value) {
+    updateState(key, value) {
         if (this.disableStateUpdate) return
         this.context.workspaceState.update(key + this.keyPostfix, true, value)
     }
-    getState (key) {
+    getState(key) {
         if (this.disableStateRead) return
         return this.context.workspaceState.get(key + this.keyPostfix)
     }
-    async handleShellDisclaimer () {
+    async handleShellDisclaimer() {
         const hasSupportedTerminal = this.getState(hasSupportedTerminalKey) || false
         const lastNoticeTS = this.getState(lastShellDisclaimerKey) || 0
         const timeSinceLastNotice = (this.now - lastNoticeTS) / 1000
@@ -68,13 +70,13 @@ class LifecycleManager {
         this.updateState(lastShellDisclaimerKey, this.now);
         const neverRemind = this.getState(dontRemindDisclaimerKey) || false
         if (neverRemind) return
-        const dontRemindStr ='Don\'t remind again'
+        const dontRemindStr = 'Don\'t remind again'
         const msg = unsupportedShellNote(this.activeTerminal, hasSupportedTerminal)
         const selection = await vscode.window.showInformationMessage(
             msg,
             { title: reminderActionText },
             { title: dontRemindStr }
-            );
+        );
         await this.logger.log({
             msg,
             selection,
@@ -85,22 +87,23 @@ class LifecycleManager {
         if (timeForReDisclaimer) return this.updateState(dontRemindDisclaimerKey, false);
         if (selection.title === dontRemindStr) this.updateState(dontRemindDisclaimerKey, true);
     }
-    init () {
+    init() {
         this.now = new Date().getTime();
         this.usedOnce = this.getState(usedOnceKey) || false;
         this.lastRunTS = this.getState(lastRunKey) || 0
         this.timeSinceLastUseSec = (this.now - this.lastRunTS) / 1000
-        this.shouldRemind = this.lastRunTS && (timeSinceLastUseSec > intervalUsageReminderSec)
+        this.shouldRemind = !isNaN(parseInt(this.lastRunTS)) && (this.timeSinceLastUseSec > intervalUsageReminderSec)
+        this.shellType = isPowershell(vscode.window.activeTerminal) ? powershellType : ""
     }
 
-    constructor(context, logger, disableStateUpdate = false, disableStateRead = false, keyPostfix = ""){
+    constructor(context, logger, disableStateUpdate = false, disableStateRead = false, keyPostfix = "") {
         this.context = context
         this.logger = logger
         this.disableStateUpdate = disableStateUpdate
         this.disableStateRead = disableStateRead
         this.keyPostfix = keyPostfix
         this.activeTerminal = vscode.window.activeTerminal
-        
+
     }
 
 }

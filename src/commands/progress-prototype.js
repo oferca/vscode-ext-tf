@@ -2,6 +2,7 @@ const vscode = require('vscode');
 const { CommandHandlerPrototype } = require("./handler-prototype")
 const { getCompletionPercentage, getProgressMsg, getRawCommand } = require("../shared/methods")
 const {
+    lastRunKey,
     noColorExt,
     errorStatus,
     gotoTerminal,
@@ -114,6 +115,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     async execute () {
+        const now = new Date().getTime();
+        this.lifecycleManager.updateState(lastRunKey, now);
         if (!vscode.window.activeTerminal) return await this.verifyOpenTerminal()
         const self = this
         const onChildProcessCompleteStep2 = async () => {

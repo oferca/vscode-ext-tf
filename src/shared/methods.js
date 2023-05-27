@@ -11,9 +11,9 @@ const {
     tfVarsPostix,
     rootFolderName,
     tfTargetPostix,
+    powershellType,
     tfInitCommandId,
     tfPlanCommandId,
-    reminderActionText,
     initSuccessMessage,
     planSuccessMessage1,
     planSuccessMessage2,
@@ -23,11 +23,6 @@ const {
     tfPlanTargetCommandId,
     tfApplyTargetCommandId,
     validateSuccessMessage,
-    shellNoticeIntervalSec,
-    lastShellDisclaimerKey,
-    hasSupportedTerminalKey,
-    dontRemindDisclaimerKey,
-    shellNoticeIntervalHasSupportedSec
 } = require("./constants")
 
 const maxPercentage = 98
@@ -128,16 +123,25 @@ module.exports.getCompletionPercentage = (barCreationTimestamp, barCompletionTim
 module.exports.getProgressMsg = commandId => "Running \"Terraform " + commandId + "\" in terminal."
 
 const isUnsupportedShell = terminal =>
-    terminal.name.indexOf("pwsh") > -1 ||
+    isPowershell(terminal) ||
     terminal.name.indexOf("cmd") > -1 ||
-    terminal.name.indexOf("powershell") > -1 ||
     terminal.creationOptions.shellPath &&
      (
-        terminal.creationOptions.shellPath.indexOf("pwsh") > -1 ||
         terminal.creationOptions.shellPath.indexOf("cmd") > -1 ||
-        terminal.creationOptions.shellPath.toLowerCase().indexOf("powershell") > -1 ||
         terminal.creationOptions.shellPath.toLowerCase().indexOf("git") > -1
      )
+
+
+const isPowershell = terminal =>
+    terminal.name.indexOf("pwsh") > -1 ||
+    terminal.name.indexOf("powershell") > -1 ||
+    terminal.creationOptions.shellPath &&
+    (
+        terminal.creationOptions.shellPath.indexOf("pwsh") > -1 ||
+        terminal.creationOptions.shellPath.toLowerCase().indexOf("powershell") > -1
+    )
+
+module.exports.isPowershell = isPowershell
 
 const isWindows = os.platform().indexOf("win32") > -1
 
@@ -170,17 +174,21 @@ module.exports.handleDeactivation = () => {
 	this.firstActivation = false
 }
 
-module.exports.getOption = async (commandId, option) => {
+module.exports.getOption = async (commandId, option, shellType) => {
     if (commandId === tfPlanTargetCommandId || commandId === tfApplyTargetCommandId) return await vscode.window.showInputBox({
 		value: option,
 		placeHolder: 'Enter module or resource to limit the operation. For example: "module.rds", or "aws_instance.my_ec2"',
 	});
-    if (commandId === tfPlanVarsCommandId || commandId === tfApplyVarsCommandId ) return (await vscode.window.showOpenDialog({
-        canSelectFiles: true,
-        canSelectFolders: false,
-        canSelectMany: false,
-        openLabel: 'Select tfvars file'
-    }))[0].path
+    if (commandId === tfPlanVarsCommandId || commandId === tfApplyVarsCommandId ){
+        let varFile = (await vscode.window.showOpenDialog({
+            canSelectFiles: true,
+            canSelectFolders: false,
+            canSelectMany: false,
+            openLabel: 'Select tfvars file'
+        }))[0].path
+        if (shellType === powershellType && varFile.charAt(0)=== "/") varFile = varFile.substring(1)
+        return varFile
+    } 
 }
 
 const successMessage = commandId =>{
