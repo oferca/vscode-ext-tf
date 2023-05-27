@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const { Logger } = require("./shared/logger")
+const { Logger } = require("./shared/logger")
 const { mainCommandId } = require("./shared/constants")
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
@@ -13,11 +14,10 @@ const disableLogs = debugMode && true
 
 async function activate(context) {
 	disposables.forEach(d => d.dispose())
-
 	const logger = new Logger(disableLogs)
 	const lifecycleManager = new LifecycleManager(context, logger, disableState, disableState, freshStart ? Math.random() : "")
 	const actionButton = new ActionButton(context, logger)
-	const launcher = new CommandsLauncher(context, logger, lifecycleManager)
+	const launcher = new CommandsLauncher(context, logger, lifecycleManager, shellHandler)
 
 	lifecycleManager.init()
 	const commandRegistration = vscode.commands.registerCommand(

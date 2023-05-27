@@ -117,7 +117,6 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     async execute () {
         const now = new Date().getTime();
         this.lifecycleManager.updateState(lastRunKey, now);
-        if (!vscode.window.activeTerminal) return await this.verifyOpenTerminal()
         const self = this
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp()
@@ -128,8 +127,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         
     }
 
-    constructor(context, logger, lifecycleManager, commandId){
-        super(context, logger, lifecycleManager, commandId);
+    constructor(context, logger, lifecycleManager, shellHandler, commandId){
+        super(context, logger, lifecycleManager, shellHandler, commandId);
         this.lastRecorded = 0
         this.execute = this.execute.bind(this)
         this.runBash = this.runBash.bind(this)

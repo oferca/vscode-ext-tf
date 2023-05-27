@@ -53,7 +53,7 @@ class FileHandler {
 
     async init(step2Cb) {
         const { activeTerminal } = vscode.window
-        if (featuresDisabled(activeTerminal)) {
+        if (false && featuresDisabled(activeTerminal)) {
             await this.lifecycleManager.handleShellDisclaimer()
             return step2Cb && step2Cb()
         }
@@ -106,11 +106,12 @@ class FileHandler {
         } : errorStatus
     }
 
-    constructor(commandId, averageFromCmd, context, logger, lifecycleManager) {
+    constructor(commandId, averageFromCmd, context, logger, lifecycleManager, shellHandler) {
         this.logger = logger
         this.context = context
         this.commandId = commandId
         this.averageFromCmd = averageFromCmd
+        this.shellHandler = shellHandler
         this.lifecycleManager = lifecycleManager
         this.initialized = false
         this.firstActivation = false

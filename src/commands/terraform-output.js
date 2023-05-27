@@ -3,8 +3,8 @@ const { tfOutputCommandId } = require("../shared/constants")
 
 class TerraformOutputHandler extends ProgressHandlerPrototype {
 
-    constructor(context, logger, lifecycleManager){
-        super(context, logger, lifecycleManager, tfOutputCommandId);
+    constructor(context, logger, lifecycleManager, shellHandler){
+        super(context, logger, lifecycleManager, shellHandler, tfOutputCommandId);
         this.redirect = false
     }
 }

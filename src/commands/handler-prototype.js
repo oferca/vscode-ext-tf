@@ -10,7 +10,6 @@ const {
 
 const {
     lastRunKey,
-    openTerminalTxt,
     tfPlanVarsCommandId,
     tfApplyVarsCommandId,
     tfPlanTargetCommandId,
@@ -51,31 +50,13 @@ class CommandHandlerPrototype {
         }
         return await this.logger.log(op)
     }
-    async verifyOpenTerminal() {
-        const openTerminal = { title: 'Open Terminal' };
-        const selection = await vscode.window.showInformationMessage(
-            openTerminalTxt,
-            openTerminal
-        );
-
-        await this.logger.log({
-            openTerminalTxt,
-            selection,
-            commandId: this.commandId 
-        })
-
-        if (selection === openTerminal) {
-            const terminal = vscode.window.createTerminal();
-            terminal.show();
-        }
-    }
+    
     async execute() {
         const self = this
         const now = new Date().getTime();
         this.lifecycleManager.updateState(lastRunKey, now);
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp()
-            if (!vscode.window.activeTerminal) return await self.verifyOpenTerminal()
             self.runBash()
         }
         await this.init(onChildProcessCompleteStep2)
@@ -83,7 +64,7 @@ class CommandHandlerPrototype {
     }
 
     initFileHandler(cb) {
-        this.fileHandler = new FileHandler(this.commandId, this.averageFromCmd, this.context, this.logger, this.lifecycleManager)
+        this.fileHandler = new FileHandler(this.commandId, this.averageFromCmd, this.context, this.logger, this.lifecycleManager, this.shellHandler)
         this.fileHandler.init(cb)
     }
 
@@ -132,10 +113,11 @@ class CommandHandlerPrototype {
         return this.fileHandler.outputFile
     }
 
-    constructor(context, logger, lifecycleManager, commandId) {
+    constructor(context, logger, lifecycleManager, shellHandler, commandId) {
         this.context = context
         this.logger = logger
         this.commandId = commandId
+        this.shellHandler = shellHandler
         this.lifecycleManager = lifecycleManager
         this.init = this.init.bind(this)
         this.logOp = this.logOp.bind(this)
@@ -143,7 +125,6 @@ class CommandHandlerPrototype {
         this.getOption = this.getOption.bind(this)
         this.sendCommands = this.sendCommands.bind(this)
         this.initFileHandler = this.initFileHandler.bind(this)
-        this.verifyOpenTerminal = this.verifyOpenTerminal.bind(this)
     }
 }
 
