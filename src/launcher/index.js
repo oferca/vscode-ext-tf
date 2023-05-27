@@ -1,10 +1,6 @@
 const vscode = require('vscode');
 const { actions } = require("../shared/actions")
-const { BashHandler } = require("../shared/shells/bash")
-const { PowershellHandler } = require("../shared/shells/powershell")
-const { isPowershell } = require("../shared/methods")
 const { openTerminalTxt } = require("../shared/constants")
-
 
 class CommandsLauncher {
     logger
@@ -35,13 +31,12 @@ class CommandsLauncher {
         selection && this.handleActionSelect(selection)
     }
 
-    handleActionSelect (selection) {
+    async handleActionSelect (selection) {
         const { activeTerminal } = vscode.window
         if (!activeTerminal) return await self.verifyOpenTerminal()
         const selected = selection.label.split(") ")[1].trim()
         const CommandHandler = actions.find(action => selected === action.label).handler
-        const ShellHandler = isPowershell(activeTerminal) ? PowershellHandler: BashHandler
-        const shellHandler = new ShellHandler()
+        
         const commandHandler = new CommandHandler( this.context, this.logger, this.lifecycleManager, shellHandler )
         return commandHandler.execute()
     }
@@ -63,10 +58,9 @@ class CommandsLauncher {
             terminal.show();
         }
     }
-    constructor(context, logger, lifecycleManager, shellHandler){
+    constructor(context, logger, lifecycleManager){
         this.logger = logger
         this.context = context
-        this.shellHandler = shellHandler
         this.lifecycleManager = lifecycleManager
         this.showQuickPick = this.showQuickPick.bind(this)
         this.verifyOpenTerminal = this.verifyOpenTerminal.bind(this)

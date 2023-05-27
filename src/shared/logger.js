@@ -51,7 +51,6 @@ class Logger {
     
     constructor(disabled = false) {
         this.disabled = disabled
-        this.uniqueId = new Date().valueOf()
     }
 }
 

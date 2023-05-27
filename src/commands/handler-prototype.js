@@ -1,11 +1,14 @@
-const os = require('os');
 const vscode = require('vscode');
+const os = require('os');
 const { FileHandler } = require("../file-handler")
+const { BashHandler } = require("../shared/shells/bash")
+const { PowershellHandler } = require("../shared/shells/powershell")
+const { isPowershell } = require("../shared/methods")
+
 const {
     getOption,
     getOptionKey,
-    getRawCommand,
-    tfCommandBashDefinitions
+    getRawCommand
 } = require("../shared/methods")
 
 const {
@@ -75,23 +78,18 @@ class CommandHandlerPrototype {
     async init(step2) {
         this.tfOption = this.addOption ? (await this.getOption()) : null
         setDefaultOption(this.commandId, this.tfOption)
+        
+        const { activeTerminal } = vscode.window
+        const ShellHandler = isPowershell(activeTerminal) ? PowershellHandler: BashHandler
+        this.shellHandler = new ShellHandler(this.commandId, this.tfOption, this.redirect, this.outputFile, this.lifecycleManager)
+
         const onChildProcessCompleteStep1 = async () => {
             const { activeTerminal } = vscode.window
             if (!activeTerminal) return
             this.activeTerminal = activeTerminal
-            const isWindows = os.platform().indexOf("win32") > -1
-            if (isWindows) this.redirect = false
             await step2()
         }
         this.initFileHandler(onChildProcessCompleteStep1)
-    }
-
-    async handleDefinitions(activeTerminal) {
-        if (!activeTerminal.definitions) activeTerminal.definitions = {}
-        const bashDefined = activeTerminal.definitions[this.commandId + (this.tfOption || "")]
-        const definitions = tfCommandBashDefinitions(this.commandId, this.tfOption, this.redirect);
-        if (!bashDefined) activeTerminal.sendText(definitions)
-        activeTerminal.definitions[this.commandId] = true
     }
 
     async runBash() {
@@ -103,10 +101,7 @@ class CommandHandlerPrototype {
         const command = getRawCommand(this.commandId)
         const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.tfOption}"` : ""
         if (!this.fileHandler.initialized) return activeTerminal.sendText(`terraform ${command} ${option}`)
-        await this.handleDefinitions(activeTerminal)
-        activeTerminal.sendText(`clear`);
-        activeTerminal.sendText(`terraform.${this.commandId} "${this.outputFile}" "$(date +%s)"; \ `);
-        activeTerminal.show();
+        await this.shellHandler.runTfCommand(this.commandId, this.tfOption, this.redirect, this.outputFile, activeTerminal)
     }
 
     get outputFile() {

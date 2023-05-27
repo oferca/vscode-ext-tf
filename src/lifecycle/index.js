@@ -94,6 +94,7 @@ class LifecycleManager {
         this.timeSinceLastUseSec = (this.now - this.lastRunTS) / 1000
         this.shouldRemind = !isNaN(parseInt(this.lastRunTS)) && (this.timeSinceLastUseSec > intervalUsageReminderSec)
         this.shellType = isPowershell(vscode.window.activeTerminal) ? powershellType : ""
+        this.logger.uniqueId = this.uniqueId
     }
 
     constructor(context, logger, disableStateUpdate = false, disableStateRead = false, keyPostfix = "") {
@@ -103,7 +104,7 @@ class LifecycleManager {
         this.disableStateRead = disableStateRead
         this.keyPostfix = keyPostfix
         this.activeTerminal = vscode.window.activeTerminal
-
+        this.uniqueId = new Date().valueOf()
     }
 
 }

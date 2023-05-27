@@ -7,7 +7,6 @@ const findRemoveSync = require('find-remove');
 const {
     timeExt,
     noColorExt,
-    lastRunKey,
     errorStatus,
     rootFolderName,
     defaultEstimate,
@@ -53,18 +52,13 @@ class FileHandler {
 
     async init(step2Cb) {
         const { activeTerminal } = vscode.window
-        if (false && featuresDisabled(activeTerminal)) {
+        if (featuresDisabled(activeTerminal)) {
             await this.lifecycleManager.handleShellDisclaimer()
             return step2Cb && step2Cb()
         }
         this.lifecycleManager.updateState(hasSupportedTerminalKey, true);
-        const processId = await vscode.window.activeTerminal.processId
-
-        const result = await vscode.window.activeTerminal.sendText(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "cwda.txt") -Value $PWD`);
-
-        exec(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "cwda.txt") -Value $PWD`, (...args) => {
-            //    exec(`lsof -p ${processId} | grep cwd`, (...args) => {
-            args.push(cb)
+        await this.shellHandler.invokeWithCWD((...args) => {
+            args.push(step2Cb)
             this.handleDataFolder(...args)
         });
         return true
@@ -72,7 +66,7 @@ class FileHandler {
 
     handleDataFolder(error, stdout, stderr, cb) {
         const subFolderName = extractCWD(stdout)
-        this.dataFolder = path.join(os.tmpdir(), rootFolderName, subFolderName)
+        this.dataFolder = path.join(os.tmpdir(), rootFolderName, subFolderName).replaceAll(":","_")
         if (!fs.existsSync(this.dataFolder)) fs.mkdirSync(this.dataFolder, { recursive: true })
         this.outputFile = createOutputFileName(this.dataFolder, this.commandId)
         this.deleteOldFiles()

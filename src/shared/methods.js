@@ -7,7 +7,6 @@ let db
 
 const { 
     timeExt,
-    noColorExt,
     tfVarsPostix,
     rootFolderName,
     tfTargetPostix,
@@ -86,27 +85,6 @@ module.exports.getRawCommand = getRawCommand
 
 const getBashTFCommand = (commandId, tfOption) => tfOption ? `${getRawCommand(commandId)} -${getOptionKey(commandId)}="${tfOption}"` : commandId
 
-module.exports.tfCommandBashDefinitions = (commandId, tfOption = null,redirect = true) => `
-function line() {echo " --------------------------------------------------";};
-finalize.${commandId}(){ 
-export endVscTfPlan=$(date +%s); 
-echo \`expr $endVscTfPlan - "$2"\`> "$1"${"." + timeExt + "; \ "}
-${redirect ? `export tf_output=$(cat "$1.${noColorExt}";);  ` : ``}
-${redirect ? `if [[ "$tf_output" == *"${successMessage(commandId)}"* ]]; then 
-    echo "$(cat "$1")"; 
-fi;  ` : "" }
-${redirect ? `
-echo; line; echo "| Click here to view full output: ( Cmd + Click ): | "; line;
-echo "$1.${noColorExt}"; echo; ` : ``} \
-};
-${getBashFunctionInvocation(commandId)}(){ 
-clear; 
-export startTSCommand=$(date +%s); 
-echo 'Running: terraform ${tfOption ? addOptionDef(commandId, tfOption) :commandId.replaceAll("."," ") }'; echo; echo "At location:"; pwd; ${redirect ? `echo; echo "Click Hyperlink in notification for output logs."; echo;` : ""} echo "Please wait...";
-terraform ${getBashTFCommand(commandId, tfOption)} ${redirect ? " > " + "$1": ""};sleep 0.1; 
-finalize.${commandId} "$1" "$startTSCommand"; 
-} `.replaceAll("\n", "")
-
 const getBashFunctionInvocation = cmdId => "terraform." + cmdId
 
 module.exports.getBashFunctionInvocation = getBashFunctionInvocation
@@ -123,7 +101,7 @@ module.exports.getCompletionPercentage = (barCreationTimestamp, barCompletionTim
 module.exports.getProgressMsg = commandId => "Running \"Terraform " + commandId + "\" in terminal."
 
 const isUnsupportedShell = terminal =>
-    isPowershell(terminal) ||
+    // isPowershell(terminal) ||
     terminal.name.indexOf("cmd") > -1 ||
     terminal.creationOptions.shellPath &&
      (
@@ -145,7 +123,7 @@ module.exports.isPowershell = isPowershell
 
 const isWindows = os.platform().indexOf("win32") > -1
 
-module.exports.featuresDisabled = terminal => !terminal || isWindows || isUnsupportedShell(terminal)
+module.exports.featuresDisabled = terminal => !terminal || isUnsupportedShell(terminal)
 
 module.exports.removeColors = text => text.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
 
