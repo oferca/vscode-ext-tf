@@ -160,7 +160,7 @@ module.exports.getLogFileName = () => {
 	return path.join(rootFolder, "run.log")
 }
 
-const unsupportedShellNote = (termianl, hasSupported) => hasSupported ?
+module.exports.unsupportedShellNote = (termianl, hasSupported) => hasSupported ?
     `Please note that a bash shell is recommended for using this extension. Consider using your bash terminal instead of current terminal: "${termianl.name}".`
     : `Please note that a bash shell is recommended for using this extension to enable all features. Current terminal: "${termianl.name}". `
 

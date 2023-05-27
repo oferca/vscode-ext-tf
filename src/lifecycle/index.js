@@ -1,16 +1,21 @@
 const vscode = require('vscode');
-const { mainCommandId } = require("../shared/constants")
-
-const {
-    usedOnceKey,
+const { 
     lastRunKey,
+    usedOnceKey,
     reminderNote,
     thankYouNote,
     instructions,
+    mainCommandId,
     instructionsEnvVar,
-    reminderActionText
+    reminderActionText,
+    shellNoticeIntervalSec,
+    lastShellDisclaimerKey,
+    hasSupportedTerminalKey,
+    dontRemindDisclaimerKey,
+    shellNoticeIntervalHasSupportedSec
 } = require("../shared/constants")
 
+const { unsupportedShellNote } = require("../shared/methods")
 class LifecycleManager {
    
     now
@@ -18,6 +23,7 @@ class LifecycleManager {
     usedOnce
     lastRunTS
     shouldRemind
+    activeTerminal
     timeSinceLastUseSec
 
     get isFirstActivation () {
@@ -52,19 +58,18 @@ class LifecycleManager {
         if (this.disableStateRead) return
         return this.context.workspaceState.get(key + this.keyPostfix)
     }
-    async handleShellDisclaimer (activeTerminal) {
-        const context = this.context
-        const hasSupportedTerminal = this.LifecycleManager.getState(hasSupportedTerminalKey) || false
-        const lastNoticeTS = this.LifecycleManager.getState(lastShellDisclaimerKey) || 0
-        const timeSinceLastNotice = (now - lastNoticeTS) / 1000
+    async handleShellDisclaimer () {
+        const hasSupportedTerminal = this.getState(hasSupportedTerminalKey) || false
+        const lastNoticeTS = this.getState(lastShellDisclaimerKey) || 0
+        const timeSinceLastNotice = (this.now - lastNoticeTS) / 1000
         const interval = hasSupportedTerminal ? shellNoticeIntervalHasSupportedSec : shellNoticeIntervalSec
         const timeToShowDisclaimer = timeSinceLastNotice > interval
         if (!timeToShowDisclaimer) return
         this.updateState(lastShellDisclaimerKey, this.now);
-        const neverRemind = this.LifecycleManager.getState(dontRemindDisclaimerKey) || false
+        const neverRemind = this.getState(dontRemindDisclaimerKey) || false
         if (neverRemind) return
         const dontRemindStr ='Don\'t remind again'
-        const msg = unsupportedShellNote(activeTerminal, hasSupportedTerminal)
+        const msg = unsupportedShellNote(this.activeTerminal, hasSupportedTerminal)
         const selection = await vscode.window.showInformationMessage(
             msg,
             { title: reminderActionText },
@@ -84,8 +89,8 @@ class LifecycleManager {
         this.now = new Date().getTime();
         this.usedOnce = this.getState(usedOnceKey) || false;
         this.lastRunTS = this.getState(lastRunKey) || 0
-        this.timeSinceLastUseSec = (now - lastRunTS) / 1000
-        this.shouldRemind = lastRunTS && (timeSinceLastUseSec > intervalUsageReminderSec)
+        this.timeSinceLastUseSec = (this.now - this.lastRunTS) / 1000
+        this.shouldRemind = this.lastRunTS && (timeSinceLastUseSec > intervalUsageReminderSec)
     }
 
     constructor(context, logger, disableStateUpdate = false, disableStateRead = false, keyPostfix = ""){
@@ -94,6 +99,8 @@ class LifecycleManager {
         this.disableStateUpdate = disableStateUpdate
         this.disableStateRead = disableStateRead
         this.keyPostfix = keyPostfix
+        this.activeTerminal = vscode.window.activeTerminal
+        
     }
 
 }

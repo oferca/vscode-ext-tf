@@ -16,6 +16,7 @@ async function activate(context) {
 
     const logger = new Logger(disableLogs)
 	const lifecycleManager = new LifecycleManager(context, logger, disableState, disableState, freshStart ? Math.random() : "")
+	lifecycleManager.init()
 	const actionButton = new ActionButton(context, logger)
 	const launcher = new CommandsLauncher(context, logger, lifecycleManager)
 

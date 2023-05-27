@@ -51,9 +51,12 @@ class FileHandler {
         return fs.existsSync(this.outputFile + "." + timeExt)
     }
 
-    async init() {
+    async init(step2Cb) {
         const { activeTerminal } = vscode.window
-        if (featuresDisabled(activeTerminal)) return handleShellDisclaimer(activeTerminal, this.context, this.logger)
+        if (featuresDisabled(activeTerminal)) {
+            await this.lifecycleManager.handleShellDisclaimer()
+            return step2Cb && step2Cb()
+        }
         this.lifecycleManager.updateState(hasSupportedTerminalKey, true);
         const processId = await vscode.window.activeTerminal.processId
 
