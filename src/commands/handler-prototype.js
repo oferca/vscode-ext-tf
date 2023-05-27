@@ -4,7 +4,6 @@ const { FileHandler } = require("../file-handler")
 const {
     getOption,
     getOptionKey,
-    initFireBase,
     getRawCommand,
     tfCommandBashDefinitions
 } = require("../shared/methods")
@@ -50,7 +49,7 @@ class CommandHandlerPrototype {
             cId: this.commandId,
             terminal: this.activeTerminal.name
         }
-        return this.logger.log(op)
+        return await this.logger.log(op)
     }
     async verifyOpenTerminal() {
         const openTerminal = { title: 'Open Terminal' };
@@ -59,7 +58,7 @@ class CommandHandlerPrototype {
             openTerminal
         );
 
-        this.logger.log({
+        await this.logger.log({
             openTerminalTxt,
             selection,
             commandId: this.commandId 
@@ -94,7 +93,6 @@ class CommandHandlerPrototype {
         this.tfOption = this.addOption ? (await this.getOption()) : null
         setDefaultOption(this.commandId, this.tfOption)
         const onChildProcessCompleteStep1 = async () => {
-            this.db = await initFireBase()
             const { activeTerminal } = vscode.window
             if (!activeTerminal) return
             this.activeTerminal = activeTerminal

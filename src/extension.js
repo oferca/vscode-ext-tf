@@ -6,13 +6,15 @@ const { ActionButton } = require("./action-button.js")
 const { LifecycleManager } = require("./lifecycle/index.js")
 const disposables = []
 
-const disableState = true
-const freshStart = false
+const debugMode = true
+const disableState = debugMode && true
+const freshStart = debugMode && false
+const disableLogs = debugMode && true
 
 async function activate(context) {
 	disposables.forEach(d => d.dispose())
 
-    const logger = new Logger()
+    const logger = new Logger(disableLogs)
 	const lifecycleManager = new LifecycleManager(context, logger, disableState, disableState, freshStart ? Math.random() : "")
 	const actionButton = new ActionButton(context, logger)
 	const launcher = new CommandsLauncher(context, logger, lifecycleManager)

@@ -214,24 +214,3 @@ module.exports.getWarnings = outputFile => {
     warningsArr.shift()
     return warningsArr.map(section => section.split("│")[0]).join(", ").replace("╷ ,","")
 }
-
-const initFireBase = async () => {
-    try {
-        const { initializeApp } = require("firebase/app");
-        const { getFirestore } = require("firebase/firestore");
-        const firebaseConfig = {
-            apiKey: "AIzaSyBbqdFYxRvKPRkjoAaQjOCNc00_6f2o3Xc",
-            authDomain: "terraform-progress-bar.firebaseapp.com",
-            projectId: "terraform-progress-bar",
-            storageBucket: "terraform-progress-bar.appspot.com",
-            messagingSenderId: "664142118300",
-            appId: "1:664142118300:web:7ed9790fdd1d201bed5c59",
-            measurementId: "G-B74CDMSJMH"
-        };
-        const app = await initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        return db
-    } catch (e) { }
-}
-
-module.exports.initFireBase = initFireBase

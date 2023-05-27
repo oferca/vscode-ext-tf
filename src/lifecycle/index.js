@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const { mainCommandId } = require("../shared/constants")
 
 const {
     usedOnceKey,
@@ -28,13 +29,13 @@ class LifecycleManager {
         const msg = this.shouldRemind ? reminderNote : thankYouNote
         await vscode.window.showInformationMessage( msg, { modal: true } );
         const { timeSinceLastUseSec, usedOnce } = this
-        this.logger.log({
+        await this.logger.log({
             msg,
             timeSinceLastUseSec,
             usedOnce
         })
         this.updateState(usedOnceKey, true);
-        if (shouldRemind) this.updateState(lastRunKey, this.now)
+        if (this.shouldRemind) this.updateState(lastRunKey, this.now)
         const terminal = vscode.window.createTerminal();
         terminal.show();
         vscode.commands.executeCommand(mainCommandId);
@@ -48,6 +49,7 @@ class LifecycleManager {
         this.context.workspaceState.update(key + this.keyPostfix, true, value)
     }
     getState (key) {
+        if (this.disableStateRead) return
         return this.context.workspaceState.get(key + this.keyPostfix)
     }
     async handleShellDisclaimer (activeTerminal) {
@@ -68,7 +70,7 @@ class LifecycleManager {
             { title: reminderActionText },
             { title: dontRemindStr }
             );
-        this.logger.log({
+        await this.logger.log({
             msg,
             selection,
             hasSupportedTerminal,

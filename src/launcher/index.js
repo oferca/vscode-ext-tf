@@ -1,3 +1,4 @@
+const vscode = require('vscode');
 const { actions } = require("../shared/actions")
 
 class CommandsLauncher {
@@ -32,7 +33,7 @@ class CommandsLauncher {
     handleActionSelect (selection) {
         const selected = selection.label.split(") ")[1].trim()
         const CommandHandler = actions.find(action => selected === action.label).handler
-        const commandHandler = new CommandHandler( context, this.logger, this.lifecycleManager )
+        const commandHandler = new CommandHandler( this.context, this.logger, this.lifecycleManager )
         return commandHandler.execute()
     }
     
