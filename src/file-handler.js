@@ -54,7 +54,7 @@ class FileHandler {
     async init() {
         const { activeTerminal } = vscode.window
         if (featuresDisabled(activeTerminal)) return handleShellDisclaimer(activeTerminal, this.context, this.logger)
-        this.context.workspaceState.update(hasSupportedTerminalKey, true);
+        this.lifecycleManager.updateState(hasSupportedTerminalKey, true);
         const processId = await vscode.window.activeTerminal.processId
 
         const result = await vscode.window.activeTerminal.sendText(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "cwda.txt") -Value $PWD`);
@@ -103,11 +103,12 @@ class FileHandler {
         } : errorStatus
     }
 
-    constructor(commandId, averageFromCmd, context, logger) {
+    constructor(commandId, averageFromCmd, context, logger, lifecycleManager) {
         this.logger = logger
         this.context = context
         this.commandId = commandId
         this.averageFromCmd = averageFromCmd
+        this.lifecycleManager = lifecycleManager
         this.initialized = false
         this.firstActivation = false
         this.handleDataFolder = this.handleDataFolder.bind(this)

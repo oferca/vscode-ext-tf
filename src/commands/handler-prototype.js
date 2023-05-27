@@ -82,7 +82,7 @@ class CommandHandlerPrototype {
     }
 
     initFileHandler(cb) {
-        this.fileHandler = new FileHandler(this.commandId, this.averageFromCmd, this.context, this.logger)
+        this.fileHandler = new FileHandler(this.commandId, this.averageFromCmd, this.context, this.logger, this.lifecycleManager)
         this.fileHandler.init(cb)
     }
 
@@ -115,7 +115,7 @@ class CommandHandlerPrototype {
 
     async runBash() {
         const now = new Date().getTime();
-        this.context.workspaceState.update(lastRunKey, now);
+        this.lifecycleManager.updateState(lastRunKey, now);
         setTimeout(this.sendCommands, !this.fileHandler.initialized ? 500 : 0)
     }
 

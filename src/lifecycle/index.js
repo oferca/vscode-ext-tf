@@ -33,8 +33,8 @@ class LifecycleManager {
             timeSinceLastUseSec,
             usedOnce
         })
-        context.workspaceState.update(usedOnceKey, true);
-        if (shouldRemind) context.workspaceState.update(lastRunKey, this.now)
+        this.updateState(usedOnceKey, true);
+        if (shouldRemind) this.updateState(lastRunKey, this.now)
         const terminal = vscode.window.createTerminal();
         terminal.show();
         vscode.commands.executeCommand(mainCommandId);
@@ -52,14 +52,14 @@ class LifecycleManager {
     }
     async handleShellDisclaimer (activeTerminal) {
         const context = this.context
-        const hasSupportedTerminal = context.workspaceState.get(hasSupportedTerminalKey) || false
-        const lastNoticeTS = context.workspaceState.get(lastShellDisclaimerKey) || 0
+        const hasSupportedTerminal = this.LifecycleManager.getState(hasSupportedTerminalKey) || false
+        const lastNoticeTS = this.LifecycleManager.getState(lastShellDisclaimerKey) || 0
         const timeSinceLastNotice = (now - lastNoticeTS) / 1000
         const interval = hasSupportedTerminal ? shellNoticeIntervalHasSupportedSec : shellNoticeIntervalSec
         const timeToShowDisclaimer = timeSinceLastNotice > interval
         if (!timeToShowDisclaimer) return
-        context.workspaceState.update(lastShellDisclaimerKey, this.now);
-        const neverRemind = context.workspaceState.get(dontRemindDisclaimerKey) || false
+        this.updateState(lastShellDisclaimerKey, this.now);
+        const neverRemind = this.LifecycleManager.getState(dontRemindDisclaimerKey) || false
         if (neverRemind) return
         const dontRemindStr ='Don\'t remind again'
         const msg = unsupportedShellNote(activeTerminal, hasSupportedTerminal)
@@ -75,13 +75,13 @@ class LifecycleManager {
             lastNoticeTS,
         })
         const timeForReDisclaimer = timeSinceLastNotice > shellNoticeIntervalSec
-        if (timeForReDisclaimer) return context.workspaceState.update(dontRemindDisclaimerKey, false);
-        if (selection.title === dontRemindStr) context.workspaceState.update(dontRemindDisclaimerKey, true);
+        if (timeForReDisclaimer) return this.updateState(dontRemindDisclaimerKey, false);
+        if (selection.title === dontRemindStr) this.updateState(dontRemindDisclaimerKey, true);
     }
     init () {
         this.now = new Date().getTime();
-        this.usedOnce = this.context.workspaceState.get(usedOnceKey) || false;
-        this.lastRunTS = context.workspaceState.get(lastRunKey) || 0
+        this.usedOnce = this.getState(usedOnceKey) || false;
+        this.lastRunTS = this.getState(lastRunKey) || 0
         this.timeSinceLastUseSec = (now - lastRunTS) / 1000
         this.shouldRemind = lastRunTS && (timeSinceLastUseSec > intervalUsageReminderSec)
     }
