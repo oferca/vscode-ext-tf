@@ -18,7 +18,7 @@ const {
     removeColors,
     tfCommandSuccess,
     featuresDisabled,
-    handleShellDisclaimer,
+    removeLastInstance,
     createOutputFileName,
     calculateAverageDuration
 } = require("./shared/methods")
@@ -66,7 +66,7 @@ class FileHandler {
 
     handleDataFolder(error, stdout, stderr, cb) {
         const subFolderName = extractCWD(stdout)
-        this.dataFolder = path.join(os.tmpdir(), rootFolderName, subFolderName).replaceAll(":","_")
+        this.dataFolder = this.shellHandler.handleDataPath(path.join(os.tmpdir(), rootFolderName, subFolderName))
         if (!fs.existsSync(this.dataFolder)) fs.mkdirSync(this.dataFolder, { recursive: true })
         this.outputFile = createOutputFileName(this.dataFolder, this.commandId)
         this.deleteOldFiles()

@@ -81,7 +81,7 @@ class CommandHandlerPrototype {
         
         const { activeTerminal } = vscode.window
         const ShellHandler = isPowershell(activeTerminal) ? PowershellHandler: BashHandler
-        this.shellHandler = new ShellHandler(this.commandId, this.tfOption, this.redirect, this.outputFile, this.lifecycleManager)
+        this.shellHandler = new ShellHandler(this.commandId, this.tfOption, this.redirect, this.lifecycleManager)
 
         const onChildProcessCompleteStep1 = async () => {
             const { activeTerminal } = vscode.window
@@ -101,7 +101,7 @@ class CommandHandlerPrototype {
         const command = getRawCommand(this.commandId)
         const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.tfOption}"` : ""
         if (!this.fileHandler.initialized) return activeTerminal.sendText(`terraform ${command} ${option}`)
-        await this.shellHandler.runTfCommand(this.commandId, this.tfOption, this.redirect, this.outputFile, activeTerminal)
+        await this.shellHandler.runTfCommand(this.outputFile)
     }
 
     get outputFile() {

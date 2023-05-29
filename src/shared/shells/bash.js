@@ -14,13 +14,6 @@ class BashHandler extends ShellHandler{
         const processId = await vscode.window.activeTerminal.processId
         exec(`lsof -p ${processId} | grep cwd`, cb)
     }
-    runTfCommand () {
-        const { activeTerminal } = vscode.window
-        await this.handleDefinitions()
-        activeTerminal.sendText(`clear`);
-        activeTerminal.sendText(`terraform.${commandId} "${outputFile}" "$(date +%s)"; \ `);
-        activeTerminal.show();
-    }
     
     tfCommandDefinitions () {
         return `
@@ -39,11 +32,14 @@ class BashHandler extends ShellHandler{
     ${getBashFunctionInvocation(this.commandId)}(){ 
     clear; 
     export startTSCommand=$(date +%s); 
-    echo 'Running: terraform ${tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll("."," ") }'; echo; echo "At location:"; pwd; ${this.redirect ? `echo; echo "Click Hyperlink in notification for output logs."; echo;` : ""} echo "Please wait...";
+    echo 'Running: terraform ${this.tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll("."," ") }'; echo; echo "At location:"; pwd; ${this.redirect ? `echo; echo "Click Hyperlink in notification for output logs."; echo;` : ""} echo "Please wait...";
     terraform ${getBashTFCommand(this.commandId, this.tfOption)} ${this.redirect ? " > " + "$1": ""};sleep 0.1; 
     finalize.${this.commandId} "$1" "$startTSCommand"; 
     } `.replaceAll("\n", "")
-    
+}
+    handleDataPath(str) {
+        return str 
+    }
 }
 
 module.exports = { BashHandler }

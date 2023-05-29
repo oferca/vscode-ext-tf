@@ -1,3 +1,5 @@
+const vscode = require('vscode');
+
 class ShellHandler {
     lifecycleManager
 
@@ -10,11 +12,18 @@ class ShellHandler {
         activeTerminal.definitions[this.commandId] = true
     }
 
-    constructor(commandId, tfOption = null, redirect = true, outputFile, lifecycleManager) {
+    async runTfCommand (outputFile) {
+        const { activeTerminal } = vscode.window
+        await this.handleDefinitions()
+        activeTerminal.sendText(`clear`);
+        activeTerminal.sendText(`terraform.${this.commandId} "${outputFile}" \ `);
+        activeTerminal.show();
+    }
+    
+    constructor(commandId, tfOption = null, redirect = true, lifecycleManager) {
         this.commandId = commandId
         this.tfOption = tfOption
         this.redirect = redirect
-        this.outputFile = outputFile
         this.lifecycleManager = lifecycleManager
     }
 }

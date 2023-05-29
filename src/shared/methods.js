@@ -85,6 +85,8 @@ module.exports.getRawCommand = getRawCommand
 
 const getBashTFCommand = (commandId, tfOption) => tfOption ? `${getRawCommand(commandId)} -${getOptionKey(commandId)}="${tfOption}"` : commandId
 
+module.exports.getBashTFCommand = getBashTFCommand
+
 const getBashFunctionInvocation = cmdId => "terraform." + cmdId
 
 module.exports.getBashFunctionInvocation = getBashFunctionInvocation
@@ -177,6 +179,8 @@ const successMessage = commandId =>{
         rawCommand === tfInitCommandId && initSuccessMessage
 }
 
+module.exports.successMessage = successMessage
+
 const planSuccessful = outputFile => outputFile.indexOf(planSuccessMessage1) > -1 || outputFile.indexOf(planSuccessMessage2) > -1
 
 const initSuccessful = outputFile => outputFile.indexOf(initSuccessMessage) > -1
@@ -199,4 +203,12 @@ module.exports.getWarnings = outputFile => {
     const warningsArr = outputFile.split("Warning:")
     warningsArr.shift()
     return warningsArr.map(section => section.split("│")[0]).join(", ").replace("╷ ,","")
+}
+
+module.exports.removeLastInstance = (badtext, str) => {
+    var charpos = str.lastIndexOf(badtext);
+    if (charpos<0) return str;
+    ptone = str.substring(0,charpos);
+    pttwo = str.substring(charpos+(badtext.length));
+    return (ptone+pttwo);
 }
