@@ -10,6 +10,7 @@ const {
 const { noColorExt, timeExt } = require("../constants")
 
 class BashHandler extends ShellHandler{
+    paramName
     async invokeWithCWD(cb){
         const processId = await vscode.window.activeTerminal.processId
         exec(`lsof -p ${processId} | grep cwd`, cb)
@@ -39,6 +40,10 @@ class BashHandler extends ShellHandler{
 }
     handleDataPath(str) {
         return str 
+    }
+    constructor(...args){
+        super(...args)
+        this.paramName = ""
     }
 }
 

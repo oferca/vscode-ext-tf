@@ -16,10 +16,10 @@ class ShellHandler {
         const { activeTerminal } = vscode.window
         await this.handleDefinitions()
         activeTerminal.sendText(`clear`);
-        activeTerminal.sendText(`terraform.${this.commandId} "${outputFile}" \ `);
+        activeTerminal.sendText(`terraform.${this.commandId} ${this.paramName}"${outputFile}" \ `);
         activeTerminal.show();
     }
-    
+
     constructor(commandId, tfOption = null, redirect = true, lifecycleManager) {
         this.commandId = commandId
         this.tfOption = tfOption
