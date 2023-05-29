@@ -21,27 +21,13 @@ class PowershellHandler extends ShellHandler {
             cb(null, userCwd, null)
         }, 100)
     }
-    tfCommandDefinitions2 () {
-        return `
-        function line() {echo " --------------------------------------------------";};
-        function finalize.${this.commandId}(){ param ([string]$p1, [string]$p2 )
-            echo "param b is $p1, $p2"; 
-
-        };
-        function ${getBashFunctionInvocation(this.commandId)}(){
-        param ([string]$p1 )
-        echo "param a is $p1"; 
-        finalize.${this.commandId} -p1 "$p1" -p2 "aaa" ; 
-        } `.replaceAll("\n", "")
-    }
     tfCommandDefinitions () {
         return `
         function line() {echo " --------------------------------------------------";};
         function finalize.${this.commandId}(){ param ([string]$p1, [string]$p2 )
         $endVscTfPlan = Get-Date -Format "yyyyMMddHHmmssfffffff"; 
-        $timeSpan = New-TimeSpan -Start $endVscTfPlan -End $p2
-        echo $($timeSpan.Seconds) > "$p1"${"." + timeExt + "; \ "}
-        ${this.redirect ? `$tf_output=$(cat "$1.${noColorExt}";);  ` : ``}
+        echo $($endVscTfPlan - $p2) > "$p1"${"." + timeExt + "; \ "}
+        ${this.redirect ? `$tf_output=$(cat "$p1.${noColorExt}";);  ` : ``}
         ${this.redirect ? `if ( $tf_output.Contains("${successMessage(this.commandId)}") ){
             echo "$(cat "$p1")"; 
             finalize.${this.commandId} -1 "$p1" "$startTSCommand"; 
