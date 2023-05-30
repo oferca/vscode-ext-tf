@@ -86,12 +86,15 @@ class FileHandler {
         const outputFile = fs.readFileSync(this.outputFile, this.shellHandler.fileEncoding)
         fs.writeFileSync(
             this.outputFileNoColor,
-            removeColors(outputFile)
+            removeColors(outputFile),
+            {
+                encoding: "utf8"
+            }
         )
     }
 
     getCompletionSummary() {
-        const outputFile = fs.readFileSync(this.outputFileNoColor, this.shellHandler.fileEncoding)
+        const outputFile = fs.readFileSync(this.outputFileNoColor, "utf-8")
         const warnings = getWarnings(outputFile)
         const message = tfCommandSuccess(outputFile)
         return message ? {

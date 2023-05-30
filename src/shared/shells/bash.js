@@ -36,7 +36,7 @@ class BashHandler extends ShellHandler{
     clear; 
     export startTSCommand=$(date +%s); 
     echo 'Running: terraform ${this.tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll("."," ") }'; echo; echo "At location:"; pwd; ${this.redirect ? `echo; echo "Click Hyperlink in notification for output logs."; echo;` : ""} echo "Please wait...";
-    terraform ${getBashTFCommand(this.commandId, this.tfOption)} ${this.redirect ? " > " + "$1": ""};sleep 0.1; 
+    terraform ${getBashTFCommand(this.commandId, this.tfOption)} ${this.redirect ? " > " + "$1": ""};sleep 0.3; 
     finalize.${this.commandId} "$1" "$startTSCommand"; 
     } `.replaceAll("\n", "")
 }
