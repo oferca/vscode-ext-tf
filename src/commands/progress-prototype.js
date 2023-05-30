@@ -33,7 +33,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         this.currentBarCompletionPercentage = 0
         this.barCompletionTimestamp = this.barCreationTimestamp + this.fileHandler.durationEstimate * 1000
         const progressFileName = `${this.outputFile}.${noColorExt}`
-        const progressFileMsg = this.redirect ? ` [Click here to see output logs](file://${progressFileName}). Completed` : ''
+        const progressFileMsg = this.redirect ? ` [Click here to see output logs](file:${this.shellHandler.filePrefix}${progressFileName}). Completed` : ''
 
         const listener = vscode.workspace.onDidOpenTextDocument((document) => {
             if (document.fileName === progressFileName) {
@@ -127,8 +127,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         
     }
 
-    constructor(context, logger, lifecycleManager, commandId){
-        super(context, logger, lifecycleManager, commandId);
+    constructor(context, logger, lifecycleManager, shellHandler, commandId){
+        super(context, logger, lifecycleManager, shellHandler, commandId);
         this.lastRecorded = 0
         this.execute = this.execute.bind(this)
         this.runBash = this.runBash.bind(this)

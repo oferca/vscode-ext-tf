@@ -8,7 +8,9 @@ const { noColorExt, timeExt } = require("../constants")
 
 class PowershellHandler extends ShellHandler {
     paramName
-    async invokeWithCWD(cb){
+    filePrefix
+    fileEncoding
+    async invokeWithCWD(cb) {
         const cwdFileName = `cwd-${this.lifecycleManager.uniqueId}.txt`
         await vscode.window.activeTerminal.sendText(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "${cwdFileName}") -Value $PWD`);
         let counter = 0
@@ -21,7 +23,7 @@ class PowershellHandler extends ShellHandler {
             cb(null, userCwd, null)
         }, 100)
     }
-    tfCommandDefinitions () {
+    tfCommandDefinitions() {
         return `
         function line() {echo " --------------------------------------------------";};
         function finalize.${this.commandId}(){ param ([string]$p1, [string]$p2 )
@@ -31,7 +33,7 @@ class PowershellHandler extends ShellHandler {
         ${this.redirect ? `if ( $tf_output.Contains("${successMessage(this.commandId)}") ){
             echo "$(cat "$p1")"; 
             finalize.${this.commandId} -1 "$p1" "$startTSCommand"; 
-        };  ` : "" }
+        };  ` : ""}
         ${this.redirect ? `
         echo \`n; line; echo "| Click here to view full output: ( Cmd + Click ): | "; line;
         echo "$p1.${noColorExt}"; echo \`n; ` : ``} \
@@ -40,17 +42,19 @@ class PowershellHandler extends ShellHandler {
         param ([string]$p1 )
         clear; 
         $startTSCommand = Get-Date -Format "yyyyMMddHHmmssfffffff"; 
-        echo 'Running: terraform ${this.tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll("."," ") }'; echo \`n; echo "At location:"; pwd; ${this.redirect ? `echo \`n; echo "Click Hyperlink in notification for output logs."; echo \`n;` : ""} echo "Please wait...";
-        terraform ${getBashTFCommand(this.commandId, this.tfOption)} ${this.redirect ? " > " + "\"$p1\"": ""};sleep 0.1; 
+        echo 'Running: terraform ${this.tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll(".", " ")}'; echo \`n; echo "At location:"; pwd; ${this.redirect ? `echo \`n; echo "Click Hyperlink in notification for output logs."; echo \`n;` : ""} echo "Please wait...";
+        terraform ${getBashTFCommand(this.commandId, this.tfOption)} -no-color ${this.redirect ? " > " + "\"$p1\"" : ""};sleep 0.1; 
         finalize.${this.commandId} -p1 "$p1" -p2 "$startTSCommand"; 
         } `.replaceAll("\n", "")
     }
     handleDataPath(str) {
-        return removeLastInstance(":", str )
+        return removeLastInstance(":", str)
     }
-    constructor(...args){
+    constructor(...args) {
         super(...args)
         this.paramName = "-p1 "
+        this.filePrefix = ""
+        this.fileEncoding = "UTF-16LE"
     }
 }
 

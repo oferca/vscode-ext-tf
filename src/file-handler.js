@@ -43,7 +43,7 @@ class FileHandler {
     }
 
     calculateAverageDuration() {
-        return calculateAverageDuration(this.dataFolder, this.averageFromCmd || this.commandId)
+        return calculateAverageDuration(this.dataFolder, this.averageFromCmd || this.commandId, this.shellHandler.fileEncoding)
     }
 
     get completed() {
@@ -83,7 +83,7 @@ class FileHandler {
         return this.outputFile + "." + noColorExt
     }
     convertOutputToReadable() {
-        const outputFile = fs.readFileSync(this.outputFile, "utf-8")
+        const outputFile = fs.readFileSync(this.outputFile, this.shellHandler.fileEncoding)
         fs.writeFileSync(
             this.outputFileNoColor,
             removeColors(outputFile)
@@ -91,7 +91,7 @@ class FileHandler {
     }
 
     getCompletionSummary() {
-        const outputFile = fs.readFileSync(this.outputFileNoColor, "utf-8")
+        const outputFile = fs.readFileSync(this.outputFileNoColor, this.shellHandler.fileEncoding)
         const warnings = getWarnings(outputFile)
         const message = tfCommandSuccess(outputFile)
         return message ? {

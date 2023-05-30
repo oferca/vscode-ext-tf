@@ -48,7 +48,7 @@ const median = arr => {
     return arr.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
   };
 
-module.exports.calculateAverageDuration = (dataFolder, commandId) => {
+module.exports.calculateAverageDuration = (dataFolder, commandId, encoding) => {
     const durations = []
     const filenames = fs.readdirSync(dataFolder + "/");
 
@@ -57,7 +57,7 @@ module.exports.calculateAverageDuration = (dataFolder, commandId) => {
       if (!isDuration) return
 
       const fullPath = path.join(dataFolder, name);
-      const file = fs.readFileSync(fullPath, "utf-8");
+      const file = fs.readFileSync(fullPath, encoding);
       const decimalOnly = /\d/ . test(file)
       if (!decimalOnly) return
 
