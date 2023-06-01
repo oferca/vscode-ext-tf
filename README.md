@@ -1,9 +1,9 @@
 # Advanced Terraform Dashboard
-Dramatically improves experience and productivity for Terraform users.
+Dramatically improves experience and productivity for terraform users.
 
 # Features
-* Interactive commands menu
-* Animated progress bar
+* Easy terraform commands launcher menu.
+* Animated commands progress bar.
 
 # How to use
 

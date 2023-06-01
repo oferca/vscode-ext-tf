@@ -3,8 +3,8 @@
   "name": "easy-terraform-commands",
   "displayName": "Advanced Terraform Dashboard",
   "publisher": "oferkafry",
-  "description": "Interactive menu and shortcuts for Terraform users",
-  "version": "1.1.95",
+  "description": "Easy shortcuts and dashboard for Terraform",
+  "version": "1.1.96",
   "engines": {
     "vscode": "^1.67.2"
   },
