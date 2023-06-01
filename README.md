@@ -2,8 +2,8 @@
 Dramatically improves experience and productivity for terraform users.
 
 # Features
-* Easy terraform commands launcher menu.
-* Animated commands progress bar.
+* Easy terraform commands launcher.
+* Animated progress bar.
 
 # How to use
 
