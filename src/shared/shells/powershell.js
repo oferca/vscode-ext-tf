@@ -29,8 +29,9 @@ class PowershellHandler extends ShellHandler {
         function finalize.${this.commandId}(){ param ([string]$p1, [string]$p2 )
         $endVscTfPlan = Get-Date -Format "yyyyMMddHHmmssfffffff"; 
         echo $($endVscTfPlan - $p2) / 1000 > "$p1${"." + timeExt + "\";; \ "}
-        ${this.redirect ? `;while ($true) {if (Test-Path "$p1.${noColorExt}") {Start-Sleep -Seconds 1; break;}Start-Sleep -Seconds 0.1;}; \ $tf_output=$(cat "$p1.${noColorExt}"); ` : ``}
-        ${this.redirect ? `if ( $tf_output.Contains("${successMessage(this.commandId)}") ){
+        ${this.redirect ? `;while ($true) {if (Test-Path "$p1.${noColorExt}") {Start-Sleep -Seconds 1; break;}Start-Sleep -Seconds 0.1;}; \
+        $tf_output=$(cat "$p1.${noColorExt}"); ` : ``} \
+        ${this.redirect ? `if ( $tf_output -and $tf_output.Contains("${successMessage(this.commandId)}") ){
             echo "$(cat "$p1")"; 
             finalize.${this.commandId} -1 "$p1" "$startTSCommand"; 
         };  ` : ""}
@@ -42,7 +43,7 @@ class PowershellHandler extends ShellHandler {
         param ([string]$p1 )
         clear; 
         $startTSCommand = Get-Date -Format "yyyyMMddHHmmssfffffff"; 
-        echo 'Running: terraform ${this.tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll(".", " ")}'; echo \`n; echo "At location:"; pwd; ${this.redirect ? `echo \`n; echo "Click Hyperlink in notification for output logs."; echo \`n;` : ""} echo "Please wait...";
+        echo "Running: terraform ${this.tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll(".", " ") } \`n\`nAt path: $pwd"; ${this.redirect ? `echo \`n; echo "Click Hyperlink in notification for output logs."; echo \`n;` : ""} echo "Please wait..."; \
         terraform ${getBashTFCommand(this.commandId, this.tfOption)} ${this.redirect ? " > " + "\"$p1\"" : ""}; 
         finalize.${this.commandId} -p1 "$p1" -p2 "$startTSCommand"; 
         } `.replaceAll("\n", "")
