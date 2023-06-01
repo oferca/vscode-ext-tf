@@ -5,7 +5,7 @@ const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
 const { LifecycleManager } = require("./lifecycle/index.js")
 
-const debugMode = true
+const debugMode = false
 const disableState = debugMode && false
 const freshStart = debugMode && false
 const disableLogs = debugMode && true
@@ -34,8 +34,8 @@ async function activate(context) {
 	!lifecycleManager.isFirstActivation && actionButton.init()
 
 	vscode.window.onDidOpenTerminal((terminal) => {
-        setTimeout(() => terminal.sendText("clear; echo \"- Click 'Terraform' button below to run commands. \"; echo \"\"; "), 600)
-    });
+		lifecycleManager.handleTerminalNotice(terminal)
+	});
 }
 
 function deactivate() { }

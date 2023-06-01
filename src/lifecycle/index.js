@@ -9,6 +9,7 @@ const {
     powershellType,
     instructionsEnvVar,
     reminderActionText,
+    lastTerminalNoticeKey,
     shellNoticeIntervalSec,
     lastShellDisclaimerKey,
     hasSupportedTerminalKey,
@@ -17,7 +18,7 @@ const {
     shellNoticeIntervalHasSupportedSec
 } = require("../shared/constants")
 
-const { unsupportedShellNote, isPowershell } = require("../shared/methods")
+const { unsupportedShellNote, isPowershell, isCmd } = require("../shared/methods")
 class LifecycleManager {
 
     now
@@ -86,6 +87,18 @@ class LifecycleManager {
         const timeForReDisclaimer = timeSinceLastNotice > shellNoticeIntervalSec
         if (timeForReDisclaimer) return this.updateState(dontRemindDisclaimerKey, false);
         if (selection.title === dontRemindStr) this.updateState(dontRemindDisclaimerKey, true);
+    }
+    handleTerminalNotice (terminal) {
+		const now = new Date().getTime();
+		const lastRunTS = this.context.workspaceState.get(lastRunKey) || 0
+		const lastTerminalNoticeTS = this.context.workspaceState.get(lastTerminalNoticeKey) || 0
+        const timeSinceLastUseSec = (now - lastRunTS) / 1000
+        const timeSinceLastTerminalNoticeSec = (now - lastTerminalNoticeTS) / 1000
+		const secondsInWeek = 60 * 60 * 24 * 7
+		const secondsInDay = 60 * 60 * 24
+		if (timeSinceLastUseSec < secondsInWeek || timeSinceLastTerminalNoticeSec < secondsInDay || isCmd(terminal)) return
+		this.context.workspaceState.update(lastTerminalNoticeKey, now)
+        setTimeout(() => terminal.sendText("clear; echo \"- Click 'Terraform' button below to run commands. \"; echo \"\"; "), 600)
     }
     init() {
         this.now = new Date().getTime();

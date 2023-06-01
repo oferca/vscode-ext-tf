@@ -105,14 +105,20 @@ const addOptionDef = (commandId, tfOption) => commandId.
 module.exports.addOptionDef = addOptionDef
 
 const isUnsupportedShell = terminal =>
-    // isPowershell(terminal) ||
-    terminal.name.indexOf("cmd") > -1 ||
+    isCmd(terminal) ||
     terminal.creationOptions.shellPath &&
      (
-        terminal.creationOptions.shellPath.indexOf("cmd") > -1 ||
         terminal.creationOptions.shellPath.toLowerCase().indexOf("git") > -1
      )
 
+const isCmd = terminal =>
+    terminal.name.indexOf("cmd") > -1 ||
+    terminal.creationOptions.shellPath &&
+    (
+        terminal.creationOptions.shellPath.indexOf("cmd") > -1
+    )
+
+module.exports.isCmd = isCmd
 
 const isPowershell = terminal =>
     terminal.name.indexOf("pwsh") > -1 ||
