@@ -98,6 +98,12 @@ module.exports.getCompletionPercentage = (barCreationTimestamp, barCompletionTim
 
 module.exports.getProgressMsg = commandId => "Running \"Terraform " + commandId + "\" in terminal."
 
+const addOptionDef = (commandId, tfOption) => commandId.
+    replace(tfTargetPostix, ` -${getOptionKey(commandId)}="${tfOption}" `).
+    replace(tfVarsPostix, ` -${getOptionKey(commandId)}="${tfOption}" `)
+
+module.exports.addOptionDef = addOptionDef
+
 const isUnsupportedShell = terminal =>
     // isPowershell(terminal) ||
     terminal.name.indexOf("cmd") > -1 ||

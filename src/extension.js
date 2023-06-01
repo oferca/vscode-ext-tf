@@ -32,6 +32,10 @@ async function activate(context) {
 
 	await lifecycleManager.notifyFirstActivation()
 	!lifecycleManager.isFirstActivation && actionButton.init()
+
+	vscode.window.onDidOpenTerminal((terminal) => {
+        terminal.sendText('clear; echo "Click \'Terraform\' button in status bar to run terraform"');
+    });
 }
 
 function deactivate() { }

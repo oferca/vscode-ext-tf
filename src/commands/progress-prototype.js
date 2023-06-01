@@ -68,7 +68,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         const progressFileName = `${this.outputFile}.${noColorExt}`
         const outputLogsMsg = this.redirect ? `. [Click here to see output logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : ''
 
-        if (summary === errorStatus) notification = vscode.window.showErrorMessage(`Terraform ${capitalized} ended with errors.` + outputLogsMsg, gotoTerminal);
+        if (summary === errorStatus) notification = vscode.window.showErrorMessage(`Terraform ${capitalized} ended with errors` + outputLogsMsg, gotoTerminal);
         if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(`Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg, gotoTerminal);
         if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg, gotoTerminal);
     
