@@ -98,7 +98,7 @@ module.exports.usedOnceKey = "tfUsedFirstTime"
 
 module.exports.lastRunKey = "tfLastExec"
 
-module.exports.lastTerminalNoticeKey = "tfLastTerminalNotice3"
+module.exports.lastTerminalNoticeKey = "tfLastTerminalNotice"
 
 module.exports.instructions = "This is a quick launcher menu. To open click the spinning \"Terraform\" button in status bar, or use keyboard shortcuts \"\u2318\u21E7T\" or \"\u2303\u21E7T\" (Cmd/Ctrl + Shift + T)"
 
