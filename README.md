@@ -1,5 +1,12 @@
 # Advanced Terraform Dashboard
-Dramatically improves your terraform experience and productivity. Single-click launcher, real-time progress notifications and interactive ui.
+Dramatically improves experience and productivity. Easily run terraform commands.
+
+# Features
+* Easy Terraform UI
+* Animated progress bar
+
+
+
 # How to use
 
 #### Click '⌘⇧T'
@@ -15,8 +22,8 @@ That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 </p>
 
 ## Notes
-
-* On non-bash terminals (e.g windows powershell) some features are disabled.
+* You may also launch with "Terraform" button in status bar.
+* On non-bash terminals (e.g windows cmd) some features are disabled.
 * Initial time estimates might not be accurate as the system needs to "learn" the execution times.
 
 ## Improvements
