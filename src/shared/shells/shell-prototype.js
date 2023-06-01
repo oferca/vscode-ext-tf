@@ -1,6 +1,8 @@
 const vscode = require('vscode');
+const { isWindows } = require("../constants")
 
 class ShellHandler {
+    fileEncoding
     lifecycleManager
 
     async handleDefinitions() {
@@ -25,6 +27,8 @@ class ShellHandler {
         this.tfOption = tfOption
         this.redirect = redirect
         this.lifecycleManager = lifecycleManager
+        this.fileEncoding = isWindows ? "UTF-16LE" : "utf-8"
+
     }
 }
 

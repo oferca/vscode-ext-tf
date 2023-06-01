@@ -119,8 +119,6 @@ const isPowershell = terminal =>
 
 module.exports.isPowershell = isPowershell
 
-const isWindows = os.platform().indexOf("win32") > -1
-
 module.exports.featuresDisabled = terminal => !terminal || isUnsupportedShell(terminal)
 
 module.exports.removeColors = text => text.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '').replaceAll("Ôöé ", "").replaceAll("ÔòÀ ", "").replaceAll("ÔòÀ", "").replaceAll("ÔòÁ", "");

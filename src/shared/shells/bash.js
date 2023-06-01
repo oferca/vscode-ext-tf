@@ -12,7 +12,6 @@ const { noColorExt, timeExt } = require("../constants")
 class BashHandler extends ShellHandler{
     paramName
     filePrefix
-    fileEncoding
     async invokeWithCWD(cb){
         const processId = await vscode.window.activeTerminal.processId
         exec(`lsof -p ${processId} | grep cwd`, cb)
@@ -47,7 +46,6 @@ class BashHandler extends ShellHandler{
         super(...args)
         this.paramName = ""
         this.filePrefix = "//"
-        this.fileEncoding = "utf-8"
     }
 }
 

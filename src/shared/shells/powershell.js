@@ -9,7 +9,6 @@ const { noColorExt, timeExt } = require("../constants")
 class PowershellHandler extends ShellHandler {
     paramName
     filePrefix
-    fileEncoding
     async invokeWithCWD(cb) {
         const cwdFileName = `cwd-${this.lifecycleManager.uniqueId}.txt`
         await vscode.window.activeTerminal.sendText(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "${cwdFileName}") -Value $PWD`);
@@ -55,7 +54,6 @@ class PowershellHandler extends ShellHandler {
         super(...args)
         this.paramName = "-p1 "
         this.filePrefix = ""
-        this.fileEncoding = "UTF-16LE"
     }
 }
 

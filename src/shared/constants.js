@@ -1,3 +1,5 @@
+const os = require('os');
+
 const tfplanCommandName = 'vscode-ext-tf.tfcommand'
 
 const inspectCommandName = 'vscode-ext-tf.inspect.tfplan'
@@ -103,3 +105,6 @@ module.exports.instructionsEnvVar = "Define needed environment variables (e.g AW
 module.exports.reminderActionText = "Got it"
 
 module.exports.intervalUsageReminderSec = 60 * 60 * 24 * 21
+
+module.exports.isWindows = os.platform().indexOf("win32") > -1
+
