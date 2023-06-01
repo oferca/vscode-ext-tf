@@ -58,7 +58,7 @@ module.exports.calculateAverageDuration = (dataFolder, commandId, encoding) => {
 
       const fullPath = path.join(dataFolder, name);
       const file = fs.readFileSync(fullPath, encoding);
-      const decimalOnly = /\d/ . test(file)
+      const decimalOnly = /\d/.test(file)
       if (!decimalOnly) return
 
       const duration = parseFloat(file)
@@ -66,10 +66,6 @@ module.exports.calculateAverageDuration = (dataFolder, commandId, encoding) => {
     });
     return median(durations)
 }
-
-const addOptionDef = (commandId, tfOption) => commandId.
-    replace(tfTargetPostix, ` -${getOptionKey(commandId)}="${tfOption}" `).
-    replace(tfVarsPostix, ` -${getOptionKey(commandId)}="${tfOption}" `)
 
 const getOptionKey = commandId =>
     commandId.indexOf(tfTargetPostix) > -1 && "target" ||
@@ -132,11 +128,6 @@ module.exports.removeColors = text => text.replace(/[\u001b\u009b][[()#;?]*(?:[0
 module.exports.extractCWD = stdout => {
     const arr = stdout.split(" ")
     return arr[arr.length - 1].replace("\n","")
-}
-
-const getShellFileName = () => {
-    const rootFolder = path.join(os.tmpdir(), rootFolderName)
-	return path.join(rootFolder, "run.shell")
 }
 
 module.exports.getLogFileName = () => {

@@ -65,9 +65,12 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         let notification
         if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`, gotoTerminal);
         const summary = this.redirect && this.fileHandler.getCompletionSummary() 
-        if (summary === errorStatus) notification = vscode.window.showErrorMessage(`Terraform ${capitalized} ended with errors`, gotoTerminal);
-        if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(`Terraform ${capitalized} ended with warnings. ` + summary.message, gotoTerminal);
-        if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message, gotoTerminal);
+        const progressFileName = `${this.outputFile}.${noColorExt}`
+        const outputLogsMsg = this.redirect ? `. [Click here to see output logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : ''
+
+        if (summary === errorStatus) notification = vscode.window.showErrorMessage(`Terraform ${capitalized} ended with errors.` + outputLogsMsg, gotoTerminal);
+        if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(`Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg, gotoTerminal);
+        if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg, gotoTerminal);
     
         return notification
     }
