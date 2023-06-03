@@ -1,10 +1,10 @@
 {
   "icon": "assets/terraform_logo.png",
   "name": "easy-terraform-commands",
-  "displayName": "Advanced Terraform Dashboard",
+  "displayName": "Advanced Terraform Shortcuts",
   "publisher": "oferkafry",
   "description": "Smart shortcuts for Terraform",
-  "version": "1.1.98",
+  "version": "1.2.0",
   "engines": {
     "vscode": "^1.67.2"
   },
