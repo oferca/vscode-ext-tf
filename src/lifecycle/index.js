@@ -48,7 +48,6 @@ class LifecycleManager {
         const terminal = vscode.window.createTerminal();
         terminal.show();
         vscode.commands.executeCommand(mainCommandId);
-        vscode.window.showInformationMessage(instructionsEnvVar, { title: reminderActionText });
         vscode.window.showInformationMessage(instructions, { title: reminderActionText });
     }
 
