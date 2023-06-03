@@ -9,10 +9,10 @@ Boost up your Terraform experience with smart shortcuts.
 
 # How to use
 
-#### * Click "Terraform" button in status bar
+#### Click "Terraform" button in status bar
 Or
-#### * Click '⌘⇧T' (Ctrl / Cmd + Shift + T)
-
+#### Click '⌘⇧T' (Ctrl / Cmd + Shift + T)
+<br>
 
 That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 
@@ -23,7 +23,6 @@ That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 </p>
 
 ## Notes
-* You may also launch with "Terraform" button in status bar.
 * On non-bash terminals (e.g windows cmd) some features are disabled.
 * Initial time estimates might not be accurate as the system needs to "learn" the execution times.
 
