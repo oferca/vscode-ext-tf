@@ -1,11 +1,9 @@
 # Advanced Terraform Shortcuts
-Boost up your Terraform experience with smart shortcuts.
+Boost up your Terraform cli  experience.
 
 # Features
-* Eliminates the need for typing.
-  * With just a simple click of a button, execute "terraform plan" and other commands **In Terminal**.
-* Command Execution Progress Bar:
-  * Watch an **visual progress indicator** as commands execute. Always know the command progress status.
+* Eliminates the need for typing. One-click execution.
+* Watch an **animated Progress Bar** as commands execute
 
 # How to use
 
