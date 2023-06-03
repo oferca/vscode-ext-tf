@@ -1,15 +1,18 @@
-# Advanced Terraform Dashboard
-Dramatically improves experience and productivity for terraform users.
+# Advanced Terraform Shortcuts
+Boost up your Terraform experience with smart shortcuts.
 
 # Features
-* Easy terraform commands launcher.
-* Animated progress bar.
+* Eliminates the need for typing.
+  * With just a simple click of a button, execute "terraform plan" and other commands **In Terminal**.
+* Command Execution Progress Bar:
+  * Watch an **visual progress indicator** as commands execute. Always know the command progress status.
 
 # How to use
 
-#### Click '⌘⇧T'
+#### * Click "Terraform" button in status bar
+Or
+#### * Click '⌘⇧T' (Ctrl / Cmd + Shift + T)
 
-(Ctrl / Cmd + Shift + T)
 
 That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 
