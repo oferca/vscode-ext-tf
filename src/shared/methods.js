@@ -113,26 +113,26 @@ const isUnsupportedShell = terminal =>
      )
 
 const isCmd = terminal =>
-    terminal.name.indexOf("cmd") > -1 ||
+    terminal.name.toLowerCase().indexOf("cmd") > -1 ||
     terminal.creationOptions.shellPath &&
     (
-        terminal.creationOptions.shellPath.indexOf("cmd") > -1
+        terminal.creationOptions.shellPath.toLowerCase().indexOf("cmd") > -1
     )
 const isWsl = terminal =>
     terminal.name.indexOf("wsl") > -1 ||
     terminal.creationOptions.shellPath &&
     (
-        terminal.creationOptions.shellPath.indexOf("wsl") > -1
+        terminal.creationOptions.shellPath.toLowerCase().indexOf("wsl") > -1
     )
 
 module.exports.isCmd = isCmd
 
 const isPowershell = terminal =>
-    terminal.name.indexOf("pwsh") > -1 ||
-    terminal.name.indexOf("powershell") > -1 ||
+    terminal.name.toLowerCase().indexOf("pwsh") > -1 ||
+    terminal.name.toLowerCase().indexOf("powershell") > -1 ||
     terminal.creationOptions.shellPath &&
     (
-        terminal.creationOptions.shellPath.indexOf("pwsh") > -1 ||
+        terminal.creationOptions.shellPath.toLowerCase().indexOf("pwsh") > -1 ||
         terminal.creationOptions.shellPath.toLowerCase().indexOf("powershell") > -1
     )
 
