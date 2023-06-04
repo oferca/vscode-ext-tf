@@ -1,9 +1,9 @@
 # Advanced Terraform Shortcuts
-Boost up your Terraform cli  experience.
+Boost up your Terraform experience.
 
 # Features
-* Eliminates the need for typing. One-click execution.
-* Watch an **animated Progress Bar** as commands execute
+* Eliminates the need for typing. One-click commands execution in terminal.
+* Watch an **animated progress bar** as commands execute
 
 # How to use
 
