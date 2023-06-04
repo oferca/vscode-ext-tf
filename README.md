@@ -3,7 +3,7 @@ Boost up your Terraform experience with an incredible toolset.
 
 # Features
 * **Animated Progress Bar** shows commands progress.
-* One-click command launcher **eliminates the need for typing.**
+* One-click launcher **eliminates the need for typing.**
 * Interactive notifications and menus to run commands.
 
 # How to use
