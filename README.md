@@ -1,5 +1,5 @@
 # Advanced Terraform Shortcuts
-Boost up your Terraform experience with smart shortcuts for running commands in terminal.
+Boost up your Terraform experience with smart shortcuts for terminal commands.
 
 # Features
 * Eliminates the need for typing. One-click execution.

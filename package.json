@@ -3,8 +3,8 @@
   "name": "easy-terraform-commands",
   "displayName": "Advanced Terraform Shortcuts",
   "publisher": "oferkafry",
-  "description": "Smart shortcuts for Terraform",
-  "version": "1.2.2",
+  "description": "Smart shortcuts for Terraform terminal commands",
+  "version": "1.2.3",
   "engines": {
     "vscode": "^1.67.2"
   },
