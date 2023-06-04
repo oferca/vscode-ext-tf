@@ -106,6 +106,7 @@ module.exports.addOptionDef = addOptionDef
 
 const isUnsupportedShell = terminal =>
     isCmd(terminal) ||
+    isWsl(terminal) ||
     terminal.creationOptions.shellPath &&
      (
         terminal.creationOptions.shellPath.toLowerCase().indexOf("git") > -1
@@ -116,6 +117,12 @@ const isCmd = terminal =>
     terminal.creationOptions.shellPath &&
     (
         terminal.creationOptions.shellPath.indexOf("cmd") > -1
+    )
+const isWsl = terminal =>
+    terminal.name.indexOf("wsl") > -1 ||
+    terminal.creationOptions.shellPath &&
+    (
+        terminal.creationOptions.shellPath.indexOf("wsl") > -1
     )
 
 module.exports.isCmd = isCmd
@@ -145,9 +152,7 @@ module.exports.getLogFileName = () => {
 	return path.join(rootFolder, "run.log")
 }
 
-module.exports.unsupportedShellNote = (termianl, hasSupported) => hasSupported ?
-    `Please note that a bash shell is recommended for using this extension. Consider using your bash terminal instead of current terminal: "${termianl.name}".`
-    : `Please note that a bash shell is recommended for using this extension to enable all features. Current terminal: "${termianl.name}". `
+module.exports.unsupportedShellNote = termianl => `For best terraform experience please use a supported shell: Powershell or Bash based terminal. Current terminal: "${termianl.name}".`
 
 module.exports.handleDeactivation = () => {
     const logFileName = getOSFileName()

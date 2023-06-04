@@ -2,7 +2,7 @@
 Boost up your Terraform experience with smart shortcuts for terminal commands.
 
 # Features
-* Eliminates the need for typing. One-click execution.
+* Eliminates the need for typing. One-click command execution.
 * Watch an **animated progress bar** as commands execute
 
 # How to use
