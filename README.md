@@ -1,10 +1,9 @@
-# Terraform Toolbox Plus
-Boost up your Terraform experience with an incredible toolset.
+# Smart shortcuts for Terraform
+Boost up your Terraform experience with smart shortcuts for running terraform commands.
 
 # Features
-* **Animated Progress Bar** shows commands progress.
-* One-click launcher **eliminates the need for typing.**
-* Interactive notifications and menus to run commands.
+* **Animated Progress Bar** shows command execution progress.
+* **Eliminate the need for typing** with one-click terraform command launcher. 
 
 # How to use
 

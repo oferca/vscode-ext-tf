@@ -1,10 +1,10 @@
 {
   "icon": "assets/terraform_logo.png",
   "name": "easy-terraform-commands",
-  "displayName": "Terraform Toolbox Plus",
+  "displayName": "Smart shortcuts for Terraform",
   "publisher": "oferkafry",
-  "description": "Boost up your Terraform experience with an incredible toolset",
-  "version": "1.2.5",
+  "description": "Smart shortcuts for running terraform commands in terminal.",
+  "version": "1.2.51",
   "engines": {
     "vscode": "^1.67.2"
   },
