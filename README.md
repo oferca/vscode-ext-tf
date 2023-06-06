@@ -1,9 +1,10 @@
-# Smart shortcuts for Terraform
-Boost up your Terraform experience with smart shortcuts for running terraform commands.
+# Terraform Toolbox Plus
+Boost up your Terraform experience with a smart launcher for terraform commands.
 
 # Features
-* **Animated Progress Bar** shows command execution progress.
-* **Eliminate the need for typing** with one-click terraform command launcher. 
+* Watch an **animated Progress Bar** for command execution progress.
+* **Eliminate the need for typing** with one-click command launcher.
+* Receieve **interactive noticications** of commands lifecycle.
 
 # How to use
 
