@@ -218,3 +218,7 @@ module.exports.removeLastInstance = (badtext, str) => {
     pttwo = str.substring(charpos+(badtext.length));
     return (ptone+pttwo);
 }
+
+module.exports.updateState = (key, value) => {
+    
+}

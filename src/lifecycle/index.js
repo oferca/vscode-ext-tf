@@ -53,11 +53,11 @@ class LifecycleManager {
 
     updateState(key, value) {
         if (this.disableStateUpdate) return
-        this.context.workspaceState.update(key + this.keyPostfix, true, value)
+        this.context.globalState.update(key + this.keyPostfix, true, value)
     }
     getState(key) {
         if (this.disableStateRead) return
-        return this.context.workspaceState.get(key + this.keyPostfix)
+        return this.context.globalState.get(key + this.keyPostfix) || this.context.workspaceState.get(key + this.keyPostfix)
     }
     async handleShellDisclaimer() {
         const hasSupportedTerminal = this.getState(hasSupportedTerminalKey) || false
@@ -88,14 +88,14 @@ class LifecycleManager {
     }
     handleTerminalNotice (terminal) {
 		const now = new Date().getTime();
-		const lastRunTS = this.context.workspaceState.get(lastRunKey) || 0
-		const lastTerminalNoticeTS = this.context.workspaceState.get(lastTerminalNoticeKey) || 0
+		const lastRunTS = this.getState(lastRunKey) || 0
+		const lastTerminalNoticeTS = this.getState(lastTerminalNoticeKey) || 0
         const timeSinceLastUseSec = (now - lastRunTS) / 1000
         const timeSinceLastTerminalNoticeSec = (now - lastTerminalNoticeTS) / 1000
 		const secondsInWeek = 60 * 60 * 24 * 7
 		const secondsInDay = 60 * 60 * 24
 		if (timeSinceLastUseSec < secondsInWeek || timeSinceLastTerminalNoticeSec < secondsInDay || isCmd(terminal)) return
-		this.context.workspaceState.update(lastTerminalNoticeKey, now)
+		this.updateState(lastTerminalNoticeKey, now)
         setTimeout(() => terminal.sendText("clear; echo \"- Click 'Terraform' button below to run commands. \"; echo \"\"; "), 600)
     }
     init() {

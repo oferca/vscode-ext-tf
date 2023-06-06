@@ -58,9 +58,9 @@ module.exports.defaultEstimate = 10
 
 module.exports.rootFolderName = "vscode-tf-commands"
 
-module.exports.thankYouNote =  "Thank you for installing Advanced Terraform Shortcuts. Let's start your new terraform experience."
+module.exports.thankYouNote =  "Thank you for installing Terraform Toolbox Plus. Let's start your new terraform experience."
 
-module.exports.reminderNote =  "You may use Advanced Terraform Shortcuts to run terraform commands. Let's start."
+module.exports.reminderNote =  "You may use Terraform Toolbox Plus to run terraform commands. Let's start."
 
 module.exports.mainCommandId = "terraform.action"
 
