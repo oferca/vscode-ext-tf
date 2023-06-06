@@ -1,5 +1,6 @@
 const { ShellHandler } = require("./shell-prototype")
-
+const vscode = require('vscode');
+const exec = require('child_process').exec;
 const {
     getBashFunctionInvocation,
     successMessage,

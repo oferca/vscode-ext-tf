@@ -2,7 +2,6 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const vscode = require('vscode');
-const exec = require('child_process').exec;
 const findRemoveSync = require('find-remove');
 const {
     timeExt,
