@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const { CommandHandlerPrototype } = require("./handler-prototype")
+const { WebViewHandler } = require("../web-view")
 const { getCompletionPercentage, getProgressMsg, getRawCommand } = require("../shared/methods")
 const {
     lastRunKey,
@@ -77,6 +78,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     handleOutputFileUpdates () {
         if (!this.redirect)  return
         this.fileHandler.convertOutputToReadable()
+        this.webViewHandler.refresh(this.completionPercentage)
     }
 
     async progressUpdate (progress, token) {
@@ -127,7 +129,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             self.runBash()
         }
         await this.init(onChildProcessCompleteStep2)
-        
+        this.webViewHandler = new WebViewHandler(this.fileHandler.outputFileNoColor, this.commandId)
+        this.webViewHandler.init() 
     }
 
     constructor(context, logger, lifecycleManager, shellHandler, commandId){
