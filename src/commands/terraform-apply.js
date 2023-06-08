@@ -3,7 +3,7 @@ const { tfApplyCommandId, tfPlanCommandId } = require("../shared/constants")
 
 class TerraformApplyHandler extends ProgressHandlerPrototype {
 
-    constructor(context, logger, lifecycleManagerr, cmdId){
+    constructor(context, logger, lifecycleManager, cmdId){
         super(context, logger, lifecycleManager, cmdId || tfApplyCommandId);
         this.redirect = false
         this.averageFromCmd = tfPlanCommandId
