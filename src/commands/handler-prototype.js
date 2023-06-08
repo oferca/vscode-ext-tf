@@ -49,7 +49,7 @@ class CommandHandlerPrototype {
     async logOp() {
         const op = {
             cId: this.commandId,
-            terminal: this.activeTerminal.name
+            terminal: this.activeTerminal && this.activeTerminal.name
         }
         return await this.logger.log(op)
     }

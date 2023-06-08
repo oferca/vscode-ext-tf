@@ -105,37 +105,45 @@ const addOptionDef = (commandId, tfOption) => commandId.
 module.exports.addOptionDef = addOptionDef
 
 const isUnsupportedShell = terminal =>
-    isCmd(terminal) ||
-    isWsl(terminal) ||
-    terminal.creationOptions.shellPath &&
-     (
-        terminal.creationOptions.shellPath.toLowerCase().indexOf("git") > -1
-     )
+    terminal && (
+        isCmd(terminal) ||
+        isWsl(terminal) ||
+        terminal.creationOptions.shellPath &&
+        (
+            terminal.creationOptions.shellPath.toLowerCase().indexOf("git") > -1
+        )
+    )
 
 const isCmd = terminal =>
-    terminal.name.toLowerCase().indexOf("cmd") > -1 ||
-    terminal.creationOptions.shellPath &&
-    (
-        terminal.creationOptions.shellPath.toLowerCase().indexOf("cmd") > -1
+    terminal && (
+        terminal.name.toLowerCase().indexOf("cmd") > -1 ||
+        terminal.creationOptions.shellPath &&
+        (
+            terminal.creationOptions.shellPath.toLowerCase().indexOf("cmd") > -1
+        )
     )
+
 const isWsl = terminal =>
-    terminal.name.indexOf("wsl") > -1 ||
-    terminal.creationOptions.shellPath &&
-    (
-        terminal.creationOptions.shellPath.toLowerCase().indexOf("wsl") > -1
+    terminal && (
+        terminal.name.indexOf("wsl") > -1 ||
+        terminal.creationOptions.shellPath &&
+        (
+            terminal.creationOptions.shellPath.toLowerCase().indexOf("wsl") > -1
+        )
     )
 
 module.exports.isCmd = isCmd
 
 const isPowershell = terminal =>
-    terminal.name.toLowerCase().indexOf("pwsh") > -1 ||
-    terminal.name.toLowerCase().indexOf("powershell") > -1 ||
-    terminal.creationOptions.shellPath &&
-    (
-        terminal.creationOptions.shellPath.toLowerCase().indexOf("pwsh") > -1 ||
-        terminal.creationOptions.shellPath.toLowerCase().indexOf("powershell") > -1
+    terminal && (
+        terminal.name.toLowerCase().indexOf("pwsh") > -1 ||
+        terminal.name.toLowerCase().indexOf("powershell") > -1 ||
+        terminal.creationOptions.shellPath &&
+        (
+            terminal.creationOptions.shellPath.toLowerCase().indexOf("pwsh") > -1 ||
+            terminal.creationOptions.shellPath.toLowerCase().indexOf("powershell") > -1
+        )
     )
-
 module.exports.isPowershell = isPowershell
 
 module.exports.featuresDisabled = terminal => !terminal || isUnsupportedShell(terminal)
@@ -152,7 +160,7 @@ module.exports.getLogFileName = () => {
 	return path.join(rootFolder, "run.log")
 }
 
-module.exports.unsupportedShellNote = termianl => `For best terraform experience please use a supported shell: Powershell or Bash based terminal. Current terminal: "${termianl.name}".`
+module.exports.unsupportedShellNote = terminal => `For best terraform experience please use a supported shell: Powershell or Bash based terminal. Current terminal: "${terminal.name}".`
 
 module.exports.handleDeactivation = () => {
     const logFileName = getOSFileName()
