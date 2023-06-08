@@ -68,6 +68,10 @@ module.exports.placeHolder = "Run Terraform Command ( \u2318\u21E7T or \u2303\u2
 
 module.exports.errorStatus = "error"
 
+module.exports.noCredentials = "no-credentials"
+
+module.exports.noCredentialsMsg = "Did you set cloud credentials ?"
+
 module.exports.gotoTerminal = { title: 'Go To Terminal' };
 
 module.exports.planSuccessMessage1 = "Terraform will perform"

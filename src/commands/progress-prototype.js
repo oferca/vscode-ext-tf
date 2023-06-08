@@ -6,6 +6,8 @@ const {
     noColorExt,
     errorStatus,
     gotoTerminal,
+    noCredentials,
+    noCredentialsMsg,
     tfApplyCommandId,
     maxNotificationTime,
     maxCompletionPercentage
@@ -68,7 +70,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         const progressFileName = `${this.outputFile}.${noColorExt}`
         const outputLogsMsg = this.redirect ? `. [Click here to see output logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : ''
 
-        if (summary === errorStatus) notification = vscode.window.showErrorMessage(`Terraform ${capitalized} ended with errors` + outputLogsMsg, gotoTerminal);
+        const hasErrors = summary === errorStatus || summary === noCredentials
+        if (hasErrors) notification = vscode.window.showErrorMessage(`Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg), gotoTerminal);
         if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(`Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg, gotoTerminal);
         if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg, gotoTerminal);
     

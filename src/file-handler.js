@@ -7,6 +7,7 @@ const {
     timeExt,
     noColorExt,
     errorStatus,
+    noCredentials,
     rootFolderName,
     defaultEstimate,
     hasSupportedTerminalKey
@@ -99,7 +100,7 @@ class FileHandler {
         return message ? {
             warnings,
             message
-        } : errorStatus
+        } : outputFile === "" ? noCredentials : errorStatus
     }
 
     constructor(commandId, averageFromCmd, context, logger, lifecycleManager, shellHandler) {
