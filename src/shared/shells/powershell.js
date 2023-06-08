@@ -50,6 +50,11 @@ class PowershellHandler extends ShellHandler {
     handleDataPath(str) {
         return removeLastInstance(":", str)
     }
+
+    getCheckTFCommand () {
+        return `if (@(Get-ChildItem -Path . -Filter *.tf -Recurse -ErrorAction SilentlyContinue -Force ).length -ne "0") { echo \"${this.terminalNoticeText}\"; echo \"\"; }`
+    }
+
     constructor(...args) {
         super(...args)
         this.paramName = "-p1 "

@@ -44,7 +44,7 @@ class BashHandler extends ShellHandler{
         return str 
     }
     getCheckTFCommand () {
-        return `[[ $( find . -name "*.tf"  | wc -l ) -gt 0 ]] && (echo \"- Click 'Terraform' button below to run commands. \"; echo \"\"; )`
+        return `[[ $( find . -name "*.tf"  | wc -l ) -gt 0 ]] && (echo \"${this.terminalNoticeText}\"; echo \"\"; )`
     }
     
     constructor(...args){
