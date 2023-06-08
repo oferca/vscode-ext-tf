@@ -43,6 +43,10 @@ class BashHandler extends ShellHandler{
     handleDataPath(str) {
         return str 
     }
+    getCheckTFCommand () {
+        return `[[ $( find . -name "*.tf"  | wc -l ) -gt 0 ]] && (echo \"- Click 'Terraform' button below to run commands. \"; echo \"\"; )`
+    }
+    
     constructor(...args){
         super(...args)
         this.paramName = ""
