@@ -29,7 +29,7 @@ class ShellHandler {
         this.redirect = redirect
         this.lifecycleManager = lifecycleManager
         this.fileEncoding = isWindows ? "UTF-16LE" : "utf-8"
-        this.terminalNoticeText = "* Click 'Terraform' button below to run commands."
+        this.terminalNoticeText = "* Click 'Terraform' in status bar to run commands ⥥"
     }
 }
 
