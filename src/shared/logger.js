@@ -1,4 +1,5 @@
 const path = require('path');
+const os = require('os');
 const appRoot = path.resolve(__dirname);
 
 class Logger {
