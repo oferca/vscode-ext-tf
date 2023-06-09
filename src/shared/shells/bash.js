@@ -44,13 +44,14 @@ class BashHandler extends ShellHandler{
         return str 
     }
     getCheckTFCommand () {
-        return `[[ $( find . -name "*.tf"  | wc -l ) -gt 0 ]] && (echo \"${this.terminalNoticeTextL1}\"; echo \"\"; echo \"${this.terminalNoticeTextL2}\"; echo \"\"; )`
+        return `[[ $( find . -name "*.tf"  | wc -l ) -gt 0 ]] && (echo \"${this.terminalNoticeText}\"; echo \"\"; )`
     }
     
     constructor(...args){
         super(...args)
         this.paramName = ""
         this.filePrefix = "//"
+        this.terminalNoticeText = `* Terraform launcher enabled. Click 'Terraform' to run ⥥`
     }
 }
 
