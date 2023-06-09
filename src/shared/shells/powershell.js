@@ -59,7 +59,7 @@ class PowershellHandler extends ShellHandler {
         super(...args)
         this.paramName = "-p1 "
         this.filePrefix = ""
-        this.terminalNoticeText = "* Terraform launcher enabled. Click 'Terraform' to run `u{2965}"
+        this.terminalNoticeText = "* Click 'Terraform' in VSCode status bar to run terminal commands `u{2965}"
 
 
     }

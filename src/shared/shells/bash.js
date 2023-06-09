@@ -51,7 +51,7 @@ class BashHandler extends ShellHandler{
         super(...args)
         this.paramName = ""
         this.filePrefix = "//"
-        this.terminalNoticeText = `* Terraform launcher enabled. Click 'Terraform' to run ⥥`
+        this.terminalNoticeText = `* Click 'Terraform' in VSCode status bar to run terminal commands ⥥`
     }
 }
 
