@@ -4,7 +4,8 @@ const { isWindows } = require("../constants")
 class ShellHandler {
     fileEncoding
     lifecycleManager
-    terminalNoticeText
+    terminalNoticeTextL1
+    terminalNoticeTextL2
 
     async handleDefinitions() {
         const { activeTerminal } = vscode.window
@@ -29,7 +30,8 @@ class ShellHandler {
         this.redirect = redirect
         this.lifecycleManager = lifecycleManager
         this.fileEncoding = isWindows ? "UTF-16LE" : "utf-8"
-        this.terminalNoticeText = "* Click 'Terraform' in status bar to run commands ⥥"
+        this.terminalNoticeTextL1 = `* Click 'Terraform' button to run commands`
+        this.terminalNoticeTextL2 = `- In VSCode Status Bar ⥥`
     }
 }
 

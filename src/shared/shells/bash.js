@@ -44,7 +44,7 @@ class BashHandler extends ShellHandler{
         return str 
     }
     getCheckTFCommand () {
-        return `[[ $( find . -name "*.tf"  | wc -l ) -gt 0 ]] && (echo \"${this.terminalNoticeText}\"; echo \"\"; )`
+        return `[[ $( find . -name "*.tf"  | wc -l ) -gt 0 ]] && (echo \"${this.terminalNoticeTextL1}\"; echo \"\"; echo \"${this.terminalNoticeTextL2}\"; echo \"\"; )`
     }
     
     constructor(...args){
