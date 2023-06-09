@@ -68,7 +68,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`, gotoTerminal);
         const summary = this.redirect && this.fileHandler.getCompletionSummary() 
         const progressFileName = `${this.outputFile}.${noColorExt}`
-        const outputLogsMsg = this.redirect ? `. [Click here to see output logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : ''
+        const outputLogsMsg = this.redirect ? ` [Click here to see output logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : ''
 
         const hasErrors = summary === errorStatus || summary === noCredentials
         if (hasErrors) notification = vscode.window.showErrorMessage(`Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg), gotoTerminal);

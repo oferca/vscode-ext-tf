@@ -4,7 +4,7 @@
   "displayName": "Terraform Toolbox Plus",
   "publisher": "oferkafry",
   "description": "Smart launcher for Terraform commands with progress indicator and more features.",
-  "version": "1.3.0",
+  "version": "1.3.15",
   "engines": {
     "vscode": "^1.67.2"
   },
