@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const {
+    isWindows,
     lastRunKey,
     usedOnceKey,
     reminderNote,
@@ -99,6 +100,7 @@ class LifecycleManager {
 		const secondsInDay = 60 * 60 * 24
         const shouldGiveNotice = timeSinceLastUseSec > secondsInWeek && timeSinceLastTerminalNoticeSec > secondsInDay
 	    //if (!shouldGiveNotice || isCmd(terminal)) return
+        if (isWindows && !isPowershell(terminal)) return
 		this.updateState(lastTerminalNoticeKey, now)
 
         const ShellHandler = isPowershell(terminal) ? PowershellHandler: BashHandler

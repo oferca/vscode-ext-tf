@@ -7,6 +7,7 @@ let db
 
 const { 
     timeExt,
+    isWindows,
     tfVarsPostix,
     rootFolderName,
     tfTargetPostix,
@@ -136,6 +137,7 @@ module.exports.isCmd = isCmd
 
 const isPowershell = terminal =>
     terminal && (
+        terminal.name === '' && !terminal.creationOptions.shellPath && isWindows ||
         terminal.name.toLowerCase().indexOf("pwsh") > -1 ||
         terminal.name.toLowerCase().indexOf("powershell") > -1 ||
         terminal.creationOptions.shellPath &&

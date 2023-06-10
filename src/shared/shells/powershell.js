@@ -52,14 +52,14 @@ class PowershellHandler extends ShellHandler {
     }
 
     getCheckTFCommand () {
-        return `if (@(Get-ChildItem -Path . -Filter *.tf -Recurse -ErrorAction SilentlyContinue -Force ).length -ne "0") { echo \"${this.terminalNoticeText}\"; Start-Sleep -Seconds 0.1; echo \"\"; }`
+        return `if (@(Get-ChildItem -Depth 3 -Path . -Filter *.tf -Recurse -ErrorAction SilentlyContinue -Force ).length -ne "0") { echo \"${this.terminalNoticeText}\"; Start-Sleep -Seconds 0.1; echo \"\"; }`
     }
 
     constructor(...args) {
         super(...args)
         this.paramName = "-p1 "
         this.filePrefix = ""
-        this.terminalNoticeText = "* Click 'Terraform' in VSCode status bar to run terminal commands `u{2965}"
+        this.terminalNoticeText = "* Click 'Terraform' in VSCode status bar below to run terminal commands."
 
 
     }

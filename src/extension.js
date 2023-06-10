@@ -33,7 +33,7 @@ async function activate(context) {
 	await lifecycleManager.notifyFirstActivation()
 	!lifecycleManager.isFirstActivation && actionButton.init()
 
-	vscode.window.onDidOpenTerminal((terminal) => {
+	vscode.window.onDidOpenTerminal(terminal => {
 		lifecycleManager.handleTerminalNotice(terminal)
 	});
 }
