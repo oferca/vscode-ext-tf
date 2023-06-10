@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const { CommandHandlerPrototype } = require("./handler-prototype")
+
 const {
     getRawCommand,
     getProgressMsg,
@@ -40,12 +41,15 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         this.barCreationTimestamp = Date.now()
         this.currentBarCompletionPercentage = 0
         this.barCompletionTimestamp = this.barCreationTimestamp + this.fileHandler.durationEstimate * 1000
-        const progressFileName = `${this.outputFile}.${noColorExt}`
-        const progressFileMsg = this.redirect ? ` [Click here to see output logs](file:${this.shellHandler.filePrefix}${progressFileName}). Completed` : ''
-        const openDocumentHandler = createFolderCollapser(progressFileName, listener)
-        const listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler);
+
+        const progressFileName = `${this.outputFile}.${noColorExt}`,
+            outputLogsTxt = ` [Click here to see output logs](file:${this.shellHandler.filePrefix}${progressFileName}).`,
+            progressFileMsg = this.redirect ? outputLogsTxt + " Completed" : '',
+            openDocumentHandler = createFolderCollapser(progressFileName, listener),
+            listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler);
 
         this.textDocumentListener = listener
+
         vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
             title: getProgressMsg(this.commandId) + progressFileMsg,
@@ -71,10 +75,12 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         const summary = this.redirect && this.fileHandler.getCompletionSummary(),
             progressFileName = `${this.outputFile}.${noColorExt}`,
             outputLogsMsg = this.redirect ? ` [Click here to see output logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : '',
-            hasErrors = summary === errorStatus || summary === noCredentials
+            hasErrors = summary === errorStatus || summary === noCredentials,
+            errTxt = `Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg),
+            warnTxt = `Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg,
 
-        if (hasErrors) notification = vscode.window.showErrorMessage(`Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg), gotoTerminal);
-        if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(`Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg, gotoTerminal);
+        if (hasErrors) notification = vscode.window.showErrorMessage(errTxt, gotoTerminal);
+        if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(warnTxt, gotoTerminal);
         if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg, gotoTerminal);
         return notification
     }
@@ -90,25 +96,29 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             clearInterval(this.intervalID);
         });
         const self = this
-        
+
         this.intervalID = setInterval(() => {
             self.handleOutputFileUpdates()
-            progress.report({ message: parseInt(self.completionPercentage) + "%.", increment: self.completionPercentage - self.lastRecorded  });
+            progress.report({
+                message: parseInt(self.completionPercentage) + "%.",
+                increment: self.completionPercentage - self.lastRecorded  }
+            );
             self.lastRecorded = self.completionPercentage 
         }, 100)
         
         const p = new Promise(resolve => {
             const completedIntervalId = setInterval(async () => {
                 if (self.completed() || self.abort) {
+
                     clearInterval(self.intervalID);
                     clearInterval(completedIntervalId)
                     resolve()
+
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
+
                     const selection = await self.notifyCompletion()
-                    if (selection === gotoTerminal) {
-                        self.activeTerminal.show();
-                    }
+                    if (selection === gotoTerminal) self.activeTerminal.show();
                 }
             }, 100)
             setTimeout(() => {
