@@ -2,6 +2,7 @@ const vscode = require('vscode');
 const {
     isWindows,
     lastRunKey,
+    runCountKey,
     usedOnceKey,
     reminderNote,
     thankYouNote,
@@ -18,7 +19,7 @@ const {
     shellNoticeIntervalHasSupportedSec
 } = require("../shared/constants")
 
-const { unsupportedShellNote, isPowershell } = require("../shared/methods")
+const { unsupportedShellNote, isPowershell, isCmd } = require("../shared/methods")
 const { BashHandler } = require("../shared/shells/bash")
 const { PowershellHandler } = require("../shared/shells/powershell")
 
@@ -57,7 +58,7 @@ class LifecycleManager {
 
     updateState(key, value) {
         if (this.disableStateUpdate) return
-        this.context.globalState.update(key + this.keyPostfix, true, value)
+        this.context.globalState.update(key + this.keyPostfix, value)
     }
     getState(key) {
         if (this.disableStateRead) return
@@ -97,12 +98,15 @@ class LifecycleManager {
         const timeSinceLastUseSec = (now - lastRunTS) / 1000
         const timeSinceLastTerminalNoticeSec = (now - lastTerminalNoticeTS) / 1000
 		const secondsInWeek = 60 * 60 * 24 * 7
-		const secondsInDay = 60 * 60 * 24
-        const shouldGiveNotice = timeSinceLastUseSec > secondsInWeek && timeSinceLastTerminalNoticeSec > secondsInDay
-	    //if (!shouldGiveNotice || isCmd(terminal)) return
-        if (isWindows && !isPowershell(terminal)) return
+		const secondsInHour = 60 * 60
+        const runCount = this.getState(runCountKey)
+        const notEnoughUsages = runCount < 15
+        const hasntUsedRecently = timeSinceLastUseSec > secondsInWeek
+        const noticeGivenRecently = timeSinceLastTerminalNoticeSec < secondsInHour
+        const shouldGiveNotice = notEnoughUsages || hasntUsedRecently && !noticeGivenRecently
+        const isUnsupportedTerminal = isCmd(terminal) || (isWindows && !isPowershell(terminal))
+	    if (!shouldGiveNotice || isUnsupportedTerminal) return
 		this.updateState(lastTerminalNoticeKey, now)
-
         const ShellHandler = isPowershell(terminal) ? PowershellHandler: BashHandler
         const shellHandler = new ShellHandler()
         setTimeout(() => terminal.sendText("clear; " + shellHandler.getCheckTFCommand()), 600)

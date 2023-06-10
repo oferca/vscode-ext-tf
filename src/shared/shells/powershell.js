@@ -52,7 +52,7 @@ class PowershellHandler extends ShellHandler {
     }
 
     getCheckTFCommand () {
-        return `if (@(Get-ChildItem -Depth 3 -Path . -Filter *.tf -Recurse -ErrorAction SilentlyContinue -Force ).length -ne "0") { echo \"${this.terminalNoticeText}\"; Start-Sleep -Seconds 0.1; echo \"\"; }`
+        return `if (@(Get-ChildItem -Depth 3 -Path . -Filter *.tf -Recurse -ErrorAction SilentlyContinue -Force ).length -ne "0") { echo \"${this.terminalNoticeText}\"; Start-Sleep -Seconds 0.2; echo \"\"; }`
     }
 
     constructor(...args) {

@@ -121,8 +121,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     async execute () {
-        const now = new Date().getTime();
-        this.lifecycleManager.updateState(lastRunKey, now);
+        this.updateRunCount()
         const self = this
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp()

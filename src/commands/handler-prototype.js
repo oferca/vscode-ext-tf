@@ -13,6 +13,7 @@ const {
 
 const {
     lastRunKey,
+    runCountKey,
     tfPlanVarsCommandId,
     tfApplyVarsCommandId,
     tfPlanTargetCommandId,
@@ -54,10 +55,17 @@ class CommandHandlerPrototype {
         return await this.logger.log(op)
     }
     
-    async execute() {
-        const self = this
+    updateRunCount () {
         const now = new Date().getTime();
         this.lifecycleManager.updateState(lastRunKey, now);
+        let runCount = this.lifecycleManager.getState(runCountKey)
+        if (typeof runCount !== 'number') runCount = 0
+        this.lifecycleManager.updateState(runCountKey, runCount + 1)
+    }
+
+    async execute() {
+        this.updateRunCount()
+        const self = this
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp()
             self.runBash()
