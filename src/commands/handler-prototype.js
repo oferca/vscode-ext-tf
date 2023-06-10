@@ -1,9 +1,9 @@
-const vscode = require('vscode');
 const os = require('os');
+const vscode = require('vscode');
 const { FileHandler } = require("../file-handler")
+const { isPowershell } = require("../shared/methods")
 const { BashHandler } = require("../shared/shells/bash")
 const { PowershellHandler } = require("../shared/shells/powershell")
-const { isPowershell } = require("../shared/methods")
 
 const {
     getOption,
@@ -24,8 +24,8 @@ let defaultTarget
 let defaultVarFile
 
 const getDefaultOption = commandId =>
-    (commandId === tfPlanTargetCommandId || commandId === tfApplyTargetCommandId) && defaultTarget || 
-    (commandId === tfPlanVarsCommandId || commandId === tfApplyVarsCommandId) && defaultVarFile
+    [tfPlanTargetCommandId, tfApplyTargetCommandId].includes(commandId) && defaultTarget || 
+    [tfPlanVarsCommandId, tfApplyVarsCommandId].includes(commandId) && defaultVarFile
 
 const setDefaultOption = (commandId, option) =>{
     if (commandId === tfPlanTargetCommandId) defaultTarget = option
@@ -45,7 +45,7 @@ class CommandHandlerPrototype {
     averageFromCmd
     activeTerminal
     lifecycleManager
-    textDucumentListener
+    textDocumentListener
 
     async logOp() {
         const op = {
@@ -75,12 +75,23 @@ class CommandHandlerPrototype {
     }
 
     initFileHandler(cb) {
-        this.fileHandler = new FileHandler(this.commandId, this.averageFromCmd, this.context, this.logger, this.lifecycleManager, this.shellHandler)
+        this.fileHandler = new FileHandler(
+            this.commandId,
+            this.averageFromCmd,
+            this.context,
+            this.logger,
+            this.lifecycleManager,
+            this.shellHandler
+        )
         this.fileHandler.init(cb)
     }
 
     async getOption() {
-        return await getOption(this.commandId, getDefaultOption(this.commandId), this.lifecycleManager.shellType)
+        return await getOption(
+            this.commandId,
+            getDefaultOption(this.commandId),
+            this.lifecycleManager.shellType
+        )
     }
 
     async init(step2) {
@@ -88,8 +99,14 @@ class CommandHandlerPrototype {
         setDefaultOption(this.commandId, this.tfOption)
         
         const { activeTerminal } = vscode.window
-        const ShellHandler = isPowershell(activeTerminal) ? PowershellHandler: BashHandler
-        this.shellHandler = new ShellHandler(this.commandId, this.tfOption, this.redirect, this.lifecycleManager)
+        const ShellHandler = isPowershell(activeTerminal) ? PowershellHandler : BashHandler
+
+        this.shellHandler = new ShellHandler(
+            this.commandId,
+            this.tfOption,
+            this.redirect,
+            this.lifecycleManager
+        )
 
         const onChildProcessCompleteStep1 = async () => {
             const { activeTerminal } = vscode.window
@@ -117,8 +134,8 @@ class CommandHandlerPrototype {
     }
 
     constructor(context, logger, lifecycleManager, commandId) {
-        this.context = context
         this.logger = logger
+        this.context = context
         this.commandId = commandId
         this.lifecycleManager = lifecycleManager
         this.init = this.init.bind(this)

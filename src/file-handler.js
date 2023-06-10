@@ -3,6 +3,7 @@ const os = require('os');
 const path = require('path');
 const vscode = require('vscode');
 const findRemoveSync = require('find-remove');
+
 const {
     timeExt,
     noColorExt,
@@ -12,13 +13,13 @@ const {
     defaultEstimate,
     hasSupportedTerminalKey
 } = require("./shared/constants")
+
 const {
     extractCWD,
     getWarnings,
     removeColors,
     tfCommandSuccess,
     featuresDisabled,
-    removeLastInstance,
     createOutputFileName,
     calculateAverageDuration
 } = require("./shared/methods")
@@ -43,7 +44,11 @@ class FileHandler {
     }
 
     calculateAverageDuration() {
-        return calculateAverageDuration(this.dataFolder, this.averageFromCmd || this.commandId, this.shellHandler.fileEncoding)
+        return calculateAverageDuration(
+            this.dataFolder,
+            this.averageFromCmd || this.commandId,
+            this.shellHandler.fileEncoding
+        )
     }
 
     get completed() {
@@ -52,22 +57,30 @@ class FileHandler {
 
     async init(step2Cb) {
         const { activeTerminal } = vscode.window
+
         if (featuresDisabled(activeTerminal)) {
             await this.lifecycleManager.handleShellDisclaimer()
             return step2Cb && step2Cb()
         }
+
         this.lifecycleManager.updateState(hasSupportedTerminalKey, true);
         await this.shellHandler.invokeWithCWD((...args) => {
             args.push(step2Cb)
             this.handleDataFolder(...args)
         });
+
         return true
     }
 
     handleDataFolder(error, stdout, stderr, cb) {
         const subFolderName = extractCWD(stdout)
-        this.dataFolder = this.shellHandler.handleDataPath(path.join(os.tmpdir(), rootFolderName, subFolderName))
-        if (!fs.existsSync(this.dataFolder)) fs.mkdirSync(this.dataFolder, { recursive: true })
+
+        this.dataFolder = this.shellHandler.handleDataPath(
+            path.join(os.tmpdir(), rootFolderName, subFolderName)
+        )
+        if (!fs.existsSync(this.dataFolder)) fs.mkdirSync(
+            this.dataFolder, { recursive: true }
+        )
         this.outputFile = createOutputFileName(this.dataFolder, this.commandId)
         this.deleteOldFiles()
         this.durationEstimate = this.calculateAverageDuration() || defaultEstimate
@@ -83,13 +96,14 @@ class FileHandler {
         return this.outputFile + "." + noColorExt
     }
     convertOutputToReadable() {
-        const outputFile = fs.readFileSync(this.outputFile, this.shellHandler.fileEncoding)
+        const outputFile = fs.readFileSync(
+            this.outputFile,
+            this.shellHandler.fileEncoding
+        )
         fs.writeFileSync(
             this.outputFileNoColor,
             removeColors(outputFile),
-            {
-                encoding: "utf8"
-            }
+            { encoding: "utf8" }
         )
     }
 
@@ -106,12 +120,12 @@ class FileHandler {
     constructor(commandId, averageFromCmd, context, logger, lifecycleManager, shellHandler) {
         this.logger = logger
         this.context = context
-        this.commandId = commandId
-        this.averageFromCmd = averageFromCmd
-        this.shellHandler = shellHandler
-        this.lifecycleManager = lifecycleManager
         this.initialized = false
+        this.commandId = commandId
         this.firstActivation = false
+        this.shellHandler = shellHandler
+        this.averageFromCmd = averageFromCmd
+        this.lifecycleManager = lifecycleManager
         this.handleDataFolder = this.handleDataFolder.bind(this)
         this.convertOutputToReadable = this.convertOutputToReadable.bind(this)
     }

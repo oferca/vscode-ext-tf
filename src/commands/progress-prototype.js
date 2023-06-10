@@ -1,8 +1,13 @@
 const vscode = require('vscode');
 const { CommandHandlerPrototype } = require("./handler-prototype")
-const { getCompletionPercentage, getProgressMsg, getRawCommand } = require("../shared/methods")
 const {
-    lastRunKey,
+    getRawCommand,
+    getProgressMsg,
+    createFolderCollapser,
+    getCompletionPercentage
+} = require("../shared/methods")
+
+const {
     noColorExt,
     errorStatus,
     gotoTerminal,
@@ -31,21 +36,16 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
     launchProgress() {
         if (!this.fileHandler.initialized) return
+
         this.barCreationTimestamp = Date.now()
         this.currentBarCompletionPercentage = 0
         this.barCompletionTimestamp = this.barCreationTimestamp + this.fileHandler.durationEstimate * 1000
         const progressFileName = `${this.outputFile}.${noColorExt}`
         const progressFileMsg = this.redirect ? ` [Click here to see output logs](file:${this.shellHandler.filePrefix}${progressFileName}). Completed` : ''
+        const openDocumentHandler = createFolderCollapser(progressFileName, listener)
+        const listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler);
 
-        const listener = vscode.workspace.onDidOpenTextDocument((document) => {
-            if (document.fileName === progressFileName) {
-                const folder = vscode.workspace.workspaceFolders[0];
-                const uri = vscode.Uri.file(folder.uri.fsPath + "/.terraform");
-                vscode.commands.executeCommand('workbench.files.action.collapseExplorerFolders', uri);
-                listener.dispose()
-            }
-        });
-        this.textDucumentListener = listener
+        this.textDocumentListener = listener
         vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
             title: getProgressMsg(this.commandId) + progressFileMsg,
@@ -61,22 +61,24 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     notifyCompletion () {
-        const rawCommand = getRawCommand(this.commandId)
-        const capitalized = rawCommand.charAt(0).toUpperCase() + rawCommand.slice(1)
-        const completionTerm = this.redirect ? "completed" : rawCommand === "apply" ? "planning completed" : "ended"
+        const rawCommand = getRawCommand(this.commandId),
+            capitalized = rawCommand.charAt(0).toUpperCase() + rawCommand.slice(1),
+            completionTerm = this.redirect ? "completed" : rawCommand === "apply" ? "planning completed" : "ended"
+        
         let notification
         if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`, gotoTerminal);
-        const summary = this.redirect && this.fileHandler.getCompletionSummary() 
-        const progressFileName = `${this.outputFile}.${noColorExt}`
-        const outputLogsMsg = this.redirect ? ` [Click here to see output logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : ''
 
-        const hasErrors = summary === errorStatus || summary === noCredentials
+        const summary = this.redirect && this.fileHandler.getCompletionSummary(),
+            progressFileName = `${this.outputFile}.${noColorExt}`,
+            outputLogsMsg = this.redirect ? ` [Click here to see output logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : '',
+            hasErrors = summary === errorStatus || summary === noCredentials
+
         if (hasErrors) notification = vscode.window.showErrorMessage(`Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg), gotoTerminal);
         if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(`Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg, gotoTerminal);
         if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg, gotoTerminal);
-    
         return notification
     }
+
     handleOutputFileUpdates () {
         if (!this.redirect)  return
         this.fileHandler.convertOutputToReadable()
@@ -88,6 +90,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             clearInterval(this.intervalID);
         });
         const self = this
+        
         this.intervalID = setInterval(() => {
             self.handleOutputFileUpdates()
             progress.report({ message: parseInt(self.completionPercentage) + "%.", increment: self.completionPercentage - self.lastRecorded  });

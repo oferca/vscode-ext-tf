@@ -116,3 +116,5 @@ module.exports.intervalUsageReminderSec = 60 * 60 * 24 * 21
 
 module.exports.isWindows = os.platform().indexOf("win32") > -1
 
+module.exports.targetTxt = 'Enter module or resource to limit the operation. For example: "module.rds", or "aws_instance.my_ec2"'
+

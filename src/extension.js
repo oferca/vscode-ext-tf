@@ -15,7 +15,8 @@ const disposables = []
 async function activate(context) {
 	disposables.forEach(d => d.dispose())
 	const logger = new Logger(disableLogs)
-	const lifecycleManager = new LifecycleManager(context, logger, disableState, disableState, freshStart ? Math.random() : "")
+	const pref = freshStart ? Math.random() : ""
+	const lifecycleManager = new LifecycleManager(context, logger, disableState, disableState, pref )
 	const actionButton = new ActionButton(context, logger)
 	const launcher = new CommandsLauncher(context, logger, lifecycleManager)
 

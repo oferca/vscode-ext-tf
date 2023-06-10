@@ -23,6 +23,8 @@ const { unsupportedShellNote, isPowershell, isCmd } = require("../shared/methods
 const { BashHandler } = require("../shared/shells/bash")
 const { PowershellHandler } = require("../shared/shells/powershell")
 
+const secondsInWeek = 60 * 60 * 24 * 7
+const secondsInHour = 60 * 60
 class LifecycleManager {
 
     now
@@ -43,11 +45,7 @@ class LifecycleManager {
         const msg = this.shouldRemind ? reminderNote : thankYouNote
         await vscode.window.showInformationMessage(msg, { modal: true });
         const { timeSinceLastUseSec, usedOnce } = this
-        await this.logger.log({
-            msg,
-            timeSinceLastUseSec,
-            usedOnce
-        })
+        await this.logger.log({ msg, timeSinceLastUseSec, usedOnce })
         this.updateState(usedOnceKey, true);
         if (this.shouldRemind) this.updateState(lastRunKey, this.now)
         const terminal = vscode.window.createTerminal();
@@ -81,30 +79,31 @@ class LifecycleManager {
             { title: reminderActionText },
             { title: dontRemindStr }
         );
+
         await this.logger.log({
             msg,
             selection,
             hasSupportedTerminal,
             lastNoticeTS,
         })
+
         const timeForReDisclaimer = timeSinceLastNotice > shellNoticeIntervalSec
         if (timeForReDisclaimer) return this.updateState(dontRemindDisclaimerKey, false);
         if (selection.title === dontRemindStr) this.updateState(dontRemindDisclaimerKey, true);
     }
     handleTerminalNotice (terminal) {
-		const now = new Date().getTime();
-		const lastRunTS = this.getState(lastRunKey) || 0
-		const lastTerminalNoticeTS = this.getState(lastTerminalNoticeKey) || 0
-        const timeSinceLastUseSec = (now - lastRunTS) / 1000
-        const timeSinceLastTerminalNoticeSec = (now - lastTerminalNoticeTS) / 1000
-		const secondsInWeek = 60 * 60 * 24 * 7
-		const secondsInHour = 60 * 60
-        const runCount = this.getState(runCountKey)
-        const notEnoughUsages = runCount < 15
-        const hasntUsedRecently = timeSinceLastUseSec > secondsInWeek
-        const noticeGivenRecently = timeSinceLastTerminalNoticeSec < secondsInHour
-        const shouldGiveNotice = notEnoughUsages || hasntUsedRecently && !noticeGivenRecently
-        const isUnsupportedTerminal = isCmd(terminal) || (isWindows && !isPowershell(terminal))
+		const now = new Date().getTime(),
+            lastRunTS = this.getState(lastRunKey) || 0,
+		    lastTerminalNoticeTS = this.getState(lastTerminalNoticeKey) || 0,
+            timeSinceLastUseSec = (now - lastRunTS) / 1000,
+            timeSinceLastTerminalNoticeSec = (now - lastTerminalNoticeTS) / 1000,
+            runCount = this.getState(runCountKey),
+            notEnoughUsages = runCount < 15,
+            hasntUsedRecently = timeSinceLastUseSec > secondsInWeek,
+            noticeGivenRecently = timeSinceLastTerminalNoticeSec < secondsInHour,
+            shouldGiveNotice = notEnoughUsages || hasntUsedRecently && !noticeGivenRecently,
+            isUnsupportedTerminal = isCmd(terminal) || (isWindows && !isPowershell(terminal))
+            
 	    if (!shouldGiveNotice || isUnsupportedTerminal) return
 		this.updateState(lastTerminalNoticeKey, now)
         const ShellHandler = isPowershell(terminal) ? PowershellHandler: BashHandler

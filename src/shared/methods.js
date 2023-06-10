@@ -8,6 +8,7 @@ let db
 const { 
     timeExt,
     isWindows,
+    targetTxt,
     tfVarsPostix,
     rootFolderName,
     tfTargetPostix,
@@ -170,22 +171,30 @@ module.exports.handleDeactivation = () => {
 	this.firstActivation = false
 }
 
-module.exports.getOption = async (commandId, option, shellType) => {
-    if (commandId === tfPlanTargetCommandId || commandId === tfApplyTargetCommandId) return await vscode.window.showInputBox({
-		value: option,
-		placeHolder: 'Enter module or resource to limit the operation. For example: "module.rds", or "aws_instance.my_ec2"',
-	});
-    if (commandId === tfPlanVarsCommandId || commandId === tfApplyVarsCommandId ){
-        let varFile = (await vscode.window.showOpenDialog({
-            canSelectFiles: true,
-            canSelectFolders: false,
-            canSelectMany: false,
-            openLabel: 'Select tfvars file'
-        }))[0].path
-        if (shellType === powershellType && varFile.charAt(0)=== "/") varFile = varFile.substring(1)
-        return varFile
-    } 
+const getTargetResource = value => vscode.window.showInputBox({
+    value,
+    placeHolder: targetTxt,
+});
+
+const getVarsFile = async shellType => {
+    let varFile = (await vscode.window.showOpenDialog({
+        canSelectFiles: true,
+        canSelectFolders: false,
+        canSelectMany: false,
+        openLabel: 'Select tfvars file'
+    }))[0].path
+    if (shellType === powershellType && varFile.charAt(0)=== "/") varFile = varFile.substring(1)
 }
+
+if (shellType === powershellType && varFile.charAt(0)=== "/") varFile = varFile.substring(1)
+
+module.exports.getOption = async (commandId, option, shellType) => {
+    const isWithTarget = [tfPlanTargetCommandId, tfApplyTargetCommandId].includes(commandId)
+    const isWithVarsFile = [tfPlanVarsCommandId, tfApplyVarsCommandId].includes(commandId)
+
+    if (isWithTarget) return await getTargetResource(option)
+    if (isWithVarsFile) return await getVarsFile(shellType)
+} 
 
 const successMessage = commandId =>{
     const rawCommand = commandId.replace(tfTargetPostix, "")
@@ -229,6 +238,11 @@ module.exports.removeLastInstance = (badtext, str) => {
     return (ptone+pttwo);
 }
 
-module.exports.updateState = (key, value) => {
-    
-}
+module.exports.createFolderCollapser = (fileName, listener) => (document => {
+    if (document.fileName === fileName) {
+        const folder = vscode.workspace.workspaceFolders[0];
+        const uri = vscode.Uri.file(folder.uri.fsPath + "/.terraform");
+        vscode.commands.executeCommand('workbench.files.action.collapseExplorerFolders', uri);
+        listener.dispose()
+    }
+})

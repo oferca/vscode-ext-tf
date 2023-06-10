@@ -11,8 +11,8 @@ class CommandsLauncher {
     async showQuickPick  () {
         this.handleSpinner && this.handleSpinner()
         let selection
-        let tsBefore = 0
         let tsAfter = 0
+        let tsBefore = 0
 
         const labels = actions.map(action => ({
             label: (action.icon || "") + "  " + action.label,
@@ -35,18 +35,15 @@ class CommandsLauncher {
         const { activeTerminal } = vscode.window
         if (!activeTerminal) return await self.verifyOpenTerminal()
         const selected = selection.label.split(") ")[1].trim()
+
         const CommandHandler = actions.find(action => selected === action.label).handler
-        
         const commandHandler = new CommandHandler( this.context, this.logger, this.lifecycleManager )
         return commandHandler.execute()
     }
     
     async verifyOpenTerminal() {
         const openTerminal = { title: 'Open Terminal' };
-        const selection = await vscode.window.showInformationMessage(
-            openTerminalTxt,
-            openTerminal
-        );
+        const selection = await vscode.window.showInformationMessage( openTerminalTxt, openTerminal );
 
         await this.logger.log({
             openTerminalTxt,
@@ -58,6 +55,7 @@ class CommandsLauncher {
             terminal.show();
         }
     }
+    
     constructor(context, logger, lifecycleManager){
         this.logger = logger
         this.context = context
