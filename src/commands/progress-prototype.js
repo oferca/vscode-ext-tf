@@ -53,7 +53,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
             title: getProgressMsg(this.commandId) + progressFileMsg,
-            cancellable: true
+            // cancellable: true
         }, this.progressUpdate )
     }
 
@@ -74,10 +74,10 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
         const summary = this.redirect && this.fileHandler.getCompletionSummary(),
             progressFileName = `${this.outputFile}.${noColorExt}`,
-            outputLogsMsg = this.redirect ? ` [Click here to see output logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : '',
+            outputLogsMsg = this.redirect ? ` [Click here to see output logs](file:${this.shellHandler.filePrefix}${progressFileName})` : '',
             hasErrors = summary === errorStatus || summary === noCredentials,
             errTxt = `Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg),
-            warnTxt = `Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg,
+            warnTxt = `Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg
 
         if (hasErrors) notification = vscode.window.showErrorMessage(errTxt, gotoTerminal);
         if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(warnTxt, gotoTerminal);

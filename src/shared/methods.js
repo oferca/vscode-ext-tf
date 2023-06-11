@@ -184,9 +184,8 @@ const getVarsFile = async shellType => {
         openLabel: 'Select tfvars file'
     }))[0].path
     if (shellType === powershellType && varFile.charAt(0)=== "/") varFile = varFile.substring(1)
+    return varFile
 }
-
-if (shellType === powershellType && varFile.charAt(0)=== "/") varFile = varFile.substring(1)
 
 module.exports.getOption = async (commandId, option, shellType) => {
     const isWithTarget = [tfPlanTargetCommandId, tfApplyTargetCommandId].includes(commandId)
