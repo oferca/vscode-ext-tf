@@ -80,7 +80,7 @@ module.exports.planSuccessMessage2 = "No changes. Your infrastructure matches th
 
 module.exports.initSuccessMessage = "Terraform has been successfully initialized"
 
-module.exports.validateSuccessMessage = "The configuration is valid"
+module.exports.validateSuccessMessage = "The configuration is valid."
 
 module.exports.runLogFileName = "run.log"
 

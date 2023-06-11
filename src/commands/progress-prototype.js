@@ -23,6 +23,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     abort
     intervalID
     lastRecorded
+    progressFileMsg
     barCreationTimestamp
     barCompletionTimestamp
     currentBarCompletionPercentage
@@ -42,17 +43,19 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         this.currentBarCompletionPercentage = 0
         this.barCompletionTimestamp = this.barCreationTimestamp + this.fileHandler.durationEstimate * 1000
 
-        const progressFileName = `${this.outputFile}.${noColorExt}`,
-            outputLogsTxt = ` [Click here to see output logs](file:${this.shellHandler.filePrefix}${progressFileName}).`,
-            progressFileMsg = this.redirect ? outputLogsTxt + " Completed" : '',
-            openDocumentHandler = createFolderCollapser(progressFileName, listener),
-            listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler);
+        const progressFileName = `${this.outputFile}.${noColorExt}`
+        const outputLogsTxt = ` [ Watch Logs.](file:${this.shellHandler.filePrefix}${progressFileName})`
+        this.progressFileMsg = this.redirect ? outputLogsTxt : ''
+
+        let listener
+        const openDocumentHandler = createFolderCollapser(progressFileName, listener, this.fileHandler)
+        listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler)
 
         this.textDocumentListener = listener
 
         vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
-            title: getProgressMsg(this.commandId) + progressFileMsg,
+            title: getProgressMsg(this.commandId)//  + progressFileMsg,
             // cancellable: true
         }, this.progressUpdate )
     }
@@ -74,7 +77,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
         const summary = this.redirect && this.fileHandler.getCompletionSummary(),
             progressFileName = `${this.outputFile}.${noColorExt}`,
-            outputLogsMsg = this.redirect ? ` [Click here to see output logs](file:${this.shellHandler.filePrefix}${progressFileName})` : '',
+            outputLogsMsg = this.redirect ? ` [ Watch Logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : '',
             hasErrors = summary === errorStatus || summary === noCredentials,
             errTxt = `Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg),
             warnTxt = `Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg
@@ -100,9 +103,9 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         this.intervalID = setInterval(() => {
             self.handleOutputFileUpdates()
             progress.report({
-                message: parseInt(self.completionPercentage) + "%.",
-                increment: self.completionPercentage - self.lastRecorded  }
-            );
+                message: parseInt(self.completionPercentage) + "% complete." + self.progressFileMsg,
+                increment: self.completionPercentage - self.lastRecorded
+            });
             self.lastRecorded = self.completionPercentage 
         }, 100)
         

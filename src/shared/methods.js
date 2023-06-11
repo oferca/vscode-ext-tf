@@ -98,7 +98,7 @@ module.exports.getCompletionPercentage = (barCreationTimestamp, barCompletionTim
     return percentage 
 }
 
-module.exports.getProgressMsg = commandId => "Running \"Terraform " + commandId + "\" in terminal."
+module.exports.getProgressMsg = commandId => "Running \"Terraform " + commandId + "\""
 
 const addOptionDef = (commandId, tfOption) => commandId.
     replace(tfTargetPostix, ` -${getOptionKey(commandId)}="${tfOption}" `).
@@ -237,11 +237,27 @@ module.exports.removeLastInstance = (badtext, str) => {
     return (ptone+pttwo);
 }
 
-module.exports.createFolderCollapser = (fileName, listener) => (document => {
+module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (document => {
     if (document.fileName === fileName) {
+        const scrollToBottom = setInterval(() => 
+        {
+            if (fileHandler.completed) return clearInterval(scrollToBottom)
+            const editor = vscode.window.activeTextEditor;
+            if (editor.document.fileName === fileName) {
+                const lastLine = editor.document.lineCount - 1;
+                const range = editor.document.lineAt(lastLine).range;
+                editor.revealRange(range, vscode.TextEditorRevealType.Default);
+            }
+        }, 200)
+
+        const stopScrolling = document => document.fileName === fileName && clearInterval(scrollToBottom)
+        vscode.workspace.onDidCloseTextDocument(stopScrolling)
+
         const folder = vscode.workspace.workspaceFolders[0];
         const uri = vscode.Uri.file(folder.uri.fsPath + "/.terraform");
         vscode.commands.executeCommand('workbench.files.action.collapseExplorerFolders', uri);
         listener.dispose()
+
+        
     }
 })
