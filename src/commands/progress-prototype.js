@@ -91,6 +91,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     handleOutputFileUpdates () {
         if (!this.redirect)  return
         this.fileHandler.convertOutputToReadable()
+        if (this.fileHandler.completed()) setTimeout(this.fileHandler.outputCB, 100)
     }
 
     async progressUpdate (progress, token) {
