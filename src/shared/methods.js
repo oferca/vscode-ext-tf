@@ -243,7 +243,7 @@ module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (doc
         {
             const editor = vscode.window.activeTextEditor;
             if (editor.document.fileName === fileName) {
-                const lastLine = editor.document.lineCount - 1;
+                const lastLine = editor.document.lineCount - 3;
                 const range = editor.document.lineAt(lastLine).range;
                 editor.revealRange(range, vscode.TextEditorRevealType.Default);
             }
