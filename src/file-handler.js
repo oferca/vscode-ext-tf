@@ -27,6 +27,7 @@ const {
 class FileHandler {
     mode
     logger
+    outputCB
     commandId
     outputFile
     dataFolder
@@ -100,10 +101,11 @@ class FileHandler {
             this.outputFile,
             this.shellHandler.fileEncoding
         )
-        fs.writeFileSync(
+        fs.writeFile(
             this.outputFileNoColor,
             removeColors(outputFile),
-            { encoding: "utf8" }
+            { encoding: "utf8" },
+            this.outputCB
         )
     }
 
@@ -121,6 +123,7 @@ class FileHandler {
         this.logger = logger
         this.context = context
         this.initialized = false
+        this.outputCB = () => {}
         this.commandId = commandId
         this.firstActivation = false
         this.shellHandler = shellHandler

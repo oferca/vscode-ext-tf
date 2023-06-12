@@ -239,25 +239,20 @@ module.exports.removeLastInstance = (badtext, str) => {
 
 module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (document => {
     if (document.fileName === fileName) {
-        const scrollToBottom = setInterval(() => 
+        fileHandler.outputCB = () => 
         {
-            if (fileHandler.completed) return clearInterval(scrollToBottom)
             const editor = vscode.window.activeTextEditor;
             if (editor.document.fileName === fileName) {
                 const lastLine = editor.document.lineCount - 1;
                 const range = editor.document.lineAt(lastLine).range;
                 editor.revealRange(range, vscode.TextEditorRevealType.Default);
             }
-        }, 200)
-
-        const stopScrolling = document => document.fileName === fileName && clearInterval(scrollToBottom)
-        vscode.workspace.onDidCloseTextDocument(stopScrolling)
+        }
 
         const folder = vscode.workspace.workspaceFolders[0];
         const uri = vscode.Uri.file(folder.uri.fsPath + "/.terraform");
         vscode.commands.executeCommand('workbench.files.action.collapseExplorerFolders', uri);
         listener.dispose()
-
         
     }
 })
