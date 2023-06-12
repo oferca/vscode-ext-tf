@@ -3,6 +3,7 @@ const { Logger } = require("./shared/logger")
 const { mainCommandId } = require("./shared/constants")
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
+const { WebviewButton } = require("./webview-button.js")
 const { LifecycleManager } = require("./lifecycle/index.js")
 
 const debugMode = false
@@ -18,6 +19,7 @@ async function activate(context) {
 	const pref = freshStart ? Math.random() : ""
 	const lifecycleManager = new LifecycleManager(context, logger, disableState, disableState, pref )
 	const actionButton = new ActionButton(context, logger)
+	const webviewButton = new WebviewButton(context)
 	const launcher = new CommandsLauncher(context, logger, lifecycleManager)
 
 	lifecycleManager.init()
@@ -30,7 +32,8 @@ async function activate(context) {
 	)
 	disposables.push(commandRegistration)
 	disposables.push(actionButton.init(true))
-
+	disposables.push(webviewButton.init())
+	
 	await lifecycleManager.notifyFirstActivation()
 	!lifecycleManager.isFirstActivation && actionButton.init()
 
