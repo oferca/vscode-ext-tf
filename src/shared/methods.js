@@ -239,11 +239,11 @@ module.exports.removeLastInstance = (badtext, str) => {
 
 module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (document => {
     if (document.fileName === fileName) {
-        fileHandler.outputCB = (margin = 3) => 
+        fileHandler.outputCB = (bottom = false) => 
         {
             const editor = vscode.window.activeTextEditor;
             if (editor.document.fileName === fileName) {
-                const lastLine = editor.document.lineCount - (fileHandler.completed ? 0 : margin);
+                const lastLine = editor.document.lineCount - (bottom ? 0 : 3);
                 const range = editor.document.lineAt(lastLine).range;
                 editor.revealRange(range, vscode.TextEditorRevealType.Default);
             }
