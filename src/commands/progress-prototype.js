@@ -51,6 +51,17 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         const openDocumentHandler = createFolderCollapser(progressFileName, listener, this.fileHandler)
         listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler)
 
+        this.fileHandler.outputCB = (bottom = false) => 
+            {
+                const editor = vscode.window.activeTextEditor;
+                if (editor.document.fileName === progressFileName) {
+                    const lastLine = editor.document.lineCount - (bottom ? 0 : 3);
+                    const range = editor.document.lineAt(lastLine).range;
+                    editor.revealRange(range, vscode.TextEditorRevealType.Default);
+                }
+                if (bottom || this.fileHandler.completed) scrollEventListener.dispose()
+            }
+
         this.textDocumentListener = listener
 
         vscode.window.withProgress({
