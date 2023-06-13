@@ -11,7 +11,11 @@ const {
 const {
     noColorExt,
     errorStatus,
+<<<<<<< HEAD
 /*, gotoTerminal*/
+=======
+    // gotoTerminal,
+>>>>>>> 3253105b30fd218b5b472fd7efb32882b93aa89c
     noCredentials,
     noCredentialsMsg,
     tfApplyCommandId,
@@ -122,8 +126,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         }, 100)
         
         const p = new Promise(resolve => {
-            const completedIntervalId = setInterval(async () => {
-                if (self.completed() || self.abort) {
+            const completedIntervalId = setInterval(() => {
+                if (self.completed() || self.abort) setTimeout( async () => {
 
                     clearInterval(self.intervalID);
                     clearInterval(completedIntervalId)
@@ -131,10 +135,18 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
+<<<<<<< HEAD
                      setTimeout(self.notifyCompletion, 500)
                     /*const selection = */
                     // if (selection === gotoTerminal) self.activeTerminal.show();
                 }
+=======
+
+                    /*const selection = */
+                    await self.notifyCompletion()
+                    // if (selection === gotoTerminal) self.activeTerminal.show();
+                }, 300 )
+>>>>>>> 3253105b30fd218b5b472fd7efb32882b93aa89c
             }, 100)
             setTimeout(() => {
                 resolve();

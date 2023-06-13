@@ -16,6 +16,7 @@ const {
     tfInitCommandId,
     tfPlanCommandId,
     initSuccessMessage,
+    initEmptyDirMessage,
     planSuccessMessage1,
     planSuccessMessage2,
     tfPlanVarsCommandId,
@@ -209,6 +210,8 @@ const planSuccessful = outputFile => outputFile.indexOf(planSuccessMessage1) > -
 
 const initSuccessful = outputFile => outputFile.indexOf(initSuccessMessage) > -1
 
+const initEmptyDir = outputFile => outputFile.indexOf(initEmptyDirMessage) > -1
+
 const validateSuccessful = outputFile => outputFile.indexOf(validateSuccessMessage) > -1
 
 const extractPlanTotal = outputFile => {
@@ -221,6 +224,7 @@ const extractPlanTotal = outputFile => {
 
 module.exports.tfCommandSuccess = outputFile => (planSuccessful(outputFile) && extractPlanTotal(outputFile))
     || (initSuccessful(outputFile) && initSuccessMessage)
+    || (initEmptyDir(outputFile) && initEmptyDirMessage)
     || (validateSuccessful(outputFile) && validateSuccessMessage)
 
 module.exports.getWarnings = outputFile => {
