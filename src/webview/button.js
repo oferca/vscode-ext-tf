@@ -12,7 +12,7 @@ class WebviewButton {
               webview.options = {
                 enableScripts: true
               };
-        
+              setTimeout(() => webview.postMessage({ action: 'toggle' }), 3000)
               webview.html =  `
               <html>
               <head>
@@ -45,11 +45,21 @@ class WebviewButton {
               .button:active {
                 background-color: --vscode-textLink-activeForeground;
               }
+              button.display{
+                background-color: var(--vscode-button-secondaryBackground);
+                color: var(--vscode-button-secondaryForeground);
+              }
               </style>
               </head>
               <body>
-                <button class="button" onclick="runScript()">Run Terraform</button>
+                <button class="button" id="button" onclick="runScript()">Run Terraform</button>
                 <script>
+                window.addEventListener('message', event => {
+                  document.getElementById("button").classList.add("display")
+                  setTimeout(() => {
+                    document.getElementById("button").classList.remove("display")
+                  }, 300)
+                });
                 let vscode
                 if (!vscode) vscode = acquireVsCodeApi();
                 function runScript() { 
