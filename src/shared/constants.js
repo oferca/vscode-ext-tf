@@ -72,7 +72,7 @@ module.exports.noCredentials = "no-credentials"
 
 module.exports.noCredentialsMsg = "Did you set credentials ?"
 
-module.exports.gotoTerminal = { title: 'Go To Terminal' };
+// module.exports.gotoTerminal = { title: 'Go To Terminal' };
 
 module.exports.planSuccessMessage1 = "Terraform will perform"
 

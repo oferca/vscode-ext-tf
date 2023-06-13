@@ -11,7 +11,7 @@ const {
 const {
     noColorExt,
     errorStatus,
-    gotoTerminal,
+/*, gotoTerminal*/
     noCredentials,
     noCredentialsMsg,
     tfApplyCommandId,
@@ -84,7 +84,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             completionTerm = this.redirect ? "completed" : rawCommand === "apply" ? "planning completed" : "ended"
         
         let notification
-        if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`, gotoTerminal);
+        if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`/*, gotoTerminal*/);
 
         const summary = this.redirect && this.fileHandler.getCompletionSummary(),
             progressFileName = `${this.outputFile}.${noColorExt}`,
@@ -93,9 +93,9 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             errTxt = `Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg),
             warnTxt = `Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg
 
-        if (hasErrors) notification = vscode.window.showErrorMessage(errTxt, gotoTerminal);
-        if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(warnTxt, gotoTerminal);
-        if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg, gotoTerminal);
+        if (hasErrors) notification = vscode.window.showErrorMessage(errTxt/*, gotoTerminal*/);
+        if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(warnTxt/*, gotoTerminal*/);
+        if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg/*, gotoTerminal*/);
         return notification
     }
 
@@ -131,9 +131,9 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
-
-                    const selection = await self.notifyCompletion()
-                    if (selection === gotoTerminal) self.activeTerminal.show();
+                     setTimeout(self.notifyCompletion, 500)
+                    /*const selection = */
+                    // if (selection === gotoTerminal) self.activeTerminal.show();
                 }
             }, 100)
             setTimeout(() => {
