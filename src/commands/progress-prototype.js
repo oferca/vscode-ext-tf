@@ -11,7 +11,11 @@ const {
 const {
     noColorExt,
     errorStatus,
+<<<<<<< HEAD
+/*, gotoTerminal*/
+=======
     // gotoTerminal,
+>>>>>>> 3253105b30fd218b5b472fd7efb32882b93aa89c
     noCredentials,
     noCredentialsMsg,
     tfApplyCommandId,
@@ -84,7 +88,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             completionTerm = this.redirect ? "completed" : rawCommand === "apply" ? "planning completed" : "ended"
         
         let notification
-        if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`, gotoTerminal);
+        if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`/*, gotoTerminal*/);
 
         const summary = this.redirect && this.fileHandler.getCompletionSummary(),
             progressFileName = `${this.outputFile}.${noColorExt}`,
@@ -131,11 +135,18 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
+<<<<<<< HEAD
+                     setTimeout(self.notifyCompletion, 500)
+                    /*const selection = */
+                    // if (selection === gotoTerminal) self.activeTerminal.show();
+                }
+=======
 
                     /*const selection = */
                     await self.notifyCompletion()
                     // if (selection === gotoTerminal) self.activeTerminal.show();
                 }, 300 )
+>>>>>>> 3253105b30fd218b5b472fd7efb32882b93aa89c
             }, 100)
             setTimeout(() => {
                 resolve();

@@ -217,7 +217,7 @@ const validateSuccessful = outputFile => outputFile.indexOf(validateSuccessMessa
 const extractPlanTotal = outputFile => {
     const section = outputFile.split("Plan: ")
     if (section.length === 1) return
-    const summary = section[1].split(".")[0]
+    const summary = section[1].split(".")[0]+ "."
     if (summary.length > 100) return
     return summary
 }
