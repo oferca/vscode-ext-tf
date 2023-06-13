@@ -15,13 +15,44 @@ class WebviewButton {
         
               webview.html =  `
               <html>
+              <head>
+              <style>
+              .button {
+                background-color: var(--vscode-button-background);
+                color: var(--vscode-button-foreground);
+                transition: background-color 0.3s;
+                max-width: 300px;
+                /*font-size: 13px;*/
+                letter-spacing: 0.5px;
+                margin-block-start: 1em;
+                box-sizing: border-box;
+                display: flex;
+                width: 100%;
+                padding: 4px;
+                border-radius: 2px;
+                text-align: center;
+                cursor: pointer;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid var(--vscode-button-border,transparent);
+                line-height: 18px;
+              }
+              
+              .button:hover {
+                background-color: var(--vscode-button-hoverBackground);
+              }
+              
+              .button:active {
+                background-color: --vscode-textLink-activeForeground;
+              }
+              </style>
+              </head>
               <body>
-                <button id="fff" onclick="runScript()">Run Script</button>
+                <button class="button" onclick="runScript()">Run Terraform</button>
                 <script>
                 let vscode
                 if (!vscode) vscode = acquireVsCodeApi();
-                                  function runScript() {
-                   
+                function runScript() { 
                     vscode.postMessage({ command: 'runScript', script: 'console.log("Hello from script!");' });
                   }
                 </script>

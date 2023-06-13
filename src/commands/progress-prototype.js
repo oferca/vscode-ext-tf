@@ -131,16 +131,16 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
-                     setTimeout(self.notifyCompletion, 500)
+                    setTimeout(self.notifyCompletion, 500)
                     /*const selection = */
                     // if (selection === gotoTerminal) self.activeTerminal.show();
-                }
-            }, 100)
+                }, 100)
             setTimeout(() => {
                 resolve();
             }, maxNotificationTime);
         });
         return p;
+        })
     }
 
     launchProgressNotification () {

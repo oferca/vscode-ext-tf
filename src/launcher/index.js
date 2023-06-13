@@ -33,7 +33,7 @@ class CommandsLauncher {
 
     async handleActionSelect (selection) {
         const { activeTerminal } = vscode.window
-        if (!activeTerminal) return await self.verifyOpenTerminal()
+        if (!activeTerminal) return await this.verifyOpenTerminal()
         const selected = selection.label.split(") ")[1].trim()
 
         const CommandHandler = actions.find(action => selected === action.label).handler
