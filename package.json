@@ -22,7 +22,7 @@
 				{
 					"type": "webview",
 					"id": "terraform-button-view",
-					"name": "Teraform"
+					"name": "Terraform"
 				}
 			]
 		},
