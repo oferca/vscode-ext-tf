@@ -4,7 +4,7 @@ Boost up your Terraform experience with a smart launcher for terraform commands.
 # Features
 * An **Animated Progress Bar** shows command execution progress.
 * **Eliminate the need for typing** with one-click command launcher.
-* Receieve **interactive noticications** of commands lifecycle.
+* Receieve **interactive notifications** of commands lifecycle.
 
 # How to use
 

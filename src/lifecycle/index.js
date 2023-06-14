@@ -41,6 +41,7 @@ class LifecycleManager {
     }
 
     async notifyFirstActivation() {
+        return false; // stop notifications
         if (!this.isFirstActivation) return false
         const msg = this.shouldRemind ? reminderNote : thankYouNote
         await vscode.window.showInformationMessage(msg, { modal: true });
