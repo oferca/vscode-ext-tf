@@ -3,13 +3,13 @@ const {
     isWindows,
     lastRunKey,
     runCountKey,
-    usedOnceKey,
+    welcomeNotifiedKey,
     reminderNote,
     thankYouNote,
     instructions,
     mainCommandId,
     powershellType,
-    reminderActionText,
+    tryItText,
     lastTerminalNoticeKey,
     shellNoticeIntervalSec,
     lastShellDisclaimerKey,
@@ -41,18 +41,27 @@ class LifecycleManager {
     }
 
     async notifyFirstActivation() {
-        return false; // stop notifications
         if (!this.isFirstActivation) return false
+
+        // Show welcome message
         const msg = this.shouldRemind ? reminderNote : thankYouNote
         await vscode.window.showInformationMessage(msg, { modal: true });
+
+        // Log message
         const { timeSinceLastUseSec, usedOnce } = this
         await this.logger.log({ msg, timeSinceLastUseSec, usedOnce })
-        this.updateState(usedOnceKey, true);
+
+        // Update welcome notified
+        this.updateState(welcomeNotifiedKey, true);
         if (this.shouldRemind) this.updateState(lastRunKey, this.now)
+
+        // Create new terminal
         const terminal = vscode.window.createTerminal();
         terminal.show();
-        vscode.commands.executeCommand(mainCommandId);
-        vscode.window.showInformationMessage(instructions, { title: reminderActionText });
+
+        const selection = await vscode.window.showInformationMessage(instructions, { title: tryItText });
+        if (selection.title == tryItText) vscode.commands.executeCommand(mainCommandId);
+
     }
 
     updateState(key, value) {
@@ -77,7 +86,7 @@ class LifecycleManager {
         const msg = unsupportedShellNote(this.activeTerminal, hasSupportedTerminal)
         const selection = await vscode.window.showInformationMessage(
             msg,
-            { title: reminderActionText },
+            { title: tryItText },
             { title: dontRemindStr }
         );
 
@@ -113,10 +122,10 @@ class LifecycleManager {
     }
     init() {
         this.now = new Date().getTime();
-        this.usedOnce = this.getState(usedOnceKey) || false;
+        this.usedOnce = this.getState(welcomeNotifiedKey) || false;
         this.lastRunTS = this.getState(lastRunKey) || 0
         this.timeSinceLastUseSec = (this.now - this.lastRunTS) / 1000
-        this.shouldRemind = !isNaN(parseInt(this.lastRunTS)) && (this.timeSinceLastUseSec > intervalUsageReminderSec)
+        this.shouldRemind = this.lastRunTS > 0 && this.timeSinceLastUseSec > intervalUsageReminderSec
         this.shellType = isPowershell(vscode.window.activeTerminal) ? powershellType : ""
         this.logger.uniqueId = this.uniqueId
     }

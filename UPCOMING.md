@@ -6,3 +6,4 @@ Features:
 5. aliases for folder
 6. history file cleanup
 7. Text near side button
+8. click change folder 

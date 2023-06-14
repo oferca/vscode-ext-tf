@@ -22,7 +22,12 @@ module.exports.html = `
       border: 1px solid var(--vscode-button-border,transparent);
       line-height: 18px;
     }
-
+    p{
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      max-width: 300px;
+    }
     .button:hover {
       background-color: var(--vscode-button-hoverBackground);
     }
@@ -37,7 +42,8 @@ module.exports.html = `
   </style>
 </head>
 <body>
-  <button class="button" id="button" onclick="openTFLauncher()">Open Terraform Launcher</button>
+  <button class="button" id="button" onclick="openTFLauncher()">Terraform Command Launcher</button>
+  <p>Run a terraform command in terminal</p>
   <script>
     const vscode = acquireVsCodeApi();
     function openTFLauncher() { 

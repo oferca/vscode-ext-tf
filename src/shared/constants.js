@@ -58,9 +58,9 @@ module.exports.defaultEstimate = 10
 
 module.exports.rootFolderName = "vscode-tf-commands"
 
-module.exports.thankYouNote =  "Thank you for installing Terraform Toolbox Plus. Let's start your new terraform experience."
+module.exports.thankYouNote =  "Thank you for installing Terraform Toolbox Plus. Let's start."
 
-module.exports.reminderNote =  "Easily run terraform commands with Terraform Toolbox Plus. Let's start."
+module.exports.reminderNote =  "Launch terraform commands with Terraform Toolbox Plus. Let's start."
 
 module.exports.mainCommandId = "terraform.action"
 
@@ -100,7 +100,7 @@ module.exports.hasSupportedTerminalKey = "tfHasSupportedTerminal"
 
 module.exports.dontRemindDisclaimerKey = "tfNeverRemindDisclaimer"
 
-module.exports.usedOnceKey = "tfUsedFirstTime"
+module.exports.welcomeNotifiedKey = "tfUsedFirstTime"
 
 module.exports.lastRunKey = "tfLastExec"
 
@@ -108,11 +108,11 @@ module.exports.runCountKey = "tfRunCount"
 
 module.exports.lastTerminalNoticeKey = "tfLastTerminalNotice"
 
-module.exports.instructions = "This is a quick launcher menu. Open with \"Terraform\" button in status bar or shortcuts: \"\u2318\u21E7T\" or \"\u2303\u21E7T\" (Cmd/Ctrl + Shift + T)"
+module.exports.instructions = "Launch a terraform command by clicking \"Terraform\" button in status bar."
 
 module.exports.instructionsEnvVar = "Define needed environment variables (e.g AWS_ACCESS... ) in terminal normally."
 
-module.exports.reminderActionText = "Got it"
+module.exports.tryItText = "TRY IT"
 
 module.exports.intervalUsageReminderSec = 60 * 60 * 24 * 21
 
