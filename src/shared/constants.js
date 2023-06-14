@@ -82,7 +82,7 @@ module.exports.initSuccessMessage = "Terraform has been successfully initialized
 
 module.exports.initEmptyDirMessage = "Terraform initialized in an empty directory."
 
-module.exports.validateSuccessMessage = "The configuration is valid."
+module.exports.validateSuccessMessage = "The configuration is valid"
 
 module.exports.runLogFileName = "run.log"
 

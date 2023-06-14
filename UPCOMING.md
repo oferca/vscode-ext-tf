@@ -5,3 +5,4 @@ Features:
 4. correct apply messages
 5. aliases for folder
 6. history file cleanup
+7. Text near side button

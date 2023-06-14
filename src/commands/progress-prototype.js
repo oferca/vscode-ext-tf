@@ -123,24 +123,20 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         
         const p = new Promise(resolve => {
             const completedIntervalId = setInterval(() => {
-                if (self.completed() || self.abort) setTimeout( async () => {
-
+                if (self.completed() || self.abort) {
                     clearInterval(self.intervalID);
                     clearInterval(completedIntervalId)
                     resolve()
-
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
                     setTimeout(self.notifyCompletion, 500)
-                    /*const selection = */
-                    // if (selection === gotoTerminal) self.activeTerminal.show();
-                }, 100)
+                }
+            }, 100)
             setTimeout(() => {
                 resolve();
             }, maxNotificationTime);
         });
         return p;
-        })
     }
 
     launchProgressNotification () {

@@ -26,6 +26,8 @@ class WebviewButton {
           });
         
           this.context.subscriptions.push(webViewProvider);
+
+          
     }
     
     constructor(context){
