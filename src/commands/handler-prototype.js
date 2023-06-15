@@ -95,8 +95,8 @@ class CommandHandlerPrototype {
     }
 
     async init(step2) {
-        this.tfOption = this.addOption ? (await this.getOption()) : null
         setDefaultOption(this.commandId, this.tfOption)
+        this.tfOption = this.addOption ? (await this.getOption()) : null
         
         const { activeTerminal } = vscode.window
         const ShellHandler = isPowershell(activeTerminal) ? PowershellHandler : BashHandler

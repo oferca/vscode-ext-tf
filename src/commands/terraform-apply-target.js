@@ -3,7 +3,7 @@ const { tfApplyTargetCommandId } = require("../shared/constants")
 
 class TerraformApplyTargetHandler extends TerraformApplyHandler {
 
-    constructor(context, lifecycleManager, logger){
+    constructor(context, logger, lifecycleManager ){
         super(context, logger, lifecycleManager, tfApplyTargetCommandId);
         this.addOption = true
     }
