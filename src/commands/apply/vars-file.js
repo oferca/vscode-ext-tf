@@ -1,5 +1,5 @@
-const { TerraformApplyHandler } = require("./terraform-apply")
-const { tfApplyVarsCommandId } = require("../shared/constants")
+const { TerraformApplyHandler } = require(".")
+const { tfApplyVarsCommandId } = require("../../shared/constants")
 
 class TerraformApplyVarsHandler extends TerraformApplyHandler {
 

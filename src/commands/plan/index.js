@@ -1,6 +1,5 @@
-const vscode = require('vscode');
-const { ProgressHandlerPrototype } = require("./progress-prototype")
-const { tfPlanCommandId } = require("../shared/constants")
+const { ProgressHandlerPrototype } = require("../base/progress")
+const { tfPlanVarsCommandId } = require("../../shared/constants")
 
 class TerraformPlanHandler extends ProgressHandlerPrototype {
 

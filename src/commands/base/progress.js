@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { CommandHandlerPrototype } = require("./handler-prototype")
+const { CommandHandlerPrototype } = require("./command")
 
 const {
     getRawCommand,

@@ -1,5 +1,5 @@
-const { ProgressHandlerPrototype } = require("./progress-prototype")
-const { tfOutputCommandId } = require("../shared/constants")
+const { ProgressHandlerPrototype } = require("../base/progress")
+const { tfOutputCommandId } = require("../../shared/constants")
 
 class TerraformOutputHandler extends ProgressHandlerPrototype {
 

@@ -1,5 +1,5 @@
-const { TerraformPlanHandler } = require("./terraform-plan")
-const { tfPlanVarsCommandId } = require("../shared/constants")
+const { TerraformPlanHandler } = require(".")
+const { tfPlanVarsCommandId } = require("../../shared/constants")
 
 class TerraformPlanVarsHandler extends TerraformPlanHandler {
 

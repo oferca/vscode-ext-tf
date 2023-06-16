@@ -1,15 +1,14 @@
-const os = require('os');
 const vscode = require('vscode');
-const { FileHandler } = require("../file-handler")
-const { isPowershell } = require("../shared/methods")
-const { BashHandler } = require("../shared/shells/bash")
-const { PowershellHandler } = require("../shared/shells/powershell")
+const { FileHandler } = require("../../file-handler")
+const { isPowershell } = require("../../shared/methods")
+const { BashHandler } = require("../../shared/shells/bash")
+const { PowershellHandler } = require("../../shared/shells/powershell")
 
 const {
     getOption,
     getOptionKey,
     getRawCommand
-} = require("../shared/methods")
+} = require("../../shared/methods")
 
 const {
     lastRunKey,
@@ -18,7 +17,7 @@ const {
     tfApplyVarsCommandId,
     tfPlanTargetCommandId,
     tfApplyTargetCommandId
-} = require("../shared/constants")
+} = require("../../shared/constants")
 
 let defaultTarget
 let defaultVarFile

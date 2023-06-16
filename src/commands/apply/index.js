@@ -1,5 +1,5 @@
-const { ProgressHandlerPrototype } = require("./progress-prototype")
-const { tfApplyCommandId, tfPlanCommandId } = require("../shared/constants")
+const { ProgressHandlerPrototype } = require("../base/progress")
+const { tfApplyCommandId, tfPlanCommandId } = require("../../shared/constants")
 
 class TerraformApplyHandler extends ProgressHandlerPrototype {
 
