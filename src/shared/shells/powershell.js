@@ -10,7 +10,7 @@ class PowershellHandler extends ShellHandler {
     paramName
     filePrefix
     async invokeWithCWD(cb) {
-        const cwdFileName = `cwd-${this.lifecycleManager.uniqueId}.txt`
+        const cwdFileName = `cwd-${this.stateManager.uniqueId}.txt`
         await vscode.window.activeTerminal.sendText(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "${cwdFileName}") -Value $PWD`);
         let counter = 0
         const waitForCWD = setInterval(() => {

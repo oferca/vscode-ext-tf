@@ -44,7 +44,7 @@ class CommandHandlerPrototype {
     fileHandler
     averageFromCmd
     activeTerminal
-    lifecycleManager
+    stateManager
     textDocumentListener
 
     async logOp() {
@@ -57,10 +57,10 @@ class CommandHandlerPrototype {
     
     updateRunCount () {
         const now = new Date().getTime();
-        this.lifecycleManager.updateState(lastRunKey, now);
-        let runCount = this.lifecycleManager.getState(runCountKey)
+        this.stateManager.updateState(lastRunKey, now);
+        let runCount = this.stateManager.getState(runCountKey)
         if (typeof runCount !== 'number') runCount = 0
-        this.lifecycleManager.updateState(runCountKey, runCount + 1)
+        this.stateManager.updateState(runCountKey, runCount + 1)
     }
 
     async execute() {
@@ -80,7 +80,7 @@ class CommandHandlerPrototype {
             this.averageFromCmd,
             this.context,
             this.logger,
-            this.lifecycleManager,
+            this.stateManager,
             this.shellHandler
         )
         this.fileHandler.init(cb)
@@ -90,7 +90,7 @@ class CommandHandlerPrototype {
         return await getOption(
             this.commandId,
             getDefaultOption(this.commandId),
-            this.lifecycleManager.shellType
+            this.stateManager.shellType
         )
     }
 
@@ -105,7 +105,7 @@ class CommandHandlerPrototype {
             this.commandId,
             this.tfOption,
             this.redirect,
-            this.lifecycleManager
+            this.stateManager
         )
 
         const onChildProcessCompleteStep1 = async () => {
@@ -133,11 +133,11 @@ class CommandHandlerPrototype {
         return this.fileHandler.outputFile
     }
 
-    constructor(context, logger, lifecycleManager, commandId) {
+    constructor(context, logger, stateManager, commandId) {
         this.logger = logger
         this.context = context
         this.commandId = commandId
-        this.lifecycleManager = lifecycleManager
+        this.stateManager = stateManager
         this.init = this.init.bind(this)
         this.logOp = this.logOp.bind(this)
         this.runBash = this.runBash.bind(this)

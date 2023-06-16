@@ -156,8 +156,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         
     }
 
-    constructor(context, logger, lifecycleManager, shellHandler, commandId){
-        super(context, logger, lifecycleManager, shellHandler, commandId);
+    constructor(context, logger, stateManager, shellHandler, commandId){
+        super(context, logger, stateManager, shellHandler, commandId);
         this.lastRecorded = 0
         this.execute = this.execute.bind(this)
         this.runBash = this.runBash.bind(this)

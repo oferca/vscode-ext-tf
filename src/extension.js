@@ -3,8 +3,8 @@ const { Logger } = require("./shared/logger")
 const { mainCommandId } = require("./shared/constants")
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
-const { WebviewButton } = require("./webview/button.js")
-const { LifecycleManager } = require("./lifecycle/index.js")
+const { WebviewButton } = require("./view-explorer/button.js")
+const { StateManager } = require("./lifecycle/index.js")
 
 const debugMode = false
 const disableState = debugMode && false
@@ -17,12 +17,12 @@ async function activate(context) {
 	disposables.forEach(d => d.dispose())
 	const logger = new Logger(disableLogs)
 	const pref = freshStart ? Math.random() : ""
-	const lifecycleManager = new LifecycleManager(context, logger, disableState, disableState, pref )
+	const stateManager = new StateManager(context, logger, disableState, disableState, pref )
 	const actionButton = new ActionButton(context, logger)
 	const webviewButton = new WebviewButton(context)
-	const launcher = new CommandsLauncher(context, logger, lifecycleManager)
+	const launcher = new CommandsLauncher(context, logger, stateManager)
 
-	lifecycleManager.init()
+	stateManager.init()
 	const commandRegistration = vscode.commands.registerCommand(
 		mainCommandId,
 		() => {
@@ -34,11 +34,11 @@ async function activate(context) {
 	disposables.push(actionButton.init(true))
 	disposables.push(webviewButton.init())
 	
-	await lifecycleManager.notifyFirstActivation()
-	!lifecycleManager.isFirstActivation && actionButton.init()
+	await stateManager.notifyFirstActivation()
+	!stateManager.isFirstActivation && actionButton.init()
 
 	vscode.window.onDidOpenTerminal(terminal => {
-		lifecycleManager.handleTerminalNotice(terminal)
+		stateManager.handleTerminalNotice(terminal)
 	});
 }
 

@@ -3,7 +3,7 @@ const { isWindows } = require("../constants")
 
 class ShellHandler {
     fileEncoding
-    lifecycleManager
+    stateManager
     terminalNoticeText
     terminalNoticeTextL2
 
@@ -24,11 +24,11 @@ class ShellHandler {
         activeTerminal.show();
     }
 
-    constructor(commandId, tfOption = null, redirect = true, lifecycleManager) {
+    constructor(commandId, tfOption = null, redirect = true, stateManager) {
         this.commandId = commandId
         this.tfOption = tfOption
         this.redirect = redirect
-        this.lifecycleManager = lifecycleManager
+        this.stateManager = stateManager
         this.fileEncoding = isWindows ? "UTF-16LE" : "utf-8"
     }
 }

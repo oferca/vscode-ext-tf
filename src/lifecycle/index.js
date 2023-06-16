@@ -25,7 +25,7 @@ const { PowershellHandler } = require("../shared/shells/powershell")
 
 const secondsInWeek = 60 * 60 * 24 * 7
 const secondsInHour = 60 * 60
-class LifecycleManager {
+class StateManager {
 
     now
     context
@@ -142,4 +142,4 @@ class LifecycleManager {
 
 }
 
-module.exports = { LifecycleManager }
+module.exports = { StateManager }

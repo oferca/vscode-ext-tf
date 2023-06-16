@@ -6,7 +6,7 @@ class CommandsLauncher {
     logger
     uniqueId
     handleSpinner
-    lifecycleManager
+    stateManager
 
     async showQuickPick  () {
         this.handleSpinner && this.handleSpinner()
@@ -18,14 +18,19 @@ class CommandsLauncher {
             label: (action.icon || "") + "  " + action.label,
             kind: action.kind
         }))
+
+        let showMenuAttempts = 0
+        let selectionDurationMS = 0
     
-        while (!selection && ((tsAfter - tsBefore) < 1000)){
+        while (!selection && (selectionDurationMS < 1000) && showMenuAttempts < 4){
             tsBefore = new Date().getTime()
             selection = await vscode.window.showQuickPick(labels, {
                 placeHolder: 'Pick a terraform command to run in terminal (\u2318\u21E7T)',
                 title: "Execute Terraform Command"
             });
             tsAfter = new Date().getTime()
+            selectionDurationMS = tsAfter - tsBefore
+            showMenuAttempts++
         }
         
         selection && this.handleActionSelect(selection)
@@ -37,7 +42,7 @@ class CommandsLauncher {
         const selected = selection.label.split(") ")[1].trim()
 
         const CommandHandler = actions.find(action => selected === action.label).handler
-        const commandHandler = new CommandHandler( this.context, this.logger, this.lifecycleManager )
+        const commandHandler = new CommandHandler( this.context, this.logger, this.stateManager )
         return commandHandler.execute()
     }
     
@@ -56,10 +61,10 @@ class CommandsLauncher {
         }
     }
     
-    constructor(context, logger, lifecycleManager){
+    constructor(context, logger, stateManager){
         this.logger = logger
         this.context = context
-        this.lifecycleManager = lifecycleManager
+        this.stateManager = stateManager
         this.showQuickPick = this.showQuickPick.bind(this)
         this.verifyOpenTerminal = this.verifyOpenTerminal.bind(this)
     }

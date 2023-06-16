@@ -3,7 +3,6 @@ const { mainCommandId } = require("../shared/constants")
 const { html } = require("./page")
 
 class WebviewButton {
-
     init () {
         const webViewProvider = vscode.window.registerWebviewViewProvider('terraform-button-view', {
           enableScripts: true,
@@ -24,10 +23,7 @@ class WebviewButton {
               });
             }
           });
-        
           this.context.subscriptions.push(webViewProvider);
-
-          
     }
     
     constructor(context){

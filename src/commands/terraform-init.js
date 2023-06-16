@@ -3,8 +3,8 @@ const { tfInitCommandId } = require("../shared/constants")
 
 class TerraformInitHandler extends ProgressHandlerPrototype {
 
-    constructor(context, logger, lifecycleManager){
-        super(context, logger, lifecycleManager , tfInitCommandId);
+    constructor(context, logger, stateManager){
+        super(context, logger, stateManager , tfInitCommandId);
     }
 }
 

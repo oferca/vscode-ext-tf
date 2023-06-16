@@ -60,11 +60,11 @@ class FileHandler {
         const { activeTerminal } = vscode.window
 
         if (featuresDisabled(activeTerminal)) {
-            await this.lifecycleManager.handleShellDisclaimer()
+            await this.stateManager.handleShellDisclaimer()
             return step2Cb && step2Cb()
         }
 
-        this.lifecycleManager.updateState(hasSupportedTerminalKey, true);
+        this.stateManager.updateState(hasSupportedTerminalKey, true);
         await this.shellHandler.invokeWithCWD((...args) => {
             args.push(step2Cb)
             this.handleDataFolder(...args)
@@ -119,7 +119,7 @@ class FileHandler {
         } : outputFile === "" ? noCredentials : errorStatus
     }
 
-    constructor(commandId, averageFromCmd, context, logger, lifecycleManager, shellHandler) {
+    constructor(commandId, averageFromCmd, context, logger, stateManager, shellHandler) {
         this.logger = logger
         this.context = context
         this.initialized = false
@@ -128,7 +128,7 @@ class FileHandler {
         this.firstActivation = false
         this.shellHandler = shellHandler
         this.averageFromCmd = averageFromCmd
-        this.lifecycleManager = lifecycleManager
+        this.stateManager = stateManager
         this.handleDataFolder = this.handleDataFolder.bind(this)
         this.convertOutputToReadable = this.convertOutputToReadable.bind(this)
     }
