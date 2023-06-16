@@ -12,8 +12,8 @@ const { ChangeFolderHandler } = require("../commands/change-folder")
 const folderNameMaxLength = 40
 
 module.exports.getActions = stateManager => {
-    const pref = stateManager.selectedFolder && stateManager.selectedFolder.length < folderNameMaxLength ? "" : "..."
-    const displayedFolderName = pref + stateManager.selectedFolder.substring(stateManager.selectedFolder.length - folderNameMaxLength)
+    const pref = stateManager.selectedFolder && (stateManager.selectedFolder.length < folderNameMaxLength ? "" : "...")
+    const displayedFolderName = stateManager.selectedFolder ? (pref + stateManager.selectedFolder.substring(stateManager.selectedFolder.length - folderNameMaxLength)) : null
     return [
         {
             label: 'Optional',

@@ -15,7 +15,7 @@ class ChangeFolderHandler {
         };
     
         const folderUri = await vscode.window.showOpenDialog(options);
-        if (!folderUri || !folderUri[0]) return
+        if (!folderUri || !folderUri[0]) return delete this.stateManager.selectedFolder
         this.stateManager.selectedFolder = folderUri[0].fsPath;       
     }
 
