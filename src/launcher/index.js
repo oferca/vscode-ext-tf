@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { actions } = require("../shared/actions")
+const { getActions } = require("../shared/actions")
 const { openTerminalTxt } = require("../shared/constants")
 
 class CommandsLauncher {
@@ -14,10 +14,11 @@ class CommandsLauncher {
         let tsAfter = 0
         let tsBefore = 0
 
-        const labels = actions.map(action => ({
-            label: (action.icon || "") + "  " + action.label,
-            kind: action.kind
-        }))
+        const labels = getActions(this.stateManager)
+            .map(action => ({
+                label: (action.icon || "") + "  " + action.label,
+                kind: action.kind
+            }))
 
         let showMenuAttempts = 0
         let selectionDurationMS = 0
@@ -41,7 +42,7 @@ class CommandsLauncher {
         if (!activeTerminal) return await this.verifyOpenTerminal()
         const selected = selection.label.split(") ")[1].trim()
 
-        const CommandHandler = actions.find(action => selected === action.label).handler
+        const CommandHandler = getActions(this.stateManager).find(action => selected === action.label).handler
         const commandHandler = new CommandHandler( this.context, this.logger, this.stateManager )
         return commandHandler.execute()
     }

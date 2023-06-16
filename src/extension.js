@@ -4,7 +4,7 @@ const { mainCommandId } = require("./shared/constants")
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
 const { WebviewButton } = require("./view-explorer/button.js")
-const { StateManager } = require("./lifecycle/index.js")
+const { StateManager } = require("./state/index.js")
 
 const debugMode = false
 const disableState = debugMode && false

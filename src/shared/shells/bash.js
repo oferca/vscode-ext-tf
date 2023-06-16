@@ -21,6 +21,7 @@ class BashHandler extends ShellHandler{
     
     tfCommandDefinitions () {
         return `
+    ${this.getChangeFolderCmd()}
     function line() {echo " --------------------------------------------------";};
     finalize.${this.commandId}(){ 
     export endVscTfPlan=$(date +%s); 

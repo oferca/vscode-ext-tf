@@ -24,6 +24,11 @@ class ShellHandler {
         activeTerminal.show();
     }
 
+    getChangeFolderCmd() {
+        const { selectedFolder } = this.stateManager
+        return selectedFolder ? `cd "${this.stateManager.selectedFolder}";` :""
+    }
+
     constructor(commandId, tfOption = null, redirect = true, stateManager) {
         this.commandId = commandId
         this.tfOption = tfOption

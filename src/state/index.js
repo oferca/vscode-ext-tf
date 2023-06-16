@@ -32,6 +32,7 @@ class StateManager {
     usedOnce
     lastRunTS
     shouldRemind
+    selectedFolder
     commandHandler
     activeTerminal
     timeSinceLastUseSec
@@ -138,6 +139,7 @@ class StateManager {
         this.keyPostfix = keyPostfix
         this.activeTerminal = vscode.window.activeTerminal
         this.uniqueId = new Date().valueOf()
+        this.selectedFolder = ""
     }
 
 }

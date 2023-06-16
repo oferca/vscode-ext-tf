@@ -24,6 +24,7 @@ class PowershellHandler extends ShellHandler {
     }
     tfCommandDefinitions() {
         return `
+        ${this.getChangeFolderCmd()}
         function line() {echo " --------------------------------------------------";};
         function finalize.${this.commandId}(){ param ([string]$p1, [string]$p2 )
         $endVscTfPlan = Get-Date -Format "yyyMMddHHmmssfff"; 

@@ -1,12 +1,12 @@
 const vscode = require('vscode');
-const { CommandHandlerPrototype } = require("./command")
+const { CommandHandlerPrototype } = require(".")
 
 const {
     getRawCommand,
     getProgressMsg,
     createFolderCollapser,
     getCompletionPercentage
-} = require("../shared/methods")
+} = require("../../shared/methods")
 
 const {
     noColorExt,
@@ -17,7 +17,7 @@ const {
     tfApplyCommandId,
     maxNotificationTime,
     maxCompletionPercentage
-} = require('../shared/constants');
+} = require('../../shared/constants');
 
 class ProgressHandlerPrototype extends CommandHandlerPrototype {
     abort
