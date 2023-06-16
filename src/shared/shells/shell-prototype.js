@@ -28,6 +28,12 @@ class ShellHandler {
         const { selectedFolder } = this.stateManager
         return selectedFolder ? `cd "${this.stateManager.selectedFolder}";` :""
     }
+    
+    getCredentialsSetter() {
+        const { credentialsSetter } = this.stateManager
+        return credentialsSetter ? credentialsSetter + ";" : ""
+    }
+
 
     constructor(commandId, tfOption = null, redirect = true, stateManager) {
         this.commandId = commandId

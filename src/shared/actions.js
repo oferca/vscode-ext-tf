@@ -9,11 +9,14 @@ const { TerraformApplyTargetHandler } = require("../commands/apply/target")
 const { TerraformPlanVarsHandler } = require("../commands/plan/vars-file")
 const { TerraformApplyVarsHandler } = require("../commands/apply/vars-file")
 const { ChangeFolderHandler } = require("../commands/change-folder")
-const folderNameMaxLength = 40
+const { CredentialsHandler } = require("../commands/credentials")
+const maxLength = 40
 
 module.exports.getActions = stateManager => {
-    const pref = stateManager.selectedFolder && (stateManager.selectedFolder.length < folderNameMaxLength ? "" : "...")
-    const displayedFolderName = stateManager.selectedFolder ? (pref + stateManager.selectedFolder.substring(stateManager.selectedFolder.length - folderNameMaxLength)) : null
+    const prefFolder = stateManager.selectedFolder && (stateManager.selectedFolder.length < maxLength ? "" : "...")
+    const prefCredentials = stateManager.credentialsSetter && (stateManager.credentialsSetter.length < maxLength ? "" : "...")
+    const displayedFolderName = stateManager.selectedFolder ? (prefFolder + stateManager.selectedFolder.substring(stateManager.selectedFolder.length - maxLength)) : null
+    const displayedCredentials = stateManager.credentialsSetter ? (prefCredentials + stateManager.credentialsSetter.substring(stateManager.credentialsSetter.length - maxLength)) : null
     return [
         {
             label: 'Optional',
@@ -25,6 +28,13 @@ module.exports.getActions = stateManager => {
                 `Change Terraform Folder (${displayedFolderName})`
                 : "Select Terraform Folder",
             icon: "$(folder-opened)"
+        },
+        {
+            handler: CredentialsHandler,
+            label: stateManager.credentialsSetter ? 
+                `Change Credentials (${displayedCredentials})`
+                : "Set Credentials",
+            icon: "$(key)"
         },
         {
             label: 'Common',
