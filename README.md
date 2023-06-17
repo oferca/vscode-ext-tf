@@ -24,9 +24,11 @@ That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 <br/>
 <em>Running "terraform plan"</em>
 </p>
-<br>
-## Full output logs in persistent vscode window
+
+### Full output logs
+
 **Optionally** you can set folder and credentials for repeated use
+
 <p align="left">
 <img src="assets/planlog.gif" width=75%>
 <br/>
