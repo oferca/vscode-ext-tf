@@ -7,12 +7,13 @@ class ChangeFolderHandler {
     stateManager
 
     async execute () {
-        const options = {
+        const projectRootUri = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri
+        const options =     {
         canSelectFiles: false,
         canSelectFolders: true,
         canSelectMany: false,
         openLabel: 'Select Terraform Folder',
-        defaultUri: vscode.workspace.workspaceFolders[0].uri
+        defaultUri: projectRootUri
         };
     
         const folderUri = await vscode.window.showOpenDialog(options);

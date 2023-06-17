@@ -29,11 +29,6 @@ const {
 
 const maxPercentage = 98
 
-module.exports.extractCWD = stdout => {
-    const arr = stdout.split(" ")
-    return arr[arr.length - 1].replace("\n","")
-}
-
 module.exports.openOutputFile = commandHandler => {
     vscode.workspace.openTextDocument(commandHandler.outputFile).then(doc => {
         vscode.window.showTextDocument(doc); 

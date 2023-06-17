@@ -25,6 +25,7 @@ const {
 } = require("./shared/methods")
 
 class FileHandler {
+    cwd
     mode
     logger
     outputCB
@@ -69,13 +70,13 @@ class FileHandler {
             args.push(step2Cb)
             this.handleDataFolder(...args)
         });
-
+        
         return true
     }
 
     handleDataFolder(error, stdout, stderr, cb) {
         const subFolderName = extractCWD(stdout)
-
+        this.cwd = subFolderName
         this.dataFolder = this.shellHandler.handleDataPath(
             path.join(os.tmpdir(), rootFolderName, subFolderName + "_out")
         )

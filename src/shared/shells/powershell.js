@@ -51,15 +51,18 @@ class PowershellHandler extends ShellHandler {
         return removeLastInstance(":", str)
     }
 
+    getChangeFolderCmd() {
+        let folder = this.stateManager.getUserFolder()
+        if (folder.charAt(0)=== "/") folder = folder.substring(1)
+        return folder ? `cd "${folder}";` :""
+    }
     getInitShellCommands() {
         return [this.getChangeFolderCmd()].concat(
             this.getCredentialsSetter()
+            .replaceAll("$ENV", "$Env")
             .replaceAll("$Env", "-$Env-")
-            .replaceAll("$ENV", "-$ENV-")
             .split("-$Env-")
             .map(crds => crds !== '' ? "$Env" + crds : null)
-            .split("-$ENV-")
-            .map(crds => crds !== '' ? "$ENV" + crds : null)
         )
     }
     getCheckTFCommand () {
