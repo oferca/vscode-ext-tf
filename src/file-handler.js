@@ -77,7 +77,7 @@ class FileHandler {
         const subFolderName = extractCWD(stdout)
 
         this.dataFolder = this.shellHandler.handleDataPath(
-            path.join(os.tmpdir(), rootFolderName, subFolderName)
+            path.join(os.tmpdir(), rootFolderName, subFolderName + "_out")
         )
         if (!fs.existsSync(this.dataFolder)) fs.mkdirSync(
             this.dataFolder, { recursive: true }

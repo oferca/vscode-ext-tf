@@ -66,8 +66,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
         vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
-            title: getProgressMsg(this.commandId)//  + progressFileMsg,
-            // cancellable: true
+            title: getProgressMsg(this.commandId),//  + progressFileMsg,
+            cancellable: true
         }, this.progressUpdate )
     }
 
@@ -140,8 +140,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     launchProgressNotification () {
-        const message = getProgressMsg(this.commandId)
-        this.launchProgress(message)
+        this.launchProgress()
     }
 
     async execute () {

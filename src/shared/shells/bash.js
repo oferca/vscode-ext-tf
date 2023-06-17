@@ -21,8 +21,6 @@ class BashHandler extends ShellHandler{
     
     tfCommandDefinitions () {
         return `
-    ${this.getChangeFolderCmd()}
-    ${this.getCredentialsSetter()}
     function line() {echo " --------------------------------------------------";};
     finalize.${this.commandId}(){ 
     export endVscTfPlan=$(date +%s); 
@@ -50,6 +48,13 @@ class BashHandler extends ShellHandler{
         return `[[ $( find . -name "*.tf"  | wc -l ) -gt 0 ]] && (echo \"${this.terminalNoticeText}\"; echo \"\"; )`
     }
     
+    getInitShellCommands() {
+        return [this.getChangeFolderCmd()].concat(this.getCredentialsSetter()
+            .replaceAll("export ", "-exp-")
+            .split("-exp-")
+            .map(crds => crds !== '' ? "export " + crds : null))
+    }
+
     constructor(...args){
         super(...args)
         this.paramName = ""

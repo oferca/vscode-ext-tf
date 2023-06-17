@@ -14,7 +14,7 @@ class CredentialsHandler {
             value: '', // Initial value of the text area
             valueSelection: [0, 0], // Select the entire text initially
             multiline: true,
-            placeHolder: 'For example: SET AWS_ACCESS_KEY_ID=... ', // Placeholder text
+            placeHolder: 'For example: $Env:AWS_ACCESS_KEY_ID=... ; $Env:AWS_SECRET_ACCESS_KEY=...', // Placeholder text
         });
         this.stateManager.updateState(credentialsKey, this.stateManager.credentialsSetter) 
 

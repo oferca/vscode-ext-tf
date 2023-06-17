@@ -52,11 +52,16 @@ class PowershellHandler extends ShellHandler {
     }
 
     getInitShellCommands() {
-        return `
-        ${this.getChangeFolderCmd()}
-        ${this.getCredentialsSetter()}`.replaceAll("$Env",";$Env").replaceAll("$ENV",";$ENV")
+        return [this.getChangeFolderCmd()].concat(
+            this.getCredentialsSetter()
+            .replaceAll("$Env", "-$Env-")
+            .replaceAll("$ENV", "-$ENV-")
+            .split("-$Env-")
+            .map(crds => crds !== '' ? "$Env" + crds : null)
+            .split("-$ENV-")
+            .map(crds => crds !== '' ? "$ENV" + crds : null)
+        )
     }
-
     getCheckTFCommand () {
         return `if (@(Get-ChildItem -Depth 3 -Path . -Filter *.tf -Recurse -ErrorAction SilentlyContinue -Force ).length -ne "0") { echo \"${this.terminalNoticeText}\"; Start-Sleep -Seconds 0.2; echo \"\"; }`
     }
