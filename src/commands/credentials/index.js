@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const { credentialsKey } = require("../../shared/constants")
 
 class CredentialsHandler {
     logger
@@ -15,6 +16,8 @@ class CredentialsHandler {
             multiline: true,
             placeHolder: 'For example: SET AWS_ACCESS_KEY_ID=... ', // Placeholder text
         });
+        this.stateManager.updateState(credentialsKey, this.stateManager.credentialsSetter) 
+
     }
 
     constructor(context, logger, stateManager, commandId) {

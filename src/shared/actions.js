@@ -10,13 +10,17 @@ const { TerraformPlanVarsHandler } = require("../commands/plan/vars-file")
 const { TerraformApplyVarsHandler } = require("../commands/apply/vars-file")
 const { ChangeFolderHandler } = require("../commands/change-folder")
 const { CredentialsHandler } = require("../commands/credentials")
+const { credentialsKey, changeFolderKey } = require("./constants")
+
 const maxLength = 40
 
 module.exports.getActions = stateManager => {
-    const prefFolder = stateManager.selectedFolder && (stateManager.selectedFolder.length < maxLength ? "" : "...")
-    const prefCredentials = stateManager.credentialsSetter && (stateManager.credentialsSetter.length < maxLength ? "" : "...")
-    const displayedFolderName = stateManager.selectedFolder ? (prefFolder + stateManager.selectedFolder.substring(stateManager.selectedFolder.length - maxLength)) : null
-    const displayedCredentials = stateManager.credentialsSetter ? (prefCredentials + stateManager.credentialsSetter.substring(stateManager.credentialsSetter.length - maxLength)) : null
+    const folder = stateManager.selectedFolder || stateManager.getState(changeFolderKey)
+    const credentials = stateManager.credentials || stateManager.getState(credentialsKey)
+    const prefFolder = folder && (folder.length < maxLength ? "" : "...")
+    const prefCredentials = credentials && (credentials.length < maxLength ? "" : "...")
+    const displayedFolderName = folder ? (prefFolder + folder.substring(folder.length - maxLength)) : null
+    const displayedCredentials = credentials ? (prefCredentials + credentials.substring(credentials.length - maxLength)) : null
     return [
         {
             label: 'Optional',
@@ -24,14 +28,14 @@ module.exports.getActions = stateManager => {
         },
         {
             handler: ChangeFolderHandler,
-            label: stateManager.selectedFolder ? 
+            label: folder ? 
                 `Change Terraform Folder (${displayedFolderName})`
                 : "Select Terraform Folder",
             icon: "$(folder-opened)"
         },
         {
             handler: CredentialsHandler,
-            label: stateManager.credentialsSetter ? 
+            label: credentials ? 
                 `Change Credentials (${displayedCredentials})`
                 : "Set Credentials",
             icon: "$(key)"

@@ -120,3 +120,6 @@ module.exports.isWindows = os.platform().indexOf("win32") > -1
 
 module.exports.targetTxt = 'Enter module or resource to limit the operation. For example: "module.rds", or "aws_instance.my_ec2"'
 
+module.exports.changeFolderKey = "tfChangeFolderKey"
+
+module.exports.credentialsKey = "tfCredentialsKey"

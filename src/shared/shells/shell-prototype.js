@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { isWindows } = require("../constants")
+const { isWindows, credentialsKey, changeFolderKey } = require("../constants")
 
 class ShellHandler {
     fileEncoding
@@ -25,13 +25,13 @@ class ShellHandler {
     }
 
     getChangeFolderCmd() {
-        const { selectedFolder } = this.stateManager
-        return selectedFolder ? `cd "${this.stateManager.selectedFolder}";` :""
+        const folder = this.stateManager.selectedFolder || this.stateManager.getState(changeFolderKey)
+        return folder ? `cd "${folder}";` :""
     }
     
     getCredentialsSetter() {
-        const { credentialsSetter } = this.stateManager
-        return credentialsSetter ? credentialsSetter + ";" : ""
+        const credentials = this.stateManager.credentials || this.stateManager.getState(credentialsKey)
+        return credentials ? credentials + ";" : ""
     }
 
 

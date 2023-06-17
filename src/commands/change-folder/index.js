@@ -1,4 +1,5 @@
 const vscode = require('vscode');
+const { changeFolderKey } = require("../../shared/constants")
 
 class ChangeFolderHandler {
     logger
@@ -15,8 +16,9 @@ class ChangeFolderHandler {
         };
     
         const folderUri = await vscode.window.showOpenDialog(options);
-        if (!folderUri || !folderUri[0]) return delete this.stateManager.selectedFolder
-        this.stateManager.selectedFolder = folderUri[0].fsPath;       
+        const folder = folderUri && folderUri[0]
+        this.stateManager.selectedFolder = folder ? folder.fsPath : undefined 
+        this.stateManager.updateState(changeFolderKey, this.stateManager.selectedFolder) 
     }
 
     constructor(context, logger, stateManager, commandId) {
