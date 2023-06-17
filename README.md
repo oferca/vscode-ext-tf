@@ -1,10 +1,14 @@
-# Terraform Toolbox Plus
-Boost up your Terraform experience with a smart launcher for terraform commands.
+# Ultimate Terraform Launcher
+The [Ultimate Terraform Launcher extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+adds a **quick launcher** and an **interactive progress indicator** to terraform commands execution.
 
-# Features
-* An **Animated Progress Bar** shows command execution progress.
-* **Eliminate the need for typing** with one-click command launcher.
-* Receieve **interactive notifications** of commands lifecycle.
+# More Features
+* Eliminate the need for typing commands.
+* Provides **interactive notifications** that keep you informed about the command progress as you work.
+* Seamlessly integrated with the VS Code terminal.
+* Persistence of all commands output.
+* No output size limit.
+
 
 # How to use
 
