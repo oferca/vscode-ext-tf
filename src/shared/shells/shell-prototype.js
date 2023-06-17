@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { isWindows, credentialsKey, changeFolderKey } = require("../constants")
+const { isWindows, credentialsKey } = require("../constants")
 
 class ShellHandler {
     fileEncoding
@@ -12,11 +12,10 @@ class ShellHandler {
         if (!activeTerminal.definitions) activeTerminal.definitions = {}
         const bashDefined = activeTerminal.definitions[this.commandId + (this.tfOption || "")]
         const definitions = this.tfCommandDefinitions();
-        const changedCredentials = activeTerminal.tfCredentials !== this.stateManager.credentials
-        if (changedCredentials) this.getInitShellCommands().forEach(
-            shellCommand => {
-                shellCommand && activeTerminal.sendText(shellCommand)
-            })
+        const newCredentials = activeTerminal.tfCredentials !== this.stateManager.credentials
+        const newFolder = activeTerminal.tfFolder !== this.stateManager.getUserFolder() 
+        const stateChanged = newCredentials || newFolder
+        if (stateChanged) this.getInitShellCommands().filter(c => c != null).forEach(activeTerminal.sendText)
         activeTerminal.tfCredentials = this.stateManager.credentials
         if (!bashDefined) activeTerminal.sendText(definitions)
         activeTerminal.definitions[this.commandId] = true
@@ -31,7 +30,7 @@ class ShellHandler {
     }
 
     getChangeFolderCmd() {
-        const folder = this.stateManager.selectedFolder || this.stateManager.getState(changeFolderKey)
+        const folder = this.stateManager.getUserFolder()
         return folder ? `cd "${folder}";` :""
     }
     

@@ -10,12 +10,12 @@ const { TerraformPlanVarsHandler } = require("../commands/plan/vars-file")
 const { TerraformApplyVarsHandler } = require("../commands/apply/vars-file")
 const { ChangeFolderHandler } = require("../commands/change-folder")
 const { CredentialsHandler } = require("../commands/credentials")
-const { credentialsKey, changeFolderKey } = require("./constants")
+const { credentialsKey } = require("./constants")
 
 const maxLength = 40
 
 module.exports.getActions = stateManager => {
-    const folder = stateManager.selectedFolder || stateManager.getState(changeFolderKey)
+    const folder = stateManager.getUserFolder()
     const credentials = stateManager.credentials || stateManager.getState(credentialsKey)
     const prefFolder = folder && (folder.length < maxLength ? "" : "...")
     const prefCredentials = credentials && (credentials.length < maxLength ? "" : "...")

@@ -34,7 +34,6 @@ class StateManager {
     usedOnce
     lastRunTS
     shouldRemind
-    selectedFolder
     commandHandler
     activeTerminal
     timeSinceLastUseSec
@@ -132,9 +131,14 @@ class StateManager {
         this.shellType = isPowershell(vscode.window.activeTerminal) ? powershellType : ""
         this.logger.uniqueId = this.uniqueId
         this.credentials = this.getState(credentialsKey)
-        this.selectedFolder = this.getState(changeFolderKey)
     }
 
+    getUserFolder () {
+        return this.getState(changeFolderKey)
+    }
+    setUserFolder (folder) {
+        this.updateState(changeFolderKey, folder) 
+    }
     constructor(context, logger, disableStateUpdate = false, disableStateRead = false, keyPostfix = "") {
         this.context = context
         this.logger = logger
