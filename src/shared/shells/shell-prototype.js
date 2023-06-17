@@ -12,8 +12,12 @@ class ShellHandler {
         if (!activeTerminal.definitions) activeTerminal.definitions = {}
         const bashDefined = activeTerminal.definitions[this.commandId + (this.tfOption || "")]
         const definitions = this.tfCommandDefinitions();
+        const changedCredentials = activeTerminal.tfCredentials !== this.stateManager.credentials
+        if (changedCredentials) activeTerminal.sendText(this.getInitShellCommands())
+        activeTerminal.tfCredentials = this.stateManager.credentials
         if (!bashDefined) activeTerminal.sendText(definitions)
         activeTerminal.definitions[this.commandId] = true
+        
     }
 
     async runTfCommand (outputFile) {
@@ -33,7 +37,13 @@ class ShellHandler {
         const credentials = this.stateManager.credentials || this.stateManager.getState(credentialsKey)
         return credentials ? credentials + ";" : ""
     }
-
+    
+    getInitShellCommands() {
+        return `
+        ${this.getChangeFolderCmd()}
+        ${this.getCredentialsSetter()}`
+    }
+    
 
     constructor(commandId, tfOption = null, redirect = true, stateManager) {
         this.commandId = commandId

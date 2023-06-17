@@ -1,15 +1,17 @@
 const vscode = require('vscode');
 const {
     isWindows,
+    tryItText,
     lastRunKey,
     runCountKey,
-    welcomeNotifiedKey,
     reminderNote,
     thankYouNote,
     instructions,
     mainCommandId,
     powershellType,
-    tryItText,
+    credentialsKey,
+    changeFolderKey,
+    welcomeNotifiedKey,
     lastTerminalNoticeKey,
     shellNoticeIntervalSec,
     lastShellDisclaimerKey,
@@ -129,6 +131,8 @@ class StateManager {
         this.shouldRemind = this.lastRunTS > 0 && this.timeSinceLastUseSec > intervalUsageReminderSec
         this.shellType = isPowershell(vscode.window.activeTerminal) ? powershellType : ""
         this.logger.uniqueId = this.uniqueId
+        this.credentials = this.getState(credentialsKey)
+        this.selectedFolder = this.getState(changeFolderKey)
     }
 
     constructor(context, logger, disableStateUpdate = false, disableStateRead = false, keyPostfix = "") {

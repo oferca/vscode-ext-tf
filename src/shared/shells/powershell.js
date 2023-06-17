@@ -24,8 +24,6 @@ class PowershellHandler extends ShellHandler {
     }
     tfCommandDefinitions() {
         return `
-        ${this.getChangeFolderCmd()}
-        ${this.getCredentialsSetter()}
         function line() {echo " --------------------------------------------------";};
         function finalize.${this.commandId}(){ param ([string]$p1, [string]$p2 )
         $endVscTfPlan = Get-Date -Format "yyyMMddHHmmssfff"; 
@@ -51,6 +49,12 @@ class PowershellHandler extends ShellHandler {
     }
     handleDataPath(str) {
         return removeLastInstance(":", str)
+    }
+
+    getInitShellCommands() {
+        return `
+        ${this.getChangeFolderCmd()}
+        ${this.getCredentialsSetter()}`.replaceAll("$Env",";$Env").replaceAll("$ENV",";$ENV")
     }
 
     getCheckTFCommand () {
