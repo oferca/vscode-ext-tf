@@ -27,7 +27,7 @@ That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 
 ### Full output logs
 
-**Optionally** you can set folder and credentials for repeated use
+\* **Optionally** you can set folder and credentials for repeated use
 
 <p align="left">
 <img src="assets/planlog.gif" width=75%>
