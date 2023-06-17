@@ -20,9 +20,17 @@ Or
 That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 
 <p align="left">
-<img src="assets/demo-all.png" width=75%>
+<img src="assets/plan.gif" width=75%>
 <br/>
-<em>Quick Launcher Menu</em>
+<em>Running "terraform plan"</em>
+</p>
+<br>
+## Full output logs in persistent vscode window
+**Optionally** you can set folder and credentials for repeated use
+<p align="left">
+<img src="assets/planlog.gif" width=75%>
+<br/>
+<em>Running "terraform plan" with credentials and logs</em>
 </p>
 
 ## Notes

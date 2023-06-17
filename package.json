@@ -1,9 +1,9 @@
 {
   "icon": "assets/terraform_logo.png",
   "name": "easy-terraform-commands",
-  "displayName": "Terraform Toolbox Plus",
+  "displayName": "Ultimate Terraform Launcher",
   "publisher": "oferkafry",
-  "description": "Smart launcher for Terraform commands with progress indicator and more features.",
+  "description": "1-Click launcher for terraform commands with progress indicator",
   "version": "1.5.0",
   "engines": {
     "vscode": "^1.67.2"

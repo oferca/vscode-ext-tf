@@ -10,6 +10,7 @@ const { TerraformPlanVarsHandler } = require("../commands/plan/vars-file")
 const { TerraformApplyVarsHandler } = require("../commands/apply/vars-file")
 const { ChangeFolderHandler } = require("../commands/change-folder")
 const { CredentialsHandler } = require("../commands/credentials")
+const { ClearStateHandler } = require("../commands/clear")
 const { credentialsKey } = require("./constants")
 
 const maxLength = 40
@@ -26,6 +27,7 @@ module.exports.getActions = stateManager => {
             label: 'Optional',
             kind: vscode.QuickPickItemKind.Separator
         },
+        { handler: ClearStateHandler, label: "Clear", icon: "$(clear-all)" },
         {
             handler: ChangeFolderHandler,
             label: folder ? 
