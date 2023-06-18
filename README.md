@@ -23,6 +23,7 @@ Then click desired command. That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉
 <em>A Terraform Commands Dashboard</em>
 </p>
 <br>
+<br>
 
 <p align="left">
 <img src="assets/plan.gif" width=75%>
@@ -30,7 +31,8 @@ Then click desired command. That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉
 <em>A Quick Launcher and Progress indicator</em>
 </p>
 <br>
-\* **Optionally** you can set folder and credentials for repeated use
+
+* **Optionally** you can set folder and credentials for later use
 
 <p align="left">
 <img src="assets/planlog.gif" width=75%>
