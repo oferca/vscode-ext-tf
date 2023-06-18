@@ -1,13 +1,11 @@
-# Ultimate Terraform Launcher
-The [Ultimate Terraform Launcher extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
-adds a **quick launcher** and an **interactive progress indicator** to terraform commands execution.
+# Terraform Launcher Plus
+The [Terraform Launcher Plus extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+adds a *quick launcher* and a *progress indicator* to terraform commands.
 
-# More Features
-* Eliminate the need for typing commands.
-* Provides **interactive notifications** that keep you informed about the command progress as you work.
-* Seamlessly integrated with the VS Code terminal.
-* Persistence of all commands output.
-* No output size limit.
+# Features
+* Eliminates the need for typing.
+* **Interactive notifications** keep you informed with execution progress.
+* Command logs are fully stored and accessible in VSCode Environment.
 
 
 # How to use
@@ -17,7 +15,7 @@ Or
 #### Click '⌘⇧T' (Ctrl / Cmd + Shift + T)
 <br>
 
-That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
+Then click desired command. That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 
 <p align="left">
 <img src="assets/plan.gif" width=75%>

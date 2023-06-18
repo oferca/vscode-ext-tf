@@ -1,4 +1,5 @@
 Features:
+1. Inform credentials and folder are set
 1. init -upgrade
 2. force-unlock
 3. spinner for tf plan notification
