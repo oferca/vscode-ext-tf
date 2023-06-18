@@ -17,22 +17,19 @@ Or
 
 Then click desired command. That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 # Examples
-<br>
 <p align="left">
 <img src="assets/launcher.gif" width=75%>
 <br/>
 <em>A Terraform Commands Dashboard</em>
 </p>
-
+<br>
 
 <p align="left">
 <img src="assets/plan.gif" width=75%>
 <br/>
 <em>A Quick Launcher and Progress indicator</em>
 </p>
-
-### Full output logs
-
+<br>
 \* **Optionally** you can set folder and credentials for repeated use
 
 <p align="left">
