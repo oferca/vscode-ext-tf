@@ -1,6 +1,6 @@
 # Terraform Dashboard Plus
 The [Terraform Dashboard Plus extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
-adds a *commands dashboard*, a *quick launcher* and an *animated progress indicator* to terraform commands.
+adds a *commands dashboard*, *quick launcher* and an *animated progress bar* to terraform commands.
 
 # Features
 * Eliminates the need for typing.
