@@ -25,25 +25,28 @@ module.exports.getActions = stateManager => {
     return [
         {
             label: 'Optional',
-            kind: vscode.QuickPickItemKind.Separator
+            kind: vscode.QuickPickItemKind.Separator,
+            optional: true
         },
-        { handler: ClearStateHandler, label: "Clear preferences", icon: "$(clear-all)" },
+        { handler: ClearStateHandler, label: "Clear preferences", icon: "$(clear-all)", optional: true },
         {
             handler: ChangeFolderHandler,
             label: folder ? 
                 `Change Terraform Folder (${displayedFolderName})`
                 : "Select Terraform Folder",
-            icon: "$(folder-opened)"
+            icon: "$(folder-opened)",
+            optional: true
         },
         {
             handler: CredentialsHandler,
             label: credentials ? 
                 `Change Credentials (${displayedCredentials})`
                 : "Set Credentials",
-            icon: "$(key)"
+            icon: "$(key)",
+            optional: true
         },
         {
-            label: 'Common',
+            label: 'Commands',
             kind: vscode.QuickPickItemKind.Separator
         },
         { handler: TerraformInitHandler, label: "Init", icon: "$(extensions-install-count)" },

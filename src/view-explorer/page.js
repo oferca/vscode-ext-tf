@@ -1,55 +1,39 @@
-module.exports.html = `
+const { style } = require("./style")
+module.exports.html = (preferences, actions) => `
 <html>
 <head>
-  <style>
-    .button {
-      background-color: var(--vscode-button-background);
-      color: var(--vscode-button-foreground);
-      transition: background-color 0.3s;
-      max-width: 300px;
-      /*font-size: 13px;*/
-      letter-spacing: 0.5px;
-      margin-block-start: 1em;
-      box-sizing: border-box;
-      display: flex;
-      width: 100%;
-      padding: 4px;
-      border-radius: 2px;
-      text-align: center;
-      cursor: pointer;
-      justify-content: center;
-      align-items: center;
-      border: 1px solid var(--vscode-button-border,transparent);
-      line-height: 18px;
-    }
-    p{
-      text-align: center;
-      justify-content: center;
-      align-items: center;
-      max-width: 300px;
-    }
-    .button:hover {
-      background-color: var(--vscode-button-hoverBackground);
-    }
-
-    .button:active {
-      background-color: --vscode-textLink-activeForeground;
-    }
-    button.display{
-      background-color: var(--vscode-button-secondaryBackground);
-      color: var(--vscode-button-secondaryForeground);
-    }
-  </style>
+  <style>${style}</style>
 </head>
 <body>
-  <button class="button" id="button" onclick="openTFLauncher()">Terraform Command Launcher</button>
-  <p>Run a terraform command in terminal</p>
+  <p>Open quick launcher ('⌘⇧T')</p> 
+  <button class="button" id="main-button" onclick="openTFLauncher()">Terraform Launcher</button>
   <script>
     const vscode = acquireVsCodeApi();
     function openTFLauncher() { 
       vscode.postMessage({ command: 'openTFLauncher' });
     }
   </script>
+  <div class="button-container">
+  <div class="prefs">
+    <div class="pref-container" ><div class="pref"><a class="pref-change" > Clear preferences </a></div></div>
+    <div class="pref-container"><div class="pref">${preferences.folder ? "Folder selected." : ""}</div><a class="pref-change" > ${preferences.folder ? "change" : "Select folder"} </a></div>
+    <div class="pref-container"><div class="pref">${preferences.credentials ? "Credentials set." : ""}</div><a class="pref-change" > ${preferences.credentials ? "change" : "Enter credentials"} </a></div>
+  </div>
+  </div>
+  <p>Run in terminal:</p>
+  <div class="button-container">
+  ${ actions.map(action => {
+    if (action.optional) return
+    const type = action.label.indexOf("Apply") > -1 ? "warning" : ""
+    if (action.handler) return (`<button
+      class="button command ${type}"
+      title="Run Terraform ${action.label.replace(" -", " with ")} in terminal"
+      onclick="vscode.postMessage({ tfCommand: '${action.label}' })"
+      >` + action.label +'</button>')
+    if (action.kind === -1 ) return ('<div class="category">' + action.label + '</div>' )
+  }).join("")}
+  </div>
+  <br>
 </body>
 </html>
 `;

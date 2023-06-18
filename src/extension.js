@@ -19,7 +19,7 @@ async function activate(context) {
 	const pref = freshStart ? Math.random() : ""
 	const stateManager = new StateManager(context, logger, disableState, disableState, pref )
 	const actionButton = new ActionButton(context, logger)
-	const webviewButton = new WebviewButton(context)
+	const webviewButton = new WebviewButton(context, logger, stateManager)
 	const launcher = new CommandsLauncher(context, logger, stateManager)
 
 	stateManager.init()

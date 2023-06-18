@@ -1,6 +1,7 @@
 const vscode = require('vscode');
 const { mainCommandId } = require("../shared/constants")
-const { html } = require("./page")
+const { html } = require("./page");
+const { getActions } = require('../shared/actions');
 
 class WebviewButton {
     init () {
@@ -11,13 +12,23 @@ class WebviewButton {
               webview.options = {
                 enableScripts: true
               };
-              webview.html =  html;
+              const actions = getActions(this.stateManager)
+              webview.html =  html({
+                folder: "aaa",
+                credentials: "bbb"
+              }, actions);
         
-              webview.onDidReceiveMessage((message) => {
+              webview.onDidReceiveMessage(message => {
+                if (!message) return;
                 if (message.command === 'openTFLauncher') {
-                  vscode.commands.executeCommand(mainCommandId, 'workbench.view.easy-terraform-commands');                }
-              });
-        
+                  vscode.commands.executeCommand(mainCommandId, 'workbench.view.easy-terraform-commands');    
+                }
+                if (message.tfCommand){
+                  const CommandHandler = actions.find(action => message.tfCommand === action.label).handler
+                  const commandHandler = new CommandHandler( this.context, this.logger, this.stateManager )
+                  return commandHandler.execute()
+                }
+              })
               webviewView.onDidDispose(() => {
                 webview.dispose();
               });
@@ -26,8 +37,10 @@ class WebviewButton {
           this.context.subscriptions.push(webViewProvider);
     }
     
-    constructor(context){
-        this.context = context   
+    constructor(context, logger, stateManager){
+        this.context = context
+        this.logger = logger
+        this.stateManager = stateManager
     }
 }
 module.exports = { WebviewButton }

@@ -4,7 +4,7 @@
   "displayName": "Terraform Launcher Plus",
   "publisher": "oferkafry",
   "description": "Run terraform commands with a click, watch execution progress indicator.",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "engines": {
     "vscode": "^1.67.2"
   },

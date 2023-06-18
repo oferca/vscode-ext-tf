@@ -35,7 +35,7 @@ class ShellHandler {
     }
     
     getCredentialsSetter() {
-        return this.stateManager.credentials || this.stateManager.getState(credentialsKey)
+        return this.stateManager.credentials || this.stateManager.getState(credentialsKey) || ""
     }
 
     constructor(commandId, tfOption = null, redirect = true, stateManager) {
