@@ -35,6 +35,7 @@ module.exports.getActions = stateManager => {
                 `Change Terraform Folder (${displayedFolderName})`
                 : "Select Terraform Folder",
             icon: "$(folder-opened)",
+            id: "tfFolder",
             optional: true
         },
         {
@@ -43,10 +44,11 @@ module.exports.getActions = stateManager => {
                 `Change Credentials (${displayedCredentials})`
                 : "Set Credentials",
             icon: "$(key)",
+            id: "tfCredentials",
             optional: true
         },
         {
-            label: 'Commands',
+            label: 'Run In Terminal',
             kind: vscode.QuickPickItemKind.Separator
         },
         { handler: TerraformInitHandler, label: "Init", icon: "$(extensions-install-count)" },

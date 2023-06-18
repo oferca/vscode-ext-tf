@@ -59,7 +59,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                     const range = editor.document.lineAt(lastLine).range;
                     editor.revealRange(range, vscode.TextEditorRevealType.Default);
                 }
-                if (bottom || this.fileHandler.completed) scrollEventListener.dispose()
+                // if (bottom || this.fileHandler.completed) scrollEventListener.dispose()
             }
 
         this.textDocumentListener = listener
@@ -100,7 +100,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     handleOutputFileUpdates () {
-        if (!this.redirect)  return
+        if (!this.redirect) return
         this.fileHandler.convertOutputToReadable()
         if (this.fileHandler.completed) setTimeout(() => this.fileHandler.outputCB(true), 100)
     }

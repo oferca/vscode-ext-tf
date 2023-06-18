@@ -1,40 +1,42 @@
 const vscode = require('vscode');
-const { mainCommandId } = require("../shared/constants")
+const { mainCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
 const { html } = require("./page");
 const { getActions } = require('../shared/actions');
 
 class WebviewButton {
+    webViewProvider
+    render(){
+      this.webview.options = {
+        enableScripts: true
+      };
+      this.actions = getActions(this.stateManager)
+      this.preferences = {
+        folder: this.stateManager.getState(changeFolderKey),
+        credentials:  this.stateManager.getState(credentialsKey)
+      }
+      this.webview.html =  html(this.preferences, this.actions);
+    }
     init () {
-        const webViewProvider = vscode.window.registerWebviewViewProvider('terraform-button-view', {
+        this.webViewProvider = vscode.window.registerWebviewViewProvider('terraform-button-view', {
           enableScripts: true,
             resolveWebviewView: (webviewView) => {
-              const webview = webviewView.webview;
-              webview.options = {
-                enableScripts: true
-              };
-              const actions = getActions(this.stateManager)
-              webview.html =  html({
-                folder: "aaa",
-                credentials: "bbb"
-              }, actions);
-        
-              webview.onDidReceiveMessage(message => {
+              this.webview = webviewView.webview;
+              this.render()
+              this.webview.onDidReceiveMessage(message => {
                 if (!message) return;
                 if (message.command === 'openTFLauncher') {
                   vscode.commands.executeCommand(mainCommandId, 'workbench.view.easy-terraform-commands');    
                 }
                 if (message.tfCommand){
-                  const CommandHandler = actions.find(action => message.tfCommand === action.label).handler
-                  const commandHandler = new CommandHandler( this.context, this.logger, this.stateManager )
-                  return commandHandler.execute()
+                  this.launcher.launch(message.tfCommand)
                 }
               })
               webviewView.onDidDispose(() => {
-                webview.dispose();
+                this.webview.dispose();
               });
             }
           });
-          this.context.subscriptions.push(webViewProvider);
+          this.context.subscriptions.push(this.webViewProvider);
     }
     
     constructor(context, logger, stateManager){

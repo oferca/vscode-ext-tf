@@ -98,16 +98,18 @@ class FileHandler {
         return this.outputFile + "." + noColorExt
     }
     convertOutputToReadable() {
-        const outputFile = fs.readFileSync(
-            this.outputFile,
-            this.shellHandler.fileEncoding
-        )
-        fs.writeFile(
-            this.outputFileNoColor,
-            removeColors(outputFile),
-            { encoding: "utf8" },
-            this.outputCB
-        )
+        try{
+            const outputFile = fs.readFileSync(
+                this.outputFile,
+                this.shellHandler.fileEncoding
+            )
+            fs.writeFile(
+                this.outputFileNoColor,
+                removeColors(outputFile),
+                { encoding: "utf8" },
+                this.outputCB
+            )
+        }catch(e) {} // might take some time until file is created
     }
 
     getCompletionSummary() {

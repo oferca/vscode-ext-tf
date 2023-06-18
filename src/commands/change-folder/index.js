@@ -3,8 +3,9 @@ const vscode = require('vscode');
 class ChangeFolderHandler {
     logger
     context
-    commandId
     stateManager
+
+    static isPreference = true
 
     async execute () {
         const projectRootUri = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri
@@ -19,12 +20,13 @@ class ChangeFolderHandler {
         const folderUri = await vscode.window.showOpenDialog(options);
         const folder = folderUri && folderUri[0].path
         this.stateManager.setUserFolder(folder) 
+        this.webview.render()
     }
 
-    constructor(context, logger, stateManager, commandId) {
+    constructor(context, logger, stateManager, webview) {
         this.logger = logger
         this.context = context
-        this.commandId = commandId
+        this.webview = webview
         this.stateManager = stateManager
     }
 }

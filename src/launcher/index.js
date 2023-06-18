@@ -31,7 +31,7 @@ class CommandsLauncher {
 
         const preferencesSet = this.stateManager.getState(credentialsKey) ||  this.stateManager.getState(changeFolderKey)
         const placeHolder = preferencesSet ? preferencesSetText : pickACommandText
-        
+
         while (!selection && (selectionDurationMS < 1000) && showMenuAttempts < 4){
             tsBefore = new Date().getTime()
             selection = await vscode.window.showQuickPick(labels, {
@@ -50,9 +50,12 @@ class CommandsLauncher {
         const { activeTerminal } = vscode.window
         if (!activeTerminal) return await this.verifyOpenTerminal()
         const selected = selection.label.split(") ")[1].trim()
+        return this.launch(selected)
+    }
 
-        const CommandHandler = getActions(this.stateManager).find(action => selected === action.label).handler
-        const commandHandler = new CommandHandler( this.context, this.logger, this.stateManager )
+    async launch(actionLabel) {
+        const CommandHandler = getActions(this.stateManager).find(action => actionLabel === action.label).handler
+        const commandHandler = new CommandHandler( this.context, this.logger, this.stateManager, CommandHandler.isPreference ? this.webview : undefined )
         return commandHandler.execute()
     }
     
@@ -71,10 +74,12 @@ class CommandsLauncher {
         }
     }
     
-    constructor(context, logger, stateManager){
+    constructor(context, logger, stateManager, webview){
         this.logger = logger
         this.context = context
         this.stateManager = stateManager
+        this.webview = webview
+        this.webview.launcher = this
         this.showQuickPick = this.showQuickPick.bind(this)
         this.verifyOpenTerminal = this.verifyOpenTerminal.bind(this)
     }

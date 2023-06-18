@@ -5,8 +5,11 @@ module.exports.html = (preferences, actions) => `
   <style>${style}</style>
 </head>
 <body>
-  <p>Open quick launcher ('⌘⇧T')</p> 
-  <button class="button" id="main-button" onclick="openTFLauncher()">Terraform Launcher</button>
+<div class="quick-launch">
+<br>
+<div>Open quick launcher ('⌘⇧T')</div>
+<div> <button class="button" id="main-button" onclick="openTFLauncher()">Terraform Launcher</button></div>
+ </div>
   <script>
     const vscode = acquireVsCodeApi();
     function openTFLauncher() { 
@@ -15,12 +18,11 @@ module.exports.html = (preferences, actions) => `
   </script>
   <div class="button-container">
   <div class="prefs">
-    <div class="pref-container" ><div class="pref"><a class="pref-change" > Clear preferences </a></div></div>
-    <div class="pref-container"><div class="pref">${preferences.folder ? "Folder selected." : ""}</div><a class="pref-change" > ${preferences.folder ? "change" : "Select folder"} </a></div>
-    <div class="pref-container"><div class="pref">${preferences.credentials ? "Credentials set." : ""}</div><a class="pref-change" > ${preferences.credentials ? "change" : "Enter credentials"} </a></div>
+    <div class="pref-container" ><div class="pref"><a class="pref-change" onclick="vscode.postMessage({ tfCommand: 'Clear preferences' })"> Clear preferences </a></div></div>
+    <div class="pref-container"><div class="pref">${preferences.folder ? "Folder selected." : ""}</div><a class="pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfFolder").label}' })")> ${preferences.folder ? "change" : "Select folder"} </a></div>
+    <div class="pref-container"><div class="pref">${preferences.credentials ? "Credentials set." : ""}</div><a class="pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfCredentials").label}' })"> ${preferences.credentials ? "change" : "Enter credentials"} </a></div>
   </div>
   </div>
-  <p>Run in terminal:</p>
   <div class="button-container">
   ${ actions.map(action => {
     if (action.optional) return

@@ -1,6 +1,7 @@
 module.exports.style= `
 #main-button{
     max-width: 300px;
+    margin-top: 12px;
     width: 100%;
     background-color: var(--vscode-button-secondaryBackground);
     color: var(--vscode-button-secondaryForeground);
@@ -94,6 +95,18 @@ module.exports.style= `
     justify-content: center;
     align-items: center;
     max-width: 300px;
+  }
+  .quick-launch{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .quick-launch > *{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
   }
   .button-container {
     display: flex;
