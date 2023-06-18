@@ -123,3 +123,7 @@ module.exports.targetTxt = 'Enter module or resource to limit the operation. For
 module.exports.changeFolderKey = "tfChangeFolderKey"
 
 module.exports.credentialsKey = "tfCredentialsKey"
+
+module.exports.preferencesSetText = "[ Preferences Selected ] Pick a command to run."
+
+module.exports.pickACommandText = "Pick a terraform command to run in terminal"

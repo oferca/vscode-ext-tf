@@ -27,7 +27,7 @@ module.exports.getActions = stateManager => {
             label: 'Optional',
             kind: vscode.QuickPickItemKind.Separator
         },
-        { handler: ClearStateHandler, label: "Clear", icon: "$(clear-all)" },
+        { handler: ClearStateHandler, label: "Clear preferences", icon: "$(clear-all)" },
         {
             handler: ChangeFolderHandler,
             label: folder ? 

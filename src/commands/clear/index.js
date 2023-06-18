@@ -1,6 +1,6 @@
-const { credentialsKey } = require("../../shared/constants")
+const { credentialsKey, changeFolderKey } = require("../../shared/constants")
 
-class ClearHandler {
+class ClearStateHandler {
     logger
     context
     commandId
@@ -19,4 +19,4 @@ class ClearHandler {
     }
 }
 
-module.exports = { ClearHandler }
+module.exports = { ClearStateHandler }

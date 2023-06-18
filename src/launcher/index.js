@@ -1,6 +1,12 @@
 const vscode = require('vscode');
 const { getActions } = require("../shared/actions")
-const { openTerminalTxt } = require("../shared/constants")
+const {
+    credentialsKey,
+    openTerminalTxt,
+    changeFolderKey,
+    pickACommandText,
+    preferencesSetText
+} = require("../shared/constants")
 
 class CommandsLauncher {
     logger
@@ -22,11 +28,14 @@ class CommandsLauncher {
 
         let showMenuAttempts = 0
         let selectionDurationMS = 0
-    
+
+        const preferencesSet = this.stateManager.getState(credentialsKey) ||  this.stateManager.getState(changeFolderKey)
+        const placeHolder = preferencesSet ? preferencesSetText : pickACommandText
+        
         while (!selection && (selectionDurationMS < 1000) && showMenuAttempts < 4){
             tsBefore = new Date().getTime()
             selection = await vscode.window.showQuickPick(labels, {
-                placeHolder: 'Pick a terraform command to run in terminal (\u2318\u21E7T)',
+                placeHolder,
                 title: "Execute Terraform Command"
             });
             tsAfter = new Date().getTime()
