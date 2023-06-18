@@ -17,17 +17,18 @@ Or
 
 Then click desired command. That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 # Examples
+<br>
 <p align="left">
 <img src="assets/launcher.gif" width=75%>
 <br/>
-<em>Commands Launcher</em>
+<em>A Terraform Commands Dashboard</em>
 </p>
 
 
 <p align="left">
 <img src="assets/plan.gif" width=75%>
 <br/>
-<em>Progress indicator</em>
+<em>A Quick Launcher and Progress indicator</em>
 </p>
 
 ### Full output logs
@@ -37,7 +38,7 @@ Then click desired command. That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉
 <p align="left">
 <img src="assets/planlog.gif" width=75%>
 <br/>
-<em>Adding credentials and viewing logs logs</em>
+<em>Add credentials and view output logs</em>
 </p>
 
 ## Notes
