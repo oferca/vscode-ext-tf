@@ -1,6 +1,6 @@
-# Terraform Launcher Plus
-The [Terraform Launcher Plus extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
-adds a *quick launcher* and a *progress indicator* to terraform commands.
+# Terraform Dashboard Plus
+The [Terraform Dashboard Plus extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+adds a *commands dashboard*, a *quick launcher* and an *animated progress indicator* to terraform commands.
 
 # Features
 * Eliminates the need for typing.
@@ -16,11 +16,18 @@ Or
 <br>
 
 Then click desired command. That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
+# Examples
+<p align="left">
+<img src="assets/launcher.gif" width=75%>
+<br/>
+<em>Commands Launcher</em>
+</p>
+
 
 <p align="left">
 <img src="assets/plan.gif" width=75%>
 <br/>
-<em>Running "terraform plan"</em>
+<em>Progress indicator</em>
 </p>
 
 ### Full output logs
@@ -30,7 +37,7 @@ Then click desired command. That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉
 <p align="left">
 <img src="assets/planlog.gif" width=75%>
 <br/>
-<em>Running "terraform plan" with credentials and logs</em>
+<em>Adding credentials and viewing logs logs</em>
 </p>
 
 ## Notes
