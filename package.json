@@ -3,7 +3,7 @@
   "name": "easy-terraform-commands",
   "displayName": "Terraform Dashboard Plus",
   "publisher": "oferkafry",
-  "description": "One-click terraform command runner and monitor",
+  "description": "One-click terraform runner and progress monitor",
   "version": "1.6.3",
   "engines": {
     "vscode": "^1.67.2"
