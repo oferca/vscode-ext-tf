@@ -58,9 +58,9 @@ module.exports.defaultEstimate = 10
 
 module.exports.rootFolderName = "vscode-tf-commands"
 
-module.exports.thankYouNote =  "Thank you for installing Terraform Toolbox Plus. Let's start."
+module.exports.thankYouNote =  "Thank you for installing Terraform Dashboard Plus. Let's start."
 
-module.exports.reminderNote =  "Launch terraform commands with Terraform Toolbox Plus. Let's start."
+module.exports.reminderNote =  "Launch terraform commands with Terraform Dashboard Plus. Let's start."
 
 module.exports.mainCommandId = "terraform.action"
 
@@ -108,7 +108,7 @@ module.exports.runCountKey = "tfRunCount"
 
 module.exports.lastTerminalNoticeKey = "tfLastTerminalNotice"
 
-module.exports.instructions = "Launch a terraform command by clicking \"Terraform\" button in status bar."
+module.exports.instructions = "Launch a terraform command by clicking \"Terraform\" button in status bar below."
 
 module.exports.instructionsEnvVar = "Define needed environment variables (e.g AWS_ACCESS... ) in terminal normally."
 
