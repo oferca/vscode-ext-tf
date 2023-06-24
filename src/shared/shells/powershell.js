@@ -53,6 +53,7 @@ class PowershellHandler extends ShellHandler {
 
     getChangeFolderCmd() {
         let folder = this.stateManager.getUserFolder()
+        if (!folder) return
         if (folder.charAt(0)=== "/") folder = folder.substring(1)
         return folder ? `cd "${folder}";` :""
     }
