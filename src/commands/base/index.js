@@ -41,6 +41,7 @@ class CommandHandlerPrototype {
     commandId
     titleColor
     fileHandler
+    requiresInitialization
     averageFromCmd
     activeTerminal
     stateManager
@@ -125,7 +126,7 @@ class CommandHandlerPrototype {
         const command = getRawCommand(this.commandId)
         const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.tfOption}"` : ""
         if (!this.fileHandler.initialized) return activeTerminal.sendText(`terraform ${command} ${option}`)
-        await this.shellHandler.runTfCommand(this.outputFile)
+        await this.shellHandler.runTfCommand(this.outputFile, this.requiresInitialization)
     }
 
     get outputFile() {

@@ -1,5 +1,4 @@
 Features:
-1. Bug - env vars set every time
 2. Bug - env vars set on init+validate
 3. Add notification every activiation that oreferences are set
 4. Feature - add to source control tab
