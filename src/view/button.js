@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { mainCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
+const { mainCommandId, changeFolderKey, credentialsKey, dashboardExpendedOnceKey } = require("../shared/constants")
 const { html } = require("./page");
 const { getActions } = require('../shared/actions');
 
@@ -21,6 +21,9 @@ class WebviewButton {
       const hasActivePreferences = this.preferences.folder || this.preferences.credentials
       this.preferences.showWarning = firstPreferences && hasActivePreferences 
       this.webview.html =  html(this.preferences, this.actions);
+      if (this.stateManager.getState(dashboardExpendedOnceKey)) return
+      this.stateManager.updateState(dashboardExpendedOnceKey, true)
+      vscode.window.showInformationMessage("Click a terraform command to run." ,{ title: "Got it" });
     }
     init () {
       const webView = {

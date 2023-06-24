@@ -3,7 +3,7 @@ const { Logger } = require("./shared/logger")
 const { mainCommandId } = require("./shared/constants")
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
-const { WebviewButton } = require("./view-explorer/button.js")
+const { WebviewButton } = require("./view/button.js")
 const { StateManager } = require("./state/index.js")
 
 const debugMode = false

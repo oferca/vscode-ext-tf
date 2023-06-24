@@ -16,6 +16,7 @@ const {
     hasSupportedTerminalKey,
     dontRemindDisclaimerKey,
     intervalUsageReminderSec,
+    dashboardExpendedOnceKey,
     shellNoticeIntervalHasSupportedSec
 } = require("../shared/constants")
 
@@ -50,6 +51,7 @@ class StateManager {
         // Update welcome notified
         this.updateState(welcomeNotifiedKey, true);
         if (this.shouldRemind) this.updateState(lastRunKey, this.now)
+        this.stateManager.updateState(dashboardExpendedOnceKey, undefined)
 
         // Create new terminal
         const terminal = vscode.window.createTerminal();
