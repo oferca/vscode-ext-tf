@@ -41,14 +41,15 @@ class CommandHandlerPrototype {
     commandId
     titleColor
     fileHandler
-    requiresInitialization
+    stateManager
     averageFromCmd
     activeTerminal
-    stateManager
     textDocumentListener
+    requiresInitialization
 
-    async logOp() {
+    async logOp(source) {
         const op = {
+            source,
             cId: this.commandId,
             terminal: this.activeTerminal && this.activeTerminal.name
         }
@@ -63,11 +64,11 @@ class CommandHandlerPrototype {
         this.stateManager.updateState(runCountKey, runCount + 1)
     }
 
-    async execute() {
+    async execute(source) {
         this.updateRunCount()
         const self = this
         const onChildProcessCompleteStep2 = async () => {
-            await self.logOp()
+            await self.logOp(source)
             self.runBash()
         }
         await this.init(onChildProcessCompleteStep2)

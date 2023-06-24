@@ -4,7 +4,7 @@
   "displayName": "Terraform Dashboard Plus",
   "publisher": "oferkafry",
   "description": "One-click terraform runner and progress monitor",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "engines": {
     "vscode": "^1.67.2"
   },
@@ -21,7 +21,14 @@
 			"explorer": [
 				{
 					"type": "webview",
-					"id": "terraform-button-view",
+					"id": "terraform-button-view-explorer",
+					"name": "Terraform"
+				}
+			],
+      "scm": [
+				{
+					"type": "webview",
+					"id": "terraform-button-view-scm",
 					"name": "Terraform"
 				}
 			]

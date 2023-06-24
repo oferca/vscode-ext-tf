@@ -53,10 +53,10 @@ class CommandsLauncher {
         return this.launch(selected)
     }
 
-    async launch(actionLabel) {
+    async launch(actionLabel, source = "menu") {
         const CommandHandler = getActions(this.stateManager).find(action => actionLabel === action.label).handler
         const commandHandler = new CommandHandler( this.context, this.logger, this.stateManager, CommandHandler.isPreference ? this.webview : undefined )
-        return commandHandler.execute()
+        return commandHandler.execute(source)
     }
     
     async verifyOpenTerminal() {

@@ -143,11 +143,11 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         this.launchProgress()
     }
 
-    async execute () {
+    async execute (source) {
         this.updateRunCount()
         const self = this
         const onChildProcessCompleteStep2 = async () => {
-            await self.logOp()
+            await self.logOp(source)
             self.launchProgressNotification()
             self.runBash()
         }
