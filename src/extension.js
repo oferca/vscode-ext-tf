@@ -6,9 +6,9 @@ const { ActionButton } = require("./action-button.js")
 const { WebviewButton } = require("./view-explorer/button.js")
 const { StateManager } = require("./state/index.js")
 
-const debugMode = false
+const debugMode = true
 const disableState = debugMode && false
-const freshStart = debugMode && false
+const freshStart = debugMode && true
 const disableLogs = debugMode && true
 
 const disposables = []

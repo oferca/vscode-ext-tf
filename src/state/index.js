@@ -1,13 +1,11 @@
 const vscode = require('vscode');
 const {
+    reminder,
     isWindows,
     tryItText,
     lastRunKey,
     runCountKey,
-    reminderNote,
-    thankYouNote,
     instructions,
-    mainCommandId,
     powershellType,
     credentialsKey,
     changeFolderKey,
@@ -45,13 +43,9 @@ class StateManager {
     async notifyFirstActivation() {
         if (!this.isFirstActivation) return false
 
-        // Show welcome message
-        const msg = this.shouldRemind ? reminderNote : thankYouNote
-        await vscode.window.showInformationMessage(msg, { modal: true });
-
         // Log message
         const { timeSinceLastUseSec, usedOnce } = this
-        await this.logger.log({ msg, timeSinceLastUseSec, usedOnce })
+        await this.logger.log({ msg: this.shouldRemind ? "Remind" : "Welcome", timeSinceLastUseSec, usedOnce })
 
         // Update welcome notified
         this.updateState(welcomeNotifiedKey, true);
@@ -61,8 +55,7 @@ class StateManager {
         const terminal = vscode.window.createTerminal();
         terminal.show();
 
-        const selection = await vscode.window.showInformationMessage(instructions, { title: tryItText });
-        if (selection.title == tryItText) vscode.commands.executeCommand(mainCommandId);
+        await vscode.window.showInformationMessage(this.shouldRemind ? reminder : instructions, { title: tryItText });
 
     }
 

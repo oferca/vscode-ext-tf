@@ -100,7 +100,7 @@ module.exports.hasSupportedTerminalKey = "tfHasSupportedTerminal"
 
 module.exports.dontRemindDisclaimerKey = "tfNeverRemindDisclaimer"
 
-module.exports.welcomeNotifiedKey = "tfUsedFirstTime"
+module.exports.welcomeNotifiedKey = "tfFirstUse"
 
 module.exports.lastRunKey = "tfLastExec"
 
@@ -108,11 +108,13 @@ module.exports.runCountKey = "tfRunCount"
 
 module.exports.lastTerminalNoticeKey = "tfLastTerminalNotice"
 
-module.exports.instructions = "Launch a terraform command by clicking \"Terraform\" button in status bar below."
+module.exports.instructions = "Click \"> TERRAFORM\" panel for dashboard."
+
+module.exports.reminder = "Click \"> TERRAFORM\" panel to run commands."
 
 module.exports.instructionsEnvVar = "Define needed environment variables (e.g AWS_ACCESS... ) in terminal normally."
 
-module.exports.tryItText = "TRY IT"
+module.exports.tryItText = "Got It"
 
 module.exports.intervalUsageReminderSec = 60 * 60 * 24 * 21
 
