@@ -36,7 +36,10 @@ module.exports.style= `
     background-color: var(--vscode-button-secondaryBackground);
     color: var(--vscode-button-secondaryForeground);
 }
-
+.warning {
+  color: red;
+  font-weight: bold;
+}
 .button {
     background-color: var(--vscode-button-background);
     color: var(--vscode-button-foreground);

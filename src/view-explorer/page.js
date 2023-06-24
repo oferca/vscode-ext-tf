@@ -17,6 +17,7 @@ module.exports.html = (preferences, actions) => `
     }
   </script>
   <div class="button-container">
+  <div class="prefs warning">${preferences.showWarning ? "NOTICE: Preferences Active" : ""}</div>
   <div class="prefs">
     <div class="pref-container" ><div class="pref"><a class="pref-change" onclick="vscode.postMessage({ tfCommand: 'Clear preferences' })"> Clear preferences </a></div></div>
     <div class="pref-container"><div class="pref">${preferences.folder ? "Folder selected." : ""}</div><a class="pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfFolder").label}' })")> ${preferences.folder ? "change" : "Select folder"} </a></div>

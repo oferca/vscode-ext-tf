@@ -5,15 +5,20 @@ const { getActions } = require('../shared/actions');
 
 class WebviewButton {
     webViewProvider
+    preferences
+
     render(){
       this.webview.options = {
         enableScripts: true
       };
       this.actions = getActions(this.stateManager)
+      const firstPreferences = !this.preferences
       this.preferences = {
         folder: this.stateManager.getState(changeFolderKey),
         credentials:  this.stateManager.getState(credentialsKey)
       }
+      const hasActivePreferences = this.preferences.folder || this.preferences.credentials
+      this.preferences.showWarning = firstPreferences && hasActivePreferences 
       this.webview.html =  html(this.preferences, this.actions);
     }
     init () {
