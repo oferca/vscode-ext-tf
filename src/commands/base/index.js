@@ -114,6 +114,7 @@ class CommandHandlerPrototype {
             this.activeTerminal = activeTerminal
             await step2()
         }
+        this.shellHandler.deleteTerminalCurrentLine()
         this.initFileHandler(onChildProcessCompleteStep1)
     }
 

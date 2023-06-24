@@ -68,14 +68,15 @@ class PowershellHandler extends ShellHandler {
     getCheckTFCommand () {
         return `if (@(Get-ChildItem -Depth 3 -Path . -Filter *.tf -Recurse -ErrorAction SilentlyContinue -Force ).length -ne "0") { echo \"${this.terminalNoticeText}\"; Start-Sleep -Seconds 0.2; echo \"\"; }`
     }
-
+    deleteTerminalCurrentLine () {
+        const { activeTerminal } = vscode.window
+        activeTerminal.sendText("#")
+    }
     constructor(...args) {
         super(...args)
         this.paramName = "-p1 "
         this.filePrefix = ""
         this.terminalNoticeText = "* Click 'Terraform' in VSCode status bar below to run terminal commands."
-
-
     }
 }
 

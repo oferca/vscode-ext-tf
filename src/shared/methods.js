@@ -245,3 +245,4 @@ module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (doc
         
     }
 })
+
