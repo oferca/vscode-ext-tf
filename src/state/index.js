@@ -33,8 +33,8 @@ class StateManager {
     usedOnce
     lastRunTS
     shouldRemind
-    commandHandler
     activeTerminal
+    commandHandler
     timeSinceLastUseSec
 
     get isFirstActivation() {
@@ -117,17 +117,21 @@ class StateManager {
         const shellHandler = new ShellHandler()
         setTimeout(() => terminal.sendText("clear; " + shellHandler.getCheckTFCommand()), 600)
     }
+    handleWebViewIntro () {
+      if (this.getState(dashboardExpendedOnceKey)) return
+      this.updateState(dashboardExpendedOnceKey, true)
+      vscode.window.showInformationMessage("Click a terraform command to run." ,{ title: "Got it" });
+    }
     init() {
         this.now = new Date().getTime();
         this.usedOnce = this.getState(welcomeNotifiedKey) || false;
         this.lastRunTS = this.getState(lastRunKey) || 0
         this.timeSinceLastUseSec = (this.now - this.lastRunTS) / 1000
         this.shouldRemind = this.lastRunTS > 0 && this.timeSinceLastUseSec > intervalUsageReminderSec
-        this.shellType = isPowershell(vscode.window.activeTerminal) ? powershellType : ""
+        this.shellType = isPowershell(this.activeTerminal) ? powershellType : ""
         this.logger.uniqueId = this.uniqueId
         this.credentials = this.getState(credentialsKey)
     }
-
     getUserFolder () {
         return this.getState(changeFolderKey)
     }
@@ -140,7 +144,6 @@ class StateManager {
         this.disableStateUpdate = disableStateUpdate
         this.disableStateRead = disableStateRead
         this.keyPostfix = keyPostfix
-        this.activeTerminal = vscode.window.activeTerminal
         this.uniqueId = new Date().valueOf()
     }
 

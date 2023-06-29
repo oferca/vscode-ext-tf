@@ -11,7 +11,7 @@ class PowershellHandler extends ShellHandler {
     filePrefix
     async invokeWithCWD(cb) {
         const cwdFileName = `cwd-${this.stateManager.uniqueId}.txt`
-        await vscode.window.activeTerminal.sendText(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "${cwdFileName}") -Value $PWD`);
+        await this.stateManager.activeTerminal.sendText(`Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "${cwdFileName}") -Value $PWD`);
         let counter = 0
         const waitForCWD = setInterval(() => {
             const cwdFilePath = path.join(os.tmpdir(), cwdFileName)
@@ -69,8 +69,8 @@ class PowershellHandler extends ShellHandler {
         return `if (@(Get-ChildItem -Depth 3 -Path . -Filter *.tf -Recurse -ErrorAction SilentlyContinue -Force ).length -ne "0") { echo \"${this.terminalNoticeText}\"; Start-Sleep -Seconds 0.2; echo \"\"; }`
     }
     deleteTerminalCurrentLine () {
-        const { activeTerminal } = vscode.window
-        activeTerminal.sendText("#")
+        const { activeTerminal } = this.stateManager
+        activeTerminal.sendText("<<# Skip command line execution") // delibarate parse error
     }
     constructor(...args) {
         super(...args)

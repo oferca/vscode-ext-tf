@@ -48,7 +48,7 @@ module.exports.supportedShellText = "Please use a bash based shell. Poweshell an
 
 module.exports.supportedShellTextWindows = "Please use a bash based shell such as WSL. Poweshell, cmd and Git shells are not currently supported."
 
-module.exports.openTerminalTxt = "To run command, please open a bash terminal and change to a folder with terraform modules."
+module.exports.openTerminalTxt = actionLabel => `Running "Terraform ${actionLabel}" in project root folder. To change folder cd and run again.`
 
 module.exports.maxCompletionPercentage = 95
 

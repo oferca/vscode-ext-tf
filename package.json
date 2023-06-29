@@ -4,7 +4,7 @@
   "displayName": "Terraform Dashboard Plus",
   "publisher": "oferkafry",
   "description": "One-click terraform runner and progress monitor",
-  "version": "1.6.7",
+  "version": "1.6.8",
   "engines": {
     "vscode": "^1.67.2"
   },

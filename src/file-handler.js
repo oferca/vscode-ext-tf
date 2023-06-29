@@ -58,7 +58,7 @@ class FileHandler {
     }
 
     async init(step2Cb) {
-        const { activeTerminal } = vscode.window
+        const { activeTerminal } = this.stateManager
 
         if (featuresDisabled(activeTerminal)) {
             await this.stateManager.handleShellDisclaimer()

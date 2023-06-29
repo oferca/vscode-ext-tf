@@ -43,7 +43,6 @@ class CommandHandlerPrototype {
     fileHandler
     stateManager
     averageFromCmd
-    activeTerminal
     textDocumentListener
     requiresInitialization
 
@@ -51,7 +50,7 @@ class CommandHandlerPrototype {
         const op = {
             source,
             cId: this.commandId,
-            terminal: this.activeTerminal && this.activeTerminal.name
+            terminal: this.stateManager.activeTerminal && this.stateManager.activeTerminal.name
         }
         return await this.logger.log(op)
     }
@@ -99,7 +98,7 @@ class CommandHandlerPrototype {
         setDefaultOption(this.commandId, this.tfOption)
         this.tfOption = this.addOption ? (await this.getOption()) : null
         
-        const { activeTerminal } = vscode.window
+        const { activeTerminal } = this.stateManager
         const ShellHandler = isPowershell(activeTerminal) ? PowershellHandler : BashHandler
 
         this.shellHandler = new ShellHandler(
@@ -110,9 +109,8 @@ class CommandHandlerPrototype {
         )
 
         const onChildProcessCompleteStep1 = async () => {
-            const { activeTerminal } = vscode.window
+            const { activeTerminal } = this.stateManager
             if (!activeTerminal) return
-            this.activeTerminal = activeTerminal
             await step2()
         }
         this.shellHandler.deleteTerminalCurrentLine()
@@ -124,7 +122,7 @@ class CommandHandlerPrototype {
     }
 
     async sendCommands(tfOption = null) {
-        const { activeTerminal } = vscode.window
+        const { activeTerminal } = this.stateManager
         const command = getRawCommand(this.commandId)
         const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.tfOption}"` : ""
         if (!this.fileHandler.initialized) return activeTerminal.sendText(`terraform ${command} ${option}`)

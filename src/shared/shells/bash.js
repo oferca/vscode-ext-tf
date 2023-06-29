@@ -15,7 +15,7 @@ class BashHandler extends ShellHandler{
     paramName
     filePrefix
     async invokeWithCWD(cb){
-        const processId = await vscode.window.activeTerminal.processId
+        const processId = await this.stateManager.activeTerminal.processId
         exec(`lsof -p ${processId} | grep cwd`, cb)
     }
     
@@ -55,18 +55,14 @@ class BashHandler extends ShellHandler{
             .map(crds => crds !== '' ? "export " + crds : null))
     }
     deleteTerminalCurrentLine () {
-        const { activeTerminal } = vscode.window
-        let backspaces = ""
-        for(let i = 0; i<500; i++) { 
-            backspaces += "\b"
-        }
-        activeTerminal.sendText(backspaces)
-        // async function deleteMultipleCharacters(numCharsToDelete) {
-        //     for (let i = 0; i < numCharsToDelete; i++) {
-        //       await vscode.commands.executeCommand('deleteLeft');
-        //     }
-        //   }
-        // return deleteMultipleCharacters(500)
+        const { activeTerminal } = this.stateManager
+        activeTerminal.sendText("<<# Skip command line execution") // delibarate parse error
+        // const { activeTerminal } = this.stateManager
+        // let backspaces = ""
+        // for(let i = 0; i<500; i++) { 
+        //     backspaces += "\b"
+        // }
+        // activeTerminal.sendText(backspaces)
     }
 
     constructor(...args){

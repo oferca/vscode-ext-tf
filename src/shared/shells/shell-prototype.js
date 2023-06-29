@@ -8,7 +8,7 @@ class ShellHandler {
     terminalNoticeTextL2
 
     async handleDefinitions(requiresInitialization) {
-        const { activeTerminal } = vscode.window
+        const { activeTerminal } = this.stateManager
         if (!activeTerminal.definitions) activeTerminal.definitions = {}
         const bashDefined = activeTerminal.definitions[this.commandId + (this.tfOption || "")]
         const definitions = this.tfCommandDefinitions();
@@ -23,7 +23,7 @@ class ShellHandler {
     }
 
     async runTfCommand (outputFile, requiresInitialization = true) {
-        const { activeTerminal } = vscode.window
+        const { activeTerminal } = this.stateManager
         await this.handleDefinitions(requiresInitialization)
         activeTerminal.sendText(`clear`);
         activeTerminal.sendText(`terraform.${this.commandId} ${this.paramName}"${outputFile}" \ `);
