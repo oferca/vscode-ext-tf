@@ -53,7 +53,9 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         this.fileHandler.outputCB = (bottom = false) => 
             {
                 const editor = vscode.window.activeTextEditor;
-                if (editor.document.fileName === this.fileHandler.outputFileNoColor) {
+                if (!editor || !this.fileHandler.outputFileNoColor) return
+                const outputFileOpen = editor.document.fileName.toLowerCase() === this.fileHandler.outputFileNoColor.toLowerCase()
+                if (outputFileOpen) {
                     const lastLine = editor.document.lineCount - (bottom ? 0 : 3);
                     const range = editor.document.lineAt(lastLine).range;
                     editor.revealRange(range, vscode.TextEditorRevealType.Default);
