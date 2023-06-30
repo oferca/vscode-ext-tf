@@ -52,7 +52,7 @@ class StateManager {
         // Update welcome notified
         this.updateState(welcomeNotifiedKey, true);
         if (this.shouldRemind) this.updateState(lastRunKey, this.now)
-        this.stateManager.updateState(dashboardExpendedOnceKey, undefined)
+        this.updateState(dashboardExpendedOnceKey, undefined)
 
         // Create new terminal
         const terminal = vscode.window.createTerminal();
