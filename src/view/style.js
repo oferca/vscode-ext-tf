@@ -1,19 +1,25 @@
 module.exports.style= `
-#main-button{
+#quicklaunch-menu{
     max-width: 300px;
     margin-top: 12px;
     width: 100%;
-    background-color: var(--vscode-button-secondaryBackground);
-    color: var(--vscode-button-secondaryForeground);
 }
-#main-button:hover {
+.button.output, #quicklaunch-menu{
+  background-color: var(--vscode-button-secondaryBackground);
+  color: var(--vscode-button-secondaryForeground);
+}
+.button.output{
+  position: absolute;
+  top: 10px;
+}
+#quicklaunch-menu:hover {
     background-color: var(--vscode-button-secondaryHoverBackground);
 }
 
-#main-button:active {
+#quicklaunch-menu:active {
     background-color: --vscode-textLink-activeForeground;
 }
-#main-button.display{
+#quicklaunch-menu.display{
     background-color: var(--vscode-button-secondaryBackground);
     color: var(--vscode-button-secondaryForeground);
 }
@@ -36,7 +42,10 @@ module.exports.style= `
     background-color: var(--vscode-button-secondaryBackground);
     color: var(--vscode-button-secondaryForeground);
 }
-
+.warning {
+  color: red;
+  font-weight: bold;
+}
 .button {
     background-color: var(--vscode-button-background);
     color: var(--vscode-button-foreground);
@@ -117,5 +126,42 @@ module.exports.style= `
 
   .button:hover {
     background-color: #005A9E;
+  }
+  
+
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+
+  h2 {
+    color: var(--vscode-button-foreground);
+    animation: callToActionAnim 2s infinite;
+    margin-bottom: 0px;
+  }
+
+  h2.no-animation{
+    animation: none;
+    opacity: 0;
+  }
+
+  h4:first-child{
+    margin-top: 5px;
+  }
+
+  h4.title{
+    width: 100%;
+  }
+
+  @keyframes callToActionAnim {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 `

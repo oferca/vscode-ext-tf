@@ -2,17 +2,18 @@ const vscode = require('vscode');
 const { getActions } = require("../shared/actions")
 const {
     credentialsKey,
-    openTerminalTxt,
     changeFolderKey,
+    openTerminalTxt,
     pickACommandText,
     preferencesSetText
 } = require("../shared/constants")
 
 class CommandsLauncher {
     logger
+    handler
     uniqueId
-    handleSpinner
     stateManager
+    handleSpinner
 
     async showQuickPick  () {
         this.handleSpinner && this.handleSpinner()
@@ -51,35 +52,25 @@ class CommandsLauncher {
         return this.launch(selected)
     }
 
-    async launch(actionLabel) {
-        const { activeTerminal } = vscode.window
-        if (!activeTerminal) return await this.verifyOpenTerminal()
+    async launch(actionLabel, source = "menu") {
+        this.stateManager.activeTerminal = await this.verifyOpenTerminal(actionLabel)
         const CommandHandler = getActions(this.stateManager).find(action => actionLabel === action.label).handler
-        const commandHandler = new CommandHandler( this.context, this.logger, this.stateManager, CommandHandler.isPreference ? this.webview : undefined )
-        return commandHandler.execute()
+        this.handler = new CommandHandler( this.context, this.logger, this.stateManager, CommandHandler.isPreference ? this.webview : undefined )
+        return this.handler.execute(source)
     }
     
-    async verifyOpenTerminal() {
-        const openTerminal = { title: 'Open Terminal' };
-        const selection = await vscode.window.showInformationMessage( openTerminalTxt, openTerminal );
-
-        await this.logger.log({
-            openTerminalTxt,
-            selection
-        })
-
-        if (selection === openTerminal) {
-            const terminal = vscode.window.createTerminal();
-            terminal.show();
-        }
+    async verifyOpenTerminal(actionLabel) {
+        if (vscode.window.activeTerminal) return vscode.window.activeTerminal
+        vscode.window.showInformationMessage( openTerminalTxt(actionLabel) );
+        const terminal = await vscode.window.createTerminal();
+        terminal.show();
+        return terminal
     }
     
-    constructor(context, logger, stateManager, webview){
+    constructor(context, logger, stateManager){
         this.logger = logger
         this.context = context
         this.stateManager = stateManager
-        this.webview = webview
-        this.webview.launcher = this
         this.showQuickPick = this.showQuickPick.bind(this)
         this.verifyOpenTerminal = this.verifyOpenTerminal.bind(this)
     }

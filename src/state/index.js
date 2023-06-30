@@ -1,13 +1,11 @@
 const vscode = require('vscode');
 const {
+    reminder,
     isWindows,
     tryItText,
     lastRunKey,
     runCountKey,
-    reminderNote,
-    thankYouNote,
     instructions,
-    mainCommandId,
     powershellType,
     credentialsKey,
     changeFolderKey,
@@ -18,6 +16,7 @@ const {
     hasSupportedTerminalKey,
     dontRemindDisclaimerKey,
     intervalUsageReminderSec,
+    dashboardExpendedOnceKey,
     shellNoticeIntervalHasSupportedSec
 } = require("../shared/constants")
 
@@ -34,8 +33,8 @@ class StateManager {
     usedOnce
     lastRunTS
     shouldRemind
-    commandHandler
     activeTerminal
+    commandHandler
     timeSinceLastUseSec
 
     get isFirstActivation() {
@@ -45,24 +44,20 @@ class StateManager {
     async notifyFirstActivation() {
         if (!this.isFirstActivation) return false
 
-        // Show welcome message
-        const msg = this.shouldRemind ? reminderNote : thankYouNote
-        await vscode.window.showInformationMessage(msg, { modal: true });
-
         // Log message
         const { timeSinceLastUseSec, usedOnce } = this
-        await this.logger.log({ msg, timeSinceLastUseSec, usedOnce })
+        await this.logger.log({ msg: this.shouldRemind ? reminder : instructions, timeSinceLastUseSec, usedOnce })
 
         // Update welcome notified
         this.updateState(welcomeNotifiedKey, true);
         if (this.shouldRemind) this.updateState(lastRunKey, this.now)
+        this.stateManager.updateState(dashboardExpendedOnceKey, undefined)
 
         // Create new terminal
         const terminal = vscode.window.createTerminal();
         terminal.show();
 
-        const selection = await vscode.window.showInformationMessage(instructions, { title: tryItText });
-        if (selection.title == tryItText) vscode.commands.executeCommand(mainCommandId);
+        await vscode.window.showInformationMessage(this.shouldRemind ? reminder : instructions, { title: tryItText });
 
     }
 
@@ -122,30 +117,34 @@ class StateManager {
         const shellHandler = new ShellHandler()
         setTimeout(() => terminal.sendText("clear; " + shellHandler.getCheckTFCommand()), 600)
     }
+    handleWebViewIntro () {
+      if (this.getState(dashboardExpendedOnceKey)) return
+      this.updateState(dashboardExpendedOnceKey, true)
+      vscode.window.showInformationMessage("Click a terraform command to run." ,{ title: "Got it" });
+    }
     init() {
         this.now = new Date().getTime();
         this.usedOnce = this.getState(welcomeNotifiedKey) || false;
         this.lastRunTS = this.getState(lastRunKey) || 0
         this.timeSinceLastUseSec = (this.now - this.lastRunTS) / 1000
         this.shouldRemind = this.lastRunTS > 0 && this.timeSinceLastUseSec > intervalUsageReminderSec
-        this.shellType = isPowershell(vscode.window.activeTerminal) ? powershellType : ""
+        this.shellType = isPowershell(this.activeTerminal) ? powershellType : ""
         this.logger.uniqueId = this.uniqueId
         this.credentials = this.getState(credentialsKey)
     }
-
     getUserFolder () {
         return this.getState(changeFolderKey)
     }
     setUserFolder (folder) {
         this.updateState(changeFolderKey, folder) 
     }
+    
     constructor(context, logger, disableStateUpdate = false, disableStateRead = false, keyPostfix = "") {
         this.context = context
         this.logger = logger
         this.disableStateUpdate = disableStateUpdate
         this.disableStateRead = disableStateRead
         this.keyPostfix = keyPostfix
-        this.activeTerminal = vscode.window.activeTerminal
         this.uniqueId = new Date().valueOf()
     }
 

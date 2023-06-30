@@ -4,7 +4,7 @@
   "displayName": "Terraform Dashboard Plus",
   "publisher": "oferkafry",
   "description": "One-click terraform runner and progress monitor",
-  "version": "1.6.3",
+  "version": "1.6.9",
   "engines": {
     "vscode": "^1.67.2"
   },
@@ -13,15 +13,38 @@
     "url": "https://github.com/oferca/vscode-ext-tf.git"
   },
   "activationEvents": [
-    "onStartupFinished"
+    "onStartup"
   ],
   "main": "./src/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "terraform-dashboard",
+          "title": "terraform dashboard",
+          "icon": "resources/package-explorer.svg",
+          "order": 2
+        }
+      ]
+    },
     "views": {
+      "terraform-dashboard": [
+        {
+          "id": "terraform-dashboard",
+          "name": "terraform-dashboard-d"
+        }
+      ],
 			"explorer": [
 				{
 					"type": "webview",
-					"id": "terraform-button-view",
+					"id": "terraform-button-view-explorer",
+					"name": "Terraform"
+				}
+			],
+      "scm": [
+				{
+					"type": "webview",
+					"id": "terraform-button-view-scm",
 					"name": "Terraform"
 				}
 			]

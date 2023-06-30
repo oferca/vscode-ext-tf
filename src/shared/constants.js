@@ -48,7 +48,7 @@ module.exports.supportedShellText = "Please use a bash based shell. Poweshell an
 
 module.exports.supportedShellTextWindows = "Please use a bash based shell such as WSL. Poweshell, cmd and Git shells are not currently supported."
 
-module.exports.openTerminalTxt = "To run command, please open a bash terminal and change to a folder with terraform modules."
+module.exports.openTerminalTxt = actionLabel => `Running "Terraform ${actionLabel}" in project root folder. To change folder cd and run again.`
 
 module.exports.maxCompletionPercentage = 95
 
@@ -100,7 +100,7 @@ module.exports.hasSupportedTerminalKey = "tfHasSupportedTerminal"
 
 module.exports.dontRemindDisclaimerKey = "tfNeverRemindDisclaimer"
 
-module.exports.welcomeNotifiedKey = "tfUsedFirstTime"
+module.exports.welcomeNotifiedKey = "tfFirstUse"
 
 module.exports.lastRunKey = "tfLastExec"
 
@@ -108,11 +108,13 @@ module.exports.runCountKey = "tfRunCount"
 
 module.exports.lastTerminalNoticeKey = "tfLastTerminalNotice"
 
-module.exports.instructions = "Launch a terraform command by clicking \"Terraform\" button in status bar below."
+module.exports.instructions = "Click \"> TERRAFORM\" panel for dashboard."
+
+module.exports.reminder = "Click \"> TERRAFORM\" panel to run commands."
 
 module.exports.instructionsEnvVar = "Define needed environment variables (e.g AWS_ACCESS... ) in terminal normally."
 
-module.exports.tryItText = "TRY IT"
+module.exports.tryItText = "Got It"
 
 module.exports.intervalUsageReminderSec = 60 * 60 * 24 * 21
 
@@ -123,6 +125,8 @@ module.exports.targetTxt = 'Enter module or resource to limit the operation. For
 module.exports.changeFolderKey = "tfChangeFolderKey"
 
 module.exports.credentialsKey = "tfCredentialsKey"
+
+module.exports.dashboardExpendedOnceKey = "tfFirstDashboardExpand"
 
 module.exports.preferencesSetText = "[ Preferences Selected ] Pick a command to run."
 

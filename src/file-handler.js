@@ -58,7 +58,7 @@ class FileHandler {
     }
 
     async init(step2Cb) {
-        const { activeTerminal } = vscode.window
+        const { activeTerminal } = this.stateManager
 
         if (featuresDisabled(activeTerminal)) {
             await this.stateManager.handleShellDisclaimer()
@@ -120,6 +120,10 @@ class FileHandler {
             warnings,
             message
         } : outputFile === "" ? noCredentials : errorStatus
+    }
+
+    get outputFileVSCodePath() {
+        return `${this.shellHandler.filePrefix}${this.outputFileNoColor}`
     }
 
     constructor(commandId, averageFromCmd, context, logger, stateManager, shellHandler) {

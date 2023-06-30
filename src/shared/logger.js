@@ -39,7 +39,7 @@ class Logger {
             rec.uniqueId = this.uniqueId
             rec.ts = Date.now()
             rec.platform = os.platform()
-
+            rec.date = new Date(Date.now())
             try {
                 await addDoc(collection, rec);
             } catch (e) {

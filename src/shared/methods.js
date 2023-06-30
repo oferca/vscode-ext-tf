@@ -29,12 +29,6 @@ const {
 
 const maxPercentage = 98
 
-module.exports.openOutputFile = commandHandler => {
-    vscode.workspace.openTextDocument(commandHandler.outputFile).then(doc => {
-        vscode.window.showTextDocument(doc); 
-    })
-}
-
 module.exports.createOutputFileName = (dataFolder, commandId) => {
     const filename = "terraform-" + commandId + "-" + new Date().toISOString().replaceAll(":","-") + "." + commandId + ".txt"
     return path.join(dataFolder, filename)
@@ -245,3 +239,4 @@ module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (doc
         
     }
 })
+

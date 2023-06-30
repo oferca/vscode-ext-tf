@@ -15,7 +15,7 @@ class BashHandler extends ShellHandler{
     paramName
     filePrefix
     async invokeWithCWD(cb){
-        const processId = await vscode.window.activeTerminal.processId
+        const processId = await this.stateManager.activeTerminal.processId
         exec(`lsof -p ${processId} | grep cwd`, cb)
     }
     
@@ -53,6 +53,16 @@ class BashHandler extends ShellHandler{
             .replaceAll("export ", "-exp-")
             .split("-exp-")
             .map(crds => crds !== '' ? "export " + crds : null))
+    }
+    deleteTerminalCurrentLine () {
+        const { activeTerminal } = this.stateManager
+        activeTerminal.sendText("<<# Skip command line execution") // delibarate parse error
+        // const { activeTerminal } = this.stateManager
+        // let backspaces = ""
+        // for(let i = 0; i<500; i++) { 
+        //     backspaces += "\b"
+        // }
+        // activeTerminal.sendText(backspaces)
     }
 
     constructor(...args){

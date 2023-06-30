@@ -1,9 +1,11 @@
 Features:
-1. init -upgrade
-2. force-unlock
-3. spinner for tf plan notification
-4. correct apply messages
-6. history file cleanup
-9. Menu select last selected
-12. Plan isn't accurate
-13. multiple targets
+Bug - preferences are ignored when
+reorder webview buttons
+* give global  user id
+* Watch last logs button
+* init -upgrade
+* force-unlock
+* spinner for tf plan notification
+* history file cleanup
+* multiple targets
+* Menu select last selected
