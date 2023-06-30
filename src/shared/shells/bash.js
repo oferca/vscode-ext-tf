@@ -56,7 +56,7 @@ class BashHandler extends ShellHandler{
     }
     deleteTerminalCurrentLine () {
         const { activeTerminal } = this.stateManager
-        activeTerminal.sendText("<<# Skip command line execution") // delibarate parse error
+        activeTerminal.sendText("<< Skip command line execution") // delibarate parse error
         // const { activeTerminal } = this.stateManager
         // let backspaces = ""
         // for(let i = 0; i<500; i++) { 

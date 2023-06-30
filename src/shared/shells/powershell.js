@@ -71,7 +71,7 @@ class PowershellHandler extends ShellHandler {
     }
     deleteTerminalCurrentLine () {
         const { activeTerminal } = this.stateManager
-        activeTerminal.sendText("<<# Skip command line execution") // delibarate parse error
+        activeTerminal.sendText("<< Skip command line execution") // delibarate parse error
     }
     constructor(...args) {
         super(...args)
