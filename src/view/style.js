@@ -149,6 +149,9 @@ module.exports.style= `
     margin-top: 5px;
   }
 
+  h4.title{
+    width: 100%;
+  }
 
   @keyframes callToActionAnim {
     0% {

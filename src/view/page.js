@@ -30,7 +30,7 @@ module.exports.html = (preferences, actions, intro = true) => `
       title="Run Terraform ${action.label.replace(" -", " with ")} in terminal"
       onclick="launchTFCommand('${action.label}')"
       >` + action.label +'</button>')
-    if (action.kind === -1 ) return ('<h4>' + action.label + '</h4>' )
+    if (action.kind === -1 ) return ('<h4 class="title">' + action.label + '</h4>' )
   }).join("")}
   </div>
   <div class="quick-launch">
