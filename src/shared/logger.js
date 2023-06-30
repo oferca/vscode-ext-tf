@@ -3,8 +3,9 @@ const os = require('os');
 const appRoot = path.resolve(__dirname);
 
 class Logger {
-    uniqueId
     _db
+    uniqueId
+    stationId
     async initFireBase () {
         try {
             const { initializeApp } = require("firebase/app");
@@ -37,6 +38,7 @@ class Logger {
             rec.version = pjson.version;    
             const collection = fsCollection(await this.getDb(), "tfh")
             rec.uniqueId = this.uniqueId
+            rec.stationId = this.stationId
             rec.ts = Date.now()
             rec.platform = os.platform()
             rec.date = new Date(Date.now())
@@ -50,6 +52,13 @@ class Logger {
         return true
     }
     
+    logError(e) {
+        const { message, stack } = e
+		const errorObj = JSON.parse(JSON.stringify(e))
+		errorObj.msg = message
+		errorObj.stack = stack
+		this.log(errorObj)
+    }
     constructor(disabled = false) {
         this.disabled = disabled
     }

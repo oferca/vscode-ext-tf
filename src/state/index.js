@@ -5,6 +5,7 @@ const {
     tryItText,
     lastRunKey,
     runCountKey,
+    stationIdKey,
     instructions,
     powershellType,
     credentialsKey,
@@ -64,6 +65,7 @@ class StateManager {
     updateState(key, value) {
         if (this.disableStateUpdate) return
         this.context.globalState.update(key + this.keyPostfix, value)
+        return value
     }
     getState(key) {
         if (this.disableStateRead) return
@@ -131,6 +133,7 @@ class StateManager {
         this.shellType = isPowershell(this.activeTerminal) ? powershellType : ""
         this.logger.uniqueId = this.uniqueId
         this.credentials = this.getState(credentialsKey)
+        this.logger.stationId = this.getState(stationIdKey) || this.updateState(stationIdKey, this.uniqueId)
     }
     getUserFolder () {
         return this.getState(changeFolderKey)

@@ -43,8 +43,8 @@ class WebviewButton {
                   break;
                 default:
                   if (!message.tfCommand) break;
-                  this.intro = false
-                  await this.commandsLauncher.launch(message.tfCommand, "webview")
+                  this.intro = !this.intro || !this.redirect
+                  const handler = await this.commandsLauncher.launch(message.tfCommand, "webview")
                   this.webview.html = html(this.preferences, this.actions, this.intro);
               }
             })

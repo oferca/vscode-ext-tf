@@ -108,7 +108,7 @@ module.exports.runCountKey = "tfRunCount"
 
 module.exports.lastTerminalNoticeKey = "tfLastTerminalNotice"
 
-module.exports.instructions = "Click \"> TERRAFORM\" panel for dashboard."
+module.exports.instructions = "Thank you for installing Terraform Dashboard Plus. Expand \"TERRAFORM\" panel for dashboard."
 
 module.exports.reminder = "Click \"> TERRAFORM\" panel to run commands."
 
@@ -125,6 +125,8 @@ module.exports.targetTxt = 'Enter module or resource to limit the operation. For
 module.exports.changeFolderKey = "tfChangeFolderKey"
 
 module.exports.credentialsKey = "tfCredentialsKey"
+
+module.exports.stationIdKey = "tfStationId"
 
 module.exports.dashboardExpendedOnceKey = "tfFirstDashboardExpand"
 

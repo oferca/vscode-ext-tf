@@ -56,7 +56,8 @@ class CommandsLauncher {
         this.stateManager.activeTerminal = await this.verifyOpenTerminal(actionLabel)
         const CommandHandler = getActions(this.stateManager).find(action => actionLabel === action.label).handler
         this.handler = new CommandHandler( this.context, this.logger, this.stateManager, CommandHandler.isPreference ? this.webview : undefined )
-        return this.handler.execute(source)
+        this.handler.execute(source)
+        return this.handler
     }
     
     async verifyOpenTerminal(actionLabel) {
