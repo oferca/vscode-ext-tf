@@ -122,6 +122,10 @@ class FileHandler {
         } : outputFile === "" ? noCredentials : errorStatus
     }
 
+    get outputFileVSCodePath() {
+        return `${this.shellHandler.filePrefix}${this.outputFileNoColor}`
+    }
+
     constructor(commandId, averageFromCmd, context, logger, stateManager, shellHandler) {
         this.logger = logger
         this.context = context

@@ -7,6 +7,7 @@ class WebviewButton {
     webViewProviderExplorer
     webViewProviderScm
     preferences
+    intro
 
     render(){
       this.webview.options = {
@@ -20,7 +21,7 @@ class WebviewButton {
       }
       const hasActivePreferences = this.preferences.folder || this.preferences.credentials
       this.preferences.showWarning = firstPreferences && hasActivePreferences 
-      this.webview.html =  html(this.preferences, this.actions);
+      this.webview.html = html(this.preferences, this.actions, this.intro);
       this.stateManager.handleWebViewIntro()
     }
     init () {
@@ -29,13 +30,22 @@ class WebviewButton {
           resolveWebviewView: (webviewView) => {
             this.webview = webviewView.webview;
             this.render()
-            this.webview.onDidReceiveMessage(message => {
+            this.webview.onDidReceiveMessage(async message => {
               if (!message) return;
-              if (message.command === 'openTFLauncher') {
-                vscode.commands.executeCommand(mainCommandId, 'workbench.view.easy-terraform-commands');    
-              }
-              if (message.tfCommand){
-                this.launcher.launch(message.tfCommand, "webview")
+              switch(message.command){
+                case 'openTFLauncher':
+                  vscode.commands.executeCommand(mainCommandId, 'workbench.view.easy-terraform-commands');
+                  break;
+                case 'openOutputFile':
+                  vscode.workspace.openTextDocument(this.commandsLauncher.handler.fileHandler.outputFileNoColor).then(async (doc) => {
+                    vscode.window.showTextDocument(doc); 
+                  })
+                  break;
+                default:
+                  if (!message.tfCommand) break;
+                  this.intro = false
+                  await this.commandsLauncher.launch(message.tfCommand, "webview")
+                  this.webview.html = html(this.preferences, this.actions, this.intro);
               }
             })
             webviewView.onDidDispose(() => {
@@ -48,10 +58,16 @@ class WebviewButton {
           this.context.subscriptions.push(this.webViewProvider);
     }
     
-    constructor(context, logger, stateManager){
+    constructor(context, logger, stateManager, commandsLauncher){
         this.context = context
         this.logger = logger
         this.stateManager = stateManager
+        this.commandsLauncher = commandsLauncher
+        this.intro = true
     }
 }
 module.exports = { WebviewButton }
+/*
+
+ 
+    */

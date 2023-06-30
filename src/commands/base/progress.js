@@ -43,18 +43,17 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         this.currentBarCompletionPercentage = 0
         this.barCompletionTimestamp = this.barCreationTimestamp + this.fileHandler.durationEstimate * 1000
 
-        const progressFileName = `${this.outputFile}.${noColorExt}`
-        const outputLogsTxt = ` [ Watch Logs.](file:${this.shellHandler.filePrefix}${progressFileName})`
+        const outputLogsTxt = ` [ Watch Logs.](file:${this.fileHandler.outputFileVSCodePath})`
         this.progressFileMsg = this.redirect ? outputLogsTxt : ''
 
         let listener
-        const openDocumentHandler = createFolderCollapser(progressFileName, listener, this.fileHandler)
+        const openDocumentHandler = createFolderCollapser(this.fileHandler.outputFileNoColor, listener, this.fileHandler)
         listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler)
 
         this.fileHandler.outputCB = (bottom = false) => 
             {
                 const editor = vscode.window.activeTextEditor;
-                if (editor.document.fileName === progressFileName) {
+                if (editor.document.fileName === this.fileHandler.outputFileNoColor) {
                     const lastLine = editor.document.lineCount - (bottom ? 0 : 3);
                     const range = editor.document.lineAt(lastLine).range;
                     editor.revealRange(range, vscode.TextEditorRevealType.Default);
@@ -88,7 +87,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
         const summary = this.redirect && this.fileHandler.getCompletionSummary(),
             progressFileName = `${this.outputFile}.${noColorExt}`,
-            outputLogsMsg = this.redirect ? ` [ Watch Logs.](file:${this.shellHandler.filePrefix}${progressFileName})` : '',
+            outputLogsMsg = this.redirect ? ` [ Watch Logs.](file:${this.fileHandler.outputFileVSCodePath})` : '',
             hasErrors = summary === errorStatus || summary === noCredentials,
             errTxt = `Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg),
             warnTxt = `Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg

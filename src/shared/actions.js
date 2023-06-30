@@ -48,7 +48,7 @@ module.exports.getActions = stateManager => {
             optional: true
         },
         {
-            label: 'Run In Terminal',
+            label: 'Click To Run',
             kind: vscode.QuickPickItemKind.Separator
         },
         { handler: TerraformInitHandler, label: "Init", icon: "$(extensions-install-count)" },

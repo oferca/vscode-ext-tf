@@ -13,11 +13,27 @@
     "url": "https://github.com/oferca/vscode-ext-tf.git"
   },
   "activationEvents": [
-    "onStartupFinished"
+    "onStartup"
   ],
   "main": "./src/extension.js",
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "terraform-dashboard",
+          "title": "terraform dashboard",
+          "icon": "resources/package-explorer.svg",
+          "order": 2
+        }
+      ]
+    },
     "views": {
+      "terraform-dashboard": [
+        {
+          "id": "terraform-dashboard",
+          "name": "terraform-dashboard-d"
+        }
+      ],
 			"explorer": [
 				{
 					"type": "webview",

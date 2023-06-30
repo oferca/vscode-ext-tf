@@ -10,9 +10,10 @@ const {
 
 class CommandsLauncher {
     logger
+    handler
     uniqueId
-    handleSpinner
     stateManager
+    handleSpinner
 
     async showQuickPick  () {
         this.handleSpinner && this.handleSpinner()
@@ -54,8 +55,8 @@ class CommandsLauncher {
     async launch(actionLabel, source = "menu") {
         this.stateManager.activeTerminal = await this.verifyOpenTerminal(actionLabel)
         const CommandHandler = getActions(this.stateManager).find(action => actionLabel === action.label).handler
-        const commandHandler = new CommandHandler( this.context, this.logger, this.stateManager, CommandHandler.isPreference ? this.webview : undefined )
-        return commandHandler.execute(source)
+        this.handler = new CommandHandler( this.context, this.logger, this.stateManager, CommandHandler.isPreference ? this.webview : undefined )
+        return this.handler.execute(source)
     }
     
     async verifyOpenTerminal(actionLabel) {
@@ -66,12 +67,10 @@ class CommandsLauncher {
         return terminal
     }
     
-    constructor(context, logger, stateManager, webview){
+    constructor(context, logger, stateManager){
         this.logger = logger
         this.context = context
         this.stateManager = stateManager
-        this.webview = webview
-        this.webview.launcher = this
         this.showQuickPick = this.showQuickPick.bind(this)
         this.verifyOpenTerminal = this.verifyOpenTerminal.bind(this)
     }

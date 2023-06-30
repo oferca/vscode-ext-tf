@@ -46,7 +46,7 @@ class StateManager {
 
         // Log message
         const { timeSinceLastUseSec, usedOnce } = this
-        await this.logger.log({ msg: this.shouldRemind ? "Remind" : "Welcome", timeSinceLastUseSec, usedOnce })
+        await this.logger.log({ msg: this.shouldRemind ? reminder : instructions, timeSinceLastUseSec, usedOnce })
 
         // Update welcome notified
         this.updateState(welcomeNotifiedKey, true);
@@ -138,6 +138,7 @@ class StateManager {
     setUserFolder (folder) {
         this.updateState(changeFolderKey, folder) 
     }
+    
     constructor(context, logger, disableStateUpdate = false, disableStateRead = false, keyPostfix = "") {
         this.context = context
         this.logger = logger

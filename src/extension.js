@@ -19,8 +19,8 @@ async function activate(context) {
 	const pref = freshStart ? Math.random() : ""
 	const stateManager = new StateManager(context, logger, disableState, disableState, pref )
 	const actionButton = new ActionButton(context, logger)
-	const webviewButton = new WebviewButton(context, logger, stateManager)
-	const launcher = new CommandsLauncher(context, logger, stateManager, webviewButton)
+	const launcher = new CommandsLauncher(context, logger, stateManager)
+	const webviewButton = new WebviewButton(context, logger, stateManager, launcher)
 
 	stateManager.init()
 	const commandRegistration = vscode.commands.registerCommand(
@@ -40,6 +40,7 @@ async function activate(context) {
 	vscode.window.onDidOpenTerminal(terminal => {
 		stateManager.handleTerminalNotice(terminal)
 	});
+
 }
 
 function deactivate() { }
