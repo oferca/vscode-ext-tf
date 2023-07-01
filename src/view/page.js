@@ -8,17 +8,6 @@ module.exports.html = (preferences, actions, intro = true, handler = {}) => `
     ${style}
     ${animatedButtonStyle}
   </style>
-</head>
-<body>
-<div id="top-container">
-  <h2 id=\"intro\" class=\"${intro ? "" : "no-animation"}\" >Click To Run!</h2>
-  <div class="button-container">
-      <h4 class="output" style="${intro ? "display: none;" : ""}">Terraform ${handler.commandId ? handler.commandId.charAt(0).toUpperCase() + handler.commandId.slice(1) : "" }</h4>
-  </div>
-  <div class="button-container" style=\"${intro ? "display: none;" : ""}\">
-    <button class="button output" onclick="postMessage(\'openOutputFile\')">Watch Logs</button>
-    </div>
-  </div>
   <script>
     const vscode = acquireVsCodeApi();
     function postMessage(command) { 
@@ -26,9 +15,27 @@ module.exports.html = (preferences, actions, intro = true, handler = {}) => `
     }
     function launchTFCommand(tfCommand, el) {
       el.classList.add('animated-button');
+      document.getElementById("intro").classList.add('no-animation');
+      document.getElementById("display-output-2").style.display = "inherit"
+      document.getElementById("display-output-1").style.display = "inherit"
+      document.getElementById("display-output-1").innerHTML = "Terraform " + tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1)
       vscode.postMessage({ tfCommand });
     }
+    
   </script>
+</head>
+<body>
+<div id="top-container">
+  <h2 id="intro" >Click To Run!</h2>
+  <div class="button-container">
+      <h4 id="display-output-1" class="output" style="display:none;">
+       
+      </h4>
+  </div>
+  <div id="display-output-2" class="button-container" style="display:none;" >
+    <button class="button output" onclick="postMessage(\'openOutputFile\')">Watch Logs</button>
+    </div>
+  </div>
   <div class="prefs warning">${preferences.showWarning ? "NOTICE: Preferences Active" : ""}</div>
   <div class="button-container">
   ${ actions.map(action => {
@@ -47,13 +54,7 @@ module.exports.html = (preferences, actions, intro = true, handler = {}) => `
     <span></span>
     ${action.label}
   </div>
-    
-    
-    <!--button
-      class="button command ${type}"
-      title="Run Terraform ${action.label.replace(" -", " with ")} in terminal"
-      onclick="launchTFCommand('${action.label}')"
-      >` + action.label +'</-->')
+    `)
     if (action.kind === -1 ) return ('<h4 class="title">' + action.label + '</h4>' )
   }).join("")}
   </div>
@@ -68,15 +69,6 @@ module.exports.html = (preferences, actions, intro = true, handler = {}) => `
       <div class="pref-container"><div class="pref">${preferences.credentials ? "Credentials set." : ""}</div><a class="pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfCredentials").label}' })"> ${preferences.credentials ? "change" : "Enter credentials"} </a></div>
     </div>
   <br>
-  <script>
-  const buttons = document.querySelectorAll('.button');
-
-  buttons.forEach(function(button) {
-    button.addEventListener('click', function(event) {
-      event.preventDefault();
-    });
-  });
-  </script>
 </body>
 </html>
 `;

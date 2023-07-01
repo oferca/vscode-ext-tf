@@ -45,6 +45,7 @@ class WebviewButton {
                   if (!message.tfCommand) break;
                   this.intro = this.intro === false ? false : !(this.intro || this.redirect)
                   const handler = await this.commandsLauncher.launch(message.tfCommand, "webview")
+                  this.webview.postMessage({ command: 'refactor' });
                   // this.webview.html = html(this.preferences, this.actions, this.intro, handler);
               }
             })
