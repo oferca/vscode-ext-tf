@@ -50,6 +50,11 @@ h4.output{
 .warning {
   color: red;
   font-weight: bold;
+  top: 57px;
+    display: block;
+    position: absolute;
+    width: 100%;
+    left: 0px;
 }
 a.command:hover, a.command, a.command:focus {
   color: var(--vscode-button-foreground);
@@ -157,6 +162,10 @@ a.command:hover, a.command, a.command:focus {
 
   h4.title:first-child{
     margin-top: 5px;
+  }
+
+  #top-container{
+    height: 60px;
   }
 
   h4.title{

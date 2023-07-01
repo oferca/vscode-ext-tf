@@ -20,7 +20,7 @@ class WebviewButton {
       }
       const hasActivePreferences = this.preferences.folder || this.preferences.credentials
       this.preferences.showWarning = hasActivePreferences 
-      this.intro = this.intro === false ? false : !(this.intro || handler && handler.redirect)
+      this.intro = this.intro === false ? false : this.intro && (!handler || (handler && !handler.redirect))
       this.webview.html = html(this.preferences, this.actions, Math.random(), this.intro, handler && handler.commandId)
       this.stateManager.handleWebViewIntro()
     }
