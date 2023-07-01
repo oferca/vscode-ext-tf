@@ -43,9 +43,9 @@ class WebviewButton {
                   break;
                 default:
                   if (!message.tfCommand) break;
-                  this.intro = !this.intro || !this.redirect
+                  this.intro = this.intro === false ? false : !(this.intro || this.redirect)
                   const handler = await this.commandsLauncher.launch(message.tfCommand, "webview")
-                  this.webview.html = html(this.preferences, this.actions, this.intro);
+                  // this.webview.html = html(this.preferences, this.actions, this.intro, handler);
               }
             })
             webviewView.onDidDispose(() => {

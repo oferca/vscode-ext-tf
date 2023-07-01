@@ -10,7 +10,12 @@ module.exports.style= `
 }
 .button.output{
   position: absolute;
-  top: 10px;
+  top: 35px;
+}
+h4.output{
+  position: absolute;
+  top: 0px;
+  margin: 15px;
 }
 #quicklaunch-menu:hover {
     background-color: var(--vscode-button-secondaryHoverBackground);
@@ -45,6 +50,11 @@ module.exports.style= `
 .warning {
   color: red;
   font-weight: bold;
+}
+a.command:hover, a.command, a.command:focus {
+  color: var(--vscode-button-foreground);
+  text-decoration: none;
+  outline: none;
 }
 .button {
     background-color: var(--vscode-button-background);
@@ -145,7 +155,7 @@ module.exports.style= `
     opacity: 0;
   }
 
-  h4:first-child{
+  h4.title:first-child{
     margin-top: 5px;
   }
 
