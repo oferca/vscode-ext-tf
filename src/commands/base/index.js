@@ -63,12 +63,12 @@ class CommandHandlerPrototype {
         this.stateManager.updateState(runCountKey, runCount + 1)
     }
 
-    async execute(source) {
+    async execute(source, cb) {
         this.updateRunCount()
         const self = this
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp(source)
-            self.runBash()
+            self.runBash(cb)
         }
         await this.init(onChildProcessCompleteStep2)
        
@@ -117,16 +117,17 @@ class CommandHandlerPrototype {
         this.initFileHandler(onChildProcessCompleteStep1)
     }
 
-    async runBash() {
-        setTimeout(this.sendCommands, !this.fileHandler.initialized ? 500 : 0)
+    async runBash(cb) {
+        setTimeout(() => this.sendCommands(cb), !this.fileHandler.initialized ? 500 : 0)
     }
 
-    async sendCommands(tfOption = null) {
+    async sendCommands(cb = () => {}) {
         const { activeTerminal } = this.stateManager
         const command = getRawCommand(this.commandId)
         const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.tfOption}"` : ""
         if (!this.fileHandler.initialized) return activeTerminal.sendText(`terraform ${command} ${option}`)
         await this.shellHandler.runTfCommand(this.outputFile, this.requiresInitialization)
+        cb()
     }
 
     get outputFile() {

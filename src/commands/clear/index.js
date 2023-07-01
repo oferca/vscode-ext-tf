@@ -6,18 +6,15 @@ class ClearStateHandler {
     commandId
     stateManager
 
-    static isPreference = true
-    
-    async execute () {
+    async execute (source, cb = () => {}) {
         this.stateManager.updateState(credentialsKey, undefined) 
         this.stateManager.updateState(changeFolderKey, undefined) 
-        this.webview.render()
+        cb()
     }
 
-    constructor(context, logger, stateManager, webview) {
+    constructor(context, logger, stateManager) {
         this.logger = logger
         this.context = context
-        this.webview = webview
         this.stateManager = stateManager
     }
 }

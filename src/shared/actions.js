@@ -34,6 +34,7 @@ module.exports.getActions = stateManager => {
             label: folder ? 
                 `Change Terraform Folder (${displayedFolderName})`
                 : "Select Terraform Folder",
+            matches: label => label.indexOf("Change Terraform Folder") > -1 || label.indexOf("Select Terraform Folder") > -1,
             icon: "$(folder-opened)",
             id: "tfFolder",
             optional: true

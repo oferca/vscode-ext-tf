@@ -5,9 +5,7 @@ class ChangeFolderHandler {
     context
     stateManager
 
-    static isPreference = true
-
-    async execute () {
+    async execute (source, cb = () => {}) {
         const projectRootUri = vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri
         const options =     {
         canSelectFiles: false,
@@ -20,7 +18,7 @@ class ChangeFolderHandler {
         const folderUri = await vscode.window.showOpenDialog(options);
         const folder = folderUri && folderUri[0].path
         this.stateManager.setUserFolder(folder) 
-        this.webview.render()
+        cb()
     }
 
     constructor(context, logger, stateManager, webview) {

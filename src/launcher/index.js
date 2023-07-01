@@ -52,11 +52,11 @@ class CommandsLauncher {
         return this.launch(selected)
     }
 
-    async launch(actionLabel, source = "menu") {
+    async launch(actionLabel, source = "menu", cb) {
         this.stateManager.activeTerminal = await this.verifyOpenTerminal(actionLabel)
-        const CommandHandler = getActions(this.stateManager).find(action => actionLabel === action.label).handler
-        this.handler = new CommandHandler( this.context, this.logger, this.stateManager, CommandHandler.isPreference ? this.webview : undefined )
-        this.handler.execute(source)
+        const CommandHandler = getActions(this.stateManager).find(action => (actionLabel === action.label || (action.matches && action.matches(actionLabel)))).handler
+        this.handler = new CommandHandler( this.context, this.logger, this.stateManager)
+        this.handler.execute(source, cb)
         return this.handler
     }
     

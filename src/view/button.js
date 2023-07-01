@@ -9,19 +9,19 @@ class WebviewButton {
     preferences
     intro
 
-    render(){
+    render(handler){
       this.webview.options = {
         enableScripts: true
       };
       this.actions = getActions(this.stateManager)
-      const firstPreferences = !this.preferences
       this.preferences = {
         folder: this.stateManager.getState(changeFolderKey),
         credentials:  this.stateManager.getState(credentialsKey)
       }
       const hasActivePreferences = this.preferences.folder || this.preferences.credentials
-      this.preferences.showWarning = firstPreferences && hasActivePreferences 
-      this.webview.html = html(this.preferences, this.actions, this.intro);
+      this.preferences.showWarning = hasActivePreferences 
+      this.intro = this.intro === false ? false : !(this.intro || handler && handler.redirect)
+      this.webview.html = html(this.preferences, this.actions, Math.random(), this.intro, handler && handler.commandId)
       this.stateManager.handleWebViewIntro()
     }
     init () {
@@ -43,10 +43,12 @@ class WebviewButton {
                   break;
                 default:
                   if (!message.tfCommand) break;
-                  this.intro = this.intro === false ? false : !(this.intro || this.redirect)
-                  const handler = await this.commandsLauncher.launch(message.tfCommand, "webview")
-                  this.webview.postMessage({ command: 'refactor' });
-                  // this.webview.html = html(this.preferences, this.actions, this.intro, handler);
+                  const self = this
+                  const handler = await this.commandsLauncher.launch(
+                    message.tfCommand,
+                    "webview",
+                    () => setTimeout(() => self.render(handler))
+                  )
               }
             })
             webviewView.onDidDispose(() => {

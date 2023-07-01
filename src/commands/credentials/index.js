@@ -7,9 +7,7 @@ class CredentialsHandler {
     commandId
     stateManager
 
-    static isPreference = true
-
-    async execute () {
+    async execute (source, cb = () => {}) {
         this.stateManager.credentialsSetter = await vscode.window.showInputBox({
             prompt: 'Set cloud credentials:',
             ignoreFocusOut: true,
@@ -19,7 +17,7 @@ class CredentialsHandler {
             placeHolder: 'For example: $Env:AWS_ACCESS_KEY_ID=... ; $Env:AWS_SECRET_ACCESS_KEY=...', // Placeholder text
         });
         this.stateManager.updateState(credentialsKey, this.stateManager.credentialsSetter) 
-        this.webview.render()
+        cb()
     }
 
     constructor(context, logger, stateManager, webview) {

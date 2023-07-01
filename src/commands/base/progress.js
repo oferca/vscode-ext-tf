@@ -36,7 +36,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         ) 
     }
 
-    launchProgress() {
+    launchProgress(cb) {
         if (!this.fileHandler.initialized) return
 
         this.barCreationTimestamp = Date.now()
@@ -69,7 +69,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             location: vscode.ProgressLocation.Notification,
             title: getProgressMsg(this.commandId),//  + progressFileMsg,
             cancellable: true
-        }, this.progressUpdate )
+        }, (progress, token) => this.progressUpdate(progress, token, cb)  )
     }
 
     completed () {
@@ -106,7 +106,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         if (this.fileHandler.completed) setTimeout(() => this.fileHandler.outputCB(true), 100)
     }
 
-    async progressUpdate (progress, token) {
+    async progressUpdate (progress, token, cb = () => {}) {
         token.onCancellationRequested(() => {
             console.log("User canceled the long running operation");
             clearInterval(this.intervalID);
@@ -127,6 +127,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                 if (self.completed() || self.abort) {
                     clearInterval(self.intervalID);
                     clearInterval(completedIntervalId)
+                    cb()
                     resolve()
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
@@ -134,26 +135,26 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                 }
             }, 100)
             setTimeout(() => {
+                cb()
                 resolve();
             }, maxNotificationTime);
         });
         return p;
     }
 
-    launchProgressNotification () {
-        this.launchProgress()
+    launchProgressNotification (cb) {
+        this.launchProgress(cb)
     }
 
-    async execute (source) {
+    async execute (source, cb) {
         this.updateRunCount()
         const self = this
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp(source)
-            self.launchProgressNotification()
+            self.launchProgressNotification(cb)
             self.runBash()
         }
         await this.init(onChildProcessCompleteStep2)
-        
     }
 
     constructor(context, logger, stateManager, shellHandler, commandId){
