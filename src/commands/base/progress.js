@@ -124,7 +124,12 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         
         const p = new Promise(resolve => {
             const completedIntervalId = setInterval(() => {
-                if (self.completed() || self.abort) {
+                const completed = self.completed()
+                if (completed || self.abort) {
+                    self.logger.log({
+                        completed,
+                        commandId: self.commandId
+                    } )
                     clearInterval(self.intervalID);
                     clearInterval(completedIntervalId)
                     cb()

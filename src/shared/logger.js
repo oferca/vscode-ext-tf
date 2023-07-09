@@ -1,6 +1,7 @@
 const path = require('path');
 const os = require('os');
 const appRoot = path.resolve(__dirname);
+const { runCountKey } = require("./constants")
 
 class Logger {
     _db
@@ -42,6 +43,7 @@ class Logger {
             rec.ts = Date.now()
             rec.platform = os.platform()
             rec.date = new Date(Date.now())
+            rec.runCount = this.stateManager.getState(runCountKey)
             try {
                 await addDoc(collection, rec);
             } catch (e) {
@@ -59,8 +61,9 @@ class Logger {
 		errorObj.stack = stack
 		this.log(errorObj)
     }
-    constructor(disabled = false) {
+    constructor(disabled = false, stateManager) {
         this.disabled = disabled
+        this.stateManager = stateManager
     }
 }
 

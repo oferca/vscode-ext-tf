@@ -26,7 +26,7 @@ async function activate(context) {
 		const actionButton = new ActionButton(context, logger)
 		const launcher = new CommandsLauncher(context, logger, stateManager)
 		const webviewButton = new WebviewButton(context, logger, stateManager, launcher)
-
+		logger.stateManager = stateManager
 		stateManager.init()
 		const commandRegistration = vscode.commands.registerCommand(
 			mainCommandId,
