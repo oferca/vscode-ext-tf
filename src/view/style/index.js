@@ -149,7 +149,7 @@ a.command:hover, a.command, a.command:focus {
     text-align: center;
   }
 
-  h2 {
+  h2, .animated-button-text {
     color: var(--vscode-foreground);
     animation: callToActionAnim 2s infinite;
     margin-bottom: 0px;

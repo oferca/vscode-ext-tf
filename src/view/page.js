@@ -37,7 +37,9 @@ module.exports.html = (preferences, actions, invalidate, intro, tfCommand) => `
       <h4 id="display-output-1" class="output" style="display:none;"></h4>
   </div>
   <div id="display-output-2" class="button-container" style="display:none;" >
-    <button class="button output" onclick="postMessage(\'openOutputFile\')">Watch Logs</button>
+    <button class="button output" onclick="postMessage(\'openOutputFile\')">
+      <div class="animated-button-text" onclick="this.classList.remove('animated-button-text')">Watch Logs</div>
+    </button>
 
     </div>
    
