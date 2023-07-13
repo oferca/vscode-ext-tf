@@ -150,7 +150,7 @@ a.command:hover, a.command, a.command:focus {
   }
 
   h2 {
-    color: var(--vscode-button-foreground);
+    color: var(--vscode-foreground);
     animation: callToActionAnim 2s infinite;
     margin-bottom: 0px;
   }

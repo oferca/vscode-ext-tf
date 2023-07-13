@@ -1,6 +1,4 @@
 Features:
-Bug - target no persisted
-Bug - blinking not visible on white themes
 Bug - preferences are ignored when
 * Add SAFE CHAT GPT option - scramble output
 * Clearer show logs
