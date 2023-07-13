@@ -104,6 +104,8 @@ module.exports.welcomeNotifiedKey = "tfFirstUse"
 
 module.exports.lastRunKey = "tfLastExec"
 
+module.exports.optionKey = "tfOption"
+
 module.exports.runCountKey = "tfRunCount"
 
 module.exports.lastTerminalNoticeKey = "tfLastTerminalNotice"

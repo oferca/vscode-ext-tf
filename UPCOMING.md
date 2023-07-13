@@ -1,6 +1,8 @@
 Features:
-Bug - buttons animate forever in init,  vscode-ext-tf repo
+Bug - target no persisted
+Bug - blinking not visible on white themes
 Bug - preferences are ignored when
+* Add SAFE CHAT GPT option - scramble output
 * Clearer show logs
 * FEATURE - prefs profile
 * Graphivs on button

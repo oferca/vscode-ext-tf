@@ -1,4 +1,3 @@
-const vscode = require('vscode');
 const { FileHandler } = require("../../file-handler")
 const { isPowershell } = require("../../shared/methods")
 const { BashHandler } = require("../../shared/shells/bash")
@@ -11,6 +10,7 @@ const {
 } = require("../../shared/methods")
 
 const {
+    optionKey,
     lastRunKey,
     runCountKey,
     tfPlanVarsCommandId,
@@ -35,7 +35,6 @@ class CommandHandlerPrototype {
     db
     abort
     redirect = true
-    tfOption = null
     logger
     addOption
     commandId
@@ -95,15 +94,16 @@ class CommandHandlerPrototype {
     }
 
     async init(step2) {
-        setDefaultOption(this.commandId, this.tfOption)
-        this.tfOption = this.addOption ? (await this.getOption()) : null
+        setDefaultOption(this.commandId, this.stateManager.getState(optionKey))
+        const newOption =  this.addOption ? (await this.getOption()) : null
+        this.stateManager.updateState(optionKey, newOption)
         
         const { activeTerminal } = this.stateManager
         const ShellHandler = isPowershell(activeTerminal) ? PowershellHandler : BashHandler
 
         this.shellHandler = new ShellHandler(
             this.commandId,
-            this.tfOption,
+            this.stateManager.getState(optionKey),
             this.redirect,
             this.stateManager
         )
@@ -124,7 +124,7 @@ class CommandHandlerPrototype {
     async sendCommands(cb = () => {}) {
         const { activeTerminal } = this.stateManager
         const command = getRawCommand(this.commandId)
-        const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.tfOption}"` : ""
+        const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.stateManager.getState(optionKey)}"` : ""
         if (!this.fileHandler.initialized) return activeTerminal.sendText(`terraform ${command} ${option}`)
         await this.shellHandler.runTfCommand(this.outputFile, this.requiresInitialization)
         cb()
