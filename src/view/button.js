@@ -9,7 +9,7 @@ class WebviewButton {
     preferences
     intro
 
-    render(handler){
+    render(handler, completed = false){
       this.webview.options = {
         enableScripts: true
       };
@@ -21,7 +21,7 @@ class WebviewButton {
       const hasActivePreferences = this.preferences.folder || this.preferences.credentials
       this.preferences.showWarning = hasActivePreferences 
       this.intro = this.intro === false ? false : this.intro && (!handler || (handler && !handler.redirect))
-      this.webview.html = html(this.preferences, this.actions, Math.random(), this.intro, handler && handler.commandId)
+      this.webview.html = html(this.preferences, this.actions, Math.random(), this.intro, handler && handler.commandId, completed)
       this.stateManager.handleWebViewIntro()
     }
     init () {
@@ -47,7 +47,7 @@ class WebviewButton {
                   const handler = await this.commandsLauncher.launch(
                     message.tfCommand,
                     "webview",
-                    () => setTimeout(() => self.render(handler))
+                    () => setTimeout(() => self.render(handler, true))
                   )
               }
             })

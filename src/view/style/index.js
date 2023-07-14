@@ -10,8 +10,16 @@ module.exports.style= `
 }
 .button.output{
   position: absolute;
+  top: 0px;
+}
+.button.output.chat-gpt{
   top: 35px;
 }
+.button.output.chat-gpt .disabled{
+  color: var(--vscode-disabledForeground)
+}
+
+
 h4.output{
   position: absolute;
   top: 0px;
@@ -37,7 +45,7 @@ h4.output{
     background-color: var(--vscode-button-background);
     color: var(--vscode-button-foreground);
 }
-.command:hover {
+.command:not(.disabled):hover {
     background-color: var(--vscode-button-hoverBackground);
 }
 .command:active {
@@ -139,8 +147,12 @@ a.command:hover, a.command, a.command:focus {
     flex-wrap: wrap;
   }
 
-  .button:hover {
-    background-color: #005A9E;
+  .button:not(.disabled):hover {
+    background-color: var(--vscode-button-secondaryHoverBackground);
+  }
+  
+  .button.command:not(.disabled):hover {
+    background-color: var(--vscode-button-hoverBackground);
   }
   
 
