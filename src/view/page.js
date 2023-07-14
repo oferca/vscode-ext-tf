@@ -40,7 +40,7 @@ module.exports.html = (preferences, actions, invalidate, intro, tfCommand, compl
     <button class="button output" onclick="postMessage(\'openOutputFile\')">
       <div id="watch-logs" class="animated-button-text" onclick="this.classList.remove('animated-button-text')">Watch Logs</div>
     </button>
-    <button class="button output chat-gpt ${completed && (tfCommand.toLowerCase().indexOf("plan") > -1) ? "animated-button-text" : "disabled"}" onclick="postMessage(\'chat-gpt\')" title="Ask ChatGPT, terraform plan only">
+    <button class="button output chat-gpt ${completed && (tfCommand.toLowerCase().indexOf("plan") > -1) ? "animated-button-text" : "disabled"}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="Ask ChatGPT, terraform plan only">
       <div id="chat-gpt" class="${completed && (tfCommand.toLowerCase().indexOf("plan") > -1) ? "animated-button-text" : "disabled"}" onclick="this.classList.remove('animated-button-text')">Ask ChatGPT</div>
     </button>
 

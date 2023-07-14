@@ -47,7 +47,7 @@ class WebviewButton {
                   vscode.env.clipboard.writeText(pleaseExplain + output)
                     .then(() => {
                       console.log('Text copied to clipboard');
-                      vscode.window.showInformationMessage('This is a modal dialog!', 'OK')
+                      vscode.window.showInformationMessage('Copied to Clipboard.\n Please paste in ChatGPT ( ⌘v)',  { modal: true })
                       .then((selection) => {
                         vscode.env.openExternal(vscode.Uri.parse("https://chat.openai.com/"))
                         .then(() => {
