@@ -1,17 +1,20 @@
 const vscode = require('vscode');
 const { getActions } = require("../shared/actions")
 const {
+    lastActionKey,
+    lastOutputKey,
     credentialsKey,
     changeFolderKey,
     openTerminalTxt,
     pickACommandText,
-    preferencesSetText
+    preferencesSetText,
 } = require("../shared/constants")
 
 class CommandsLauncher {
     logger
     handler
     uniqueId
+    outputFile 
     stateManager
     handleSpinner
 
@@ -56,10 +59,21 @@ class CommandsLauncher {
         this.stateManager.activeTerminal = await this.verifyOpenTerminal(actionLabel)
         const CommandHandler = getActions(this.stateManager).find(action => (actionLabel === action.label || (action.matches && action.matches(actionLabel)))).handler
         this.handler = new CommandHandler( this.context, this.logger, this.stateManager)
-        this.handler.execute(source, cb)
+        const isPreviousActionPlan = this.stateManager.getState(lastActionKey) && this.stateManager.getState(lastActionKey).toLowerCase().indexOf("plan") > -1
+        const cbWithState = () => {
+            cb && cb()
+            const hasOutput = this.handler.fileHandler && this.handler.fileHandler.redirect
+            if (!(this.handler.commandId && hasOutput)) return
+            const outputFileContent =hasOutput  ? this.handler.fileHandler.getOutputFileContent() : this.stateManager.getState(lastOutputKey)
+            this.stateManager.updateState(lastOutputKey, outputFileContent)
+            this.stateManager.updateState(lastActionKey, actionLabel)        
+        }
+        const lastOutput = isPreviousActionPlan ? this.stateManager.getState(lastOutputKey) : null
+        this.handler.execute(source, cbWithState, lastOutput)
+        
         return this.handler
     }
-    
+
     async verifyOpenTerminal(actionLabel) {
         if (vscode.window.activeTerminal) return vscode.window.activeTerminal
         vscode.window.showInformationMessage( openTerminalTxt(actionLabel) );

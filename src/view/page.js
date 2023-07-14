@@ -1,8 +1,9 @@
 const { style } = require("./style")
 const { animatedButtonStyle } = require("./style/animated-button")
 
-module.exports.html = (preferences, actions, invalidate, intro, tfCommand, completed) => {
-  const isPlanCompleted = completed && (tfCommand.toLowerCase().indexOf("plan") > -1)
+module.exports.html = (preferences, actions, invalidate, intro, tfCommand, completed, commandLaunched) => {
+  const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1
+  const disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 )
   return `
 <html>
 <head>
@@ -18,8 +19,11 @@ module.exports.html = (preferences, actions, invalidate, intro, tfCommand, compl
     function showLogsButton (tfCommand) {
       document.getElementById("intro").classList.add('no-animation');
       document.getElementById("display-output-2").style.display = "flex"
-
-      document.getElementById("watch-logs").classList.add("animated-button-text")
+      
+      const disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 )
+      document.getElementById("watch-logs").classList.remove("disabled")
+      document.getElementById("watch-logs-button").classList.remove("disabled")
+      document.getElementById("watch-logs").classList.add(disableLogsButton ? "disabled" : "animated-button-text")
       setTimeout(() => document.getElementById("watch-logs").classList.remove("animated-button-text"), 300000)
 
       if (tfCommand !== "undefined"){
@@ -39,8 +43,8 @@ module.exports.html = (preferences, actions, invalidate, intro, tfCommand, compl
   ${preferences.showWarning ? '<br><br><div class="title prefs warning">Preferences Active</div>' : ""}
 
   <div id="display-output-2" class="button-container" style="display:none;" >
-    <button class="button output" onclick="postMessage(\'openOutputFile\')">
-      <div id="watch-logs" class="animated-button-text" onclick="this.classList.remove('animated-button-text')">Watch Logs</div>
+    <button id="watch-logs-button" class="button output ${disableLogsButton ? "disabled" : ""} " onclick="postMessage(\'openOutputFile\')">
+      <div id="watch-logs" class="${disableLogsButton ? "disabled" : "animated-button-text"}" onclick="this.classList.remove('animated-button-text')">${tfCommand ? tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1): "Watch"} Logs</div>
     </button>
     <button class="button output chat-gpt ${isPlanCompleted ? "" : "disabled"}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${isPlanCompleted ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan'"}">
       <div id="chat-gpt" class="${isPlanCompleted ? "animated-button-text" : "disabled"}" onclick="this.classList.remove('animated-button-text')">Ask ChatGPT</div>
@@ -54,7 +58,7 @@ module.exports.html = (preferences, actions, invalidate, intro, tfCommand, compl
     <div class="button-container">
 
     ${ actions.map(action => {
-      if (action.optional) return
+      if (action.menuOnly) return
       const type = action.label.indexOf("Apply") > -1 ? "warning" : ""
       if (action.handler) return (`
       <div
@@ -87,7 +91,7 @@ module.exports.html = (preferences, actions, invalidate, intro, tfCommand, compl
     </div>
   <br>
   <script>
-  ${ !intro ? "showLogsButton(\""+tfCommand+"\");" : ""}
+  ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
   </script>
 </body>
 </html>

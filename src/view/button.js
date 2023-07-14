@@ -1,15 +1,18 @@
 const vscode = require('vscode');
+const fs = require('fs');
 const { mainCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
 const { html } = require("./page");
 const { getActions } = require('../shared/actions');
+const { ChatGPTHandler }  = require('../commands/chat-gpt')
 
 class WebviewButton {
     webViewProviderExplorer
     webViewProviderScm
+    commandLaunched
     preferences
     intro
 
-    render(handler, completed = false){
+    render(handler, completed = false, tfCommand){
       this.webview.options = {
         enableScripts: true
       };
@@ -21,10 +24,11 @@ class WebviewButton {
       const hasActivePreferences = this.preferences.folder || this.preferences.credentials
       this.preferences.showWarning = hasActivePreferences 
       this.intro = this.intro === false ? false : this.intro && (!handler || (handler && !handler.redirect))
-      this.webview.html = html(this.preferences, this.actions, Math.random(), this.intro, handler && handler.commandId, completed)
+      this.webview.html = html(this.preferences, this.actions, Math.random(), this.intro, tfCommand, completed, this.commandLaunched)
       this.stateManager.handleWebViewIntro()
     }
     init () {
+      const reRender = this.render
       const webView = {
         enableScripts: true,
           resolveWebviewView: (webviewView) => {
@@ -34,29 +38,31 @@ class WebviewButton {
               if (!message) return;
               switch(message.command){
                 case 'openTFLauncher':
+                  this.logger.log({ msg: "openTFLauncher", source: "webview" })
                   vscode.commands.executeCommand(mainCommandId, 'workbench.view.easy-terraform-commands');
                   break;
                 case 'openOutputFile':
+                  this.logger.log({ msg: "openOutputFile", source: "webview" })
                   vscode.workspace.openTextDocument(this.commandsLauncher.handler.fileHandler.outputFileNoColor).then(async (doc) => {
                     vscode.window.showTextDocument(doc); 
                   })
                   break;
                 case 'chat-gpt':
-                  this.logger.log({ msg: "chat-gpt"})
-                  const pleaseExplain = "Please explain the following terraform plan:\n"
-                  const output = this.commandsLauncher.handler.fileHandler.getOutputFileContent()
-                  if (!output || output.length < 100) return await vscode.window.showInformationMessage('Empty plan output. Please try again as plan completes.')
-                  await vscode.env.clipboard.writeText(pleaseExplain + output)
-                  await vscode.window.showInformationMessage('Copied to Clipboard.\n Please paste in ChatGPT ( ⌘v)',  { modal: true })
-                  await vscode.env.openExternal(vscode.Uri.parse("https://chat.openai.com/"))
+                  if (!this.commandsLauncher.handler) return this.logger.log({ msg: "failed-chat-gpt", source: "webview"})
+                  const outputFileContent = fs.readFileSync(
+                    this.commandsLauncher.handler.fileHandler.outputFileNoColor,
+                    this.commandsLauncher.handler.shellHandler.fileEncoding)
+                  await (new ChatGPTHandler(null, this.logger)).execute("webview", null, outputFileContent)
                   break;
                 default:
                   if (!message.tfCommand) break;
-                  const self = this
-                  const handler = await this.commandsLauncher.launch(
+                  this.commandLaunched = true
+                  let handler
+                  const cb = () => setTimeout(() => reRender(handler, true, message.tfCommand))
+                  handler = await this.commandsLauncher.launch(
                     message.tfCommand,
                     "webview",
-                    () => setTimeout(() => self.render(handler, true))
+                    cb
                   )
               }
             })
@@ -76,6 +82,8 @@ class WebviewButton {
         this.stateManager = stateManager
         this.commandsLauncher = commandsLauncher
         this.intro = true
+        this.commandLaunched = false
+        this.render = this.render.bind(this)
     }
 }
 module.exports = { WebviewButton }

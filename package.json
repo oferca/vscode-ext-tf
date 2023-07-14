@@ -3,8 +3,8 @@
   "name": "easy-terraform-commands",
   "displayName": "Terraform Dashboard Plus with ChatGPT",
   "publisher": "oferkafry",
-  "description": "One-click terraform runner and progress monitor, with help of ChatGPT for clearer plans",
-  "version": "1.7.8",
+  "description": "One-click terraform runner and progress monitor, plan output summary by ChatGPT",
+  "version": "1.7.9",
   "engines": {
     "vscode": "^1.67.2"
   },

@@ -15,7 +15,7 @@ module.exports.style= `
 .button.output.chat-gpt{
   top: 35px;
 }
-.button.output.chat-gpt .disabled{
+.button.output.chat-gpt .disabled, .button.output .disabled{
   color: var(--vscode-disabledForeground)
 }
 

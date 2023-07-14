@@ -135,3 +135,13 @@ module.exports.dashboardExpendedOnceKey = "tfFirstDashboardExpand"
 module.exports.preferencesSetText = "[ Preferences Selected ] Pick a command to run."
 
 module.exports.pickACommandText = "Pick a terraform command to run in terminal"
+
+module.exports.chatGPTQueryText = "Please summarize the following terraform plan output:\n"
+
+module.exports.chatGPTPromptText = "Plan copied to clipboard. Paste (⌘v) in ChatGPT"
+
+module.exports.emptyPlanTxt = "No plan output found. Please run \"Plan\" and try again."
+
+module.exports.lastActionKey = "tfPreviousAction"
+
+module.exports.lastOutputKey = "tfPreviousOutput"

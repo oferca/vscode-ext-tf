@@ -11,6 +11,7 @@ const { TerraformApplyVarsHandler } = require("../commands/apply/vars-file")
 const { ChangeFolderHandler } = require("../commands/change-folder")
 const { CredentialsHandler } = require("../commands/credentials")
 const { ClearStateHandler } = require("../commands/clear")
+const { ChatGPTHandler } = require("../commands/chat-gpt")
 const { credentialsKey } = require("./constants")
 
 const maxLength = 40
@@ -22,34 +23,16 @@ module.exports.getActions = stateManager => {
     const prefCredentials = credentials && (credentials.length < maxLength ? "" : "...")
     const displayedFolderName = folder ? (prefFolder + folder.substring(folder.length - maxLength)) : null
     const displayedCredentials = credentials ? (prefCredentials + credentials.substring(credentials.length - maxLength)) : null
+
     return [
         {
-            label: 'Optional',
+            label: 'Plan Summary',
             kind: vscode.QuickPickItemKind.Separator,
-            optional: true
+            menuOnly: true
         },
-        { handler: ClearStateHandler, label: "Clear preferences", icon: "$(clear-all)", optional: true },
+        { handler: ChatGPTHandler, label: "Ask ChatGPT", icon: "$(ports-open-browser-icon)", menuOnly: true },
         {
-            handler: ChangeFolderHandler,
-            label: folder ? 
-                `Change Terraform Folder (${displayedFolderName})`
-                : "Select Terraform Folder",
-            matches: label => label.indexOf("Change Terraform Folder") > -1 || label.indexOf("Select Terraform Folder") > -1,
-            icon: "$(folder-opened)",
-            id: "tfFolder",
-            optional: true
-        },
-        {
-            handler: CredentialsHandler,
-            label: credentials ? 
-                `Change Credentials (${displayedCredentials})`
-                : "Set Credentials",
-            icon: "$(key)",
-            id: "tfCredentials",
-            optional: true
-        },
-        {
-            label: 'Terraform Command',
+            label: 'Terraform Commands',
             kind: vscode.QuickPickItemKind.Separator
         },
         { handler: TerraformInitHandler, label: "Init", icon: "$(extensions-install-count)" },
@@ -68,6 +51,31 @@ module.exports.getActions = stateManager => {
             kind: vscode.QuickPickItemKind.Separator
         },
         { handler: TerraformPlanTargetHandler, label: "Plan -Target", icon: "$(settings-sync-view-icon)"  },
-        { handler: TerraformApplyTargetHandler, label: "Apply -Target", icon: "$(play-circle)" }
+        { handler: TerraformApplyTargetHandler, label: "Apply -Target", icon: "$(play-circle)" },
+        {
+            label: 'Optional',
+            kind: vscode.QuickPickItemKind.Separator,
+            menuOnly: true
+        },
+        { handler: ClearStateHandler, label: "Clear preferences", icon: "$(clear-all)", menuOnly: true },
+        {
+            handler: ChangeFolderHandler,
+            label: folder ? 
+                `Change Terraform Folder (${displayedFolderName})`
+                : "Select Terraform Folder",
+            matches: label => label.indexOf("Change Terraform Folder") > -1 || label.indexOf("Select Terraform Folder") > -1,
+            icon: "$(folder-opened)",
+            id: "tfFolder",
+            menuOnly: true
+        },
+        {
+            handler: CredentialsHandler,
+            label: credentials ? 
+                `Change Credentials (${displayedCredentials})`
+                : "Set Credentials",
+            icon: "$(key)",
+            id: "tfCredentials",
+            menuOnly: true
+        },
     ]
 }
