@@ -1,7 +1,9 @@
 const { style } = require("./style")
 const { animatedButtonStyle } = require("./style/animated-button")
 
-module.exports.html = (preferences, actions, invalidate, intro, tfCommand, completed) => `
+module.exports.html = (preferences, actions, invalidate, intro, tfCommand, completed) => {
+  const isPlanCompleted = completed && (tfCommand.toLowerCase().indexOf("plan") > -1)
+  return `
 <html>
 <head>
   <style>
@@ -40,8 +42,8 @@ module.exports.html = (preferences, actions, invalidate, intro, tfCommand, compl
     <button class="button output" onclick="postMessage(\'openOutputFile\')">
       <div id="watch-logs" class="animated-button-text" onclick="this.classList.remove('animated-button-text')">Watch Logs</div>
     </button>
-    <button class="button output chat-gpt ${completed && (tfCommand.toLowerCase().indexOf("plan") > -1) ? "animated-button-text" : "disabled"}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="Ask ChatGPT, terraform plan only">
-      <div id="chat-gpt" class="${completed && (tfCommand.toLowerCase().indexOf("plan") > -1) ? "animated-button-text" : "disabled"}" onclick="this.classList.remove('animated-button-text')">Ask ChatGPT</div>
+    <button class="button output chat-gpt ${isPlanCompleted ? "" : "disabled"}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${isPlanCompleted ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan'"}">
+      <div id="chat-gpt" class="${isPlanCompleted ? "animated-button-text" : "disabled"}" onclick="this.classList.remove('animated-button-text')">Ask ChatGPT</div>
     </button>
 
     </div>
@@ -89,4 +91,5 @@ module.exports.html = (preferences, actions, invalidate, intro, tfCommand, compl
   </script>
 </body>
 </html>
-`;
+`
+};
