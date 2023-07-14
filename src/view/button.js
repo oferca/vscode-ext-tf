@@ -41,6 +41,29 @@ class WebviewButton {
                     vscode.window.showTextDocument(doc); 
                   })
                   break;
+                case 'chat-gpt':
+                  const pleaseExplain = "Please explain the following terraform plan:\n"
+                  const output = this.commandsLauncher.handler.fileHandler.getOutputFileContent()
+                  vscode.env.clipboard.writeText(pleaseExplain + output)
+                    .then(() => {
+                      console.log('Text copied to clipboard');
+                      vscode.window.showInformationMessage('This is a modal dialog!', 'OK')
+                      .then((selection) => {
+                        vscode.env.openExternal(vscode.Uri.parse("https://chat.openai.com/"))
+                        .then(() => {
+                          console.log('Website opened successfully');
+                        })
+                        .catch((error) => {
+                          console.error('Failed to open website:', error);
+                        });
+                      }).catch((error) => {
+                        console.error('Failed to copy text to clipboard:', error);
+                      });
+                      });
+                      
+                   
+                   
+                  break;
                 default:
                   if (!message.tfCommand) break;
                   const self = this

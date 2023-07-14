@@ -97,6 +97,15 @@ class FileHandler {
     get outputFileNoColor() {
         return this.outputFile + "." + noColorExt
     }
+
+    getOutputFileContent() {
+        return fs.readFileSync(
+            this.outputFileNoColor,
+            this.shellHandler.fileEncoding
+        )
+    }
+    
+    
     convertOutputToReadable() {
         try{
             const outputFile = fs.readFileSync(
