@@ -16,7 +16,8 @@ module.exports.style= `
   top: 35px;
 }
 .button.output.chat-gpt .disabled, .button.output .disabled{
-  color: var(--vscode-disabledForeground)
+  color: var(--vscode-button-foreground);
+  opacity: 0.5;
 }
 
 
@@ -161,8 +162,13 @@ a.command:hover, a.command, a.command:focus {
     text-align: center;
   }
 
-  h2, .animated-button-text {
+  h2 {
     color: var(--vscode-foreground);
+  }
+  .animated-button-text {
+    color: var(--vscode-button-foreground);
+  }
+  h2, .animated-button-text {
     animation: callToActionAnim 2s infinite;
     margin-bottom: 0px;
   }
