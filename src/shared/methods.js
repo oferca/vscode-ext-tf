@@ -196,6 +196,7 @@ const successMessage = commandId =>{
 module.exports.successMessage = successMessage
 
 const planSuccessful = outputFile => outputFile.indexOf(planSuccessMessage1) > -1 || outputFile.indexOf(planSuccessMessage2) > -1
+module.exports.planSuccessful = planSuccessful
 
 const initSuccessful = outputFile => outputFile.indexOf(initSuccessMessage) > -1
 

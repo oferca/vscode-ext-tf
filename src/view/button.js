@@ -1,21 +1,20 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const { mainCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
+const { planSuccessful } = require("../shared/methods")
 const { html } = require("./page");
 const { getActions } = require('../shared/actions');
 const { ChatGPTHandler }  = require('../commands/chat-gpt')
 
 class WebviewButton {
-    webViewProviderExplorer
-    webViewProviderScm
-    commandLaunched
-    preferences
-    intro
+  intro
+  preferences
+  commandLaunched
+  webViewProviderScm
+  webViewProviderExplorer
 
     render(handler, completed = false, tfCommand){
-      this.webview.options = {
-        enableScripts: true
-      };
+      this.webview.options = { enableScripts: true };
       this.actions = getActions(this.stateManager)
       this.preferences = {
         folder: this.stateManager.getState(changeFolderKey),
@@ -23,8 +22,13 @@ class WebviewButton {
       }
       const hasActivePreferences = this.preferences.folder || this.preferences.credentials
       this.preferences.showWarning = hasActivePreferences 
-      this.intro = this.intro === false ? false : this.intro && (!handler || (handler && !handler.redirect))
-      this.webview.html = html(this.preferences, this.actions, Math.random(), this.intro, tfCommand, completed, this.commandLaunched)
+      let planSucceded = false
+      if (tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1){
+        const content = this.commandsLauncher.handler.fileHandler.getOutputFileContent()
+        const planSucceded = planSuccessful(content)
+
+      }
+      this.webview.html = html(this.preferences, this.actions, Math.random(), planSucceded, tfCommand, completed, this.commandLaunched)
       this.stateManager.handleWebViewIntro()
     }
     init () {
@@ -73,7 +77,7 @@ class WebviewButton {
         }
         this.webViewProviderExplorer = vscode.window.registerWebviewViewProvider('terraform-button-view-explorer', webView );
         this.webViewProviderScm = vscode.window.registerWebviewViewProvider('terraform-button-view-scm', webView );
-          this.context.subscriptions.push(this.webViewProvider);
+        this.context.subscriptions.push(this.webViewProvider);
     }
     
     constructor(context, logger, stateManager, commandsLauncher){
@@ -87,7 +91,3 @@ class WebviewButton {
     }
 }
 module.exports = { WebviewButton }
-/*
-
- 
-    */

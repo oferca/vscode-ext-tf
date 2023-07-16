@@ -1,18 +1,18 @@
 const vscode = require('vscode');
+const { credentialsKey } = require("./constants")
+const { ChatGPTHandler } = require("../commands/chat-gpt")
+const { ClearStateHandler } = require("../commands/clear")
 const { TerraformPlanHandler } = require("../commands/plan")
 const { TerraformInitHandler } = require("../commands/init")
 const { TerraformApplyHandler } = require("../commands/apply")
-const { TerraformValidateHandler } = require("../commands/validate")
 const { TerraformOutputHandler } = require("../commands/output")
-const { TerraformPlanTargetHandler } = require("../commands/plan/target")
-const { TerraformApplyTargetHandler } = require("../commands/apply/target")
-const { TerraformPlanVarsHandler } = require("../commands/plan/vars-file")
-const { TerraformApplyVarsHandler } = require("../commands/apply/vars-file")
-const { ChangeFolderHandler } = require("../commands/change-folder")
 const { CredentialsHandler } = require("../commands/credentials")
-const { ClearStateHandler } = require("../commands/clear")
-const { ChatGPTHandler } = require("../commands/chat-gpt")
-const { credentialsKey } = require("./constants")
+const { TerraformValidateHandler } = require("../commands/validate")
+const { ChangeFolderHandler } = require("../commands/change-folder")
+const { TerraformPlanTargetHandler } = require("../commands/plan/target")
+const { TerraformPlanVarsHandler } = require("../commands/plan/vars-file")
+const { TerraformApplyTargetHandler } = require("../commands/apply/target")
+const { TerraformApplyVarsHandler } = require("../commands/apply/vars-file")
 
 const maxLength = 40
 

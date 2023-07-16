@@ -145,3 +145,15 @@ module.exports.emptyPlanTxt = "No plan output found. Please run \"Plan\" and try
 module.exports.lastActionKey = "tfPreviousAction"
 
 module.exports.lastOutputKey = "tfPreviousOutput"
+
+module.exports.warningToken = "Warning:"
+
+module.exports.errorToken = "Error:"
+
+module.exports.titleToken = "  # "
+
+module.exports.planToken = "Plan:"
+
+module.exports.forcesReplacementToken = "forces"
+
+module.exports.chatGPTFirstLine = "Please summarize and explain the following terraform plan output: "

@@ -1,4 +1,3 @@
-const vscode = require('vscode');
 const { isWindows, credentialsKey } = require("../constants")
 
 class ShellHandler {

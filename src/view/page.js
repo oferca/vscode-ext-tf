@@ -1,7 +1,7 @@
 const { style } = require("./style")
 const { animatedButtonStyle } = require("./style/animated-button")
 
-module.exports.html = (preferences, actions, invalidate, intro, tfCommand, completed, commandLaunched) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1
   const disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 )
   return `
@@ -27,7 +27,7 @@ module.exports.html = (preferences, actions, invalidate, intro, tfCommand, compl
       setTimeout(() => document.getElementById("watch-logs").classList.remove("animated-button-text"), 300000)
 
       if (tfCommand !== "undefined"){
-        document.getElementById("watch-logs").innerHTML = tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1) + ' Logs'
+        document.getElementById("watch-logs").innerHTML = 'Watch ' + tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1) + ' Logs'
       }
     }
     function launchTFCommand(tfCommand, el) {
@@ -46,8 +46,8 @@ module.exports.html = (preferences, actions, invalidate, intro, tfCommand, compl
     <button id="watch-logs-button" class="button output ${disableLogsButton ? "disabled" : ""} " onclick="postMessage(\'openOutputFile\')">
       <div id="watch-logs" class="${disableLogsButton ? "disabled" : "animated-button-text"}" onclick="this.classList.remove('animated-button-text')">${tfCommand ? tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1): "Watch"} Logs</div>
     </button>
-    <button class="button output chat-gpt ${isPlanCompleted ? "" : "disabled"}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${isPlanCompleted ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan'"}">
-      <div id="chat-gpt" class="${isPlanCompleted ? "animated-button-text" : "disabled"}" onclick="this.classList.remove('animated-button-text')">Ask ChatGPT</div>
+    <button class="button output chat-gpt ${isPlanCompleted && planSucceded ? "" : "disabled"}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' for successful terraform plan"}">
+      <div id="chat-gpt" class="${isPlanCompleted && planSucceded ? "animated-button-text" : "disabled"}" onclick="this.classList.remove('animated-button-text')">Ask ChatGPT</div>
     </button>
 
     </div>

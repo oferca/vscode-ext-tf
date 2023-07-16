@@ -21,13 +21,16 @@ async function activate(context) {
 	disposables.forEach(d => d.dispose())
 	const logger = new Logger(disableLogs)
 	try{
+
 		const pref = freshStart ? Math.random() : ""
 		const stateManager = new StateManager(context, logger, disableState, disableState, pref )
 		const actionButton = new ActionButton(context, logger)
 		const launcher = new CommandsLauncher(context, logger, stateManager)
 		const webviewButton = new WebviewButton(context, logger, stateManager, launcher)
+
 		logger.stateManager = stateManager
 		stateManager.init()
+
 		const commandRegistration = vscode.commands.registerCommand(
 			mainCommandId,
 			() => {
@@ -35,6 +38,7 @@ async function activate(context) {
 				launcher.showQuickPick()
 			}
 		)
+
 		disposables.push(commandRegistration)
 		disposables.push(actionButton.init(true))
 		disposables.push(webviewButton.init())
@@ -42,9 +46,9 @@ async function activate(context) {
 		await stateManager.notifyFirstActivation()
 		!stateManager.isFirstActivation && actionButton.init()
 
-		vscode.window.onDidOpenTerminal(terminal => {
-			stateManager.handleTerminalNotice(terminal)
-	});
+		vscode.window.onDidOpenTerminal(
+			terminal => stateManager.handleTerminalNotice(terminal)
+		);
 	}catch(e){
 		logger.logError(e)
 	}
