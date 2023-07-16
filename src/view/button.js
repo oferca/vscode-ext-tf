@@ -25,8 +25,7 @@ class WebviewButton {
       let planSucceded = false
       if (tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1){
         const content = this.commandsLauncher.handler.fileHandler.getOutputFileContent()
-        const planSucceded = planSuccessful(content)
-
+        planSucceded = planSuccessful(content)
       }
       this.webview.html = html(this.preferences, this.actions, Math.random(), planSucceded, tfCommand, completed, this.commandLaunched)
       this.stateManager.handleWebViewIntro()
