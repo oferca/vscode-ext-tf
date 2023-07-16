@@ -10,6 +10,7 @@ class WebviewButton {
   intro
   preferences
   commandLaunched
+  outputFileContent
   webViewProviderScm
   webViewProviderExplorer
 
@@ -24,8 +25,7 @@ class WebviewButton {
       this.preferences.showWarning = hasActivePreferences 
       let planSucceded = false
       if (tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1){
-        const content = this.commandsLauncher.handler.fileHandler.getOutputFileContent()
-        planSucceded = planSuccessful(content)
+        planSucceded = planSuccessful(this.outputFileContent)
       }
       this.webview.html = html(this.preferences, this.actions, Math.random(), planSucceded, tfCommand, completed, this.commandLaunched)
       this.stateManager.handleWebViewIntro()
@@ -52,16 +52,19 @@ class WebviewButton {
                   break;
                 case 'chat-gpt':
                   if (!this.commandsLauncher.handler) return this.logger.log({ msg: "failed-chat-gpt", source: "webview"})
-                  const outputFileContent = fs.readFileSync(
-                    this.commandsLauncher.handler.fileHandler.outputFileNoColor,
-                    this.commandsLauncher.handler.shellHandler.fileEncoding)
-                  await (new ChatGPTHandler(null, this.logger)).execute("webview", null, outputFileContent)
+                  await (new ChatGPTHandler(null, this.logger)).execute("webview", null, this.outputFileContent)
                   break;
                 default:
                   if (!message.tfCommand) break;
                   this.commandLaunched = true
                   let handler
-                  const cb = () => setTimeout(() => reRender(handler, true, message.tfCommand))
+                  const cb = () => setTimeout(() => {
+                    this.commandsLauncher.handler.fileHandler.convertOutputToReadable()
+                    this.outputFileContent = fs.readFileSync(
+                      this.commandsLauncher.handler.fileHandler.outputFileNoColor,
+                      this.commandsLauncher.handler.shellHandler.fileEncoding)
+                    reRender(handler, true, message.tfCommand)
+                  })
                   handler = await this.commandsLauncher.launch(
                     message.tfCommand,
                     "webview",

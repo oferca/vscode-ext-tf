@@ -1,5 +1,5 @@
 
-const { errorToken, planToken, titleToken, warningToken, chatGPTFirstLine } = require("../../shared/constants");
+const { errorToken, planToken, titleToken, warningToken, forcesReplacementToken, chatGPTFirstLine } = require("../../shared/constants");
 
 module.exports.optimize = outputFileContent => {
     const tokens = [warningToken, errorToken, titleToken, planToken, forcesReplacementToken];

@@ -138,7 +138,7 @@ module.exports.pickACommandText = "Pick a terraform command to run in terminal"
 
 module.exports.chatGPTQueryText = "Please summarize the following terraform plan output:\n"
 
-module.exports.chatGPTPromptText = "Plan copied to clipboard. Paste (⌘v) in ChatGPT"
+module.exports.chatGPTPromptText = "Copied to clipboard. PLEASE PASTE in ChatGPT(⌘v)"
 
 module.exports.emptyPlanTxt = "No plan output found. Please run \"Plan\" and try again."
 
