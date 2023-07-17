@@ -26,7 +26,7 @@ module.exports.getActions = stateManager => {
 
     return [
         {
-            label: 'Plan Summary',
+            label: 'Plan Synopsis',
             kind: vscode.QuickPickItemKind.Separator,
             menuOnly: true
         },
