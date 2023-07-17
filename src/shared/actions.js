@@ -30,7 +30,7 @@ module.exports.getActions = stateManager => {
             kind: vscode.QuickPickItemKind.Separator,
             menuOnly: true
         },
-        { handler: ChatGPTHandler, label: "Ask ChatGPT", icon: "$(ports-open-browser-icon)", menuOnly: true },
+        { handler: ChatGPTHandler, label: "ChatGPT Synopsis", icon: "$(ports-open-browser-icon)", menuOnly: true },
         {
             label: 'Terraform Commands',
             kind: vscode.QuickPickItemKind.Separator

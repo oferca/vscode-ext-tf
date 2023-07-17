@@ -71,6 +71,7 @@ class WebviewButton {
                       this.commandsLauncher.handler.shellHandler.fileEncoding)
                     reRender(handler, true, message.tfCommand)
                   })
+                  this.this.outputFileContent = null
                   handler = await this.commandsLauncher.launch(
                     message.tfCommand,
                     "webview",
