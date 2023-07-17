@@ -1,7 +1,6 @@
 const vscode = require('vscode');
 const fs = require('fs');
 const { mainCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
-const { planSuccessful } = require("../shared/methods")
 const { html } = require("./page");
 const { getActions } = require('../shared/actions');
 const { ChatGPTHandler }  = require('../commands/chat-gpt')
@@ -24,8 +23,12 @@ class WebviewButton {
       const hasActivePreferences = this.preferences.folder || this.preferences.credentials
       this.preferences.showWarning = hasActivePreferences 
       let planSucceded = false
+      if (this.commandsLauncher.handler)
+        this.outputFileContent = fs.readFileSync(
+          this.commandsLauncher.handler.fileHandler.outputFileNoColor,
+          this.commandsLauncher.handler.shellHandler.fileEncoding)
       if (tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1){
-        planSucceded = planSuccessful(this.outputFileContent)
+        planSucceded = true; // planSuccessful(this.outputFileContent)
       }
       this.webview.html = html(this.preferences, this.actions, Math.random(), planSucceded, tfCommand, completed, this.commandLaunched)
       this.stateManager.handleWebViewIntro()
@@ -52,6 +55,9 @@ class WebviewButton {
                   break;
                 case 'chat-gpt':
                   if (!this.commandsLauncher.handler) return this.logger.log({ msg: "failed-chat-gpt", source: "webview"})
+                  this.outputFileContent = fs.readFileSync(
+                    this.commandsLauncher.handler.fileHandler.outputFileNoColor,
+                    this.commandsLauncher.handler.shellHandler.fileEncoding)
                   await (new ChatGPTHandler(null, this.logger)).execute("webview", null, this.outputFileContent)
                   break;
                 default:

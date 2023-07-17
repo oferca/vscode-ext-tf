@@ -108,7 +108,7 @@ class FileHandler {
     
     convertOutputToReadable() {
         try{
-            const outputFile = "\nPlease wait..." + fs.readFileSync(
+            const outputFile = fs.readFileSync(
                 this.outputFile,
                 this.shellHandler.fileEncoding
             )

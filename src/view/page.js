@@ -24,7 +24,6 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
       document.getElementById("watch-logs").classList.remove("disabled")
       document.getElementById("watch-logs-button").classList.remove("disabled")
       document.getElementById("watch-logs").classList.add(disableLogsButton ? "disabled" : "animated-button-text")
-      setTimeout(() => document.getElementById("watch-logs").classList.remove("animated-button-text"), 300000)
 
       if (tfCommand !== "undefined"){
         document.getElementById("watch-logs").innerHTML = 'Watch ' + tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1) + ' Logs'

@@ -142,6 +142,8 @@ module.exports.chatGPTPromptText = "Copied to clipboard. PLEASE PASTE in ChatGPT
 
 module.exports.emptyPlanTxt = "No plan output found. Please run \"Plan\" and try again."
 
+module.exports.errorsInPlanTxt = "Please fix errors in Plan and try again."
+
 module.exports.lastActionKey = "tfPreviousAction"
 
 module.exports.lastOutputKey = "tfPreviousOutput"
@@ -155,5 +157,11 @@ module.exports.titleToken = "  # "
 module.exports.planToken = "Plan:"
 
 module.exports.forcesReplacementToken = "forces"
+
+module.exports.changedToken = "~ "
+
+module.exports.addedToken = "+ "
+
+module.exports.removedToken = "- "
 
 module.exports.chatGPTFirstLine = "Please summarize and explain the following terraform plan output: "
