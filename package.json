@@ -4,7 +4,7 @@
   "displayName": "Terraform Dashboard Plus with ChatGPT",
   "publisher": "oferkafry",
   "description": "One-click terraform runner and progress monitor, plan output summary by ChatGPT",
-  "version": "1.8.2",
+  "version": "1.8.3",
   "engines": {
     "vscode": "^1.67.2"
   },

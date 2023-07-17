@@ -13,7 +13,7 @@ class ChatGPTHandler {
             this.logger.log({ msg: "failed-chat-gpt", source })
             return await vscode.window.showInformationMessage(emptyPlanTxt)
         }
-        if (!planSuccessful(this.outputFileContent)){
+        if (!planSuccessful(fileContent)){
             this.logger.log({ msg: "failed-chat-gpt", source })
             return await vscode.window.showInformationMessage(errorsInPlanTxt)
         }
