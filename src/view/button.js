@@ -23,7 +23,8 @@ class WebviewButton {
       const hasActivePreferences = this.preferences.folder || this.preferences.credentials
       this.preferences.showWarning = hasActivePreferences 
       let planSucceded = false
-      if (this.commandsLauncher.handler && this.commandsLauncher.handler.fileHandler.initialized)
+      const { fileHandler } = this.commandsLauncher.handler || {}
+      if (this.commandsLauncher.handler && fileHandler && fileHandler.initialized)
         this.outputFileContent = fs.readFileSync(
           this.commandsLauncher.handler.fileHandler.outputFileNoColor,
           this.commandsLauncher.handler.shellHandler.fileEncoding)
@@ -65,11 +66,12 @@ class WebviewButton {
                   this.commandLaunched = true
                   let handler
                   const cb = () => setTimeout(() => {
-                    this.commandsLauncher.handler.fileHandler.convertOutputToReadable()
-                    if (this.commandsLauncher.handler.fileHandler.initialized)
+                    const { fileHandler, shellHandler } = this.commandsLauncher.handler
+                    fileHandler && fileHandler.convertOutputToReadable()
+                    if (fileHandler && fileHandler.initialized)
                       this.outputFileContent = fs.readFileSync(
-                        this.commandsLauncher.handler.fileHandler.outputFileNoColor,
-                        this.commandsLauncher.handler.shellHandler.fileEncoding)
+                        fileHandler.outputFileNoColor,
+                        shellHandler.fileEncoding)
                     reRender(handler, true, message.tfCommand)
                   })
                   this.outputFileContent = null

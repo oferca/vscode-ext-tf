@@ -11,7 +11,7 @@ const {
 const {
     noColorExt,
     errorStatus,
-/*, gotoTerminal*/
+    /*, gotoTerminal*/
     noCredentials,
     noCredentialsMsg,
     tfApplyCommandId,
@@ -28,12 +28,12 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     barCompletionTimestamp
     currentBarCompletionPercentage
 
-    get completionPercentage () {
+    get completionPercentage() {
         return getCompletionPercentage(
             this.barCreationTimestamp,
             this.barCompletionTimestamp,
-            this.fileHandler.isDefaultDuration 
-        ) 
+            this.fileHandler.isDefaultDuration
+        )
     }
 
     launchProgress(cb) {
@@ -50,18 +50,17 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         const openDocumentHandler = createFolderCollapser(this.fileHandler.outputFileNoColor, listener, this.fileHandler)
         listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler)
 
-        this.fileHandler.outputCB = (bottom = false) => 
-            {
-                const editor = vscode.window.activeTextEditor;
-                if (!editor || !this.fileHandler.outputFileNoColor) return
-                const outputFileOpen = editor.document.fileName.toLowerCase() === this.fileHandler.outputFileNoColor.toLowerCase()
-                if (outputFileOpen) {
-                    const lastLine = editor.document.lineCount - (bottom ? 0 : 3);
-                    const range = editor.document.lineAt(lastLine).range;
-                    editor.revealRange(range, vscode.TextEditorRevealType.Default);
-                }
-                // if (bottom || this.fileHandler.completed) scrollEventListener.dispose()
+        this.fileHandler.outputCB = (bottom = false) => {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor || !this.fileHandler.outputFileNoColor) return
+            const outputFileOpen = editor.document.fileName.toLowerCase() === this.fileHandler.outputFileNoColor.toLowerCase()
+            if (outputFileOpen) {
+                const lastLine = editor.document.lineCount - (bottom ? 0 : 3);
+                const range = editor.document.lineAt(lastLine).range;
+                editor.revealRange(range, vscode.TextEditorRevealType.Default);
             }
+            // if (bottom || this.fileHandler.completed) scrollEventListener.dispose()
+        }
 
         this.textDocumentListener = listener
 
@@ -69,21 +68,21 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             location: vscode.ProgressLocation.Notification,
             title: getProgressMsg(this.commandId),//  + progressFileMsg,
             cancellable: true
-        }, (progress, token) => this.progressUpdate(progress, token, cb)  )
+        }, (progress, token) => this.progressUpdate(progress, token, cb))
     }
 
-    completed () {
+    completed() {
         const isMaxProgress = this.completionPercentage > maxCompletionPercentage
         const applyPlanCompleted = this.commandId == tfApplyCommandId && isMaxProgress
         const noRedirectCompleted = isMaxProgress && !this.redirect
         return this.fileHandler.completed || applyPlanCompleted || noRedirectCompleted
     }
 
-    notifyCompletion () {
+    notifyCompletion() {
         const rawCommand = getRawCommand(this.commandId),
             capitalized = rawCommand.charAt(0).toUpperCase() + rawCommand.slice(1),
             completionTerm = this.redirect ? "completed" : rawCommand === "apply" ? "planning completed" : "ended"
-        
+
         let notification
         if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`/*, gotoTerminal*/);
 
@@ -100,13 +99,13 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         return notification
     }
 
-    handleOutputFileUpdates () {
+    handleOutputFileUpdates() {
         if (!this.redirect) return
         this.fileHandler.convertOutputToReadable()
         if (this.fileHandler.completed) setTimeout(() => this.fileHandler.outputCB(true), 100)
     }
 
-    async progressUpdate (progress, token, cb = () => {}) {
+    async progressUpdate(progress, token, cb = () => { }) {
         token.onCancellationRequested(() => {
             console.log("User canceled the long running operation");
             clearInterval(this.intervalID);
@@ -119,9 +118,9 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                 message: parseInt(self.completionPercentage) + "% complete." + self.progressFileMsg,
                 increment: self.completionPercentage - self.lastRecorded
             });
-            self.lastRecorded = self.completionPercentage 
+            self.lastRecorded = self.completionPercentage
         }, 100)
-        
+
         const p = new Promise(resolve => {
             const completedIntervalId = setInterval(() => {
                 const completed = self.completed()
@@ -129,7 +128,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                     self.logger.log({
                         completed,
                         commandId: self.commandId
-                    } )
+                    })
                     clearInterval(self.intervalID);
                     clearInterval(completedIntervalId)
                     cb()
@@ -147,11 +146,11 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         return p;
     }
 
-    launchProgressNotification (cb) {
+    launchProgressNotification(cb) {
         this.launchProgress(cb)
     }
 
-    async execute (source, cb) {
+    async execute(source, cb) {
         this.updateRunCount()
         const self = this
         const onChildProcessCompleteStep2 = async () => {
@@ -162,7 +161,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         await this.init(onChildProcessCompleteStep2)
     }
 
-    constructor(context, logger, stateManager, shellHandler, commandId){
+    constructor(context, logger, stateManager, shellHandler, commandId) {
         super(context, logger, stateManager, shellHandler, commandId);
         this.lastRecorded = 0
         this.execute = this.execute.bind(this)

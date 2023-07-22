@@ -114,18 +114,18 @@ class CommandHandlerPrototype {
             await step2()
         }
         this.shellHandler.deleteTerminalCurrentLine()
-        this.initFileHandler(onChildProcessCompleteStep1)
+        this.redirect ? this.initFileHandler(onChildProcessCompleteStep1) : onChildProcessCompleteStep1()
     }
 
     async runBash(cb) {
-        setTimeout(() => this.sendCommands(cb), !this.fileHandler.initialized ? 500 : 0)
+        setTimeout(() => this.sendCommands(cb), !(this.fileHandler && this.fileHandler.initialized) ? 500 : 0)
     }
 
     async sendCommands(cb = () => {}) {
         const { activeTerminal } = this.stateManager
         const command = getRawCommand(this.commandId)
         const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.stateManager.getState(optionKey)}"` : ""
-        this.fileHandler.initialized ? await this.shellHandler.runTfCommand(this.outputFile, this.requiresInitialization)
+        this.fileHandler && this.fileHandler.initialized ? await this.shellHandler.runTfCommand(this.outputFile, this.requiresInitialization)
             : activeTerminal.sendText(`terraform ${command} ${option}`)
         cb()
     }
