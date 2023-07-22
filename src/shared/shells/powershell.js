@@ -24,7 +24,7 @@ class PowershellHandler extends ShellHandler {
     }
     tfCommandDefinitions() {
         return `
-        function line() {echo " --------------------------------------------------";};
+        function line() { echo " --------------------------------------------------";};
         function finalize.${this.commandId}(){ param ([string]$p1, [string]$p2 )
         $endVscTfPlan = Get-Date -Format "yyyMMddHHmmssfff"; 
         echo ([Math]::Floor($($endVscTfPlan - $p2) / 1000)) > "$p1${"." + timeExt + "\";; \ "}

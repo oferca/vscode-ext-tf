@@ -21,7 +21,7 @@ class BashHandler extends ShellHandler{
     
     tfCommandDefinitions () {
         return `
-    function line() {echo " --------------------------------------------------";};
+    function line() { echo " --------------------------------------------------";};
     finalize.${this.commandId}(){ 
     export endVscTfPlan=$(date +%s); 
     echo \`expr $endVscTfPlan - "$2"\`> "$1"${"." + timeExt + "; \ "}
