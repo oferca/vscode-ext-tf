@@ -45,7 +45,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     <button id="watch-logs-button" class="button output ${disableLogsButton ? "disabled" : ""} " onclick="postMessage(\'openOutputFile\')">
       <div id="watch-logs" class="${disableLogsButton ? "disabled" : "animated-button-text"}" onclick="this.classList.remove('animated-button-text')">${tfCommand ? tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1): "Watch"} Logs</div>
     </button>
-    <button class="button output chat-gpt ${isPlanCompleted && planSucceded ? "" : "disabled"}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan successfully"}">
+    <button class="button output chat-gpt ${isPlanCompleted && planSucceded ? "" : "disabled"}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan."}">
       <div id="chat-gpt" class="${isPlanCompleted && planSucceded ? "animated-button-text" : "disabled"}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
     </button>
 
