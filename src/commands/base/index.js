@@ -125,8 +125,8 @@ class CommandHandlerPrototype {
         const { activeTerminal } = this.stateManager
         const command = getRawCommand(this.commandId)
         const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.stateManager.getState(optionKey)}"` : ""
-        if (!this.fileHandler.initialized) return activeTerminal.sendText(`terraform ${command} ${option}`)
-        await this.shellHandler.runTfCommand(this.outputFile, this.requiresInitialization)
+        this.fileHandler.initialized ? await this.shellHandler.runTfCommand(this.outputFile, this.requiresInitialization)
+            : activeTerminal.sendText(`terraform ${command} ${option}`)
         cb()
     }
 
