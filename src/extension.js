@@ -30,7 +30,7 @@ async function activate(context) {
 		const webviewButton = new WebviewButton(context, logger, stateManager, launcher)
 
 		const projectViewer = new ProjectViewer(context, logger, stateManager, launcher)
-		projectViewer.init()
+		await projectViewer.init()
 
 		logger.stateManager = stateManager
 		stateManager.init()
