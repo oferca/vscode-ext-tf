@@ -1,9 +1,9 @@
 const vscode = require('vscode');
 const fs = require('fs');
-const { openMenuCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
+const { openMenuCommandId, changeFolderKey, credentialsKey } = require("../../shared/constants")
 const { html } = require("./page");
-const { getActions } = require('../shared/actions');
-const { ChatGPTHandler }  = require('../commands/chat-gpt')
+const { getActions } = require('../../shared/actions');
+const { ChatGPTHandler }  = require('../../commands/chat-gpt')
 
 class WebviewButton {
   intro

@@ -1,11 +1,9 @@
 const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs');
-const { openMenuCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
-const { html } = require("./page");
-const { getActions } = require('../shared/actions');
+const { html } = require("./html");
 
-class ProjectViewer {
+class ProjectExplorer {
   tfFolders
 
     render(handler, completed = false, tfCommand){
@@ -20,17 +18,18 @@ class ProjectViewer {
   
       const targetExtension = '.tf';
       const fileList = [];
-      const list = await findFilesWithExtension(workspacePath, targetExtension, fileList).filter(module => module.isProject);
+      const list = (await findFilesWithExtension(workspacePath, targetExtension, fileList)).filter(module => module.isProject);
       console.log('tfFolers:', this.tfFolders);
        // Create and show a new webview
-       const panel = vscode.window.createWebviewPanel(
+      const panel = vscode.window.createWebviewPanel(
         'catCoding', // Identifies the type of the webview. Used internally
         'Cat Coding', // Title of the panel displayed to the user
         vscode.ViewColumn.One, // Editor column to show the new webview panel in.
         {} // Webview options. More on these later.
       );
+
       // And set its HTML content
-      panel.webview.html = "efsfjsjfsjlfskfsdl"
+      panel.webview.html = html(list)
     
     }
     
@@ -43,7 +42,7 @@ class ProjectViewer {
         this.render = this.render.bind(this)
     }
 }
-module.exports = { ProjectViewer }
+module.exports = { ProjectExplorer }
 
 const isEven = (item, idx) => (idx / 2 === Math.floor(idx / 2))
 const isOdd = (item, idx) => !isEven(item, idx)

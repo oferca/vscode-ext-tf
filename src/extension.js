@@ -4,8 +4,8 @@ const { Logger } = require("./shared/logger")
 const { openMenuCommandId, openProjectsCommandId, openMenuButtonText, openProjectsButtonText} = require("./shared/constants")
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
-const { WebviewButton } = require("./view/button.js")
-const { ProjectViewer } = require("./view/project.js")
+const { WebviewButton } = require("./view/sidebar")
+const { ProjectExplorer } = require("./view/explorer/index.js")
 const { StateManager } = require("./state/index.js")
 
 const appRoot = path.resolve(__dirname);
@@ -29,7 +29,7 @@ async function activate(context) {
 		const launcher = new CommandsLauncher(context, logger, stateManager)
 		const webviewButton = new WebviewButton(context, logger, stateManager, launcher)
 
-		const projectViewer = new ProjectViewer(context, logger, stateManager, launcher)
+		const projectExplorer = new ProjectExplorer(context, logger, stateManager, launcher)
 
 		logger.stateManager = stateManager
 		stateManager.init()
@@ -45,7 +45,7 @@ async function activate(context) {
 			openProjectsCommandId,
 			async () => {
 				disposables.push(openMenuButton.init())
-				await projectViewer.init()
+				await projectExplorer.init()
 			}
 		)
 
