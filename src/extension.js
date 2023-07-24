@@ -22,7 +22,6 @@ async function activate(context) {
 	disposables.forEach(d => d.dispose())
 	const logger = new Logger(disableLogs)
 	try{
-
 		const pref = freshStart ? Math.random() : ""
 		const stateManager = new StateManager(context, logger, disableState, disableState, pref )
 		const openMenuButton = new ActionButton(context, logger, openMenuCommandId, openMenuButtonText, 0)
@@ -31,7 +30,6 @@ async function activate(context) {
 		const webviewButton = new WebviewButton(context, logger, stateManager, launcher)
 
 		const projectViewer = new ProjectViewer(context, logger, stateManager, launcher)
-		await projectViewer.init()
 
 		logger.stateManager = stateManager
 		stateManager.init()
@@ -45,17 +43,20 @@ async function activate(context) {
 		)
 		const projetsCommandRegistration = vscode.commands.registerCommand(
 			openProjectsCommandId,
-			() => {
+			async () => {
 				disposables.push(openMenuButton.init())
-				// launcher.showQuickPick()
+				await projectViewer.init()
 			}
 		)
 
+		
 		disposables.push(commandRegistration)
 		disposables.push(projetsCommandRegistration)
 		disposables.push(openMenuButton.init(true))
 		disposables.push(openProjectsButton.init(true))
 		disposables.push(webviewButton.init())
+		
+		
 		
 		await stateManager.notifyFirstActivation()
 		!stateManager.isFirstActivation && openMenuButton.init()

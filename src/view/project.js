@@ -22,6 +22,15 @@ class ProjectViewer {
       const fileList = [];
       const list = await findFilesWithExtension(workspacePath, targetExtension, fileList);
       console.log('tfFolers:', this.tfFolders);
+       // Create and show a new webview
+       const panel = vscode.window.createWebviewPanel(
+        'catCoding', // Identifies the type of the webview. Used internally
+        'Cat Coding', // Title of the panel displayed to the user
+        vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+        {} // Webview options. More on these later.
+      );
+      // And set its HTML content
+      panel.webview.html = "efsfjsjfsjlfskfsdl"
     
     }
     
@@ -65,6 +74,7 @@ async function findFilesWithExtension(startPath, targetExtension, fileList) {
 
       if(content.indexOf("terraform{") > -1) {
         fileList[projectName].filePath = filePath;
+
         const providers1 = content.split("required_providers{")
         const providers2 = providers1.length > 1 ? providers1[1].split("}}")[0] : []
         const providersArr = providers2.length ? providers2.split("={"): []
@@ -77,6 +87,17 @@ async function findFilesWithExtension(startPath, targetExtension, fileList) {
         ) : []
       }
 
+      const regions = content.split("region=\"")
+      fileList[projectName].regions = (fileList[projectName].providers || [])
+      regions.length && regions.forEach(section => {
+        try{
+          const parts = section.split("\"")
+          if (parts.length < 2) return
+          const region = parts[0]
+          fileList[projectName].regions.push(region)
+        }catch(e){}
+      })
+      fileList[projectName].regions = fileList[projectName].regions.filter(region => region.length < 25)
     }
   }
   return fileList;
