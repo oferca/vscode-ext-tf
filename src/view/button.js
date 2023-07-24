@@ -1,6 +1,6 @@
 const vscode = require('vscode');
 const fs = require('fs');
-const { mainCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
+const { openMenuCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
 const { html } = require("./page");
 const { getActions } = require('../shared/actions');
 const { ChatGPTHandler }  = require('../commands/chat-gpt')
@@ -46,7 +46,7 @@ class WebviewButton {
               switch(message.command){
                 case 'openTFLauncher':
                   this.logger.log({ msg: "openTFLauncher", source: "webview" })
-                  vscode.commands.executeCommand(mainCommandId, 'workbench.view.easy-terraform-commands');
+                  vscode.commands.executeCommand(openMenuCommandId, 'workbench.view.easy-terraform-commands');
                   break;
                 case 'openOutputFile':
                   this.logger.log({ msg: "openOutputFile", source: "webview" })

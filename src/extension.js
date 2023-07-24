@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const path = require('path');
 const { Logger } = require("./shared/logger")
-const { mainCommandId } = require("./shared/constants")
+const { openMenuCommandId, openProjectsCommandId, openMenuButtonText, openProjectsButtonText} = require("./shared/constants")
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
 const { WebviewButton } = require("./view/button.js")
@@ -25,7 +25,8 @@ async function activate(context) {
 
 		const pref = freshStart ? Math.random() : ""
 		const stateManager = new StateManager(context, logger, disableState, disableState, pref )
-		const actionButton = new ActionButton(context, logger)
+		const openMenuButton = new ActionButton(context, logger, openMenuCommandId, openMenuButtonText, 0)
+		const openProjectsButton = new ActionButton(context, logger, openProjectsCommandId,openProjectsButtonText, 1)
 		const launcher = new CommandsLauncher(context, logger, stateManager)
 		const webviewButton = new WebviewButton(context, logger, stateManager, launcher)
 
@@ -36,19 +37,28 @@ async function activate(context) {
 		stateManager.init()
 
 		const commandRegistration = vscode.commands.registerCommand(
-			mainCommandId,
+			openMenuCommandId,
 			() => {
-				disposables.push(actionButton.init())
+				disposables.push(openMenuButton.init())
 				launcher.showQuickPick()
+			}
+		)
+		const projetsCommandRegistration = vscode.commands.registerCommand(
+			openProjectsCommandId,
+			() => {
+				disposables.push(openMenuButton.init())
+				// launcher.showQuickPick()
 			}
 		)
 
 		disposables.push(commandRegistration)
-		disposables.push(actionButton.init(true))
+		disposables.push(projetsCommandRegistration)
+		disposables.push(openMenuButton.init(true))
+		disposables.push(openProjectsButton.init(true))
 		disposables.push(webviewButton.init())
 		
 		await stateManager.notifyFirstActivation()
-		!stateManager.isFirstActivation && actionButton.init()
+		!stateManager.isFirstActivation && openMenuButton.init()
 
 		vscode.window.onDidOpenTerminal(
 			terminal => stateManager.handleTerminalNotice(terminal)

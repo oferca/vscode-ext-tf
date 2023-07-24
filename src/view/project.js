@@ -1,7 +1,7 @@
 const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs');
-const { mainCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
+const { openMenuCommandId, changeFolderKey, credentialsKey } = require("../shared/constants")
 const { html } = require("./page");
 const { getActions } = require('../shared/actions');
 

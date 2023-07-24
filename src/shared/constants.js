@@ -62,7 +62,13 @@ module.exports.thankYouNote =  "Thank you for installing Terraform Dashboard Plu
 
 module.exports.reminderNote =  "Launch terraform commands with Terraform Dashboard Plus. Let's start."
 
-module.exports.mainCommandId = "terraform.action"
+module.exports.openMenuCommandId = "terraform.action"
+
+module.exports.openMenuButtonText = `$(terminal) Terraform`
+
+module.exports.openProjectsButtonText = `$(terminal) Projects`
+
+module.exports.openProjectsCommandId = "terraform.projects"
 
 module.exports.placeHolder = "Run Terraform Command ( \u2318\u21E7T or \u2303\u21E7T )"
 
