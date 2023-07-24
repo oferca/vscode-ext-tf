@@ -10,7 +10,6 @@ class ActionButton {
     init (spinner = false) {
         this.vsCodeButton && this.vsCodeButton.hide()
         this.vsCodeButton && this.vsCodeButton.dispose()
-
         const button = vscode.window.createStatusBarItem(1, this.placement)
         button.text = this.buttonText
         button.tooltip = placeHolder
