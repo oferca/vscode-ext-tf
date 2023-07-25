@@ -4,7 +4,7 @@ const { Logger } = require("./shared/logger")
 const { openMenuCommandId, openProjectsCommandId, openMenuButtonText, openProjectsButtonText} = require("./shared/constants")
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
-const { WebViewManager } = require("./view/sidebar")
+const { WebViewManager } = require("./view/main")
 const { ProjectExplorer } = require("./view/explorer/index.js")
 const { StateManager } = require("./state/index.js")
 
@@ -28,7 +28,6 @@ async function activate(context) {
 		const openProjectsButton = new ActionButton(context, logger, openProjectsCommandId,openProjectsButtonText, 1)
 		const launcher = new CommandsLauncher(context, logger, stateManager)
 		const webViewManager = new WebViewManager(context, logger, stateManager, launcher)
-
 		const projectExplorer = new ProjectExplorer(context, logger, stateManager, launcher)
 
 		logger.stateManager = stateManager

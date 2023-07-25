@@ -120,11 +120,6 @@ class StateManager {
         const shellHandler = new ShellHandler()
         setTimeout(() => terminal.sendText("clear; " + shellHandler.getCheckTFCommand()), 600)
     }
-    handleWebViewIntro () {
-      if (this.getState(dashboardExpendedOnceKey)) return
-      this.updateState(dashboardExpendedOnceKey, true)
-      vscode.window.showInformationMessage("Click a terraform command to run." ,{ title: "Got it" });
-    }
     init() {
         this.now = new Date().getTime();
         this.usedOnce = this.getState(welcomeNotifiedKey) || false;

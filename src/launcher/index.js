@@ -86,6 +86,7 @@ class CommandsLauncher {
         this.logger = logger
         this.context = context
         this.stateManager = stateManager
+        this.launch = this.launch.bind(this)
         this.showQuickPick = this.showQuickPick.bind(this)
         this.verifyOpenTerminal = this.verifyOpenTerminal.bind(this)
     }

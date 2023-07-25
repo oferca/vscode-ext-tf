@@ -6,7 +6,7 @@ const { html } = require("./html");
 class ProjectExplorer {
   tfFolders
 
-    render(handler, completed = false, tfCommand){
+    render(completed = false, tfCommand){
     }
     async init () {
       const workspacePath = vscode.workspace.rootPath;
