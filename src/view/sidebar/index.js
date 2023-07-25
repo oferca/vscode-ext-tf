@@ -5,7 +5,7 @@ const { html } = require("./page");
 const { getActions } = require('../../shared/actions');
 const { ChatGPTHandler }  = require('../../commands/chat-gpt')
 
-class WebviewButton {
+class WebViewManager {
   intro
   preferences
   commandLaunched
@@ -102,4 +102,4 @@ class WebviewButton {
         this.render = this.render.bind(this)
     }
 }
-module.exports = { WebviewButton }
+module.exports = { WebViewManager }

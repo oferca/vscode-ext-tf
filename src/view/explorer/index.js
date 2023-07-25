@@ -18,7 +18,8 @@ class ProjectExplorer {
   
       const targetExtension = '.tf';
       const fileList = [];
-      const list = (await findFilesWithExtension(workspacePath, targetExtension, fileList)).filter(module => module.isProject);
+      const list1 = (await findFilesWithExtension(workspacePath, targetExtension, fileList))
+      const list2 = Object.keys(list1).filter(x => list1[x].isProject).map(x => list1[x]);
       console.log('tfFolers:', this.tfFolders);
        // Create and show a new webview
       const panel = vscode.window.createWebviewPanel(
@@ -29,7 +30,7 @@ class ProjectExplorer {
       );
 
       // And set its HTML content
-      panel.webview.html = html(list)
+      panel.webview.html = html(list2)
     
     }
     
@@ -61,7 +62,7 @@ async function findFilesWithExtension(startPath, targetExtension, fileList) {
     } else if (path.extname(filePath) === targetExtension) {
       const projectName = path.basename(path.dirname(filePath))
       fileList[projectName] = fileList[projectName] || {}
-      
+      fileList[projectName].name = projectName
       const content = fs.readFileSync(filePath, 'utf8').replace(/\s/g, '');
 
       const resourcesRegex = new RegExp("resource\"", 'g');
@@ -72,6 +73,10 @@ async function findFilesWithExtension(startPath, targetExtension, fileList) {
       const modulesMatches = content.match(modulesRegex);
       fileList[projectName].modules = (fileList[projectName].modules || 0) + (modulesMatches || []).length;
 
+      const datasourcesRegex = new RegExp("resource\"", 'g');
+      const datasourcesMatches = content.match(datasourcesRegex);
+      fileList[projectName].datasources = (fileList[projectName].datasources || 0) + (datasourcesMatches || []).length;
+
       if(content.indexOf("terraform{") > -1) {
         fileList[projectName].isProject = true
         fileList[projectName].filePath = filePath;
@@ -80,14 +85,16 @@ async function findFilesWithExtension(startPath, targetExtension, fileList) {
         const providers2 = providers1.length > 1 ? providers1[1].split("}}")[0] : []
         const providersArr = providers2.length ? providers2.split("={"): []
         fileList[projectName].providers = (fileList[projectName].providers || [])
-        providersArr.length ? providersArr.filter(isEven).filter(onlyUnique).forEach(
+        providersArr.length ? providersArr.filter(isEven).forEach(
           prov => {
             const provArr = prov.split("\"}")
             fileList[projectName].providers.push(provArr.length > 1 ? provArr[1] : (provArr[0].length < 25 ? provArr[0] : ""))
           }
         ) : []
       }
-
+      if (fileList[projectName].providers) {
+        fileList[projectName].providers = fileList[projectName].providers.filter(onlyUnique)
+      }
       const regions = content.split("region=\"").filter(isOdd)
       fileList[projectName].regions = (fileList[projectName].regions || [])
       regions.length && regions.forEach(section => {
