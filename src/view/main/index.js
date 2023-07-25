@@ -3,7 +3,7 @@ const vscode = require('vscode');
 const { html } = require("./page");
 const { getActions } = require('../../shared/actions');
 const { changeFolderKey, credentialsKey } = require("../../shared/constants");
-const { handleCommand } = require('./messages');
+const { handleCommand, createCB } = require('./messages');
 
 class WebViewManager {
   intro
@@ -16,18 +16,15 @@ class WebViewManager {
     render(completed = false, tfCommand){
 
       // Parameter definitions
-      const { handler } = this.commandsLauncher
-      const { fileHandler } = handler || {}
-      const outputFileExists = handler && fileHandler && fileHandler.initialized
+      const { fileHandler, shellHandler } = this.commandsLauncher.handler || {}
+      const outputFileExists = this.commandsLauncher.handler && fileHandler && fileHandler.initialized
       const folder = this.stateManager.getState(changeFolderKey)
       const credentials = this.stateManager.getState(credentialsKey)
-      const hasActivePreferences = folder || credentials
-      const showWarning = hasActivePreferences 
       let planSucceded = (tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1); // planSuccessful(this.outputFileContent)
-      const preferences = { folder, credentials, showWarning }
+      const preferences = { folder, credentials, showWarning: folder || credentials}
       
       // Update output
-      this.outputFileContent = outputFileExists ? fs.readFileSync( handler.fileHandler.outputFileNoColor, handler.shellHandler.fileEncoding) : undefined
+      this.outputFileContent = outputFileExists ? fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding) : undefined
 
       // Render
       this.sideBarWebView.html = html(
@@ -43,20 +40,12 @@ class WebViewManager {
 
     async messageHandler (message) {
       if (!message) return;
-      const reRender = this.render
+
+      const { tfCommand, command} = message
       const { handler, launch } = this.commandsLauncher
-  
-      const tfCommandCallback = () => {
-          const { fileHandler, shellHandler } = handler
-          fileHandler && fileHandler.convertOutputToReadable()
-          if (fileHandler && fileHandler.initialized)
-          this.outputFileContent = fs.readFileSync(
-              fileHandler.outputFileNoColor,
-              shellHandler.fileEncoding)
-          reRender(true, message.tfCommand)
-      }
-      
-      handleCommand(message.tfCommand || message.command, this.logger, handler, launch, tfCommandCallback, this) 
+      const cb = createCB(message, handler, this.render)
+
+      handleCommand( tfCommand || command, this.logger, handler, launch, cb, this) 
     }
   
 

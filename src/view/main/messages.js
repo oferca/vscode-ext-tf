@@ -37,3 +37,12 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
         )
   }
 }
+
+module.exports.createCB = (message, handler, reRender) => () => {
+    reRender(true, message.tfCommand)
+    const { fileHandler, shellHandler } = handler
+    if (!fileHandler) return
+    fileHandler.convertOutputToReadable()
+    this.outputFileContent = fileHandler.initialized ? fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding) : undefined
+  }
+  
