@@ -2,9 +2,8 @@ const fs = require('fs');
 const vscode = require('vscode');
 const { html } = require("./page");
 const { getActions } = require('../../shared/actions');
-const { ChatGPTHandler }  = require('../../commands/chat-gpt')
-const { openMenuCommandId } = require("../../shared/constants")
-const { changeFolderKey, credentialsKey } = require("../../shared/constants")
+const { changeFolderKey, credentialsKey } = require("../../shared/constants");
+const { handleCommand } = require('./messages');
 
 class WebViewManager {
   intro
@@ -41,6 +40,7 @@ class WebViewManager {
         this.commandLaunched
       )
     }
+
     async messageHandler (message) {
       if (!message) return;
       const reRender = this.render
@@ -56,40 +56,7 @@ class WebViewManager {
           reRender(true, message.tfCommand)
       }
       
-      switch(message.command){
-  
-        case 'openTFLauncher':
-          this.logger.log({ msg: "openTFLauncher", source: "webview" })
-          vscode.commands.executeCommand(openMenuCommandId, 'workbench.view.easy-terraform-commands');
-          break;
-  
-        case 'openOutputFile':
-          this.logger.log({ msg: "openOutputFile", source: "webview" })
-          vscode.workspace.openTextDocument(handler.fileHandler.outputFileNoColor).then(async (doc) => {
-            vscode.window.showTextDocument(doc); 
-          })
-          break;
-  
-        case 'chat-gpt':
-          if (!handler) return this.logger.log({ msg: "failed-chat-gpt", source: "webview"})
-          this.outputFileContent = fs.readFileSync(
-            handler.fileHandler.outputFileNoColor,
-            handler.shellHandler.fileEncoding)
-          await (new ChatGPTHandler(null, this.logger)).execute("webview", null, this.outputFileContent)
-          break;
-  
-        default:
-          if (!message.tfCommand) break;
-          this.commandLaunched = true
-          let handler
-          const cb = () => setTimeout(tfCommandCallback)
-          this.outputFileContent = null
-          handler = await launch(
-            message.tfCommand,
-            "webview",
-            cb
-          )
-      }
+      handleCommand(message.tfCommand || message.command, this.logger, handler, launch, tfCommandCallback, this) 
     }
   
 
