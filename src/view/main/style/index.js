@@ -1,4 +1,9 @@
 module.exports.style= `
+#main-container{
+  max-width: 200px;
+  display: inline-flex;
+}
+
 #quicklaunch-menu{
     max-width: 300px;
     margin-top: 12px;

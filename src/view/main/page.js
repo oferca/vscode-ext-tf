@@ -1,7 +1,8 @@
 const { style } = require("./style")
+const { style : explorerStyle } = require("./style/explorer")
 const { animatedButtonStyle } = require("./style/animated-button")
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerMode) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1
   const disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 )
   return `
@@ -10,6 +11,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
   <style>
     ${style}
     ${animatedButtonStyle}
+    ${explorerMode && explorerStyle }
   </style>
   <script>
     const vscode = acquireVsCodeApi();
@@ -78,11 +80,6 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
   }).join("")}
   </div>
   </div>
-  <div class="quick-launch">
-    <br>
-    <div>Open quick launcher ('⌘⇧T')</div>
-    <div> <button class="button" id="quicklaunch-menu" onclick="postMessage('openTFLauncher')">Terraform Launcher</button></div>
- </div>
  <div class="prefs">
       <div class="pref-container" ><div class="pref"><a class="pref-change" onclick="vscode.postMessage({ tfCommand: 'Clear preferences' })"> Clear preferences </a></div></div>
       <div class="pref-container"><div class="pref">${preferences.folder ? "Folder selected." : ""}</div><a class="pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfFolder").label}' })")> ${preferences.folder ? "change" : "Select folder"} </a></div>

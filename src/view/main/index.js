@@ -36,9 +36,10 @@ class WebViewManager {
         completed,
         this.commandLaunched
       ]
-
+      const paramsExplorer = [...params]
+      paramsExplorer.push(true)
       this.sideBarWebView.html = html(...params)
-      this.projectExplorer.html = html(...params)
+      this.projectExplorer.html = html(...paramsExplorer)
        
     }
 

@@ -13,7 +13,7 @@
     "url": "https://github.com/oferca/vscode-ext-tf.git"
   },
   "activationEvents": [
-    "onStartup"
+    "*"
   ],
   "main": "./src/extension.js",
   "contributes": {
