@@ -37,7 +37,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     launchProgress(cb) {
-        if (!this.fileHandler.initialized) return cb()
+        if (!this.redirect) return cb()
 
         this.barCreationTimestamp = Date.now()
         this.currentBarCompletionPercentage = 0

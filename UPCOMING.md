@@ -1,4 +1,6 @@
 Bugs:
+* - target not working
+* Plan with error not working
 * Clear unsupported shell
 * unsupported sgell init spins forever
 * Output spins forever

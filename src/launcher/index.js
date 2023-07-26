@@ -64,7 +64,7 @@ class CommandsLauncher {
             cb && cb()
             const hasOutput = this.handler.fileHandler && this.handler.fileHandler.redirect
             if (!(this.handler.commandId && hasOutput)) return
-            const outputFileContent =hasOutput  ? this.handler.fileHandler.getOutputFileContent() : this.stateManager.getState(lastOutputKey)
+            const outputFileContent = hasOutput  ? this.handler.fileHandler.getOutputFileContent() : this.stateManager.getState(lastOutputKey)
             this.stateManager.updateState(lastOutputKey, outputFileContent)
             this.stateManager.updateState(lastActionKey, actionLabel)        
         }
