@@ -1,54 +1,14 @@
-const vscode = require('vscode');
 const path = require('path');
-const fs = require('fs');
-const { html } = require("./html");
-
-class ProjectExplorer {
-  tfFolders
-
-    render(completed = false, tfCommand){
-    }
-    async init () {
-      const workspacePath = vscode.workspace.rootPath;
-
-      if (!workspacePath) {
-        vscode.window.showErrorMessage('No workspace is opened.');
-        return;
-      }
-  
-      const targetExtension = '.tf';
-      const fileList = [];
-      const list1 = (await findFilesWithExtension(workspacePath, targetExtension, fileList))
-      const list2 = Object.keys(list1).filter(x => list1[x].isProject).map(x => list1[x]);
-      console.log('tfFolers:', this.tfFolders);
-       // Create and show a new webview
-      const panel = vscode.window.createWebviewPanel(
-        'catCoding', // Identifies the type of the webview. Used internally
-        'Cat Coding', // Title of the panel displayed to the user
-        vscode.ViewColumn.One, // Editor column to show the new webview panel in.
-        {} // Webview options. More on these later.
-      );
-
-      // And set its HTML content
-      panel.webview.html = html(list2)
-    
-    }
-    
-    constructor(context, logger, stateManager, commandsLauncher){
-        this.context = context
-        this.logger = logger
-        this.stateManager = stateManager
-        this.commandsLauncher = commandsLauncher
-        this.tfFolders = {}
-        this.render = this.render.bind(this)
-    }
-}
-module.exports = { ProjectExplorer }
+const vscode = require('vscode');
 
 const isEven = (item, idx) => (idx / 2 === Math.floor(idx / 2))
 const isOdd = (item, idx) => !isEven(item, idx)
 
-async function findFilesWithExtension(startPath, targetExtension, fileList) {
+function onlyUnique(value, index, array) {
+  return array.indexOf(value) === index;
+}
+
+async function findFilesWithExtension1 (startPath, targetExtension, fileList) {
   fileList = fileList || {};
   const items = await vscode.workspace.fs.readDirectory(vscode.Uri.file(startPath));
 
@@ -58,7 +18,7 @@ async function findFilesWithExtension(startPath, targetExtension, fileList) {
 
     if (fileType === vscode.FileType.Directory && fileName !== ".terraform" && fileName !== "modules") {
       // Recursively search directories
-      await findFilesWithExtension(filePath, targetExtension, fileList);
+      await findFilesWithExtension1(filePath, targetExtension, fileList);
     } else if (path.extname(filePath) === targetExtension) {
       const projectName = path.basename(path.dirname(filePath))
       fileList[projectName] = fileList[projectName] || {}
@@ -111,6 +71,4 @@ async function findFilesWithExtension(startPath, targetExtension, fileList) {
   return fileList;
 }
 
-function onlyUnique(value, index, array) {
-  return array.indexOf(value) === index;
-}
+module.exports.findFilesWithExtension1 = findFilesWithExtension1

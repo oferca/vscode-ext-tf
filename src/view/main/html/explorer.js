@@ -1,4 +1,3 @@
-const { css } = require("./style")
 
 const folders = list => list.map(
     project => `
@@ -16,9 +15,6 @@ module.exports.html = list => {
     return `
 <html>
     <head>
-        <style>
-            ${css}
-        </style>
     </head>
     <body>
     <div class="filemanager">
