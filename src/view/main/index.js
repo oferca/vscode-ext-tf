@@ -27,7 +27,7 @@ class WebViewManager {
       this.outputFileContent = outputFileExists ? fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding) : undefined
 
       // Render
-      this.sideBarWebView.html = html(
+      const params = [
         preferences,
         getActions(this.stateManager),
         Math.random(),
@@ -35,21 +35,24 @@ class WebViewManager {
         tfCommand,
         completed,
         this.commandLaunched
-      )
+      ]
+
+      this.sideBarWebView.html = html(...params)
+      this.projectExplorer.html = html(...params)
+       
     }
 
     async messageHandler (message) {
       if (!message) return;
 
-      const { tfCommand, command} = message
+      const { tfCommand, command, namespace } = message
       const { handler, launch } = this.commandsLauncher
       const cb = createCB(message, handler, this.render)
-
-      handleCommand( tfCommand || command, this.logger, handler, launch, cb, this) 
+      // TODO: Switch Namespace 
+      handleCommand( tfCommand || command, this.logger, handler, launch, cb, this ) 
     }
   
-
-    init () {
+    initSideBarView () {
       const sideBarWebView = {
         enableScripts: true,
           resolveWebviewView: webviewView => {
@@ -65,6 +68,26 @@ class WebViewManager {
         this.sideBarWebViewProviderExplorer = vscode.window.registerWebviewViewProvider('terraform-button-view-explorer', sideBarWebView );
         this.sideBarWebViewProviderScm = vscode.window.registerWebviewViewProvider('terraform-button-view-scm', sideBarWebView );
         this.context.subscriptions.push(this.sideBarWebViewProvider);
+    }
+
+    initProjectExplorer() {
+      this.projectExplorer = vscode.window.createWebviewPanel(
+        'catCoding', // Identifies the type of the webview. Used internally
+        'Cat Coding', // Title of the panel displayed to the user
+        vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+        { enableScripts: true } // Webview options. More on these later.
+      ).webview;
+      this.projectExplorer.onDidReceiveMessage(
+        this.messageHandler,
+        undefined,
+        this.context.subscriptions
+      )
+
+    }
+
+    init () {
+        this.initSideBarView()
+        this.initProjectExplorer()
     }
     
     constructor(context, logger, stateManager, commandsLauncher){
