@@ -1,6 +1,7 @@
 Bugs:
-* - target not working
+* clicking plan twice in a row creates wrong messages
 * Plan with error not working
+* chatgt disabled click wrong message
 * Clear unsupported shell
 * unsupported sgell init spins forever
 * Output spins forever
