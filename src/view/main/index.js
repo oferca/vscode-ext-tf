@@ -54,7 +54,10 @@ class WebViewManager {
 
       const paramsExplorer = [...params]
       paramsExplorer.push(list2)
+      paramsExplorer.push(completed)
+      paramsExplorer.push(this.withAnimation)
       this.projectExplorer.html = html(...paramsExplorer)
+      this.withAnimation = false
        
     }
 
@@ -64,8 +67,8 @@ class WebViewManager {
       const { tfCommand, command, namespace } = message
       const { handler, launch } = this.commandsLauncher
       const cb = createCB(message, handler, this.render)
-      // TODO: Switch Namespace 
-      handleCommand( tfCommand || command, this.logger, handler, launch, cb, this ) 
+      const res = handleCommand( tfCommand || command, this.logger, handler, launch, cb, this ) 
+      return res
     }
   
     initSideBarView () {
@@ -94,7 +97,11 @@ class WebViewManager {
         { enableScripts: true } // Webview options. More on these later.
       ).webview;
       this.projectExplorer.onDidReceiveMessage(
-        this.messageHandler,
+        async (message) => {
+          const res = await this.messageHandler(message);
+          if (res === "render") this.render()
+          return res
+        },
         undefined,
         this.context.subscriptions
       )
@@ -111,7 +118,7 @@ class WebViewManager {
         this.logger = logger
         this.stateManager = stateManager
         this.commandsLauncher = commandsLauncher
-        this.intro = true
+        this.withAnimation = true
         this.commandLaunched = false
         this.render = this.render.bind(this)
         this.messageHandler = this.messageHandler.bind(this)

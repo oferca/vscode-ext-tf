@@ -11,12 +11,11 @@ const folders = list => list.map(
 `
 ).join("")
 
-module.exports.html = list => {
+module.exports.html = (list, completed, withAnimation) => {
     return `
-<html>
-    <head>
-    </head>
-    <body>
+    <section>
+        <button type="button" class="pop-btn">Click for pop-up</button>
+    </section>
     <div class="filemanager">
 
 		<div class="search">
@@ -25,9 +24,8 @@ module.exports.html = list => {
 
 		<div class="breadcrumbs"><span class="folderName">files</span></div>
 
-		<ul class="data animated" style="">
+		<ul class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list)}
-            <li class="folders"><a href="files/Important Documents" title="files/Important Documents" class="folders"><span class="icon folder full"></span><span class="name">Important Documents</span> <span class="details">2 items</span></a></li><li class="folders"><a href="files/Movies" title="files/Movies" class="folders"><span class="icon folder full"></span><span class="name">Movies</span> <span class="details">1 item</span></a></li><li class="folders"><a href="files/Music" title="files/Music" class="folders"><span class="icon folder full"></span><span class="name">Music</span> <span class="details">3 items</span></a></li><li class="folders"><a href="files/Nothing here" title="files/Nothing here" class="folders"><span class="icon folder"></span><span class="name">Nothing here</span> <span class="details">Empty</span></a></li><li class="folders"><a href="files/Photos" title="files/Photos" class="folders"><span class="icon folder full"></span><span class="name">Photos</span> <span class="details">5 items</span></a></li><li class="files"><a href="files/Readme.html" title="files/Readme.html" class="files"><span class="icon file f-html">.html</span><span class="name">Readme.html</span> <span class="details">344 Bytes</span></a></li>
         </ul>
 
 		<div class="nothingfound" style="display: none;">
@@ -36,6 +34,33 @@ module.exports.html = list => {
 		</div>
 
 	</div>
-    </body>
-</html>
 `}
+
+module.exports.scripts = `
+    var parent = document.querySelector(".modal-parent"),
+    btn = document.querySelector(".pop-btn"),
+    X = document.querySelector(".x"),
+    section = document.querySelector("section");
+
+    btn.addEventListener("click", appear);
+
+    function appear() {
+        parent.style.display = "block";
+        section.style.filter = "blur(10px)"
+    }
+    X.addEventListener("click", disappearX);
+    function disappearX() {
+        parent.style.display = "none";
+        section.style.filter = "blur(0px)"
+        var modal = document.querySelector(".modal")
+        modal.classList.add("animated")
+        vscode.postMessage({ command: 'render' })
+    }
+    parent.addEventListener("click", disappearParent)
+    function disappearParent(e) {
+        if (e.target.className == "modal-parent") {
+            parent.style.display = "none";
+            section.style.filter = "blur(0px)"
+        }
+    }
+`

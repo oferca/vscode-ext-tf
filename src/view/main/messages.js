@@ -27,6 +27,7 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
 
         default:
             if (!command) break;
+            if (command === "render") return command
             webViewManager.commandLaunched = true
             const cb = () => setTimeout(tfCommandCallback)
             webViewManager.outputFileContent = null

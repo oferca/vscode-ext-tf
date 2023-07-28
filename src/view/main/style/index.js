@@ -92,6 +92,7 @@ a.command:hover, a.command, a.command:focus {
     align-items: center;
     border: 1px solid var(--vscode-button-border,transparent);
     line-height: 18px;
+    font-size: 14px;
     min-width: 140px;
   }
   .pref-change{
@@ -193,6 +194,7 @@ a.command:hover, a.command, a.command:focus {
 
   h4.title{
     width: 100%;
+    font-size: 14px;
   }
 
   @keyframes callToActionAnim {

@@ -5,6 +5,9 @@ module.exports.style= `
 
 @charset "utf-8";
 
+.explorer #main-container{
+  max-width: 100%
+}
 
 /*-------------------------
 	Simple reset
@@ -37,6 +40,7 @@ body {
 	max-width:1340px;
 	position: relative;
 	margin: 100px auto 50px;
+  text-align: left;
 }
 
 @media all and (max-width: 965px) {
@@ -557,4 +561,74 @@ footer #tzine-actions iframe{
 	#bsaHolder, footer{ display:none;}
 }
 
+
+/*
+
+POPUP
+*/
+
+
+section {
+  max-1height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  transition: 0.5s ;
+}
+
+.modal-parent {
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  width: 100%;
+  display: none;
+  z-index: 1000;
+}
+
+.modal {
+  background: var( --vscode-editor-background);
+  width: 70%;
+  padding: 30px;
+  border-radius: 6px;
+  position: absolute;
+  inset: 50%;
+  transform: translate(-50%, -50%);
+  font-size: large;
+  line-height: 2rem;
+  letter-spacing: 0.5px;
+  word-spacing: 5px;
+  position: relative;
+}
+.modal.animated{
+  animation: 1s drop;
+}
+
+@keyframes drop {
+  0% {
+      top: -100px;
+  }
+
+  100% {
+      top: 50%;
+  }
+}
+
+.x {
+  position: absolute;
+  inset: 10px 20px auto auto;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+
+  .modal,
+  .center {
+      width: 80%;
+      padding: 1rem;
+      z-index: 1000;
+  }
+
+}
 `
