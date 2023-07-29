@@ -84,7 +84,7 @@ class WebViewManager {
             this.render()
             this.sideBarWebView.onDidReceiveMessage(this.messageHandler)
             webviewView.onDidDispose(() => {
-              this.sideBarWebView.dispose();
+              this.sideBarWebView && this.sideBarWebView.dispose();
             });
           }
         }

@@ -17,6 +17,9 @@ module.exports.style= `
   position: absolute;
   top: 0px;
 }
+.explorer .button.output{
+  position: inherit;
+}
 .button.output.chat-gpt{
   top: 35px;
 }
