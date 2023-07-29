@@ -4,7 +4,7 @@ const { animatedButtonStyle } = require("../style/animated-button")
 const { html: getExplorerHTML } = require("./explorer")
 const { scripts: explorerScripts } = require("./explorer")
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams, selectedProjectJson = "") => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
@@ -34,6 +34,7 @@ ${ explorerHTML }
   <div class="modal-parent" ${modalParentStyle}>
     <div class="modal ${modalAnimated}"">
       <div id="project-info" ${projectInfoStyle}>
+      ${selectedProjectJson}
       </div>
       <div id="top-container" class="${invalidate}">
         <h2 id="intro" >Click To Run Terraform</h2>

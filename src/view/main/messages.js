@@ -24,6 +24,9 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
                 launchHandler.shellHandler.fileEncoding)
             await (new ChatGPTHandler(null, logger)).execute("webview", null, webViewManager.outputFileContent)
             break;
+        case 'selected-project':
+            return command
+            break;
 
         default:
             if (!command) break;

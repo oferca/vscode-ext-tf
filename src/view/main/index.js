@@ -14,6 +14,7 @@ class WebViewManager {
   commandLaunched
   outputFileContent
   webViewProviderScm
+  selectedProjectJson
   webViewProviderExplorer
 
     async render(completed = false, tfCommand){
@@ -58,8 +59,7 @@ class WebViewManager {
      
       const paramsExplorer = [...params]
       paramsExplorer.push(tfProjectsCache)
-      paramsExplorer.push(completed)
-      paramsExplorer.push(this.withAnimation)
+      paramsExplorer.push(this.selectedProjectJson)
       this.projectExplorer.html = html(...paramsExplorer)
       this.withAnimation = false
        
@@ -105,6 +105,7 @@ class WebViewManager {
         async (message) => {
           const res = await this.messageHandler(message);
           if (res === "render") this.render()
+          if (res == "selected-project") this.selectedProjectJson = message.json
           return res
         },
         undefined,
