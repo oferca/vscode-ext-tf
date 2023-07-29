@@ -684,4 +684,27 @@ section {
   background: #EE9EFF;
 }
 
+.explorer .expandable{
+  min-height: 194px;
+}
+
+.explorer .button-container{
+  justify-content: left;
+}
+
+.explorer #display-output-2{
+  justify-content: center;
+}
+
+.explorer #display-output-2 button{
+  margin-top: 25px;
+  justify-content: center;
+}
+
+.explorer #intro .content{
+  position: absolute;
+  margin-top: 20px;
+  width: 100%;
+  font-size: 16px;
+}
 `

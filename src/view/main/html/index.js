@@ -37,23 +37,22 @@ ${ explorerHTML }
       ${selectedProjectJson}
       </div>
       <div id="top-container" class="${invalidate}">
-        <h2 id="intro" >Click To Run Terraform</h2>
+        <h2 id="intro" ><div class="content">Click To Run Terraform</div></h2>
         ${warningHTML}
         <div id="display-output-2" class="button-container" style="display:none;" >
-          <button id="watch-logs-button" class="button output ${disableLogs} " onclick="postMessage(\'openOutputFile\')">
-            <div id="watch-logs" class="${disabledButtonLogs}" onclick="this.classList.remove('animated-button-text')">${logsButtonText} Logs</div>
-          </button>
-          <button class="button output chat-gpt ${isChatGPTDisabled}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${chatGPTTitle}">
-            <div id="chat-gpt" class="${chatGPTAnimation}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
-          </button>
-
-          </div>
+            <button id="watch-logs-button" class="button output ${disableLogs} " onclick="postMessage(\'openOutputFile\')">
+              <div id="watch-logs" class="${disabledButtonLogs}" onclick="this.classList.remove('animated-button-text')">${logsButtonText} Logs</div>
+            </button>
+            <button class="button output chat-gpt ${isChatGPTDisabled}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${chatGPTTitle}">
+              <div id="chat-gpt" class="${chatGPTAnimation}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
+            </button>
+        </div>
           <span class="x" draggable="true">&times;</span>
         </div>
 
         <div id="main-container">
           <div class="button-container">
-
+          <div class="expandable">
           ${ actions.map(action => {
             if (action.menuOnly) return
             const type = action.label.indexOf("Apply") > -1 ? "warning" : ""
@@ -72,8 +71,9 @@ ${ explorerHTML }
             </div>
           
             `)
-          if (action.kind === -1 ) return ('<h4 class="title">' + action.label + '</h4>' )
+          if (action.kind === -1 ) return ('</div><div class="expandable"><h4 class="title">' + action.label + '</h4>' )
         }).join("")}
+        </div>
         </div>
         </div>
       <div class="prefs">
