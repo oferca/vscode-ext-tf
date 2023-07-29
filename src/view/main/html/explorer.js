@@ -1,14 +1,17 @@
 
 const folders = list => list.map(
-    project => `
-    <li class="folders">
-        <a title="${project.filePath}" class="folders">
-            <span class="icon folder full"></span>
-            <span class="name">${project.name}</span>
-            <span class="details">${project.regions.join()}</span>
-        </a>
-    </li>
-`
+    project => {
+        const projectJSON = JSON.stringify(project).replaceAll("\"","\\\'")
+        return`
+            <li class="folders" onclick="CURRENT_PROJECT='${projectJSON}'; appear();" >
+                <a title="${project.filePath}" class="folders">
+                    <span class="icon folder full"></span>
+                    <span class="name">${project.name}</span>
+                    <span class="details">${project.regions.join()}</span>
+                </a>
+            </li>
+        `
+    }
 ).join("")
 
 module.exports.html = (list, completed, withAnimation) => {
@@ -45,6 +48,7 @@ module.exports.scripts = `
     btn.addEventListener("click", appear);
 
     function appear() {
+        document.getElementById("project-info").innerHTML = CURRENT_PROJECT
         parent.style.display = "block";
         section.style.filter = "blur(10px)"
     }
