@@ -631,4 +631,57 @@ section {
   }
 
 }
+
+#project-info li{
+  font-size: 14px;
+  text-align: left;
+  line-height: 22px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#project-info ol {
+  list-style: none;
+  counter-reset: my-awesome-counter;
+}
+#project-info li {
+  counter-increment: my-awesome-counter;
+  margin: 0.25rem;
+}
+#project-info li::before {
+  background: var(--vscode-badge-background);
+  width: auto;
+  height: 2rem;
+  border-radius: 50%;
+  display: inline-block;
+  line-height: 2rem;
+  color: white;
+  text-align: center;
+  margin-right: 0.5rem;
+  padding: 0px 10px;
+  min-width: 4em;
+}
+
+#project-info li.project-name::before {
+  content: "Project";
+}
+#project-info li.path::before {
+  content: "Path";
+}
+#project-info li.regions::before {
+  content: "Regions";
+}
+#project-info li.providers::before {
+  content: "Providers";
+}
+#project-info li.definitions::before {
+  content: "Definitions";
+}
+#project-info ol ol li::before {
+  background: #DE51FF;
+}
+#project-info ol ol ol li::before {
+  background: #EE9EFF;
+}
+
 `

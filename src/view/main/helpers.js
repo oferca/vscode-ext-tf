@@ -8,7 +8,7 @@ function onlyUnique(value, index, array) {
   return array.indexOf(value) === index;
 }
 
-async function findFilesWithExtension1 (startPath, targetExtension, fileList) {
+async function findFilesWithExtension (startPath, targetExtension, fileList) {
   fileList = fileList || {};
   const items = await vscode.workspace.fs.readDirectory(vscode.Uri.file(startPath));
 
@@ -18,7 +18,7 @@ async function findFilesWithExtension1 (startPath, targetExtension, fileList) {
 
     if (fileType === vscode.FileType.Directory && fileName !== ".terraform" && fileName !== "modules") {
       // Recursively search directories
-      await findFilesWithExtension1(filePath, targetExtension, fileList);
+      await findFilesWithExtension(filePath, targetExtension, fileList);
     } else if (path.extname(filePath) === targetExtension) {
       const projectName = path.basename(path.dirname(filePath))
       fileList[projectName] = fileList[projectName] || {}
@@ -71,4 +71,4 @@ async function findFilesWithExtension1 (startPath, targetExtension, fileList) {
   return fileList;
 }
 
-module.exports.findFilesWithExtension1 = findFilesWithExtension1
+module.exports.findFilesWithExtension = findFilesWithExtension

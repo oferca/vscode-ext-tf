@@ -50,7 +50,19 @@ module.exports.scripts = currentProjectJSON => `
     renderProjectInfo()
     
     function renderProjectInfo() {
-        document.getElementById("project-info").innerHTML = CURRENT_PROJECT
+        if (!CURRENT_PROJECT) return
+        const projectInfo = JSON.parse(CURRENT_PROJECT.replaceAll("'",'\"'))
+        document.getElementById("project-info").innerHTML = \`
+        <h4 title="\${projectInfo.name}">
+        Project \${projectInfo.name}
+        </h4>
+        <ol>
+            <li class="path" title="\${projectInfo.filePath}">\${projectInfo.filePath}</li>
+            <li class="regions" title="\${projectInfo.regions.join()}"}>\${projectInfo.regions.join()}</li>
+            <li class="providers" title="\${projectInfo.providers.join()}"}>\${projectInfo.providers.join()}</li>
+            <li class="definitions" title="\${projectInfo.resources}">\${projectInfo.resources} resources, \${projectInfo.modules} modules, \${projectInfo.datasources} datasources</li>
+        </ol>
+        \`
     }
     function appear() {
         renderProjectInfo()

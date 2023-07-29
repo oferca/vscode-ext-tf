@@ -53,8 +53,8 @@ class WebViewManager {
       }
      
       if (!tfProjectsCache){
-        const list1 = await findFilesWithExtension1(workspacePath, targetExtension, fileList)
-        tfProjectsCache = Object.keys(list1).filter(x => list1[x].isProject).map(x => list1[x]);   
+        const tfFiles = await findFilesWithExtension(workspacePath, targetExtension, fileList)
+        tfProjectsCache = Object.keys(tfFiles).filter(x => tfFiles[x].isProject).map(x => tfFiles[x]);   
       }
      
       const paramsExplorer = [...params]
@@ -135,7 +135,7 @@ function onlyUnique(value, index, array) {
   return array.indexOf(value) === index;
 }
 
-async function findFilesWithExtension1 (startPath, targetExtension, fileList) {
+async function findFilesWithExtension (startPath, targetExtension, fileList) {
   fileList = fileList || {};
   const items = await vscode.workspace.fs.readDirectory(vscode.Uri.file(startPath));
 
@@ -145,7 +145,7 @@ async function findFilesWithExtension1 (startPath, targetExtension, fileList) {
 
     if (fileType === vscode.FileType.Directory && fileName !== ".terraform" && fileName !== "modules") {
       // Recursively search directories
-      await findFilesWithExtension1(filePath, targetExtension, fileList);
+      await findFilesWithExtension(filePath, targetExtension, fileList);
     } else if (path.extname(filePath) === targetExtension) {
       const projectName = path.basename(path.dirname(filePath))
       fileList[projectName] = fileList[projectName] || {}
@@ -166,7 +166,12 @@ async function findFilesWithExtension1 (startPath, targetExtension, fileList) {
 
       if(content.indexOf("terraform{") > -1) {
         fileList[projectName].isProject = true
-        fileList[projectName].filePath = filePath;
+
+        const workspaceFolders = vscode.workspace.workspaceFolders;
+        const roorFolderName = workspaceFolders[0].name
+        fileList[projectName].filePath = filePath
+          .split(projectName)[0]
+          .split(roorFolderName)[1];
 
         const providers1 = content.split("required_providers{")
         const providers2 = providers1.length > 1 ? providers1[1].split("}}")[0] : []
