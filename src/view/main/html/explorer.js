@@ -1,9 +1,10 @@
+const vscode = require('vscode');
 
 const folders = list => list.map(
     project => {
         const projectJSON = JSON.stringify(project).replaceAll("\"","\\\'")
         return`
-            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', json: '${projectJSON}' }); CURRENT_PROJECT='${projectJSON}'; appear();" >
+            <li class="folders" onclick="console.log('***1***', vscode);vscode.postMessage({ command: 'selected-project', json: '${projectJSON}' }); CURRENT_PROJECT='${projectJSON}'; appear();" >
                 <a title="${project.filePath}" class="folders">
                     <span class="icon folder full"></span>
                     <span class="name">${project.name}</span>
@@ -72,6 +73,7 @@ module.exports.scripts = currentProjectJSON => `
         var modal = document.querySelector(".modal")
         modal.classList.add("animated")
         document.getElementById("main-modal").classList.add("animated")
+        console.log('***2***', vscode)
         vscode.postMessage({ command: 'render' })
     }
 

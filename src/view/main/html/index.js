@@ -1,3 +1,5 @@
+const vscode = require('vscode');
+
 const { style } = require("../style")
 const { style : explorerStyle } = require("../style/explorer")
 const { animatedButtonStyle } = require("../style/animated-button")
@@ -86,6 +88,7 @@ ${ explorerHTML }
   <script>
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
   const vscode = acquireVsCodeApi();
+  console.log("VSCODE", vscode)
   
     function postMessage(command) { 
       vscode.postMessage({ command });
