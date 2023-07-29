@@ -1,6 +1,6 @@
 const vscode = require('vscode');
 const { ChatGPTHandler }  = require('../../commands/chat-gpt')
-const { openMenuCommandId } = require("../../shared/constants")
+const { openMenuCommandId, credentialsKey } = require("../../shared/constants")
 
 module.exports.handleCommand = async (command, logger, launchHandler, launch, tfCommandCallback, webViewManager, tfProject) =>
 {
@@ -43,12 +43,16 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
   }
 }
 
-module.exports.createCB = (message, handler, reRender) => () => {
+module.exports.createCB = (message, handler, reRender, oldPrefs, stateManager) => () => {
+    stateManager.setUserFolder(oldPrefs.userFolder)
+    stateManager.updateState(credentialsKey, oldPrefs.credentials)
     reRender(true, message.tfCommand)
     if (!handler) return
     const { fileHandler, shellHandler } = handler
     if (!fileHandler) return
     fileHandler.convertOutputToReadable()
-    this.outputFileContent = fileHandler.initialized ? fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding) : undefined
+    this.outputFileContent = fileHandler.initialized ?
+        fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding)
+        : undefined
   }
   

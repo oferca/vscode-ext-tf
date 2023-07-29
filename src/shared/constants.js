@@ -134,6 +134,8 @@ module.exports.changeFolderKey = "tfChangeFolderKey"
 
 module.exports.credentialsKey = "tfCredentialsKey"
 
+module.exports.selectedProjectJsonKey = "tfselectedProjectJson"
+
 module.exports.stationIdKey = "tfStationId"
 
 module.exports.dashboardExpendedOnceKey = "tfFirstDashboardExpand"

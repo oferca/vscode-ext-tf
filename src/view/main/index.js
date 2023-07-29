@@ -3,7 +3,7 @@ const path = require('path');
 const vscode = require('vscode');
 const { html } = require("./html");
 const { getActions } = require('../../shared/actions');
-const { changeFolderKey, credentialsKey } = require("../../shared/constants");
+const { changeFolderKey, credentialsKey, selectedProjectJsonKey } = require("../../shared/constants");
 const { handleCommand, createCB } = require('./messages');
 
 let tfProjectsCache = null
@@ -14,7 +14,6 @@ class WebViewManager {
   commandLaunched
   outputFileContent
   webViewProviderScm
-  selectedProjectJson
   webViewProviderExplorer
 
     async render(completed = false, tfCommand){
@@ -40,7 +39,7 @@ class WebViewManager {
         completed,
         this.commandLaunched
       ]
-      this.sideBarWebView.html = html(...params)
+      if (this.sideBarWebView) this.sideBarWebView.html = html(...params)
 
       const targetExtension = '.tf';
       const fileList = [];
@@ -56,21 +55,38 @@ class WebViewManager {
         const tfFiles = await findFilesWithExtension(workspacePath, targetExtension, fileList)
         tfProjectsCache = Object.keys(tfFiles).filter(x => tfFiles[x].isProject).map(x => tfFiles[x]);   
       }
-     
+      tfProjectsCache.forEach(project => {
+        project.credentials = this.stateManager.getState(credentialsKey + "_" + project.name) || ""
+      })
       const paramsExplorer = [...params]
       paramsExplorer.push(tfProjectsCache)
-      paramsExplorer.push(this.selectedProjectJson)
-      this.projectExplorer.html = html(...paramsExplorer)
+      paramsExplorer.push(this.stateManager.getState(selectedProjectJsonKey))
+      if (this.projectExplorer) this.projectExplorer.html = html(...paramsExplorer)
       this.withAnimation = false
        
     }
 
+    handlePreferences(message) {
+      const oldPreferences = {
+        userFolder: this.stateManager.getUserFolder(),
+        credentials: this.stateManager.getState(credentialsKey)
+      }
+      const currentProjectOpt1 = JSON.parse(message.CURRENT_PROJECT ? message.CURRENT_PROJECT.replaceAll("'", "\"") : null)
+      const currentProjectOpt2 = JSON.parse(message.json ? message.json.replaceAll("'", "\"") : null)
+      const currentProject = currentProjectOpt1 || currentProjectOpt2
+      if (!currentProject) return
+      this.stateManager.updateState(credentialsKey + "_" + currentProject.name, message.credentials)
+      const projectPath = currentProject ? currentProject.filePath + currentProject.name : null
+      this.stateManager.setUserFolder(projectPath)
+      if (message.credentials.length) this.stateManager.updateState(credentialsKey)
+      return oldPreferences
+    }
     async messageHandler (message) {
       if (!message) return;
-
-      const { tfCommand, command, namespace } = message
+      const oldPrefs = this.handlePreferences(message)
+      const { tfCommand, command } = message
       const { handler, launch } = this.commandsLauncher
-      const cb = createCB(message, handler, this.render)
+      const cb = createCB(message, handler, this.render, oldPrefs, this.stateManager)
       const res = handleCommand( tfCommand || command, this.logger, handler, launch, cb, this ) 
       return res
     }
@@ -105,7 +121,7 @@ class WebViewManager {
         async (message) => {
           const res = await this.messageHandler(message);
           if (res === "render") this.render()
-          if (res == "selected-project") this.selectedProjectJson = message.json
+          if (res == "selected-project") this.stateManager.updateState(selectedProjectJsonKey, message.json)
           return res
         },
         undefined,

@@ -1,6 +1,12 @@
 module.exports.style= `
-.prefs{
+.explorer .prefs{
   display: none;
+}
+
+.explorer .pref, .pref-change{
+	font-size: 11px;
+	position: absolute;
+    top: 205px;
 }
 
 @charset "utf-8";
@@ -713,5 +719,13 @@ section {
 
 .explorer h4 {
   color: var(--vscode-button-foreground);
+}
+
+#credentials{
+	background: var( --vscode-editor-background);
+	color: var(--vscode-input-foreground);
+}
+#credentials::placeholder{
+	color: var(--vscode-input-placeholderForeground)
 }
 `

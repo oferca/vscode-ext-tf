@@ -47,13 +47,14 @@ async function activate(context) {
 			}
 		)
 
+		disposables.push(webViewManager.initProjectExplorer())
+		await webViewManager.render()
 		
 		disposables.push(commandRegistration)
 		disposables.push(projetsCommandRegistration)
 		disposables.push(openMenuButton.init(true))
 		disposables.push(openProjectsButton.init(true))
 		disposables.push(webViewManager.initSideBarView())
-		disposables.push(webViewManager.initProjectExplorer())
 		
 		await stateManager.notifyFirstActivation()
 		!stateManager.isFirstActivation && openMenuButton.init()

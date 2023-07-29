@@ -21,6 +21,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
+    credentials = isExplorer ? `<textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>
@@ -41,10 +42,10 @@ ${ explorerHTML }
         <h2 id="intro" ><div class="content">Click To Run Terraform</div></h2>
         ${warningHTML}
         <div id="display-output-2" class="button-container" style="display:none;" >
-            <button id="watch-logs-button" class="button output ${disableLogs} " onclick="postMessage(\'openOutputFile\')">
+            <button id="watch-logs-button" class="button output ${disableLogs} " onclick="postMessage(\'openOutputFile\', IS_EXPLORER)">
               <div id="watch-logs" class="${disabledButtonLogs}" onclick="this.classList.remove('animated-button-text')">${logsButtonText} Logs</div>
             </button>
-            <button class="button output chat-gpt ${isChatGPTDisabled}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${chatGPTTitle}">
+            <button class="button output chat-gpt ${isChatGPTDisabled}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\', IS_EXPLORER)" title="${chatGPTTitle}">
               <div id="chat-gpt" class="${chatGPTAnimation}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
             </button>
         </div>
@@ -78,20 +79,29 @@ ${ explorerHTML }
         </div>
         </div>
       <div class="prefs">
-            <div class="pref-container" ><div class="pref"><a class="pref-change" onclick="vscode.postMessage({ tfCommand: 'Clear preferences' })"> Clear preferences </a></div></div>
-            <div class="pref-container"><div class="pref">${preferences.folder ? "Folder selected." : ""}</div><a class="pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfFolder").label}' })")> ${preferences.folder ? "change" : "Select folder"} </a></div>
-            <div class="pref-container"><div class="pref">${preferences.credentials ? "Credentials set." : ""}</div><a class="pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfCredentials").label}' })"> ${preferences.credentials ? "change" : "Enter credentials"} </a></div>
+            <div class="pref-container" ><div class="pref clear"><a class="pref-change" onclick="vscode.postMessage({ tfCommand: 'Clear preferences', isExplorer: IS_EXPLORER })"> Clear preferences </a></div></div>
+            <div class="pref-container"><div class="pref select-folder">${preferences.folder ? "Folder selected." : ""}</div><a class="pref select-folder pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfFolder").label}', isExplorer: IS_EXPLORER})")> ${preferences.folder ? "change" : "Select folder"} </a></div>
+            <div class="pref-container"><div class="pref credentials">${preferences.credentials ? "Credentials set." : ""}</div><a class="pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfCredentials").label}', isExplorer: IS_EXPLORER })"> ${preferences.credentials ? "change" : "Enter credentials"} </a></div>
           </div>
+          ${credentials}
         <br>
     </div>
   </div>
   <script>
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
   const vscode = acquireVsCodeApi();
-  console.log("VSCODE", vscode)
   
-    function postMessage(command) { 
-      vscode.postMessage({ command });
+    function getCredentials() {
+      return document.getElementById("credentials").value
+    }
+    function postMessage(command) {
+      const credentials = getCredentials() 
+      vscode.postMessage({
+        command,
+        isExplorer: IS_EXPLORER,
+        CURRENT_PROJECT,
+        credentials
+      });
     }
     function showLogsButton (tfCommand) {
       document.getElementById("intro").classList.add('no-animation');
@@ -107,9 +117,14 @@ ${ explorerHTML }
       }
     }
     function launchTFCommand(tfCommand, el) {
+      const credentials = getCredentials()
       el.classList.add('animated-button');
       showLogsButton(tfCommand)
-      vscode.postMessage({ tfCommand });
+      vscode.postMessage({
+        tfCommand,
+        isExplorer: IS_EXPLORER,
+        CURRENT_PROJECT,
+        credentials});
     }
     ${isExplorer && explorerScripts(selectedProjectJson) }
   </script>

@@ -4,7 +4,7 @@ const folders = list => list.map(
     project => {
         const projectJSON = JSON.stringify(project).replaceAll("\"","\\\'")
         return`
-            <li class="folders" onclick="console.log('***1***', vscode);vscode.postMessage({ command: 'selected-project', json: '${projectJSON}' }); CURRENT_PROJECT='${projectJSON}'; appear();" >
+            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', json: '${projectJSON}', isExplorer: IS_EXPLORER }); CURRENT_PROJECT='${projectJSON}'; appear();" >
                 <a title="${project.filePath}" class="folders">
                     <span class="icon folder full"></span>
                     <span class="name">${project.name}</span>
@@ -45,6 +45,7 @@ module.exports.scripts = currentProjectJSON => `
     X = document.querySelector(".x")
     X.addEventListener("click", disappearX);
     CURRENT_PROJECT="${currentProjectJSON}";
+    IS_EXPLORER=true
     renderProjectInfo()
     
     function renderProjectInfo() {
@@ -55,12 +56,13 @@ module.exports.scripts = currentProjectJSON => `
         Project \${projectInfo.name.charAt(0).toUpperCase() + projectInfo.name.slice(1)}
         </h4>
         <ol>
-            <li class="path" title="\${projectInfo.filePath}">\${projectInfo.filePath}</li>
-            <li class="regions" title="\${projectInfo.regions.join(', ')}"}>\${projectInfo.regions.join()}</li>
-            <li class="providers" title="\${projectInfo.providers.join(', ')}"}>\${projectInfo.providers.join()}</li>
+            <li class="path" title="\${projectInfo.filePath}">\${projectInfo.filePath + projectInfo.name}</li>
+            <li class="regions" title="\${projectInfo.regions.join(', ')}"}>\${projectInfo.regions.join(', ')}</li>
+            <li class="providers" title="\${projectInfo.providers.join(', ')}"}>\${projectInfo.providers.join(', ')}</li>
             <li class="definitions" title="\${projectInfo.resources}">\${projectInfo.resources} resources, \${projectInfo.modules} modules, \${projectInfo.datasources} datasources</li>
         </ol>
         \`
+        document.getElementById("credentials").innerHTML = projectInfo.credentials
     }
     function appear() {
         renderProjectInfo()
@@ -73,8 +75,7 @@ module.exports.scripts = currentProjectJSON => `
         var modal = document.querySelector(".modal")
         modal.classList.add("animated")
         document.getElementById("main-modal").classList.add("animated")
-        console.log('***2***', vscode)
-        vscode.postMessage({ command: 'render' })
+        vscode.postMessage({ command: 'render', isExplorer: IS_EXPLORER })
     }
 
     parent.addEventListener("click", disappearParent)
