@@ -1,35 +1,49 @@
 const { style } = require("../style")
 const { style : explorerStyle } = require("../style/explorer")
 const { animatedButtonStyle } = require("../style/animated-button")
-const { html: explorerHTML } = require("./explorer")
+const { html: getExplorerHTML } = require("./explorer")
 const { scripts: explorerScripts } = require("./explorer")
 
 module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams) => {
-  const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1
-  const disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 )
-  return `
+  const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
+    disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
+    isExplorer = !!explorerParams,
+    projectInfoStyle = `style="display: ${isExplorer ? 'block' : 'none'};"`,
+    modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,
+    explorerHTML = isExplorer ? getExplorerHTML(explorerParams, completed) : '',
+    modalAnimated = !completed ? 'animated' : '',
+    warningHTML = preferences.showWarning ? '<br><br><div class="title prefs warning">Preferences Active</div>' : "",
+    disableLogs = disableLogsButton ? "disabled" : "",
+    disabledButtonLogs = disableLogsButton ? "disabled" : "animated-button-text",
+    logsButtonText = tfCommand ? tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1): "Watch",
+    isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
+    chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
+    chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled"
+  
+    return `
 <html>
 <head>
   <style>
     ${style}
     ${animatedButtonStyle}
-    ${explorerParams && explorerStyle }
+    ${isExplorer && explorerStyle }
   </style>
 </head>
-<body class="${explorerParams ? "explorer" : '' }" >
-${explorerParams ? explorerHTML(explorerParams, completed) : '' }
-  <div class="modal-parent" style="${completed ? 'display: block;' : ''}">
-    <div class="modal ${!completed ? 'animated' : ''}"">
+<body class="${isExplorer ? "explorer" : '' }" >
+${ explorerHTML }
+  <div class="modal-parent" ${modalParentStyle}>
+    <div class="modal ${modalAnimated}"">
+      <div id="project-info" ${projectInfoStyle}>
+      </div>
       <div id="top-container" class="${invalidate}">
         <h2 id="intro" >Click To Run Terraform</h2>
-        ${preferences.showWarning ? '<br><br><div class="title prefs warning">Preferences Active</div>' : ""}
-
+        ${warningHTML}
         <div id="display-output-2" class="button-container" style="display:none;" >
-          <button id="watch-logs-button" class="button output ${disableLogsButton ? "disabled" : ""} " onclick="postMessage(\'openOutputFile\')">
-            <div id="watch-logs" class="${disableLogsButton ? "disabled" : "animated-button-text"}" onclick="this.classList.remove('animated-button-text')">${tfCommand ? tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1): "Watch"} Logs</div>
+          <button id="watch-logs-button" class="button output ${disableLogs} " onclick="postMessage(\'openOutputFile\')">
+            <div id="watch-logs" class="${disabledButtonLogs}" onclick="this.classList.remove('animated-button-text')">${logsButtonText} Logs</div>
           </button>
-          <button class="button output chat-gpt ${isPlanCompleted && planSucceded ? "" : "disabled"}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan."}">
-            <div id="chat-gpt" class="${isPlanCompleted && planSucceded ? "animated-button-text" : "disabled"}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
+          <button class="button output chat-gpt ${isChatGPTDisabled}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\')" title="${chatGPTTitle}">
+            <div id="chat-gpt" class="${chatGPTAnimation}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
           </button>
 
           </div>
@@ -94,7 +108,7 @@ ${explorerParams ? explorerHTML(explorerParams, completed) : '' }
       showLogsButton(tfCommand)
       vscode.postMessage({ tfCommand });
     }
-    ${explorerParams && explorerScripts }
+    ${isExplorer && explorerScripts }
   </script>
 </body>
 </html>

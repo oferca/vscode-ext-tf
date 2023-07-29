@@ -24,7 +24,7 @@ async function activate(context) {
 		const pref = freshStart ? Math.random() : ""
 		const stateManager = new StateManager(context, logger, disableState, disableState, pref )
 		const openMenuButton = new ActionButton(context, logger, openMenuCommandId, openMenuButtonText, 0)
-		const openProjectsButton = new ActionButton(context, logger, openProjectsCommandId,openProjectsButtonText, 1)
+		const openProjectsButton = new ActionButton(context, logger, openProjectsCommandId, openProjectsButtonText, 1)
 		const launcher = new CommandsLauncher(context, logger, stateManager)
 		const webViewManager = new WebViewManager(context, logger, stateManager, launcher)
 
@@ -41,8 +41,9 @@ async function activate(context) {
 		const projetsCommandRegistration = vscode.commands.registerCommand(
 			openProjectsCommandId,
 			async () => {
-				disposables.push(openMenuButton.init())
-				await projectExplorer.init()
+				// disposables.push(openMenuButton.init())
+				disposables.push(await webViewManager.initProjectExplorer())
+				await webViewManager.render()
 			}
 		)
 
@@ -51,9 +52,8 @@ async function activate(context) {
 		disposables.push(projetsCommandRegistration)
 		disposables.push(openMenuButton.init(true))
 		disposables.push(openProjectsButton.init(true))
-		disposables.push(webViewManager.init())
-		
-		
+		disposables.push(webViewManager.initSideBarView())
+		disposables.push(webViewManager.initProjectExplorer())
 		
 		await stateManager.notifyFirstActivation()
 		!stateManager.isFirstActivation && openMenuButton.init()

@@ -6,6 +6,8 @@ const { getActions } = require('../../shared/actions');
 const { changeFolderKey, credentialsKey } = require("../../shared/constants");
 const { handleCommand, createCB } = require('./messages');
 
+let tfProjectsCache = null
+
 class WebViewManager {
   intro
   sideBarWebView
@@ -48,12 +50,14 @@ class WebViewManager {
         vscode.window.showErrorMessage('No workspace is opened.');
         return;
       }
-
-     const list1 = await findFilesWithExtension1(workspacePath, targetExtension, fileList)
-     const list2 = Object.keys(list1).filter(x => list1[x].isProject).map(x => list1[x]);
-
+     
+      if (!tfProjectsCache){
+        const list1 = await findFilesWithExtension1(workspacePath, targetExtension, fileList)
+        tfProjectsCache = Object.keys(list1).filter(x => list1[x].isProject).map(x => list1[x]);   
+      }
+     
       const paramsExplorer = [...params]
-      paramsExplorer.push(list2)
+      paramsExplorer.push(tfProjectsCache)
       paramsExplorer.push(completed)
       paramsExplorer.push(this.withAnimation)
       this.projectExplorer.html = html(...paramsExplorer)
@@ -90,6 +94,7 @@ class WebViewManager {
     }
 
     initProjectExplorer() {
+      this.projectExplorer && this.projectExplorer.dispose()
       this.projectExplorer = vscode.window.createWebviewPanel(
         'catCoding', // Identifies the type of the webview. Used internally
         'Cat Coding', // Title of the panel displayed to the user
@@ -105,12 +110,7 @@ class WebViewManager {
         undefined,
         this.context.subscriptions
       )
-
-    }
-
-    init () {
-        this.initSideBarView()
-        this.initProjectExplorer()
+      return this.projectExplorer
     }
     
     constructor(context, logger, stateManager, commandsLauncher){
