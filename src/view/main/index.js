@@ -180,7 +180,8 @@ async function findFilesWithExtension (startPath, targetExtension, fileList) {
         providersArr.length ? providersArr.filter(isEven).forEach(
           prov => {
             const provArr = prov.split("\"}")
-            fileList[projectName].providers.push(provArr.length > 1 ? provArr[1] : (provArr[0].length < 25 ? provArr[0] : ""))
+            const provider = provArr.length > 1 ? provArr[1] : (provArr[0].length < 25 ? provArr[0] : "")
+            if (provider.length) fileList[projectName].providers.push(provider)
           }
         ) : []
       }

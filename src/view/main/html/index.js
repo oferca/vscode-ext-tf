@@ -18,8 +18,8 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     logsButtonText = tfCommand ? tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1): "Watch",
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
-    chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled"
-  
+    chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
+    x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>
 <head>
@@ -32,9 +32,8 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
 <body class="${isExplorer ? "explorer" : '' }" >
 ${ explorerHTML }
   <div class="modal-parent" ${modalParentStyle}>
-    <div class="modal ${modalAnimated}"">
+    <div id="main-modal" class="modal ${modalAnimated}"">
       <div id="project-info" ${projectInfoStyle}>
-      ${selectedProjectJson}
       </div>
       <div id="top-container" class="${invalidate}">
         <h2 id="intro" ><div class="content">Click To Run Terraform</div></h2>
@@ -47,7 +46,7 @@ ${ explorerHTML }
               <div id="chat-gpt" class="${chatGPTAnimation}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
             </button>
         </div>
-          <span class="x" draggable="true">&times;</span>
+          ${x}
         </div>
 
         <div id="main-container">
@@ -86,8 +85,8 @@ ${ explorerHTML }
   </div>
   <script>
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
-
-    const vscode = acquireVsCodeApi();
+  const vscode = acquireVsCodeApi();
+  
     function postMessage(command) { 
       vscode.postMessage({ command });
     }

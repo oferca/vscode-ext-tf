@@ -599,6 +599,9 @@ section {
   letter-spacing: 0.5px;
   word-spacing: 5px;
   position: relative;
+  max-height: 85vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .modal.animated{
   animation: 1s drop;
@@ -706,5 +709,9 @@ section {
   margin-top: 20px;
   width: 100%;
   font-size: 16px;
+}
+
+.explorer h4 {
+  color: var(--vscode-button-foreground);
 }
 `
