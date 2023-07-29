@@ -109,7 +109,7 @@ ${ explorerHTML }
       showLogsButton(tfCommand)
       vscode.postMessage({ tfCommand });
     }
-    ${isExplorer && explorerScripts }
+    ${isExplorer && explorerScripts(selectedProjectJson) }
   </script>
 </body>
 </html>

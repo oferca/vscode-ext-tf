@@ -39,20 +39,25 @@ module.exports.html = (list, completed, withAnimation) => {
 	</div>
 `}
 
-module.exports.scripts = `
+module.exports.scripts = currentProjectJSON => `
     var parent = document.querySelector(".modal-parent"),
     btn = document.querySelector(".pop-btn"),
     X = document.querySelector(".x"),
     section = document.querySelector("section");
-
     btn.addEventListener("click", appear);
-
-    function appear() {
+    X.addEventListener("click", disappearX);
+    CURRENT_PROJECT="${currentProjectJSON}";
+    renderProjectInfo()
+    
+    function renderProjectInfo() {
         document.getElementById("project-info").innerHTML = CURRENT_PROJECT
+    }
+    function appear() {
+        renderProjectInfo()
         parent.style.display = "block";
         section.style.filter = "blur(10px)"
     }
-    X.addEventListener("click", disappearX);
+    
     function disappearX() {
         parent.style.display = "none";
         section.style.filter = "blur(0px)"

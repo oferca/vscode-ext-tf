@@ -45,6 +45,7 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
 
 module.exports.createCB = (message, handler, reRender) => () => {
     reRender(true, message.tfCommand)
+    if (!handler) return
     const { fileHandler, shellHandler } = handler
     if (!fileHandler) return
     fileHandler.convertOutputToReadable()
