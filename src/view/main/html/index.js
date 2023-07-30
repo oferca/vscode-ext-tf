@@ -124,7 +124,8 @@ ${ explorerHTML }
         tfCommand,
         isExplorer: IS_EXPLORER,
         CURRENT_PROJECT,
-        credentials});
+        credentials
+      });
     }
     ${isExplorer && explorerScripts(selectedProjectJson) }
   </script>

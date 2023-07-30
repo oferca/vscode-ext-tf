@@ -49,7 +49,7 @@ class WebViewManager {
       })
       const paramsExplorer = [...params]
       paramsExplorer.push(tfProjectsCache)
-      paramsExplorer.push(this.stateManager.getState(selectedProjectJsonKey))
+      paramsExplorer.push(this.stateManager.getState(selectedProjectJsonKey).replaceAll("\"", "'"))
       if (this.projectExplorer) this.projectExplorer.html = html(...paramsExplorer)
       this.withAnimation = false
        
@@ -67,7 +67,7 @@ class WebViewManager {
       this.stateManager.updateState(credentialsKey + "_" + currentProject.name, message.credentials)
       const projectPath = currentProject ? currentProject.filePath + currentProject.name : null
       this.stateManager.setUserFolder(projectPath)
-      if (message.credentials.length) this.stateManager.updateState(credentialsKey)
+      if (message.credentials && message.credentials.length) this.stateManager.updateState(credentialsKey)
       return oldPreferences
     }
     async messageHandler (message) {
@@ -115,7 +115,14 @@ class WebViewManager {
         async (message) => {
           const res = await this.messageHandler(message);
           if (res === "render") this.render()
-          if (res == "selected-project") this.stateManager.updateState(selectedProjectJsonKey, message.json)
+          const rawJson = message.json || message.CURRENT_PROJECT
+          if (!rawJson) return res
+          const parsed = JSON.parse(rawJson.replaceAll("'", "\""))
+          const { credentials } = message
+          parsed.credentials = credentials
+          const json = JSON.stringify(parsed).replaceAll("\"", "'")
+          const shouldUpdateProject = res == "selected-project" || json
+          if (shouldUpdateProject) this.stateManager.updateState(selectedProjectJsonKey, json )
           return res
         },
         undefined,
