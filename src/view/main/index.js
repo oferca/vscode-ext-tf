@@ -4,6 +4,7 @@ const vscode = require('vscode');
 const { html } = require("./html");
 const { getActions } = require('../../shared/actions');
 const { changeFolderKey, credentialsKey, selectedProjectJsonKey } = require("../../shared/constants");
+const { getProjectsCache } = require("../../shared/methods");
 const { handleCommand, createCB } = require('./messages');
 
 let tfProjectsCache = null
@@ -40,21 +41,9 @@ class WebViewManager {
         this.commandLaunched
       ]
       if (this.sideBarWebView) this.sideBarWebView.html = html(...params)
-
-      const targetExtension = '.tf';
-      const fileList = [];
-
-      const workspacePath = vscode.workspace.rootPath;
-
-      if (!workspacePath) {
-        vscode.window.showErrorMessage('No workspace is opened.');
-        return;
-      }
      
-      if (!tfProjectsCache){
-        const tfFiles = await findFilesWithExtension(workspacePath, targetExtension, fileList)
-        tfProjectsCache = Object.keys(tfFiles).filter(x => tfFiles[x].isProject).map(x => tfFiles[x]);   
-      }
+      tfProjectsCache = await getProjectsCache(tfProjectsCache)
+      
       tfProjectsCache.forEach(project => {
         project.credentials = this.stateManager.getState(credentialsKey + "_" + project.name) || ""
       })
@@ -109,14 +98,19 @@ class WebViewManager {
         this.context.subscriptions.push(this.sideBarWebViewProvider);
     }
 
-    initProjectExplorer() {
+    async initProjectExplorer() {
       this.projectExplorer && this.projectExplorer.dispose()
-      this.projectExplorer = vscode.window.createWebviewPanel(
+      tfProjectsCache = await getProjectsCache(tfProjectsCache)
+      const panel  = vscode.window.createWebviewPanel(
         'catCoding', // Identifies the type of the webview. Used internally
         'Cat Coding', // Title of the panel displayed to the user
         vscode.ViewColumn.One, // Editor column to show the new webview panel in.
         { enableScripts: true } // Webview options. More on these later.
-      ).webview;
+      );
+      panel.onDidDispose(() => {
+        this.projectExplorer.disposed = true
+      });
+      this.projectExplorer = panel.webview
       this.projectExplorer.onDidReceiveMessage(
         async (message) => {
           const res = await this.messageHandler(message);
@@ -127,7 +121,8 @@ class WebViewManager {
         undefined,
         this.context.subscriptions
       )
-      return this.projectExplorer
+      setTimeout(async () => { tfProjectsCache = await getProjectsCache(tfProjectsCache) })
+      return panel
     }
     
     constructor(context, logger, stateManager, commandsLauncher){

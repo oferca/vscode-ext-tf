@@ -14,7 +14,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,
     explorerHTML = isExplorer ? getExplorerHTML(explorerParams, completed) : '',
     modalAnimated = !completed ? 'animated' : '',
-    warningHTML = preferences.showWarning ? '<br><br><div class="title prefs warning">Preferences Active</div>' : "",
+    warningHTML = preferences.showWarning ? '<div class="title prefs warning">Preferences Active</div>' : "",
     disableLogs = disableLogsButton ? "disabled" : "",
     disabledButtonLogs = disableLogsButton ? "disabled" : "animated-button-text",
     logsButtonText = tfCommand ? tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1): "Watch",

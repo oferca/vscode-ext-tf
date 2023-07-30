@@ -1,11 +1,18 @@
 const vscode = require('vscode');
 const path = require('path');
 const { Logger } = require("./shared/logger")
-const { openMenuCommandId, openProjectsCommandId, openMenuButtonText, openProjectsButtonText} = require("./shared/constants")
+const {
+	openMenuCommandId,
+	openMenuButtonText,
+	openProjectsCommandId,
+	openProjectsButtonText
+} = require("./shared/constants")
+
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
 const { WebViewManager } = require("./view/main")
 const { StateManager } = require("./state/index.js")
+
 
 const appRoot = path.resolve(__dirname);
 var pjson = require(appRoot + '/../package.json');
@@ -20,14 +27,18 @@ const disposables = []
 async function activate(context) {
 	disposables.forEach(d => d.dispose())
 	const logger = new Logger(disableLogs)
+	let projectExplorerPanel
 	try{
 		const pref = freshStart ? Math.random() : ""
-		const stateManager = new StateManager(context, logger, disableState, disableState, pref )
-		const openMenuButton = new ActionButton(context, logger, openMenuCommandId, openMenuButtonText, 0)
-		const openProjectsButton = new ActionButton(context, logger, openProjectsCommandId, openProjectsButtonText, 1)
-		const launcher = new CommandsLauncher(context, logger, stateManager)
-		const webViewManager = new WebViewManager(context, logger, stateManager, launcher)
-
+        
+		const {
+			stateManager,
+			openMenuButton,
+			openProjectsButton,
+			launcher,
+			webViewManager
+		} = initHandlers(context, logger, disableState, pref )
+		
 		logger.stateManager = stateManager
 		stateManager.init()
 
@@ -38,23 +49,28 @@ async function activate(context) {
 				launcher.showQuickPick()
 			}
 		)
-		const projetsCommandRegistration = vscode.commands.registerCommand(
+		const projectsCommandRegistration = vscode.commands.registerCommand(
 			openProjectsCommandId,
 			async () => {
-				// disposables.push(openMenuButton.init())
-				disposables.push(await webViewManager.initProjectExplorer())
+				const explorerOpen = projectExplorerPanel && !projectExplorerPanel.disposed
+				if (explorerOpen) return projectExplorerPanel.reveal(vscode.ViewColumn.One)
+				projectExplorerPanel = webViewManager.initProjectExplorer()
+				disposables.push(projectExplorerPanel)
 				await webViewManager.render()
 			}
 		)
+		setTimeout(async () => {
+			projectExplorerPanel = await webViewManager.initProjectExplorer()
+			await webViewManager.render()
+		})
 
-		disposables.push(webViewManager.initProjectExplorer())
-		await webViewManager.render()
-		
-		disposables.push(commandRegistration)
-		disposables.push(projetsCommandRegistration)
-		disposables.push(openMenuButton.init(true))
-		disposables.push(openProjectsButton.init(true))
-		disposables.push(webViewManager.initSideBarView())
+		[
+			commandRegistration,
+			openMenuButton.init(true),
+			openProjectsButton.init(true),
+			webViewManager.initSideBarView()
+		].forEach(disposables.push)
+
 		
 		await stateManager.notifyFirstActivation()
 		!stateManager.isFirstActivation && openMenuButton.init()
@@ -69,7 +85,23 @@ async function activate(context) {
 
 function deactivate() { }
 
-  
+function initHandlers (context, logger, disableState, pref ) {
+
+    const stateManager = new StateManager(context, logger, disableState, disableState, pref ),
+        openMenuButton = new ActionButton(context, logger, openMenuCommandId, openMenuButtonText, 0),
+        openProjectsButton = new ActionButton(context, logger, openProjectsCommandId, openProjectsButtonText, 1),
+        launcher = new CommandsLauncher(context, logger, stateManager),
+        webViewManager = new WebViewManager(context, logger, stateManager, launcher)
+
+    return {
+        stateManager,
+        openMenuButton,
+        openProjectsButton,
+        launcher,
+        webViewManager
+    }
+}
+
 module.exports = {
 	activate,
 	deactivate
