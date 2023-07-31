@@ -44,8 +44,10 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
 }
 
 module.exports.createCB = (message, handler, reRender, oldPrefs, stateManager) => () => {
-    stateManager.setUserFolder(oldPrefs.userFolder)
-    stateManager.updateState(credentialsKey, oldPrefs.credentials)
+    if (oldPrefs){
+        stateManager.setUserFolder(oldPrefs.userFolder)
+        stateManager.updateState(credentialsKey, oldPrefs.credentials)
+    }
     reRender(true, message.tfCommand)
     if (!handler) return
     const { fileHandler, shellHandler } = handler
@@ -54,5 +56,6 @@ module.exports.createCB = (message, handler, reRender, oldPrefs, stateManager) =
     this.outputFileContent = fileHandler.initialized ?
         fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding)
         : undefined
+    
   }
   

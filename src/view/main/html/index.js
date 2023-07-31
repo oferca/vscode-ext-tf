@@ -91,6 +91,7 @@ ${ explorerHTML }
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
   const vscode = acquireVsCodeApi();
     var IS_EXPLORER = null
+    var CURRENT_PROJECT = null
     function getExplorerCredentials() {
       const explorerCredentials = document.getElementById("credentials")
       if (!explorerCredentials) return

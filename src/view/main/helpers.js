@@ -40,7 +40,7 @@ async function findFilesWithExtension (startPath, targetExtension, fileList) {
 
       if(content.indexOf("terraform{") > -1) {
         fileList[projectName].isProject = true
-        fileList[projectName].filePath = filePath;
+        fileList[projectName].projectPath = startPath;
 
         const providers1 = content.split("required_providers{")
         const providers2 = providers1.length > 1 ? providers1[1].split("}}")[0] : []
