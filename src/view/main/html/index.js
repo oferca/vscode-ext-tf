@@ -90,12 +90,14 @@ ${ explorerHTML }
   <script>
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
   const vscode = acquireVsCodeApi();
-  
-    function getCredentials() {
+    var IS_EXPLORER = null
+    function getExplorerCredentials() {
+      const explorerCredentials = document.getElementById("credentials")
+      if (!explorerCredentials) return
       return document.getElementById("credentials").value
     }
     function postMessage(command) {
-      const credentials = getCredentials() 
+      const credentials = getExplorerCredentials() 
       vscode.postMessage({
         command,
         isExplorer: IS_EXPLORER,
@@ -117,7 +119,7 @@ ${ explorerHTML }
       }
     }
     function launchTFCommand(tfCommand, el) {
-      const credentials = getCredentials()
+      const credentials = getExplorerCredentials()
       el.classList.add('animated-button');
       showLogsButton(tfCommand)
       vscode.postMessage({

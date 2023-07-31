@@ -67,7 +67,7 @@ class WebViewManager {
       this.stateManager.updateState(credentialsKey + "_" + currentProject.name, message.credentials)
       const projectPath = currentProject ? currentProject.filePath + currentProject.name : null
       this.stateManager.setUserFolder(projectPath)
-      if (message.credentials && message.credentials.length) this.stateManager.updateState(credentialsKey)
+      if (message.credentials && message.credentials.length) this.stateManager.updateState(credentialsKey, message.credentials)
       return oldPreferences
     }
     async messageHandler (message) {

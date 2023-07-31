@@ -18,7 +18,7 @@ const maxLength = 40
 
 module.exports.getActions = stateManager => {
     const folder = stateManager.getUserFolder()
-    const credentials = stateManager.credentials || stateManager.getState(credentialsKey)
+    const credentials = stateManager.getState(credentialsKey)
     const prefFolder = folder && (folder.length < maxLength ? "" : "...")
     const prefCredentials = credentials && (credentials.length < maxLength ? "" : "...")
     const displayedFolderName = folder ? (prefFolder + folder.substring(folder.length - maxLength)) : null

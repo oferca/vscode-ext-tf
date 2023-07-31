@@ -10,6 +10,7 @@ Bugs:
 * check linux
 
 Features:
+* remove button spinner?
 * Please wait log file
 * Improved flow: full screen web view with dashboard, clicking "Plan" opens a dialog  - where and which variables
 * Always opens on startup until opting out
