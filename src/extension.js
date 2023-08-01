@@ -20,7 +20,7 @@ var pjson = require(appRoot + '/../package.json');
 const debugMode = pjson.version.indexOf("debug") > -1
 const disableState = debugMode && true
 const freshStart = debugMode && true
-const disableLogs = debugMode && true
+const disableLogs = debugMode && false
 
 const disposables = []
 
@@ -64,14 +64,12 @@ async function activate(context) {
 			await webViewManager.render()
 		})
 
-		[
+		const toDispose = [
 			commandRegistration,
 			openMenuButton.init(true),
 			openProjectsButton.init(true),
 			webViewManager.initSideBarView()
-		].forEach(disposables.push)
-
-		
+		].forEach(x => disposables.push(x))
 		await stateManager.notifyFirstActivation()
 		!stateManager.isFirstActivation && openMenuButton.init()
 

@@ -53,7 +53,7 @@ class WebViewManager {
       })
       const paramsExplorer = [...params]
       paramsExplorer.push(tfProjectsCache)
-      paramsExplorer.push(this.stateManager.getState(selectedProjectJsonKey).replaceAll("\"", "'"))
+      paramsExplorer.push((this.stateManager.getState(selectedProjectJsonKey) || "").replaceAll("\"", "'"))
       if (this.projectExplorer) this.projectExplorer.html = html(...paramsExplorer)
       this.withAnimation = false
        
@@ -100,6 +100,7 @@ class WebViewManager {
         this.sideBarWebViewProviderExplorer = vscode.window.registerWebviewViewProvider('terraform-button-view-explorer', sideBarWebView );
         this.sideBarWebViewProviderScm = vscode.window.registerWebviewViewProvider('terraform-button-view-scm', sideBarWebView );
         this.context.subscriptions.push(this.sideBarWebViewProvider);
+        return sideBarWebView
     }
 
     async initProjectExplorer() {

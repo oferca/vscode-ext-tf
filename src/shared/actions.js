@@ -1,4 +1,4 @@
-const vscode = require('vscode');
+const vscode = require('vscode')
 const { credentialsKey } = require("./constants")
 const { ChatGPTHandler } = require("../commands/chat-gpt")
 const { ClearStateHandler } = require("../commands/clear")
