@@ -4,24 +4,25 @@ const { style } = require("../style")
 const { style : explorerStyle } = require("../style/explorer")
 const { animatedButtonStyle } = require("../style/animated-button")
 const { html: getExplorerHTML } = require("./explorer")
-const { scripts: explorerScripts } = require("./explorer")
+const { scripts: explorerScripts } = require("./explorer");
+const { capitalizeFirst } = require('../../../shared/methods');
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams, selectedProjectJson = "") => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams, selectedProjectJson = "", withAnimation) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
     projectInfoStyle = `style="display: ${isExplorer ? 'block' : 'none'};"`,
     modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,
-    explorerHTML = isExplorer ? getExplorerHTML(explorerParams, completed) : '',
+    explorerHTML = isExplorer ? getExplorerHTML(explorerParams, completed, withAnimation) : '',
     modalAnimated = !completed ? 'animated' : '',
     warningHTML = preferences.showWarning ? '<div class="title prefs warning">Preferences Active</div>' : "",
     disableLogs = disableLogsButton ? "disabled" : "",
     disabledButtonLogs = disableLogsButton ? "disabled" : "animated-button-text",
-    logsButtonText = tfCommand ? tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1): "Watch",
+    logsButtonText = tfCommand ? capitalizeFirst(tfCommand): "Watch",
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
-    credentials = isExplorer ? `<textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
+    credentials = isExplorer ? `<textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>

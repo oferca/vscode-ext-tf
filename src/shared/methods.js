@@ -256,3 +256,5 @@ module.exports.getProjectsCache = async (tfProjectsCache) => {
     const tfFiles = await findFilesWithExtension(workspacePath, targetExtension, fileList)
     return Object.keys(tfFiles).filter(x => tfFiles[x].isProject).map(x => tfFiles[x]);   
 }
+
+module.exports.capitalizeFirst = str => str.charAt(0).toUpperCase() + str.slice(1)

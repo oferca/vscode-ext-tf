@@ -1,4 +1,5 @@
 module.exports.style= `
+
 .explorer .prefs{
   display: none;
 }
@@ -218,19 +219,20 @@ body {
 	position: absolute;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	top: 40px;
+	top: 35px;
 }
 
 .filemanager .data li .details {
 	color: #b6c1c9;
-	font-size: 13px;
-	font-weight: 400;
-	width: 55px;
-	height: 10px;
-	top: 64px;
-	white-space: nowrap;
-	position: absolute;
-	display: inline-block;
+    font-size: 13px;
+    font-weight: 400;
+    width: 55px;
+    height: 10px;
+    top: 58px;
+    white-space: nowrap;
+    position: absolute;
+    display: inline-block;
+    line-height: 17px;
 }
 
 .filemanager .nothingfound {
@@ -676,15 +678,6 @@ section {
 }
 #project-info li.path::before {
   content: "Path";
-}
-#project-info li.regions::before {
-  content: "Regions";
-}
-#project-info li.providers::before {
-  content: "Providers";
-}
-#project-info li.definitions::before {
-  content: "Definitions";
 }
 #project-info ol ol li::before {
   background: #DE51FF;

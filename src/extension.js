@@ -52,7 +52,7 @@ async function activate(context) {
 		const projectsCommandRegistration = vscode.commands.registerCommand(
 			openProjectsCommandId,
 			async () => {
-				const explorerOpen = projectExplorerPanel && !projectExplorerPanel.disposed
+				const explorerOpen = projectExplorerPanel && !projectExplorerPanel.q.isDisposed
 				if (explorerOpen) return projectExplorerPanel.reveal(vscode.ViewColumn.One)
 				projectExplorerPanel = webViewManager.initProjectExplorer()
 				disposables.push(projectExplorerPanel)

@@ -1,14 +1,15 @@
 const vscode = require('vscode');
+const { capitalizeFirst } = require('../../../shared/methods');
 
-const folders = list => list.map(
+const folders = list => list && list.sort((a, b) => a.resources + a.modules > b.resources + b.modules ? -1 : 1).map(
     project => {
-        const projectJSON = JSON.stringify(project).replaceAll("\"","\\\'")
+        const projectJSON =JSON.stringify(project).replaceAll("\"","\\\'")
         return`
             <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', json: '${projectJSON}', isExplorer: IS_EXPLORER }); CURRENT_PROJECT='${projectJSON}'; appear();" >
                 <a title="${project.projectPath}" class="folders">
                     <span class="icon folder full"></span>
-                    <span class="name">${project.name}</span>
-                    <span class="details">${project.regions.join()}</span>
+                    <span class="name">${capitalizeFirst(project.name)}</span>
+                    <span class="details">Regions: ${project.regions.join(', ')}.<br>Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}.<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources.</span>
                 </a>
             </li>
         `
@@ -17,16 +18,12 @@ const folders = list => list.map(
 
 module.exports.html = (list, completed, withAnimation) => {
     const workspaceFolders = vscode.workspace.workspaceFolders;
-    const roorFolderName = workspaceFolders[0].name
+    const rootFolderName = capitalizeFirst(workspaceFolders[0].name)
     return `
 
     <div class="filemanager">
 
-		<div class="search">
-			<input type="search" placeholder="Find a file..">
-		</div>
-
-		<div class="breadcrumbs"><span class="folderName">Terraform projects in ${roorFolderName} workspace</span></div>
+		<div class="breadcrumbs"><span class="folderName">${rootFolderName} Terraform Projects</span></div>
 
 		<ul class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list)}
@@ -46,6 +43,8 @@ module.exports.scripts = currentProjectJSON => `
     X.addEventListener("click", disappearX);
     CURRENT_PROJECT="${currentProjectJSON}";
     IS_EXPLORER=true
+    let content
+
     renderProjectInfo()
     
     function renderProjectInfo() {
@@ -53,13 +52,10 @@ module.exports.scripts = currentProjectJSON => `
         const projectInfo = JSON.parse(CURRENT_PROJECT.replaceAll("'",'\"'))
         document.getElementById("project-info").innerHTML = \`
         <h4 title="\${projectInfo.name}">
-        Project \${projectInfo.name.charAt(0).toUpperCase() + projectInfo.name.slice(1)}
+        \${projectInfo.name.charAt(0).toUpperCase() + projectInfo.name.slice(1)}
         </h4>
         <ol>
             <li class="path" title="\${projectInfo.projectPath}">\${projectInfo.projectPath}</li>
-            <li class="regions" title="\${projectInfo.regions.join(', ')}"}>\${projectInfo.regions.join(', ')}</li>
-            <li class="providers" title="\${projectInfo.providers.join(', ')}"}>\${projectInfo.providers.join(', ')}</li>
-            <li class="definitions" title="\${projectInfo.resources}">\${projectInfo.resources} resources, \${projectInfo.modules} modules, \${projectInfo.datasources} datasources</li>
         </ol>
         \`
         document.getElementById("credentials").innerHTML = projectInfo.credentials

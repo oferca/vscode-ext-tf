@@ -42,7 +42,7 @@ class WebViewManager {
         planSucceded,
         tfCommand,
         completed,
-        this.commandLaunched
+        this.commandLaunched,
       ]
       if (this.sideBarWebView) this.sideBarWebView.html = html(...params)
      
@@ -54,6 +54,7 @@ class WebViewManager {
       const paramsExplorer = [...params]
       paramsExplorer.push(tfProjectsCache)
       paramsExplorer.push((this.stateManager.getState(selectedProjectJsonKey) || "").replaceAll("\"", "'"))
+      paramsExplorer.push(this.withAnimation)
       if (this.projectExplorer) this.projectExplorer.html = html(...paramsExplorer)
       this.withAnimation = false
        
