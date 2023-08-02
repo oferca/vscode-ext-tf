@@ -2,6 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
 
+const workspaceFolders = vscode.workspace.workspaceFolders;
+const projectRoot = workspaceFolders[0].uri.fsPath
 const isEven = (item, idx) => (idx / 2 === Math.floor(idx / 2))
 const isOdd = (item, idx) => !isEven(item, idx)
 
@@ -42,6 +44,10 @@ async function findFilesWithExtension (startPath, targetExtension, fileList) {
         fileList[projectName].isProject = true
         fileList[projectName].projectPath = startPath;
 
+        let projectPath = startPath.replace(projectRoot, "");
+        if (projectPath.charAt(0)=== "/") projectPath = projectPath.substring(1)
+        fileList[projectName].projectPath = projectPath
+        
         const providers1 = content.split("required_providers{")
         const providers2 = providers1.length > 1 ? providers1[1].split("}}")[0] : []
         const providersArr = providers2.length ? providers2.split("={"): []

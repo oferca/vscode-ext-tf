@@ -34,6 +34,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
   </style>
 </head>
 <body class="${isExplorer ? "explorer" : '' }" >
+
 ${ explorerHTML }
   <div class="modal-parent" ${modalParentStyle}>
     <div id="main-modal" class="modal ${modalAnimated}"">
@@ -133,6 +134,7 @@ ${ explorerHTML }
     }
     ${isExplorer && explorerScripts(selectedProjectJson) }
   </script>
+
 </body>
 </html>
 `

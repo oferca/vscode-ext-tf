@@ -211,4 +211,8 @@ a.command:hover, a.command, a.command:focus {
       opacity: 0;
     }
   }
+
+  #project-info li.path{
+    text-align: center;
+  }
 `

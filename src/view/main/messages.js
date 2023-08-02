@@ -1,3 +1,4 @@
+const fs = require('fs');
 const vscode = require('vscode');
 const { ChatGPTHandler }  = require('../../commands/chat-gpt')
 const { openMenuCommandId, credentialsKey } = require("../../shared/constants")

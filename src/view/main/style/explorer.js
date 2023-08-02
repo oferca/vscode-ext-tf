@@ -660,17 +660,17 @@ section {
   margin: 0.25rem;
 }
 #project-info li::before {
-  background: var(--vscode-badge-background);
-  width: auto;
-  height: 2rem;
-  border-radius: 50%;
-  display: inline-block;
-  line-height: 2rem;
-  color: white;
-  text-align: center;
-  margin-right: 0.5rem;
-  padding: 0px 10px;
-  min-width: 4em;
+	background: var(--vscode-badge-background);
+    width: auto;
+    height: 1.7rem;
+    border-radius: 50%;
+    display: inline-block;
+    line-height: 1.7rem;
+    color: white;
+    text-align: center;
+    margin-right: 0.5rem;
+    padding: 0;
+    min-width: 3.4em;
 }
 
 #project-info li.project-name::before {
@@ -705,7 +705,6 @@ section {
 
 .explorer #intro .content{
   position: absolute;
-  margin-top: 20px;
   width: 100%;
   font-size: 16px;
 }

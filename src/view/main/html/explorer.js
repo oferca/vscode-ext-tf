@@ -44,9 +44,8 @@ module.exports.scripts = currentProjectJSON => `
     CURRENT_PROJECT="${currentProjectJSON}";
     IS_EXPLORER=true
     let content
-
     renderProjectInfo()
-    
+   
     function renderProjectInfo() {
         if (!CURRENT_PROJECT) return
         const projectInfo = JSON.parse(CURRENT_PROJECT.replaceAll("'",'\"'))
@@ -67,7 +66,6 @@ module.exports.scripts = currentProjectJSON => `
     
     function disappearX() {
         parent.style.display = "none";
-        section.style.filter = "blur(0px)"
         var modal = document.querySelector(".modal")
         modal.classList.add("animated")
         document.getElementById("main-modal").classList.add("animated")

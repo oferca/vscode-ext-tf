@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 const vscode = require('vscode');
 const { html } = require("./html");
 const { getActions } = require('../../shared/actions');
@@ -52,12 +51,20 @@ class WebViewManager {
         project.credentials = this.stateManager.getState(credentialsKey + "_" + project.name) || ""
       })
       const paramsExplorer = [...params]
-      paramsExplorer.push(tfProjectsCache)
-      paramsExplorer.push((this.stateManager.getState(selectedProjectJsonKey) || "").replaceAll("\"", "'"))
-      paramsExplorer.push(this.withAnimation)
-      if (this.projectExplorer) this.projectExplorer.html = html(...paramsExplorer)
+
+      const selectedProjectState = (this.stateManager.getState(selectedProjectJsonKey) || "")
+        .replaceAll("\"", "'")
+
+      paramsExplorer.push(
+        tfProjectsCache,
+        selectedProjectState,
+        this.withAnimation
+      )
+
+      if (!this.projectExplorer) return
+      this.projectExplorer.html = html(...paramsExplorer)
       this.withAnimation = false
-       
+      
     }
 
     handlePreferences(message) {
@@ -108,8 +115,8 @@ class WebViewManager {
       this.projectExplorer && this.projectExplorer.dispose()
       tfProjectsCache = await getProjectsCache(tfProjectsCache)
       const panel  = vscode.window.createWebviewPanel(
-        'catCoding', // Identifies the type of the webview. Used internally
-        'Cat Coding', // Title of the panel displayed to the user
+        'terraformDashboard', // Identifies the type of the webview. Used internally
+        'Terraform Dashboard', // Title of the panel displayed to the user
         vscode.ViewColumn.One, // Editor column to show the new webview panel in.
         { enableScripts: true } // Webview options. More on these later.
       );
