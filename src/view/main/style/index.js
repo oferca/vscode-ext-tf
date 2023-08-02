@@ -1,4 +1,7 @@
-module.exports.style= `
+const vscode = require('vscode');
+const path = require('path');
+
+module.exports.style= context => `
 #main-container{
   max-width: 200px;
   display: inline-flex;
@@ -198,6 +201,7 @@ a.command:hover, a.command, a.command:focus {
   h4.title{
     width: 100%;
     font-size: 14px;
+    text-align: center;
   }
 
   @keyframes callToActionAnim {
@@ -213,6 +217,26 @@ a.command:hover, a.command, a.command:focus {
   }
 
   #project-info li.path{
-    text-align: center;
+    text-align: left;
+  }
+
+  #main-modal{
+    text-align: left;
+    background: var(--vscode-settings-focusedRowBackground)
+  }
+
+  #overlay {
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    transition: 0.5s background;
+  }
+  #overlay.active{
+    background: rgba(16, 18, 18, 0.96);
+    z-index: 999;
+    transition: 0.5s background;
   }
 `

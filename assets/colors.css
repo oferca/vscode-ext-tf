@@ -386,7 +386,7 @@
     --vscode-chat-requestBackground: rgba(255, 255, 255, 0.03);
     --vscode-chat-requestBorder: rgba(255, 255, 255, 0.1);
     --vscode-commentsView-resolvedIcon: rgba(204, 204, 204, 0.5);
-    --vscode-commentsView-unresolvedIcon: #007fd4;
+    --vscode-commentsView-unresolvedIcon: hsl(204, 71%, 13%);
     --vscode-editorCommentsWidget-resolvedBorder: rgba(204, 204, 204, 0.5);
     --vscode-editorCommentsWidget-unresolvedBorder: #007fd4;
     --vscode-editorCommentsWidget-rangeBackground: rgba(0, 127, 212, 0.1);

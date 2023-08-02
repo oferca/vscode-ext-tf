@@ -605,7 +605,6 @@ section {
   font-size: large;
   line-height: 2rem;
   letter-spacing: 0.5px;
-  word-spacing: 5px;
   position: relative;
   max-height: 85vh;
   overflow-y: scroll;
@@ -662,10 +661,10 @@ section {
 #project-info li::before {
 	background: var(--vscode-badge-background);
     width: auto;
-    height: 1.7rem;
+    height: 1.4rem;
     border-radius: 50%;
     display: inline-block;
-    line-height: 1.7rem;
+    line-height: 1.4rem;
     color: white;
     text-align: center;
     margin-right: 0.5rem;
@@ -677,7 +676,10 @@ section {
   content: "Project";
 }
 #project-info li.path::before {
-  content: "Path";
+	content: "Path";
+    color: var(--vscode-button-foreground);
+    background: var(--vscode-button-background);
+    opacity: 0.8;
 }
 #project-info ol ol li::before {
   background: #DE51FF;
@@ -707,6 +709,7 @@ section {
   position: absolute;
   width: 100%;
   font-size: 16px;
+  margin-top: 25px;
 }
 
 .explorer h4 {
@@ -717,6 +720,7 @@ section {
 #credentials{
 	background: var( --vscode-editor-background);
 	color: var(--vscode-input-foreground);
+	margin-top: 10px;
 }
 #credentials::placeholder{
 	color: var(--vscode-input-placeholderForeground)

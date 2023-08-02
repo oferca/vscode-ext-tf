@@ -1,5 +1,3 @@
-const vscode = require('vscode');
-
 const { style } = require("../style")
 const { style : explorerStyle } = require("../style/explorer")
 const { animatedButtonStyle } = require("../style/animated-button")
@@ -7,7 +5,7 @@ const { html: getExplorerHTML } = require("./explorer")
 const { scripts: explorerScripts } = require("./explorer");
 const { capitalizeFirst } = require('../../../shared/methods');
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams, selectedProjectJson = "", withAnimation) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams, selectedProjectJson = "", withAnimation, context) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
@@ -23,17 +21,19 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
     credentials = isExplorer ? `<textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
+    overlayClass = completed ? 'active' : ""
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>
 <head>
   <style>
-    ${style}
+    ${style(isExplorer ? context : null)}
     ${animatedButtonStyle}
     ${isExplorer && explorerStyle }
   </style>
 </head>
-<body class="${isExplorer ? "explorer" : '' }" >
+<body class="${isExplorer ? "explorer" : '' } " >
+<div id="overlay" class="${overlayClass}"></div>
 
 ${ explorerHTML }
   <div class="modal-parent" ${modalParentStyle}>
@@ -41,7 +41,7 @@ ${ explorerHTML }
       <div id="project-info" ${projectInfoStyle}>
       </div>
       <div id="top-container" class="${invalidate}">
-        <h2 id="intro" ><div class="content">Click Terraform Command To Run</div></h2>
+        <h2 id="intro" ><div class="content">Click Terraform Command</div></h2>
         ${warningHTML}
         <div id="display-output-2" class="button-container" style="display:none;" >
             <button id="watch-logs-button" class="button output ${disableLogs} " onclick="postMessage(\'openOutputFile\', IS_EXPLORER)">

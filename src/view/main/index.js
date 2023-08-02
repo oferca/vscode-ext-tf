@@ -57,7 +57,8 @@ class WebViewManager {
       paramsExplorer.push(
         tfProjectsCache,
         selectedProjectState,
-        this.withAnimation
+        this.withAnimation,
+        this.context
       )
 
       if (!this.projectExplorer) return
@@ -96,7 +97,10 @@ class WebViewManager {
         enableScripts: true,
           resolveWebviewView: webviewView => {
             this.sideBarWebView = webviewView.webview;
-            this.sideBarWebView.options = { enableScripts: true };
+            this.sideBarWebView.options = {
+              enableScripts: true,
+              etainContextWhenHidden: true
+            };
             this.render()
             this.sideBarWebView.onDidReceiveMessage(this.messageHandler)
             webviewView.onDidDispose(() => {

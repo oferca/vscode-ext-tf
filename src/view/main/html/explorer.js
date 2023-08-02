@@ -62,6 +62,11 @@ module.exports.scripts = currentProjectJSON => `
     function appear() {
         renderProjectInfo()
         parent.style.display = "block";
+
+        const overlay = document.createElement('div');
+        overlay.id = "overlay"
+        document.body.appendChild(overlay);
+        setTimeout(() => overlay.classList.add("active"))
     }
     
     function disappearX() {
@@ -70,6 +75,10 @@ module.exports.scripts = currentProjectJSON => `
         modal.classList.add("animated")
         document.getElementById("main-modal").classList.add("animated")
         vscode.postMessage({ command: 'render', isExplorer: IS_EXPLORER })
+
+        overlay=document.getElementById("overlay")
+        overlay.classList.remove("active")
+        setTimeout(() => overlay.remove(), 600)
     }
 
     parent.addEventListener("click", disappearParent)
