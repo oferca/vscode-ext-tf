@@ -76,7 +76,6 @@ module.exports.scripts = currentProjectJSON => `
     function disappearParent(e) {
         if (e.target.className == "modal-parent") {
             parent.style.display = "none";
-            section.style.filter = "blur(0px)"
         }
     }
 `

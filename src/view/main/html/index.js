@@ -41,7 +41,7 @@ ${ explorerHTML }
       <div id="project-info" ${projectInfoStyle}>
       </div>
       <div id="top-container" class="${invalidate}">
-        <h2 id="intro" ><div class="content">Click To Run Terraform</div></h2>
+        <h2 id="intro" ><div class="content">Click Terraform Command To Run</div></h2>
         ${warningHTML}
         <div id="display-output-2" class="button-container" style="display:none;" >
             <button id="watch-logs-button" class="button output ${disableLogs} " onclick="postMessage(\'openOutputFile\', IS_EXPLORER)">

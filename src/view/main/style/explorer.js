@@ -710,7 +710,8 @@ section {
 }
 
 .explorer h4 {
-  color: var(--vscode-button-foreground);
+  color: var(--vscode-editor-foreground);
+  word-spacing: normal;
 }
 
 #credentials{

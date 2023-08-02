@@ -17,7 +17,6 @@ class WebViewManager {
   webViewProviderExplorer
 
     async render(completed = false, tfCommand){
-
       // Parameter definitions
       const { fileHandler, shellHandler } = this.commandsLauncher.handler || {}
       const outputFileExists = this.commandsLauncher.handler && fileHandler && fileHandler.initialized

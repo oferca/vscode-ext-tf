@@ -26,7 +26,6 @@ class ShellHandler {
         await this.handleDefinitions(requiresInitialization)
         activeTerminal.sendText(`clear`);
         activeTerminal.sendText(`terraform.${this.commandId} ${this.paramName}"${outputFile}" \ `);
-        activeTerminal.show();
     }
 
     getChangeFolderCmd() {

@@ -36,7 +36,7 @@ async function findFilesWithExtension (startPath, targetExtension, fileList) {
       const modulesMatches = content.match(modulesRegex);
       fileList[projectName].modules = (fileList[projectName].modules || 0) + (modulesMatches || []).length;
 
-      const datasourcesRegex = new RegExp("resource\"", 'g');
+      const datasourcesRegex = new RegExp("datasource\"", 'g');
       const datasourcesMatches = content.match(datasourcesRegex);
       fileList[projectName].datasources = (fileList[projectName].datasources || 0) + (datasourcesMatches || []).length;
 
