@@ -1,3 +1,4 @@
+const vscode = require('vscode');
 const { FileHandler } = require("../../file-handler")
 const { isPowershell } = require("../../shared/methods")
 const { BashHandler } = require("../../shared/shells/bash")
@@ -21,6 +22,7 @@ const {
 
 let defaultTarget
 let defaultVarFile
+const hideInitialDefinitionsDelay = 1000
 
 const getDefaultOption = commandId =>
     [tfPlanTargetCommandId, tfApplyTargetCommandId].includes(commandId) && defaultTarget || 
@@ -113,12 +115,23 @@ class CommandHandlerPrototype {
             if (!activeTerminal) return
             await step2()
         }
+        if (!this.fileHandlerInitialized){
+            this.overlayTerminal = vscode.window.createTerminal();
+            this.overlayTerminal.show();
+        }
+       
         this.shellHandler.deleteTerminalCurrentLine()
         this.redirect ? this.initFileHandler(onChildProcessCompleteStep1) : onChildProcessCompleteStep1()
     }
 
+    get fileHandlerInitialized () {
+        return this.fileHandler && this.fileHandler.initialized
+    }
+
     async runBash(cb) {
-        setTimeout(() => this.sendCommands(cb), !(this.fileHandler && this.fileHandler.initialized) ? 500 : 0)
+        setTimeout(() => {
+            this.sendCommands(cb)
+        }, !(this.fileHandlerInitialized) ? 500 : 0)
     }
 
     async sendCommands(cb = () => {}) {
@@ -127,6 +140,11 @@ class CommandHandlerPrototype {
         const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.stateManager.getState(optionKey)}"` : ""
         this.fileHandler && this.fileHandler.initialized ? await this.shellHandler.runTfCommand(this.outputFile, this.requiresInitialization)
             : activeTerminal.sendText(`terraform ${command} ${option}`)
+        if (this.overlayTerminal) setTimeout(() =>
+            {
+                this.overlayTerminal.dispose()
+                this.activeTerminal && this.activeTerminal.show();
+            }, hideInitialDefinitionsDelay);
         cb()
     }
 

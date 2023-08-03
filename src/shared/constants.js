@@ -62,7 +62,13 @@ module.exports.thankYouNote =  "Thank you for installing Terraform Dashboard Plu
 
 module.exports.reminderNote =  "Launch terraform commands with Terraform Dashboard Plus. Let's start."
 
-module.exports.mainCommandId = "terraform.action"
+module.exports.openMenuCommandId = "terraform.action"
+
+module.exports.openMenuButtonText = `$(terminal) TF`
+
+module.exports.openProjectsButtonText = `$(terminal) Terraform Projects`
+
+module.exports.openProjectsCommandId = "terraform.projects"
 
 module.exports.placeHolder = "Run Terraform Command ( \u2318\u21E7T or \u2303\u21E7T )"
 
@@ -70,7 +76,7 @@ module.exports.errorStatus = "error"
 
 module.exports.noCredentials = "no-credentials"
 
-module.exports.noCredentialsMsg = "Did you set credentials ?"
+module.exports.noCredentialsMsg = "Did you set credentials in terminal ?"
 
 // module.exports.gotoTerminal = { title: 'Go To Terminal' };
 
@@ -127,6 +133,8 @@ module.exports.targetTxt = 'Enter module or resource to limit the operation. For
 module.exports.changeFolderKey = "tfChangeFolderKey"
 
 module.exports.credentialsKey = "tfCredentialsKey"
+
+module.exports.selectedProjectJsonKey = "tfselectedProjectJson"
 
 module.exports.stationIdKey = "tfStationId"
 

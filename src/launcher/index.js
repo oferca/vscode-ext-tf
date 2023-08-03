@@ -55,7 +55,7 @@ class CommandsLauncher {
         return this.launch(selected)
     }
 
-    async launch(actionLabel, source = "menu", cb) {
+    async launch (actionLabel, source = "menu", cb) {
         this.stateManager.activeTerminal = await this.verifyOpenTerminal(actionLabel)
         const CommandHandler = getActions(this.stateManager).find(action => (actionLabel === action.label || (action.matches && action.matches(actionLabel)))).handler
         this.handler = new CommandHandler( this.context, this.logger, this.stateManager)
@@ -64,7 +64,7 @@ class CommandsLauncher {
             cb && cb()
             const hasOutput = this.handler.fileHandler && this.handler.fileHandler.redirect
             if (!(this.handler.commandId && hasOutput)) return
-            const outputFileContent =hasOutput  ? this.handler.fileHandler.getOutputFileContent() : this.stateManager.getState(lastOutputKey)
+            const outputFileContent = hasOutput  ? this.handler.fileHandler.getOutputFileContent() : this.stateManager.getState(lastOutputKey)
             this.stateManager.updateState(lastOutputKey, outputFileContent)
             this.stateManager.updateState(lastActionKey, actionLabel)        
         }
@@ -86,6 +86,7 @@ class CommandsLauncher {
         this.logger = logger
         this.context = context
         this.stateManager = stateManager
+        this.launch = this.launch.bind(this)
         this.showQuickPick = this.showQuickPick.bind(this)
         this.verifyOpenTerminal = this.verifyOpenTerminal.bind(this)
     }

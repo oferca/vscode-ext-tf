@@ -1,4 +1,12 @@
-module.exports.style= `
+const vscode = require('vscode');
+const path = require('path');
+
+module.exports.style= context => `
+#main-container{
+  max-width: 200px;
+  display: inline-flex;
+}
+
 #quicklaunch-menu{
     max-width: 300px;
     margin-top: 12px;
@@ -11,6 +19,9 @@ module.exports.style= `
 .button.output{
   position: absolute;
   top: 0px;
+}
+.explorer .button.output{
+  position: inherit;
 }
 .button.output.chat-gpt{
   top: 35px;
@@ -87,6 +98,7 @@ a.command:hover, a.command, a.command:focus {
     align-items: center;
     border: 1px solid var(--vscode-button-border,transparent);
     line-height: 18px;
+    font-size: 14px;
     min-width: 140px;
   }
   .pref-change{
@@ -188,6 +200,8 @@ a.command:hover, a.command, a.command:focus {
 
   h4.title{
     width: 100%;
+    font-size: 14px;
+    text-align: center;
   }
 
   @keyframes callToActionAnim {
@@ -200,5 +214,29 @@ a.command:hover, a.command, a.command:focus {
     100% {
       opacity: 0;
     }
+  }
+
+  #project-info li.path{
+    text-align: left;
+  }
+
+  #main-modal{
+    text-align: left;
+    background: var(--vscode-settings-focusedRowBackground)
+  }
+
+  #overlay {
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    transition: 0.5s background;
+  }
+  #overlay.active{
+    background: rgba(16, 18, 18, 0.96);
+    z-index: 999;
+    transition: 0.5s background;
   }
 `

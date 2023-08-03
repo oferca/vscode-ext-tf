@@ -1,4 +1,4 @@
-const vscode = require('vscode');
+const vscode = require('vscode')
 const { credentialsKey } = require("./constants")
 const { ChatGPTHandler } = require("../commands/chat-gpt")
 const { ClearStateHandler } = require("../commands/clear")
@@ -18,7 +18,7 @@ const maxLength = 40
 
 module.exports.getActions = stateManager => {
     const folder = stateManager.getUserFolder()
-    const credentials = stateManager.credentials || stateManager.getState(credentialsKey)
+    const credentials = stateManager.getState(credentialsKey)
     const prefFolder = folder && (folder.length < maxLength ? "" : "...")
     const prefCredentials = credentials && (credentials.length < maxLength ? "" : "...")
     const displayedFolderName = folder ? (prefFolder + folder.substring(folder.length - maxLength)) : null
@@ -63,7 +63,9 @@ module.exports.getActions = stateManager => {
             label: folder ? 
                 `Change Terraform Folder (${displayedFolderName})`
                 : "Select Terraform Folder",
-            matches: label => label.indexOf("Change Terraform Folder") > -1 || label.indexOf("Select Terraform Folder") > -1,
+            matches: label =>
+                label.indexOf("Change Terraform Folder") > -1 ||
+                label.indexOf("Select Terraform Folder") > -1,
             icon: "$(folder-opened)",
             id: "tfFolder",
             menuOnly: true

@@ -31,8 +31,9 @@ class Logger {
         return this._db 
     }
     
-    async log (rec) {
+    async log (_rec) {
         if (this.disabled) return
+        const rec = typeof _rec === "string" ? { message : _rec } : _rec
         try{
             const { collection: fsCollection , addDoc } = require("firebase/firestore");
             var pjson = require(appRoot + '/../../package.json');

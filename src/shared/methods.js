@@ -2,7 +2,6 @@ const fs = require('fs');
 const os = require('os');
 const path = require("path")
 const vscode = require('vscode');
-
 let db
 
 const { 
@@ -26,6 +25,8 @@ const {
     tfApplyTargetCommandId,
     validateSuccessMessage,
 } = require("./constants")
+
+const { findFilesWithExtension } = require("../view/main/helpers")
 
 const maxPercentage = 98
 
@@ -237,7 +238,23 @@ module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (doc
         const uri = vscode.Uri.file(folder.uri.fsPath + "/.terraform");
         vscode.commands.executeCommand('workbench.files.action.collapseExplorerFolders', uri);
         listener.dispose()
-        
     }
 })
 
+
+const targetExtension = '.tf';
+const fileList = [];
+
+module.exports.getProjectsCache = async (tfProjectsCache) => {
+    if (tfProjectsCache) return tfProjectsCache
+
+    const workspacePath = vscode.workspace.rootPath;
+    if (!workspacePath) {
+      vscode.window.showErrorMessage('No workspace is opened.');
+      return;
+    }
+    const tfFiles = await findFilesWithExtension(workspacePath, targetExtension, fileList)
+    return Object.keys(tfFiles).filter(x => tfFiles[x].isProject).map(x => tfFiles[x]);   
+}
+
+module.exports.capitalizeFirst = str => str.charAt(0).toUpperCase() + str.slice(1)

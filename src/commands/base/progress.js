@@ -5,7 +5,8 @@ const {
     getRawCommand,
     getProgressMsg,
     createFolderCollapser,
-    getCompletionPercentage
+    getCompletionPercentage,
+    capitalizeFirst
 } = require("../../shared/methods")
 
 const {
@@ -80,7 +81,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
     notifyCompletion() {
         const rawCommand = getRawCommand(this.commandId),
-            capitalized = rawCommand.charAt(0).toUpperCase() + rawCommand.slice(1),
+            capitalized = capitalizeFirst(rawCommand),
             completionTerm = this.redirect ? "completed" : rawCommand === "apply" ? "planning completed" : "ended"
 
         let notification

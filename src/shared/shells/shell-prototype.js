@@ -11,11 +11,11 @@ class ShellHandler {
         if (!activeTerminal.definitions) activeTerminal.definitions = {}
         const bashDefined = activeTerminal.definitions[this.commandId + (this.tfOption || "")]
         const definitions = this.tfCommandDefinitions();
-        const newCredentials = activeTerminal.tfCredentials !== this.stateManager.credentials
+        const newCredentials = activeTerminal.tfCredentials !== this.stateManager.getState(credentialsKey)
         const newFolder = activeTerminal.tfFolder !== this.stateManager.getUserFolder() 
         const stateChanged = newCredentials || newFolder
         if (stateChanged && requiresInitialization) this.getInitShellCommands().filter(c => c != null).forEach(activeTerminal.sendText)
-        activeTerminal.tfCredentials = this.stateManager.credentials
+        activeTerminal.tfCredentials = this.stateManager.getState(credentialsKey)
         activeTerminal.tfFolder = this.stateManager.getUserFolder() 
         if (!bashDefined) activeTerminal.sendText(definitions)
         activeTerminal.definitions[this.commandId] = true
@@ -26,7 +26,6 @@ class ShellHandler {
         await this.handleDefinitions(requiresInitialization)
         activeTerminal.sendText(`clear`);
         activeTerminal.sendText(`terraform.${this.commandId} ${this.paramName}"${outputFile}" \ `);
-        activeTerminal.show();
     }
 
     getChangeFolderCmd() {
@@ -35,7 +34,7 @@ class ShellHandler {
     }
     
     getCredentialsSetter() {
-        return this.stateManager.credentials || this.stateManager.getState(credentialsKey) || ""
+        return this.stateManager.getState(credentialsKey) || ""
     }
 
     constructor(commandId, tfOption = null, redirect = true, stateManager) {
