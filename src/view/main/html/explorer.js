@@ -59,26 +59,37 @@ module.exports.scripts = currentProjectJSON => `
         \`
         document.getElementById("credentials").innerHTML = projectInfo.credentials
     }
+
+    function addOverlay(){
+        console.log("addOverlay")
+        setTimeout(() => {
+            const overlay = document.createElement('div');
+            overlay.id = "overlay"
+            overlay.style.height = document.body.clientHeight + "px"
+            document.body.appendChild(overlay);
+            setTimeout(() => overlay.classList.add("active"))
+        })
+    }
+
     function appear() {
         renderProjectInfo()
         parent.style.display = "block";
-
-        const overlay = document.createElement('div');
-        overlay.id = "overlay"
-        document.body.appendChild(overlay);
-        setTimeout(() => overlay.classList.add("active"))
+        addOverlay()
     }
-    
+
+    function removeOverlay(){
+        overlay=document.getElementById("overlay")
+        overlay.classList.remove("active")
+        setTimeout(() => overlay.remove(), 600)
+    }
+
     function disappearX() {
         parent.style.display = "none";
         var modal = document.querySelector(".modal")
         modal.classList.add("animated")
         document.getElementById("main-modal").classList.add("animated")
         vscode.postMessage({ command: 'render', isExplorer: IS_EXPLORER })
-
-        overlay=document.getElementById("overlay")
-        overlay.classList.remove("active")
-        setTimeout(() => overlay.remove(), 600)
+        removeOverlay()
     }
 
     parent.addEventListener("click", disappearParent)

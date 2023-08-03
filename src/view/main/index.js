@@ -6,7 +6,9 @@ const { changeFolderKey, credentialsKey, selectedProjectJsonKey } = require("../
 const { getProjectsCache } = require("../../shared/methods");
 const { handleCommand, createCB } = require('./messages');
 
-let tfProjectsCache = null
+let tfProjectsCache = null;
+
+(async () => { tfProjectsCache = await getProjectsCache(tfProjectsCache) })()
 
 class WebViewManager {
   intro
@@ -99,7 +101,7 @@ class WebViewManager {
             this.sideBarWebView = webviewView.webview;
             this.sideBarWebView.options = {
               enableScripts: true,
-              etainContextWhenHidden: true
+              retainContextWhenHidden: true
             };
             this.render()
             this.sideBarWebView.onDidReceiveMessage(this.messageHandler)
@@ -115,6 +117,7 @@ class WebViewManager {
     }
 
     async initProjectExplorer() {
+      this.withAnimation = true
       this.projectExplorer && this.projectExplorer.dispose()
       tfProjectsCache = await getProjectsCache(tfProjectsCache)
       const panel  = vscode.window.createWebviewPanel(

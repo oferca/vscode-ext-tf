@@ -22,6 +22,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
     credentials = isExplorer ? `<textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
     overlayClass = completed ? 'active' : ""
+    overlayCall = completed ? "addOverlay();" : ""
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>
@@ -99,6 +100,7 @@ ${ explorerHTML }
       if (!explorerCredentials) return
       return document.getElementById("credentials").value
     }
+    ${overlayCall}
     function postMessage(command) {
       const credentials = getExplorerCredentials() 
       vscode.postMessage({

@@ -49,10 +49,10 @@ async function activate(context) {
 				launcher.showQuickPick()
 			}
 		)
-		const projectsCommandRegistration = vscode.commands.registerCommand(
+		vscode.commands.registerCommand(
 			openProjectsCommandId,
 			async () => {
-				const explorerOpen = projectExplorerPanel && !projectExplorerPanel.q.isDisposed
+				const explorerOpen = projectExplorerPanel && projectExplorerPanel.q && !projectExplorerPanel.q.isDisposed
 				if (explorerOpen) return projectExplorerPanel.reveal(vscode.ViewColumn.One)
 				projectExplorerPanel = webViewManager.initProjectExplorer()
 				disposables.push(projectExplorerPanel)
@@ -60,8 +60,8 @@ async function activate(context) {
 			}
 		)
 		setTimeout(async () => {
-			projectExplorerPanel = await webViewManager.initProjectExplorer()
-			await webViewManager.render()
+			// projectExplorerPanel = await webViewManager.initProjectExplorer()
+			// await webViewManager.render()
 		})
 
 		const toDispose = [

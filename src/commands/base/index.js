@@ -143,7 +143,7 @@ class CommandHandlerPrototype {
         if (this.overlayTerminal) setTimeout(() =>
             {
                 this.overlayTerminal.dispose()
-                this.activeTerminal.show();
+                this.activeTerminal && this.activeTerminal.show();
             }, hideInitialDefinitionsDelay);
         cb()
     }
