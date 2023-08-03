@@ -20,7 +20,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
-    credentials = isExplorer ? `<textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
+    credentials = isExplorer ? `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
     overlayClass = completed ? 'active' : ""
     overlayCall = completed ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : ""
     x = isExplorer ? `<span class="x">&times;</span>` : ""
