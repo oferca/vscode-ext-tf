@@ -97,5 +97,6 @@ module.exports.scripts = currentProjectJSON => `
         if (e.target.className == "modal-parent") {
             parent.style.display = "none";
         }
+        removeOverlay()
     }
 `
