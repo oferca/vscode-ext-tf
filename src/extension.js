@@ -23,6 +23,7 @@ const freshStart = debugMode && true
 const disableLogs = debugMode && false
 
 const disposables = []
+let withAnimation = true
 
 async function activate(context) {
 	disposables.forEach(d => d.dispose())
@@ -54,7 +55,8 @@ async function activate(context) {
 			async () => {
 				const explorerOpen = projectExplorerPanel && projectExplorerPanel.q && !projectExplorerPanel.q.isDisposed
 				if (explorerOpen) return projectExplorerPanel.reveal(vscode.ViewColumn.One)
-				projectExplorerPanel = webViewManager.initProjectExplorer()
+				projectExplorerPanel = webViewManager.initProjectExplorer(withAnimation)
+				withAnimation = false
 				disposables.push(projectExplorerPanel)
 				await webViewManager.render()
 			}

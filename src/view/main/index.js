@@ -116,8 +116,8 @@ class WebViewManager {
         return sideBarWebView
     }
 
-    async initProjectExplorer() {
-      this.withAnimation = true
+    async initProjectExplorer(withAnimation = true) {
+      this.withAnimation = withAnimation
       this.projectExplorer && this.projectExplorer.dispose()
       tfProjectsCache = await getProjectsCache(tfProjectsCache)
       const panel  = vscode.window.createWebviewPanel(

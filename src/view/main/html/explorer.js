@@ -59,11 +59,11 @@ module.exports.scripts = currentProjectJSON => `
         \`
         document.getElementById("credentials").innerHTML = projectInfo.credentials
     }
-
+    let overlay
     function addOverlay(){
-        console.log("addOverlay")
+        // if (document.querySelector(".modal-parent").style.display != "block") return
         setTimeout(() => {
-            const overlay = document.createElement('div');
+            overlay = document.createElement('div');
             overlay.id = "overlay"
             overlay.style.height = document.body.clientHeight + "px"
             document.body.appendChild(overlay);
@@ -78,9 +78,9 @@ module.exports.scripts = currentProjectJSON => `
     }
 
     function removeOverlay(){
-        overlay=document.getElementById("overlay")
         overlay.classList.remove("active")
-        setTimeout(() => overlay.remove(), 600)
+        overlay.style.height = 0
+        setTimeout(overlay.remove, 600)
     }
 
     function disappearX() {
@@ -93,10 +93,16 @@ module.exports.scripts = currentProjectJSON => `
     }
 
     parent.addEventListener("click", disappearParent)
+    
     function disappearParent(e) {
         if (e.target.className == "modal-parent") {
             parent.style.display = "none";
+            var modal = document.querySelector(".modal")
+            modal.classList.add("animated")
+            document.getElementById("main-modal").classList.add("animated")
+            vscode.postMessage({ command: 'render', isExplorer: IS_EXPLORER })
+            removeOverlay()
         }
-        removeOverlay()
+        
     }
 `
