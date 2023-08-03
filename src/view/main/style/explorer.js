@@ -718,11 +718,17 @@ section {
 }
 
 #credentials{
-	background: var( --vscode-editor-background);
+	background: var(--vscode-settings-focusedRowBackground);
 	color: var(--vscode-input-foreground);
 	margin-top: 10px;
+	padding: 3px;
 }
 #credentials::placeholder{
 	color: var(--vscode-input-placeholderForeground)
+}
+
+.project {
+	overflow-x: scroll;
+	overflow-y: clip;
 }
 `

@@ -6,7 +6,7 @@ const folders = list => list && list.sort((a, b) => a.resources + a.modules > b.
         const projectJSON =JSON.stringify(project).replaceAll("\"","\\\'")
         return`
             <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', json: '${projectJSON}', isExplorer: IS_EXPLORER }); CURRENT_PROJECT='${projectJSON}'; appear();" >
-                <a title="${project.projectPath}" class="folders">
+                <a title="${project.projectPathRelative}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(project.name)}</span>
                     <span class="details">Regions: ${project.regions.join(', ')}.<br>Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}.<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources.</span>

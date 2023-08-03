@@ -1,4 +1,8 @@
 Bugs:
+* CD to project not workin
+* textarea color same as background
+* clicking button creates new explorer
+* 0 datasources in explorer window
 * clicking plan twice in a row creates wrong messages
 * Plan with error not working
 * chatgt disabled click wrong message

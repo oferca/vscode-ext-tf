@@ -19,7 +19,7 @@ async function findFilesWithExtension (startPath, targetExtension, fileList) {
     const [fileName, fileType] = item;
     const filePath = path.join(startPath, fileName);
 
-    if (fileType === vscode.FileType.Directory && fileName !== ".terraform" && fileName !== "modules") {
+    if (fileType === vscode.FileType.Directory && fileName !== ".terraform" && fileName !== ".git") {
       // Recursively search directories
       await findFilesWithExtension(filePath, targetExtension, fileList);
     } else if (path.extname(filePath) === targetExtension) {
@@ -36,7 +36,7 @@ async function findFilesWithExtension (startPath, targetExtension, fileList) {
       const modulesMatches = content.match(modulesRegex);
       fileList[projectName].modules = (fileList[projectName].modules || 0) + (modulesMatches || []).length;
 
-      const datasourcesRegex = new RegExp("datasource\"", 'g');
+      const datasourcesRegex = new RegExp("data\"", 'g');
       const datasourcesMatches = content.match(datasourcesRegex);
       fileList[projectName].datasources = (fileList[projectName].datasources || 0) + (datasourcesMatches || []).length;
 
@@ -46,7 +46,7 @@ async function findFilesWithExtension (startPath, targetExtension, fileList) {
 
         let projectPath = startPath.replace(projectRoot, "");
         if (projectPath.charAt(0)=== "/") projectPath = projectPath.substring(1)
-        fileList[projectName].projectPath = projectPath
+        fileList[projectName].projectPathRelative = projectPath
         
         const providers1 = content.split("required_providers{")
         const providers2 = providers1.length > 1 ? providers1[1].split("}}")[0] : []
