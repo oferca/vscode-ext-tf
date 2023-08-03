@@ -56,6 +56,7 @@ async function activate(context) {
 				const explorerOpen = projectExplorerPanel && projectExplorerPanel.q && !projectExplorerPanel.q.isDisposed
 				if (explorerOpen) return projectExplorerPanel.reveal(vscode.ViewColumn.One)
 				projectExplorerPanel = webViewManager.initProjectExplorer(withAnimation)
+				if (!projectExplorerPanel) return
 				withAnimation = false
 				disposables.push(projectExplorerPanel)
 				await webViewManager.render()

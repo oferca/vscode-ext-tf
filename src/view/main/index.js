@@ -120,6 +120,7 @@ class WebViewManager {
       this.withAnimation = withAnimation
       this.projectExplorer && this.projectExplorer.dispose()
       tfProjectsCache = await getProjectsCache(tfProjectsCache)
+      if (!tfProjectsCache || !tfProjectsCache.length) return vscode.window.showInformationMessage("No terraform projects were found in this workspace")
       const panel  = vscode.window.createWebviewPanel(
         'terraformDashboard', // Identifies the type of the webview. Used internally
         'Terraform Dashboard', // Title of the panel displayed to the user
