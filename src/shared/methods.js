@@ -272,6 +272,7 @@ module.exports.createWebviewPanel = () => {
     panel.onDidDispose(() => {
         panel.webview.disposed = true
       });
+    return panel
     };
 
 module.exports.isPanelOpen = projectExplorerPanel => projectExplorerPanel && (!projectExplorerPanel.q || projectExplorerPanel.q && !projectExplorerPanel.q.isDisposed)

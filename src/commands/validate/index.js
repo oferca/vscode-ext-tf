@@ -5,7 +5,6 @@ class TerraformValidateHandler extends ProgressHandlerPrototype {
 
     constructor(context, logger, stateManager){
         super(context, logger, stateManager, tfValidateCommandId );
-        // this.requiresInitialization = false
     }
 }
 

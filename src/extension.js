@@ -76,7 +76,7 @@ async function activate(context) {
 			openProjectsButton.init(true),
 			webViewManager.initSideBarView()
 		].forEach(x => disposables.push(x))
-		
+
 		await stateManager.notifyFirstActivation()
 		!stateManager.isFirstActivation && openMenuButton.init()
 

@@ -5,13 +5,13 @@ const { html: getExplorerHTML } = require("./explorer")
 const { scripts: explorerScripts } = require("./explorer");
 const { capitalizeFirst } = require('../../../shared/methods');
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams, selectedProject, withAnimation, context) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams, selectedProject, withAnimation, context, stateManager) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
     projectInfoStyle = `style="display: ${isExplorer ? 'block' : 'none'};"`,
     modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,
-    explorerHTML = isExplorer ? getExplorerHTML(explorerParams, completed, withAnimation) : '',
+    explorerHTML = isExplorer ? getExplorerHTML(explorerParams, completed, withAnimation, stateManager) : '',
     modalAnimated = !completed ? 'animated' : '',
     warningHTML = preferences.showWarning ? '<div class="title prefs warning">Preferences Active</div>' : "",
     disableLogs = disableLogsButton ? "disabled" : "",

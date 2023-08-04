@@ -49,10 +49,7 @@ class BashHandler extends ShellHandler{
     }
     
     getInitShellCommands() {
-        return [this.getChangeFolderCmd()].concat(this.getCredentialsSetter()
-            .replaceAll("export ", "-exp-")
-            .split("-exp-")
-            .map(crds => crds !== '' ? "export " + crds : null))
+        return [this.getChangeFolderCmd()].concat(this.getCredentialsSetter() + ";")
     }
     deleteTerminalCurrentLine () {
         const { activeTerminal } = this.stateManager

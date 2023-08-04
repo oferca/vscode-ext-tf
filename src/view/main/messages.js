@@ -1,9 +1,9 @@
 const fs = require('fs');
 const vscode = require('vscode');
 const { ChatGPTHandler }  = require('../../commands/chat-gpt')
-const { openMenuCommandId, credentialsKey } = require("../../shared/constants")
+const { openMenuCommandId, credentialsKey, selectedProjectPathKey } = require("../../shared/constants")
 
-module.exports.handleCommand = async (command, logger, launchHandler, launch, tfCommandCallback, webViewManager, tfProject) =>
+module.exports.handleCommand = async (command, logger, launchHandler, launch, tfCommandCallback, webViewManager, message, stateManager) =>
 {
     switch(command){
         case 'openTFLauncher':
@@ -26,9 +26,14 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
             await (new ChatGPTHandler(null, logger)).execute("webview", null, webViewManager.outputFileContent)
             break;
         case 'selected-project':
+            stateManager.updateState(selectedProjectPathKey, message.projectPath )
             return command
             break;
-
+        case 'unselected-project':
+            stateManager.updateState(selectedProjectPathKey, null )
+            return command
+            break;
+    
         default:
             if (!command) break;
             if (command === "render") return command
@@ -38,8 +43,7 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
             await launch(
                 command,
                 "webview",
-                cb,
-                tfProject
+                cb
             )
   }
 }

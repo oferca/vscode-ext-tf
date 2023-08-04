@@ -45,7 +45,6 @@ class CommandHandlerPrototype {
     stateManager
     averageFromCmd
     textDocumentListener
-    requiresInitialization
 
     async logOp(source) {
         const op = {
@@ -131,14 +130,14 @@ class CommandHandlerPrototype {
     async runBash(cb) {
         setTimeout(() => {
             this.sendCommands(cb)
-        }, !(this.fileHandlerInitialized) ? 500 : 0)
+        }, !(this.fileHandlerInitialized) ? 1000 : 500)
     }
 
     async sendCommands(cb = () => {}) {
         const { activeTerminal } = this.stateManager
         const command = getRawCommand(this.commandId)
         const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.stateManager.getState(optionKey)}"` : ""
-        this.fileHandler && this.fileHandler.initialized ? await this.shellHandler.runTfCommand(this.outputFile, this.requiresInitialization)
+        this.fileHandler && this.fileHandler.initialized ? await this.shellHandler.runTfCommand(this.outputFile)
             : activeTerminal.sendText(`terraform ${command} ${option}`)
         if (this.overlayTerminal) setTimeout(() =>
             {

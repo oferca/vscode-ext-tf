@@ -16,6 +16,7 @@ const {
   createWebviewPanel,
   getNamespacedCredentialsKey
 } = require("../../shared/methods");
+
 const { handleCommand, createCB } = require('./messages');
 
 let tfProjectsCache = null;
@@ -31,14 +32,15 @@ class WebViewManager {
     async render(completed = false, tfCommand){
 
       const folder = this.stateManager.getState(changeFolderKey),
-         credentials = this.stateManager.getState(credentialsKey),
-         showWarning = folder || credentials,
-         preferences = { folder, credentials, showWarning },
-         params = [
+        namespacedCredentialsKey = getNamespacedCredentialsKey(folder),
+        credentials = this.stateManager.getState(namespacedCredentialsKey),
+        showWarning = folder || credentials,
+        preferences = { folder, credentials, showWarning },
+        params = [
           preferences,
           getActions(this.stateManager),
           Math.random(),
-          hasPlan(str),
+          hasPlan(tfCommand),
           tfCommand,
           completed,
           this.commandLaunched
@@ -58,7 +60,8 @@ class WebViewManager {
         tfProjectsCache,
         this.selectedProject,
         this.withAnimation,
-        this.context
+        this.context,
+        this.stateManager
       )
 
       this.projectExplorer.html = html(...paramsExplorer)
@@ -90,12 +93,12 @@ class WebViewManager {
         { tfCommand, command } = message,
         { handler, launch } = this.commandsLauncher,
         cb = createCB(
-        message,
-        handler,
-        this.render,
-        oldPrefs,
-        this.stateManager
-      )
+          message,
+          handler,
+          this.render,
+          oldPrefs,
+          this.stateManager
+        )
 
       const res = handleCommand(
         tfCommand || command,
@@ -103,7 +106,9 @@ class WebViewManager {
         handler,
         launch,
         cb,
-        this
+        this,
+        message,
+        this.stateManager
        ) 
        
       return res
@@ -142,8 +147,9 @@ class WebViewManager {
       missingProjects = !tfProjectsCache || !tfProjectsCache.length
       if (missingProjects) return vscode.window.showInformationMessage(noProjectsExistsTxt)
 
-      this.projectExplorer = createWebviewPanel().webview
-      this.projectExplorer.webview.onDidReceiveMessage( this.handleWebviewMessage, undefined, subscriptions )
+      const panel = createWebviewPanel()
+      this.projectExplorer = panel.webview
+      this.projectExplorer.onDidReceiveMessage(this.handleWebviewMessage, undefined, subscriptions )
 
       setTimeout(this.updateProjectsCache)
       return panel
@@ -168,7 +174,8 @@ class WebViewManager {
 
     get selectedProject () {
       const selectedProjectPath = this.stateManager.getState(selectedProjectPathKey) || ""
-      return tfProjectsCache.find(p => p.projectPath === selectedProjectPath)
+      const selectedProject = tfProjectsCache.find(p => p.projectPath === selectedProjectPath)
+      return selectedProject
     }
     
     addCredentials (project) {
@@ -193,6 +200,8 @@ class WebViewManager {
         this.commandLaunched = false
         this.render = this.render.bind(this)
         this.messageHandler = this.messageHandler.bind(this)
+        this.addCredentials = this.addCredentials.bind(this)
+        this.handleWebviewMessage = this.handleWebviewMessage.bind(this)
     }
 }
 
