@@ -134,7 +134,7 @@ module.exports.changeFolderKey = "tfChangeFolderKey"
 
 module.exports.credentialsKey = "tfCredentialsKey"
 
-module.exports.selectedProjectJsonKey = "tfselectedProjectJson"
+module.exports.selectedProjectPathKey = "tfselectedProjectPath"
 
 module.exports.stationIdKey = "tfStationId"
 
@@ -173,3 +173,5 @@ module.exports.addedToken = "+ "
 module.exports.removedToken = "- "
 
 module.exports.chatGPTFirstLine = "Please summarize and explain the following terraform plan output: "
+
+module.exports.credentialsSetText = "Credentials are SET."

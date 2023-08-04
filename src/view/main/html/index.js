@@ -5,7 +5,7 @@ const { html: getExplorerHTML } = require("./explorer")
 const { scripts: explorerScripts } = require("./explorer");
 const { capitalizeFirst } = require('../../../shared/methods');
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams, selectedProjectJson = "", withAnimation, context) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams, selectedProject, withAnimation, context) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
@@ -94,7 +94,7 @@ ${ explorerHTML }
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
   const vscode = acquireVsCodeApi();
     var IS_EXPLORER = null
-    var CURRENT_PROJECT = null
+    var CURRENT_PATH = null
     function getExplorerCredentials() {
       const explorerCredentials = document.getElementById("credentials")
       if (!explorerCredentials) return
@@ -102,11 +102,12 @@ ${ explorerHTML }
     }
     ${overlayCall}
     function postMessage(command) {
-      const credentials = getExplorerCredentials() 
+      const credentials = getExplorerCredentials()
+ 
       vscode.postMessage({
         command,
         isExplorer: IS_EXPLORER,
-        CURRENT_PROJECT,
+        folder: CURRENT_PATH,
         credentials
       });
     }
@@ -130,11 +131,11 @@ ${ explorerHTML }
       vscode.postMessage({
         tfCommand,
         isExplorer: IS_EXPLORER,
-        CURRENT_PROJECT,
+        folder: CURRENT_PATH,
         credentials
       });
     }
-    ${isExplorer && explorerScripts(selectedProjectJson) }
+    ${isExplorer && explorerScripts(selectedProject) }
   </script>
 
 </body>

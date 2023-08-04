@@ -11,6 +11,7 @@ const {
     tfVarsPostix,
     rootFolderName,
     tfTargetPostix,
+    credentialsKey,
     powershellType,
     tfInitCommandId,
     tfPlanCommandId,
@@ -258,3 +259,5 @@ module.exports.getProjectsCache = async (tfProjectsCache) => {
 }
 
 module.exports.capitalizeFirst = str => str.charAt(0).toUpperCase() + str.slice(1)
+
+module.exports.getNamespacedCredentialsKey = projectPath => credentialsKey + "_" + projectPath

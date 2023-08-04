@@ -1,11 +1,13 @@
 const vscode = require('vscode');
 const { capitalizeFirst } = require('../../../shared/methods');
+const { credentialsSetText } = require('../../../shared/constants');
 
 const folders = list => list && list.sort((a, b) => a.resources + a.modules > b.resources + b.modules ? -1 : 1).map(
     project => {
-        const projectJSON =JSON.stringify(project).replaceAll("\"","\\\'")
+        const { credentials, projectPath, projectPathRelative, name } = project
+        project.credentials = credentials && credentials.length ? credentialsSetText : "" 
         return`
-            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', json: '${projectJSON}', isExplorer: IS_EXPLORER }); CURRENT_PROJECT='${projectJSON}'; appear();" >
+            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', path: '${projectPath}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPath}'; appear('${name}', '${projectPath}', '${projectPathRelative}', '${credentials}');" >
                 <a title="${project.projectPathRelative}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(project.name)}</span>
@@ -20,48 +22,40 @@ module.exports.html = (list, completed, withAnimation) => {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     const rootFolderName = capitalizeFirst(workspaceFolders[0].name)
     return `
-
-    <div class="filemanager">
-
+      <div class="filemanager">
 		<div class="breadcrumbs"><span class="folderName">${rootFolderName} Terraform Projects</span></div>
-
 		<ul class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list)}
         </ul>
-
 		<div class="nothingfound" style="display: none;">
 			<div class="nofiles"></div>
 			<span>No files here.</span>
 		</div>
-
 	</div>
 `}
 
-module.exports.scripts = currentProjectJSON => `
+module.exports.scripts = () => `
     var parent = document.querySelector(".modal-parent")
     X = document.querySelector(".x")
     X.addEventListener("click", disappearX);
-    CURRENT_PROJECT="${currentProjectJSON}";
     IS_EXPLORER=true
     let content
     renderProjectInfo()
    
-    function renderProjectInfo() {
-        if (!CURRENT_PROJECT) return
-        const projectInfo = JSON.parse(CURRENT_PROJECT.replaceAll("'",'\"'))
+    function renderProjectInfo(name, folder, credentials) {
+        if (!name) return
         document.getElementById("project-info").innerHTML = \`
-        <h4 title="\${projectInfo.name}">
-        \${projectInfo.name.charAt(0).toUpperCase() + projectInfo.name.slice(1)}
+        <h4 title="\${name}">
+        \${name.charAt(0).toUpperCase() + name.slice(1)}
         </h4>
         <ol>
-            <li class="path" title="\${projectInfo.projectPath}">\${projectInfo.projectPath}</li>
+            <li class="path" title="\${folder}">\${folder}</li>
         </ol>
         \`
-        document.getElementById("credentials").innerHTML = projectInfo.credentials
+        document.getElementById("credentials").innerHTML = \`\${credentials || ''}\`
     }
     let overlay
     function addOverlay(){
-        // if (document.querySelector(".modal-parent").style.display != "block") return
         setTimeout(() => {
             overlay = document.createElement('div');
             overlay.id = "overlay"
@@ -71,8 +65,8 @@ module.exports.scripts = currentProjectJSON => `
         })
     }
 
-    function appear() {
-        renderProjectInfo()
+    function appear(name, folder, pathRelative, credentials) {
+        renderProjectInfo(name, pathRelative, credentials)
         parent.style.display = "block";
         addOverlay()
     }

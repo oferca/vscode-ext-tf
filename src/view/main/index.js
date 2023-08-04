@@ -2,8 +2,8 @@ const fs = require('fs');
 const vscode = require('vscode');
 const { html } = require("./html");
 const { getActions } = require('../../shared/actions');
-const { changeFolderKey, credentialsKey, selectedProjectJsonKey } = require("../../shared/constants");
-const { getProjectsCache } = require("../../shared/methods");
+const { changeFolderKey, credentialsKey, selectedProjectPathKey, credentialsSetText } = require("../../shared/constants");
+const { getProjectsCache, getNamespacedCredentialsKey } = require("../../shared/methods");
 const { handleCommand, createCB } = require('./messages');
 
 let tfProjectsCache = null;
@@ -49,16 +49,17 @@ class WebViewManager {
       tfProjectsCache = await getProjectsCache(tfProjectsCache)
       
       tfProjectsCache.forEach(project => {
-        project.credentials = this.stateManager.getState(credentialsKey + "_" + project.name) || ""
+        project.credentials = this.stateManager.getState(getNamespacedCredentialsKey(project)) || ""
       })
       const paramsExplorer = [...params]
 
-      const selectedProjectState = (this.stateManager.getState(selectedProjectJsonKey) || "")
-        .replaceAll("\"", "'")
+      const selectedProjectPath = this.stateManager.getState(selectedProjectPathKey) || ""
+
+      const selectedProject = tfProjectsCache.find(p => p.projectPath === selectedProjectPath)
 
       paramsExplorer.push(
         tfProjectsCache,
-        selectedProjectState,
+        selectedProject,
         this.withAnimation,
         this.context
       )
@@ -74,14 +75,18 @@ class WebViewManager {
         userFolder: this.stateManager.getUserFolder(),
         credentials: this.stateManager.getState(credentialsKey)
       }
-      const currentProjectOpt1 = JSON.parse(message.CURRENT_PROJECT ? message.CURRENT_PROJECT.replaceAll("'", "\"") : null)
-      const currentProjectOpt2 = JSON.parse(message.json ? message.json.replaceAll("'", "\"") : null)
-      const currentProject = currentProjectOpt1 || currentProjectOpt2
-      if (!currentProject) return
-      this.stateManager.updateState(credentialsKey + "_" + currentProject.name, message.credentials)
-      const projectPath = currentProject ? currentProject.projectPath : null
-      this.stateManager.setUserFolder(projectPath)
-      if (message.credentials && message.credentials.length) this.stateManager.updateState(credentialsKey, message.credentials)
+      if (!message.folder) return
+
+      // Handle credentials 
+      const { credentials } = message
+      const credentialsAlreadySet = credentials === credentialsSetText
+      const explorerCredentialsNamespace = getNamespacedCredentialsKey(message.folder)
+      const credentialsToUse = credentialsAlreadySet ? this.stateManager.getState(explorerCredentialsNamespace) : message.credentials
+      this.stateManager.updateState(explorerCredentialsNamespace, credentialsToUse)
+      this.stateManager.updateState(credentialsKey, credentialsToUse)
+
+      // Handle folder
+      this.stateManager.setUserFolder(message.folder)
       return oldPreferences
     }
     async messageHandler (message) {
@@ -138,14 +143,8 @@ class WebViewManager {
           this.logger.log(loggedMessage)
           const res = await this.messageHandler(message);
           if (res === "render") this.render()
-          const rawJson = message.json || message.CURRENT_PROJECT
-          if (!rawJson) return res
-          const parsed = JSON.parse(rawJson.replaceAll("'", "\""))
-          const { credentials } = message
-          parsed.credentials = credentials
-          const json = JSON.stringify(parsed).replaceAll("\"", "'")
-          const shouldUpdateProject = res == "selected-project" || json
-          if (shouldUpdateProject) this.stateManager.updateState(selectedProjectJsonKey, json )
+          // const shouldUpdateProject = res == "selected-project" || json
+          // if (shouldUpdateProject) this.stateManager.updateState(selectedProjectPathKey, json )
           return res
         },
         undefined,
