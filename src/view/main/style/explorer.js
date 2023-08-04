@@ -42,7 +42,7 @@ body {
 -------------------------*/
 
 
-.filemanager {
+#filemanager {
 	width: 95%;
 	max-width:1340px;
 	position: relative;
@@ -51,7 +51,7 @@ body {
 }
 
 @media all and (max-width: 965px) {
-	.filemanager {
+	#filemanager {
 		margin: 30px auto 0;
 		padding: 1px;
 	}
@@ -63,7 +63,7 @@ body {
 -------------------------*/
 
 
-.filemanager .breadcrumbs {
+#filemanager .breadcrumbs {
 	color: #ffffff;
 	margin-left:20px;
 	font-size: 24px;
@@ -71,16 +71,16 @@ body {
 	line-height: 35px;
 }
 
-.filemanager .breadcrumbs a:link, .breadcrumbs a:visited {
+#filemanager .breadcrumbs a:link, .breadcrumbs a:visited {
 	color: #ffffff;
 	text-decoration: none;
 }
 
-.filemanager .breadcrumbs a:hover {
+#filemanager .breadcrumbs a:hover {
 	text-decoration: underline;
 }
 
-.filemanager .breadcrumbs .arrow {
+#filemanager .breadcrumbs .arrow {
 	color:  #6a6a72;
 	font-size: 24px;
 	font-weight: 700;
@@ -93,7 +93,7 @@ body {
 -------------------------*/
 
 
-.filemanager .search {
+#filemanager .search {
 	position: absolute;
 	padding-right: 30px;
 	cursor: pointer;
@@ -105,7 +105,7 @@ body {
 	height: 40px;
 }
 
-.filemanager .search:before {
+#filemanager .search:before {
 	content: '';
 	position: absolute;
 	margin-top:12px;
@@ -116,7 +116,7 @@ body {
 	right: 8px;
 }
 
-.filemanager .search:after {
+#filemanager .search:after {
 	content: '';
 	width: 3px;
 	height: 10px;
@@ -129,7 +129,7 @@ body {
 	transform: rotate(-45deg);
 }
 
-.filemanager .search input[type=search] {
+#filemanager .search input[type=search] {
 	border-radius: 2px;
 	color: #4D535E;
 	background-color: #FFF;
@@ -168,17 +168,17 @@ body {
 	Content area
 -------------------------*/
 
-.filemanager .data {
+#filemanager .data {
 	margin-top: 60px;
 	z-index: -3;
 }
 
-.filemanager .data.animated {
+#filemanager .data.animated {
 	-webkit-animation: showSlowlyElement 700ms; /* Chrome, Safari, Opera */
 	animation: showSlowlyElement 700ms; /* Standard syntax */
 }
 
-.filemanager .data li {
+#filemanager .data li {
 	border-radius: 3px;
 	background-color: #4a7da5;
 	width: 307px;
@@ -195,11 +195,11 @@ body {
 	transition: 0.3s background-color;
 }
 
-.filemanager .data li:hover {
+#filemanager .data li:hover {
 	background-color: #42424E;
 }
 
-.filemanager .data li a {
+#filemanager .data li a {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -207,7 +207,7 @@ body {
 	height: 100%;
 }
 
-.filemanager .data li .name {
+#filemanager .data li .name {
 	color: #ffffff;
 	font-size: 15px;
 	font-weight: 700;
@@ -221,7 +221,7 @@ body {
 	top: 35px;
 }
 
-.filemanager .data li .details {
+#filemanager .data li .details {
 	color: #b6c1c9;
     font-size: 13px;
     font-weight: 400;
@@ -234,7 +234,7 @@ body {
     line-height: 17px;
 }
 
-.filemanager .nothingfound {
+#filemanager .nothingfound {
 	background-color: #373743;
 	width: 23em;
 	height: 21em;
@@ -245,7 +245,7 @@ body {
 	animation: showSlowlyElement 700ms; /* Standard syntax */
 }
 
-.filemanager .nothingfound .nofiles {
+#filemanager .nothingfound .nofiles {
 	margin: 30px auto;
 	top: 3em;
 	border-radius: 50%;
@@ -255,7 +255,7 @@ body {
 	height: 11em;
 	line-height: 11.4em;
 }
-.filemanager .nothingfound .nofiles:after {
+#filemanager .nothingfound .nofiles:after {
 	content: '×';
 	position: absolute;
 	color: #ffffff;
@@ -264,7 +264,7 @@ body {
 	right: 0;
 }
 
-.filemanager .nothingfound span {
+#filemanager .nothingfound span {
 	margin: 0 auto auto 6.8em;
 	color: #ffffff;
 	font-size: 16px;
@@ -277,7 +277,7 @@ body {
 
 @media all and (max-width:965px) {
 
-	.filemanager .data li {
+	#filemanager .data li {
 		width: 100%;
 		margin: 5px 0;
 	}

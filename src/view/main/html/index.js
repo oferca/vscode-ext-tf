@@ -40,7 +40,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
 <div id="overlay" class="${overlayClass}"></div>
 
 ${ explorerHTML }
-  <div class="modal-parent" ${modalParentStyle}>
+  <div class="modal-parent" id="modal-container" ${modalParentStyle}>
     <div id="main-modal" class="modal ${modalAnimated}"">
       <div id="project-info" ${projectInfoStyle}>
       </div>

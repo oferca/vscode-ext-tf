@@ -56,7 +56,7 @@ class WebViewManager {
         .map(this.addCredentials)
       
       const paramsExplorer = [...params]
-      const selected = this.selectedProject
+      const selected = this.selectedProject || {}
       selected.credentials = credentials ? credentialsSetText : ""
 
       paramsExplorer.push(

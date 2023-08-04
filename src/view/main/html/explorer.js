@@ -24,7 +24,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     const rootFolderName = capitalizeFirst(workspaceFolders[0].name)
     return `
-      <div class="filemanager">
+      <div id="filemanager" >
 		<div class="breadcrumbs"><span class="folderName">${rootFolderName} Terraform Projects</span></div>
 		<ul class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list, stateManager)}
@@ -68,7 +68,7 @@ module.exports.scripts = selectedProject => `
         setTimeout(() => {
             overlay = document.createElement('div');
             overlay.id = "overlay"
-            overlay.style.height = document.body.clientHeight + "px"
+            overlay.style.height = document.getElementById("modal-container").clientHeight + "px"
             document.body.appendChild(overlay);
             setTimeout(() => overlay.classList.add("active"))
         })

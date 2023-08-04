@@ -66,6 +66,7 @@ async function activate(context) {
 			}
 		)
 		setTimeout(async () => {
+			// DONT SHOW IF THERE ARE NO PROJECTS
 			// explorer = await webViewManager.initProjectExplorer()
 			// await webViewManager.render()
 		})
