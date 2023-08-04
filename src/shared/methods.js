@@ -261,3 +261,17 @@ module.exports.getProjectsCache = async (tfProjectsCache) => {
 module.exports.capitalizeFirst = str => str.charAt(0).toUpperCase() + str.slice(1)
 
 module.exports.getNamespacedCredentialsKey = projectPath => credentialsKey + "_" + projectPath
+
+module.exports.createWebviewPanel = () => {
+    const panel = vscode.window.createWebviewPanel(
+        'terraformDashboard',
+        'Terraform Dashboard',
+        vscode.ViewColumn.One,
+        { enableScripts: true }
+    )
+    panel.onDidDispose(() => {
+        panel.webview.disposed = true
+      });
+    };
+
+module.exports.isPanelOpen = projectExplorerPanel => projectExplorerPanel && (!projectExplorerPanel.q || projectExplorerPanel.q && !projectExplorerPanel.q.isDisposed)

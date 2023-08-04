@@ -4,14 +4,14 @@ const { credentialsSetText } = require('../../../shared/constants');
 
 const folders = list => list && list.sort((a, b) => a.resources + a.modules > b.resources + b.modules ? -1 : 1).map(
     project => {
-        const { credentials, projectPath, projectPathRelative, name } = project
+        const { credentials, projectPath, projectPathRelative, name, regions } = project
         project.credentials = credentials && credentials.length ? credentialsSetText : "" 
         return`
             <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', path: '${projectPath}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPath}'; appear('${name}', '${projectPath}', '${projectPathRelative}', '${credentials}');" >
-                <a title="${project.projectPathRelative}" class="folders project">
+                <a title="${projectPathRelative}" class="folders project">
                     <span class="icon folder full"></span>
-                    <span class="name">${capitalizeFirst(project.name)}</span>
-                    <span class="details">Regions: ${project.regions.join(', ')}.<br>Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}.<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources.</span>
+                    <span class="name">${capitalizeFirst(name)}</span>
+                    <span class="details">Regions: ${regions.join(', ')}.<br>Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}.<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources.</span>
                 </a>
             </li>
         `

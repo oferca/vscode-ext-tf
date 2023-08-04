@@ -175,3 +175,5 @@ module.exports.removedToken = "- "
 module.exports.chatGPTFirstLine = "Please summarize and explain the following terraform plan output: "
 
 module.exports.credentialsSetText = "Credentials are SET."
+
+module.exports.noProjectsExistsTxt = "No terraform projects were found in this workspace"

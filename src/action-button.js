@@ -7,7 +7,7 @@ class ActionButton {
     buttonText
     vsCodeButton
 
-    init (spinner = false) {
+    init () {
         this.vsCodeButton && this.vsCodeButton.hide()
         this.vsCodeButton && this.vsCodeButton.dispose()
         const button = vscode.window.createStatusBarItem(1, this.placement)

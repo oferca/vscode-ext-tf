@@ -7,6 +7,9 @@ const {
 	openProjectsCommandId,
 	openProjectsButtonText
 } = require("./shared/constants")
+const {
+	isPanelOpen
+} = require("./shared/methods")
 
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
@@ -16,7 +19,7 @@ const { StateManager } = require("./state/index.js")
 
 const appRoot = path.resolve(__dirname);
 var pjson = require(appRoot + '/../package.json');
-
+const column = vscode.ViewColumn.One
 const debugMode = pjson.version.indexOf("debug") > -1
 const disableState = debugMode && true
 const freshStart = debugMode && true
@@ -28,7 +31,7 @@ let withAnimation = true
 async function activate(context) {
 	disposables.forEach(d => d.dispose())
 	const logger = new Logger(disableLogs)
-	let projectExplorerPanel
+	let explorer
 	try{
 		const pref = freshStart ? Math.random() : ""
         
@@ -50,20 +53,20 @@ async function activate(context) {
 				launcher.showQuickPick()
 			}
 		)
+		
 		vscode.commands.registerCommand(
 			openProjectsCommandId,
 			async () => {
-				const explorerOpen = projectExplorerPanel && (!projectExplorerPanel.q || projectExplorerPanel.q && !projectExplorerPanel.q.isDisposed)
-				if (explorerOpen) return projectExplorerPanel.reveal(vscode.ViewColumn.One)
-				projectExplorerPanel = await webViewManager.initProjectExplorer(withAnimation)
-				if (!projectExplorerPanel) return
+				if (isPanelOpen(explorer)) return explorer.reveal(column)
+				explorer = await webViewManager.initProjectExplorer(withAnimation)
+				if (!explorer) return
 				withAnimation = false
-				disposables.push(projectExplorerPanel)
+				disposables.push(explorer)
 				await webViewManager.render()
 			}
 		)
 		setTimeout(async () => {
-			// projectExplorerPanel = await webViewManager.initProjectExplorer()
+			// explorer = await webViewManager.initProjectExplorer()
 			// await webViewManager.render()
 		})
 
@@ -73,6 +76,7 @@ async function activate(context) {
 			openProjectsButton.init(true),
 			webViewManager.initSideBarView()
 		].forEach(x => disposables.push(x))
+		
 		await stateManager.notifyFirstActivation()
 		!stateManager.isFirstActivation && openMenuButton.init()
 

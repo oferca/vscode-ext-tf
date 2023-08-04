@@ -2,13 +2,23 @@ const fs = require('fs');
 const vscode = require('vscode');
 const { html } = require("./html");
 const { getActions } = require('../../shared/actions');
-const { changeFolderKey, credentialsKey, selectedProjectPathKey, credentialsSetText } = require("../../shared/constants");
-const { getProjectsCache, getNamespacedCredentialsKey } = require("../../shared/methods");
+
+const {
+  credentialsKey,
+  changeFolderKey,
+  credentialsSetText,
+  noProjectsExistsTxt,
+  selectedProjectPathKey
+} = require("../../shared/constants");
+
+const {
+  getProjectsCache,
+  createWebviewPanel,
+  getNamespacedCredentialsKey
+} = require("../../shared/methods");
 const { handleCommand, createCB } = require('./messages');
 
 let tfProjectsCache = null;
-
-(async () => { tfProjectsCache = await getProjectsCache(tfProjectsCache) })()
 
 class WebViewManager {
   intro
@@ -19,87 +29,88 @@ class WebViewManager {
   webViewProviderExplorer
 
     async render(completed = false, tfCommand){
-      // Parameter definitions
-      const { fileHandler, shellHandler } = this.commandsLauncher.handler || {}
-      const outputFileExists = this.commandsLauncher.handler && fileHandler && fileHandler.initialized
-      const folder = this.stateManager.getState(changeFolderKey)
-      const credentials = this.stateManager.getState(credentialsKey)
-      let planSucceded = (tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1); // planSuccessful(this.outputFileContent)
-      const preferences = {
-        folder,
-        credentials,
-        showWarning: folder || credentials
-      }
-      
-      // Update output
-      this.outputFileContent = outputFileExists ? fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding) : undefined
 
-      // Render
-      const params = [
-        preferences,
-        getActions(this.stateManager),
-        Math.random(),
-        planSucceded,
-        tfCommand,
-        completed,
-        this.commandLaunched,
-      ]
+      const folder = this.stateManager.getState(changeFolderKey),
+         credentials = this.stateManager.getState(credentialsKey),
+         showWarning = folder || credentials,
+         preferences = { folder, credentials, showWarning },
+         params = [
+          preferences,
+          getActions(this.stateManager),
+          Math.random(),
+          hasPlan(str),
+          tfCommand,
+          completed,
+          this.commandLaunched
+        ]
+
+      this.updateOutputFile()
+
       if (this.sideBarWebView) this.sideBarWebView.html = html(...params)
-     
-      tfProjectsCache = await getProjectsCache(tfProjectsCache)
+      if (!this.projectExplorer) return
+
+      tfProjectsCache = (await getProjectsCache(tfProjectsCache))
+        .map(this.addCredentials)
       
-      tfProjectsCache.forEach(project => {
-        project.credentials = this.stateManager.getState(getNamespacedCredentialsKey(project)) || ""
-      })
       const paramsExplorer = [...params]
-
-      const selectedProjectPath = this.stateManager.getState(selectedProjectPathKey) || ""
-
-      const selectedProject = tfProjectsCache.find(p => p.projectPath === selectedProjectPath)
 
       paramsExplorer.push(
         tfProjectsCache,
-        selectedProject,
+        this.selectedProject,
         this.withAnimation,
         this.context
       )
 
-      if (!this.projectExplorer) return
       this.projectExplorer.html = html(...paramsExplorer)
       this.withAnimation = false
-      
     }
 
+
     handlePreferences(message) {
-      const oldPreferences = {
-        userFolder: this.stateManager.getUserFolder(),
-        credentials: this.stateManager.getState(credentialsKey)
-      }
       if (!message.folder) return
 
-      // Handle credentials 
-      const { credentials } = message
-      const credentialsAlreadySet = credentials === credentialsSetText
-      const explorerCredentialsNamespace = getNamespacedCredentialsKey(message.folder)
-      const credentialsToUse = credentialsAlreadySet ? this.stateManager.getState(explorerCredentialsNamespace) : message.credentials
+      const credentialsAlreadySet = message.credentials === credentialsSetText,
+        explorerCredentialsNamespace = getNamespacedCredentialsKey(message.folder),
+        credentialsToUse = credentialsAlreadySet ? this.stateManager.getState(explorerCredentialsNamespace) : message.credentials,
+        oldPreferences = {
+          userFolder: this.stateManager.getUserFolder(),
+          credentials: this.stateManager.getState(credentialsKey)
+        }  
+      
       this.stateManager.updateState(explorerCredentialsNamespace, credentialsToUse)
       this.stateManager.updateState(credentialsKey, credentialsToUse)
-
-      // Handle folder
       this.stateManager.setUserFolder(message.folder)
+
       return oldPreferences
     }
     async messageHandler (message) {
       if (!message) return;
-      const oldPrefs = message.tfCommand ? this.handlePreferences(message) : null
-      const { tfCommand, command } = message
-      const { handler, launch } = this.commandsLauncher
-      const cb = createCB(message, handler, this.render, oldPrefs, this.stateManager)
-      const res = handleCommand( tfCommand || command, this.logger, handler, launch, cb, this ) 
+
+      const oldPrefs = message.tfCommand ? this.handlePreferences(message) : null,
+        { tfCommand, command } = message,
+        { handler, launch } = this.commandsLauncher,
+        cb = createCB(
+        message,
+        handler,
+        this.render,
+        oldPrefs,
+        this.stateManager
+      )
+
+      const res = handleCommand(
+        tfCommand || command,
+        this.logger,
+        handler,
+        launch,
+        cb,
+        this
+       ) 
+       
       return res
     }
   
     initSideBarView () {
+
       const sideBarWebView = {
         enableScripts: true,
           resolveWebviewView: webviewView => {
@@ -110,50 +121,69 @@ class WebViewManager {
             };
             this.render()
             this.sideBarWebView.onDidReceiveMessage(this.messageHandler)
-            webviewView.onDidDispose(() => {
-              this.sideBarWebView && this.sideBarWebView.dispose();
-            });
+            webviewView.onDidDispose(() => this.sideBarWebView && this.sideBarWebView.dispose());
           }
         }
+
         this.sideBarWebViewProviderExplorer = vscode.window.registerWebviewViewProvider('terraform-button-view-explorer', sideBarWebView );
         this.sideBarWebViewProviderScm = vscode.window.registerWebviewViewProvider('terraform-button-view-scm', sideBarWebView );
         this.context.subscriptions.push(this.sideBarWebViewProvider);
+
         return sideBarWebView
     }
 
     async initProjectExplorer(withAnimation = true) {
+      
       this.withAnimation = withAnimation
       this.projectExplorer && this.projectExplorer.dispose()
-      tfProjectsCache = await getProjectsCache(tfProjectsCache)
-      if (!tfProjectsCache || !tfProjectsCache.length) return vscode.window.showInformationMessage("No terraform projects were found in this workspace")
-      const panel  = vscode.window.createWebviewPanel(
-        'terraformDashboard', // Identifies the type of the webview. Used internally
-        'Terraform Dashboard', // Title of the panel displayed to the user
-        vscode.ViewColumn.One, // Editor column to show the new webview panel in.
-        { enableScripts: true } // Webview options. More on these later.
-      );
-      panel.onDidDispose(() => {
-        this.projectExplorer.disposed = true
-      });
-      this.projectExplorer = panel.webview
-      this.projectExplorer.onDidReceiveMessage(
-        async (message) => {
-          const loggedMessage = typeof message === "string" ? { message, source: "explorer" } : message
-          loggedMessage.source = "explorer"
-          this.logger.log(loggedMessage)
-          const res = await this.messageHandler(message);
-          if (res === "render") this.render()
-          // const shouldUpdateProject = res == "selected-project" || json
-          // if (shouldUpdateProject) this.stateManager.updateState(selectedProjectPathKey, json )
-          return res
-        },
-        undefined,
-        this.context.subscriptions
-      )
-      setTimeout(async () => { tfProjectsCache = await getProjectsCache(tfProjectsCache) })
+
+      await this.updateProjectsCache()
+      const { subscriptions } = this.context,
+      missingProjects = !tfProjectsCache || !tfProjectsCache.length
+      if (missingProjects) return vscode.window.showInformationMessage(noProjectsExistsTxt)
+
+      this.projectExplorer = createWebviewPanel().webview
+      this.projectExplorer.webview.onDidReceiveMessage( this.handleWebviewMessage, undefined, subscriptions )
+
+      setTimeout(this.updateProjectsCache)
       return panel
     }
+
+    async handleWebviewMessage (message){
+        this.log(message)
+        const res = await this.messageHandler(message);
+        if (res === "render") this.render()
+        return res
+      }
+
+    log(message){
+      const loggedMessage = typeof message === "string" ? { message, source: "explorer" } : message
+      loggedMessage.source = "explorer"
+      this.logger.log(loggedMessage)
+    }
+
+    async updateProjectsCache() {
+      tfProjectsCache = await getProjectsCache(tfProjectsCache)
+    }
+
+    get selectedProject () {
+      const selectedProjectPath = this.stateManager.getState(selectedProjectPathKey) || ""
+      return tfProjectsCache.find(p => p.projectPath === selectedProjectPath)
+    }
     
+    addCredentials (project) {
+        project.credentials = this.stateManager.getState(getNamespacedCredentialsKey(project)) || ""
+        return project
+    }
+
+    updateOutputFile () {
+      const { handler } =  this.commandsLauncher,
+       { fileHandler, shellHandler } = handler || {},
+      outputFileExists = fileHandler && fileHandler.initialized
+
+      this.outputFileContent = outputFileExists ? fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding) : undefined
+    }
+
     constructor(context, logger, stateManager, commandsLauncher){
         this.context = context
         this.logger = logger
@@ -165,5 +195,9 @@ class WebViewManager {
         this.messageHandler = this.messageHandler.bind(this)
     }
 }
+
+
+(async () => { tfProjectsCache = await getProjectsCache(tfProjectsCache) })()
+const hasPlan = str => (str || "").toLowerCase().indexOf("plan") > -1
 
 module.exports = { WebViewManager }
