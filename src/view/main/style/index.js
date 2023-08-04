@@ -232,11 +232,11 @@ a.command:hover, a.command, a.command:focus {
     position: absolute;
     top: 0px;
     left: 0px;
-    transition: 0.5s background;
+    transition: 0.3s background;
   }
   #overlay.active{
     background: rgba(16, 18, 18, 0.96);
     z-index: 999;
-    transition: 0.5s background;
+    transition: 0.3s background;
   }
 `

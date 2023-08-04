@@ -238,7 +238,7 @@ module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (doc
         const folder = vscode.workspace.workspaceFolders[0];
         const uri = vscode.Uri.file(folder.uri.fsPath + "/.terraform");
         vscode.commands.executeCommand('workbench.files.action.collapseExplorerFolders', uri);
-        listener.dispose()
+        listener && listener.dispose()
     }
 })
 

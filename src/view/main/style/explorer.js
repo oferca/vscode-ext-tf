@@ -197,7 +197,6 @@ body {
 
 .filemanager .data li:hover {
 	background-color: #42424E;
-
 }
 
 .filemanager .data li a {
@@ -574,16 +573,6 @@ footer #tzine-actions iframe{
 
 POPUP
 */
-
-
-section {
-  max-1height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-size: cover;
-  transition: 0.5s ;
-}
 
 .modal-parent {
   position: fixed;

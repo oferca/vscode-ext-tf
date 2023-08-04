@@ -43,6 +43,7 @@ class WebViewManager {
           hasPlan(tfCommand),
           tfCommand,
           completed,
+          this.withAnimation,
           this.commandLaunched
         ]
 
@@ -55,11 +56,12 @@ class WebViewManager {
         .map(this.addCredentials)
       
       const paramsExplorer = [...params]
+      const selected = this.selectedProject
+      selected.credentials = credentials ? credentialsSetText : ""
 
       paramsExplorer.push(
         tfProjectsCache,
         this.selectedProject,
-        this.withAnimation,
         this.context,
         this.stateManager
       )

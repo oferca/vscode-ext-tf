@@ -5,7 +5,7 @@ const { html: getExplorerHTML } = require("./explorer")
 const { scripts: explorerScripts } = require("./explorer");
 const { capitalizeFirst } = require('../../../shared/methods');
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, commandLaunched, explorerParams, selectedProject, withAnimation, context, stateManager) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
@@ -32,6 +32,9 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     ${animatedButtonStyle}
     ${isExplorer && explorerStyle }
   </style>
+  <script>
+    const vscode = acquireVsCodeApi();
+  </script>
 </head>
 <body class="${isExplorer ? "explorer" : '' } " >
 <div id="overlay" class="${overlayClass}"></div>
@@ -92,7 +95,6 @@ ${ explorerHTML }
   </div>
   <script>
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
-  const vscode = acquireVsCodeApi();
     var IS_EXPLORER = null
     var CURRENT_PATH = null
     function getExplorerCredentials() {

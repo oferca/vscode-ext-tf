@@ -42,7 +42,9 @@ module.exports.scripts = selectedProject => `
     X.addEventListener("click", disappearX);
     IS_EXPLORER=true
     let content
-    ${selectedProject ? `renderProjectInfo("${selecteProject.name}", "${selecteProject.projectRelativePath}", "${selecteProject.credentials}")` :""}
+    ${selectedProject ? `
+        renderProjectInfo("${selectedProject.name}", "${selectedProject.projectPathRelative}", "${selectedProject.credentials}")` :""
+    }
     function renderProjectInfo(name, folder, credentials) {
         if (!name) return
         document.getElementById("project-info").innerHTML = \`
@@ -54,11 +56,12 @@ module.exports.scripts = selectedProject => `
         </ol>
         \`
         document.getElementById("credentials").innerHTML = \`\${credentials || ''}\`
+        document.getElementById("credentials").onkeyup="this.style.color='inherit';this.style.fontWeight='normal';"
+
         if (credentials !== "${credentialsSetText}") return
 
         document.getElementById("credentials").style.color = "var(--vscode-editorOverviewRuler-currentContentForeground)"
         document.getElementById("credentials").style.fontWeight = "bold"
-        document.getElementById("credentials").onkeyup="this.style.color='auto';this.style.fontWeight='normal';"
     }
     let overlay
     function addOverlay(){
@@ -88,9 +91,9 @@ module.exports.scripts = selectedProject => `
         var modal = document.querySelector(".modal")
         modal.classList.add("animated")
         document.getElementById("main-modal").classList.add("animated")
+        vscode.postMessage({ command: 'unselected-project', isExplorer: IS_EXPLORER });
         vscode.postMessage({ command: 'render', isExplorer: IS_EXPLORER })
         removeOverlay()
-        vscode.postMessage({ command: 'unselected-project', isExplorer: IS_EXPLORER });
     }
 
     parent.addEventListener("click", disappearParent)
