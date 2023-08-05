@@ -3,14 +3,14 @@ const path = require('path');
 const util = require('util');
 const vscode = require('vscode');
 const statAsync = util.promisify(fs.stat);
+
 const {
   addProvider,
   getProviders,
   tfObjectCount,
-  isLegitFolder,
   transformRegions,
   getRelativeFolderPath
-} = require("../../shared/methods")
+} = require("../../shared/methods-cycle")
 
 const workspaceFolders = vscode.workspace.workspaceFolders;
 const projectRoot = workspaceFolders ? workspaceFolders[0].uri.fsPath : null
@@ -21,9 +21,12 @@ function onlyUnique(value, index, array) {
   return array.indexOf(value) === index;
 }
 
-async function findFilesWithExtension (startPath, targetExtension, fileList) {
+const isLegitFolder = (fileType, fileName) => {
+  return fileType === vscode.FileType.Directory && fileName !== ".terraform" && fileName !== ".git"
+}
+
+async function findFilesWithExtension (startPath, targetExtension, fileList = {}) {
   if (!projectRoot) return []
-  fileList = fileList || {};
   const items = await vscode.workspace.fs.readDirectory(vscode.Uri.file(startPath));
 
   for (const item of items){
@@ -41,7 +44,7 @@ async function findFilesWithExtension (startPath, targetExtension, fileList) {
       hasTerraformBlock = content.indexOf("terraform{") > -1,
       fileIsTFState = filePath.indexOf("terraform.tfstate") > -1,
       folderIsTerraformProject = hasTerraformBlock || fileIsTFState,
-      { resources, modules, datasources, lastModifiedTimestamp, providers, regions } = fileList[projectName]
+      { resources, modules, datasources, lastModifiedTimestamp, providers, regions } = fileList[projectName] || {}
 
     fileList[projectName] = fileList[projectName] || {}
     fileList[projectName].name = projectName
@@ -57,17 +60,18 @@ async function findFilesWithExtension (startPath, targetExtension, fileList) {
       fileList[projectName].projectPathRelative = getRelativeFolderPath(startPath, projectRoot)
       fileList[projectName].providers = providers || []
 
-      getProviders(content).filter(isEven)
+      if (providers) getProviders(content).filter(isEven)
         .forEach(provider => addProvider(provider, providers))
     }
 
-    if (providers) providers = fileList[projectName].providers.filter(onlyUnique)
+    const updatedProviders = fileList[projectName].providers
+    if (updatedProviders) fileList[projectName].providers = updatedProviders.filter(onlyUnique)
     
-    const regions = content.split("region=\"").filter(isOdd)
+    const oddRegions = content.split("region=\"").filter(isOdd)
     fileList[projectName].regions = regions || []
-    let oddRegions = fileList[projectName].regions
-    oddRegions.forEach(region => transformRegions(region, oddRegions))
-    oddRegions = oddRegions.filter(region => region.length < 25).filter(onlyUnique)
+    fileList[projectName].regions
+    oddRegions.forEach(region => transformRegions(region, fileList[projectName].regions))
+    fileList[projectName].regions = fileList[projectName].regions.filter(region => region.length < 25).filter(onlyUnique)
   }
   return fileList;
 }

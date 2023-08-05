@@ -1,6 +1,6 @@
 const vscode = require('vscode');
 const { FileHandler } = require("../../file-handler")
-const { isPowershell } = require("../../shared/methods")
+const { isPowershell } = require("../../shared/methods-cycle")
 const { BashHandler } = require("../../shared/shells/bash")
 const { PowershellHandler } = require("../../shared/shells/powershell")
 
