@@ -19,7 +19,6 @@ const { ActionButton } = require("./action-button.js")
 const { WebViewManager } = require("./view/main")
 const { StateManager } = require("./state/index.js")
 
-
 const appRoot = path.resolve(__dirname);
 var pjson = require(appRoot + '/../package.json');
 const column = vscode.ViewColumn.One
