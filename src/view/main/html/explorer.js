@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const { capitalizeFirst, getNamespacedCredentialsKey } = require('../../../shared/methods');
+const { createShellHandler } = require('../../../shared/methods-cycle');
 const { credentialsSetText } = require('../../../shared/constants');
 
 const folders = (list, stateManager) => list && list.sort((a, b) => a.lastModifiedTimestamp > b.lastModifiedTimestamp ? -1 : 1).map(
@@ -7,9 +8,10 @@ const folders = (list, stateManager) => list && list.sort((a, b) => a.lastModifi
         const { projectPath, projectPathRelative, name, regions } = project,
           namespacedCredentialsKey = getNamespacedCredentialsKey(projectPath),
           credentials = stateManager.getState(namespacedCredentialsKey),
-          credentialsTxt = credentials && credentials.length ? credentialsSetText : "" 
+          credentialsTxt = credentials && credentials.length ? credentialsSetText : "",
+          projectPathSynthesized = createShellHandler(vscode.window.activeTerminal).synthesizePath(projectPath)
         return`
-            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPath}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPath}'; appear('${name}', '${projectPath}', '${projectPathRelative}', '${credentialsTxt}');" >
+            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPath}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPath}', '${projectPathRelative}', '${credentialsTxt}');" >
                 <a title="${projectPathRelative}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
@@ -43,9 +45,10 @@ module.exports.scripts = selectedProject => `
     IS_EXPLORER=true
     let content
     setTimeout(() => {
-        document.getElementById("folders-list").classList.remove("animated")
-        document.getElementById("folders-list").style.animation = "none"
-        animation
+        const foldersList = document.getElementById("folders-list")
+        if (!foldersList) return
+        foldersList.classList.remove("animated")
+        foldersList.style.animation = "none"
     }, 5000)
     ${selectedProject ? `
         renderProjectInfo("${selectedProject.name}", "${selectedProject.projectPathRelative}", "${selectedProject.credentials}")` :""

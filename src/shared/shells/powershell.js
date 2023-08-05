@@ -51,6 +51,9 @@ class PowershellHandler extends ShellHandler {
         return removeLastInstance(":", str)
     }
 
+    synthesizePath(_path) {
+        return _path.replaceAll("\\", "\\\\")
+    }
     getChangeFolderCmd() {
         let folder = this.stateManager.getUserFolder()
         if (!folder) return

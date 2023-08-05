@@ -99,9 +99,10 @@ ${ explorerHTML }
     var IS_EXPLORER = null
     var CURRENT_PATH = null
     setTimeout(() => {
-      document.getElementById("folders-list").classList.remove("animated")
-      document.getElementById("folders-list").style.animation = "none"
-      animation
+      const foldersList = document.getElementById("folders-list")
+      if (!foldersList) return
+      foldersList.classList.remove("animated")
+      foldersList.style.animation = "none"
   }, 5000)
     function getExplorerCredentials() {
       const explorerCredentials = document.getElementById("credentials")
