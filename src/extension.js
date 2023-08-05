@@ -8,8 +8,11 @@ const {
 	openProjectsButtonText
 } = require("./shared/constants")
 const {
-	isPanelOpen
+	isPanelOpen,
 } = require("./shared/methods")
+const {
+	createShellHandler
+} = require("./shared/methods-cycle")
 
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")

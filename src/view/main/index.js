@@ -63,7 +63,7 @@ class WebViewManager {
         tfProjectsCache,
         this.selectedProject,
         this.context,
-        this.stateManager
+        this.stateManager,
       )
 
       this.projectExplorer.html = html(...paramsExplorer)

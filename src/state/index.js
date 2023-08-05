@@ -22,8 +22,7 @@ const {
 } = require("../shared/constants")
 
 const { unsupportedShellNote, isPowershell, isCmd } = require("../shared/methods")
-const { BashHandler } = require("../shared/shells/bash")
-const { PowershellHandler } = require("../shared/shells/powershell")
+const { createShellHandler } = require("../shared/methods-cycle")
 
 const secondsInWeek = 60 * 60 * 24 * 7
 const secondsInHour = 60 * 60
@@ -116,9 +115,7 @@ class StateManager {
 	    if (!shouldGiveNotice || isUnsupportedTerminal) return
         this.logger.log({ msg: shellHandler.getCheckTFCommand()})
 		this.updateState(lastTerminalNoticeKey, now)
-        const ShellHandler = isPowershell(terminal) ? PowershellHandler: BashHandler
-        const shellHandler = new ShellHandler()
-        setTimeout(() => terminal.sendText("clear; " + shellHandler.getCheckTFCommand()), 600)
+        setTimeout(() => terminal.sendText("clear; " + createShellHandler(terminal).getCheckTFCommand()), 600)
     }
     init() {
         this.now = new Date().getTime();

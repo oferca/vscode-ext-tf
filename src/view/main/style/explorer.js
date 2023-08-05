@@ -218,20 +218,20 @@ body {
 	position: absolute;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	top: 35px;
+	top: 28px;
 }
 
 #filemanager .data li .details {
 	color: #b6c1c9;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400;
     width: 55px;
     height: 10px;
-    top: 58px;
+    top: 50px;
     white-space: nowrap;
     position: absolute;
     display: inline-block;
-    line-height: 17px;
+    line-height: 15px;
 }
 
 #filemanager .nothingfound {

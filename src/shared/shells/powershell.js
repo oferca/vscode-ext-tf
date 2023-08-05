@@ -51,6 +51,9 @@ class PowershellHandler extends ShellHandler {
         return removeLastInstance(":", str)
     }
 
+    synthesizePath(_path) {
+        return _path ? _path.replaceAll("\\", "\\\\") : _path
+    }
     getChangeFolderCmd() {
         let folder = this.stateManager.getUserFolder()
         if (!folder) return
@@ -61,9 +64,9 @@ class PowershellHandler extends ShellHandler {
         return [this.getChangeFolderCmd()].concat(
             this.getCredentialsSetter()
             .replaceAll("$ENV", "$Env")
-            .replaceAll("$Env", "-$Env-")
-            .split("-$Env-")
-            .map(crds => crds !== '' ? "$Env" + crds : null)
+           // .replaceAll("$Env", "-$Env-")
+           // .split("-$Env-")
+          //  .map(crds => crds !== '' ? "$Env" + crds : null)
         )
     }
     getCheckTFCommand () {
