@@ -17,7 +17,7 @@ const folders = (list, stateManager) => list && list.sort((a, b) => a.lastModifi
                 <a title="${projectPathRelativeSynthesized}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
-                    <span class="details">Regions: ${regions.join(', ')}.<br>Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}.<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources.</span>
+                    <span class="details">Path: ${projectPathRelative}<br>Regions: ${regions.join(', ')}<br>Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources</span>
                 </a>
             </li>
         `

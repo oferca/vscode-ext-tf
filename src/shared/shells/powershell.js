@@ -64,9 +64,9 @@ class PowershellHandler extends ShellHandler {
         return [this.getChangeFolderCmd()].concat(
             this.getCredentialsSetter()
             .replaceAll("$ENV", "$Env")
-            .replaceAll("$Env", "-$Env-")
-            .split("-$Env-")
-            .map(crds => crds !== '' ? "$Env" + crds : null)
+           // .replaceAll("$Env", "-$Env-")
+           // .split("-$Env-")
+          //  .map(crds => crds !== '' ? "$Env" + crds : null)
         )
     }
     getCheckTFCommand () {
