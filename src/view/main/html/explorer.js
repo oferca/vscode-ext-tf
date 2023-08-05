@@ -11,7 +11,7 @@ const folders = (list, stateManager) => list && list.sort((a, b) => a.lastModifi
           credentialsTxt = credentials && credentials.length ? credentialsSetText : "",
           projectPathSynthesized = createShellHandler(vscode.window.activeTerminal).synthesizePath(projectPath)
         return`
-            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPath}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPath}', '${projectPathRelative}', '${credentialsTxt}');" >
+            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPath}', '${projectPathRelative}', '${credentialsTxt}');" >
                 <a title="${projectPathRelative}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
