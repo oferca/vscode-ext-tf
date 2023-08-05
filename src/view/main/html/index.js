@@ -1,9 +1,11 @@
+const vscode = require('vscode');
 const { style } = require("../style")
 const { style : explorerStyle } = require("../style/explorer")
 const { animatedButtonStyle } = require("../style/animated-button")
 const { html: getExplorerHTML } = require("./explorer")
 const { scripts: explorerScripts } = require("./explorer");
 const { capitalizeFirst } = require('../../../shared/methods');
+const { createShellHandler } = require("../../../shared/methods-cycle");
 
 module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
@@ -23,6 +25,8 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     credentials = isExplorer ? `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
     overlayClass = completed ? 'active' : ""
     overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : ""
+    shellHandler = createShellHandler(vscode.window.activeTerminal),
+    projectPathSynthesized = shellHandler.synthesizePath((selectedProject || {}).projectPath),
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>
@@ -97,7 +101,7 @@ ${ explorerHTML }
   <script>
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
     var IS_EXPLORER = null
-    var CURRENT_PATH = null
+    var CURRENT_PATH = "${projectPathSynthesized}"
     setTimeout(() => {
       const foldersList = document.getElementById("folders-list")
       if (!foldersList) return
@@ -113,12 +117,14 @@ ${ explorerHTML }
     function postMessage(command) {
       const credentials = getExplorerCredentials()
  
-      vscode.postMessage({
+      const message = {
         command,
         isExplorer: IS_EXPLORER,
         folder: CURRENT_PATH,
         credentials
-      });
+      }
+      console.log("POSTING", message)
+      vscode.postMessage(message);
     }
     function showLogsButton (tfCommand) {
       document.getElementById("intro").classList.add('no-animation');
@@ -137,12 +143,14 @@ ${ explorerHTML }
       const credentials = getExplorerCredentials()
       el.classList.add('animated-button');
       showLogsButton(tfCommand)
-      vscode.postMessage({
+      const message = {
         tfCommand,
         isExplorer: IS_EXPLORER,
         folder: CURRENT_PATH,
         credentials
-      });
+      }
+      console.log("POSTING", message)
+      vscode.postMessage(message);
     }
     ${isExplorer && explorerScripts(selectedProject) }
   </script>

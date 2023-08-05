@@ -9,10 +9,12 @@ const folders = (list, stateManager) => list && list.sort((a, b) => a.lastModifi
           namespacedCredentialsKey = getNamespacedCredentialsKey(projectPath),
           credentials = stateManager.getState(namespacedCredentialsKey),
           credentialsTxt = credentials && credentials.length ? credentialsSetText : "",
-          projectPathSynthesized = createShellHandler(vscode.window.activeTerminal).synthesizePath(projectPath)
+          shellHandler = createShellHandler(vscode.window.activeTerminal),
+          projectPathSynthesized = shellHandler.synthesizePath(projectPath),
+          projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
         return`
-            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPath}', '${projectPathRelative}', '${credentialsTxt}');" >
-                <a title="${projectPathRelative}" class="folders project">
+            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}');" >
+                <a title="${projectPathRelativeSynthesized}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
                     <span class="details">Regions: ${regions.join(', ')}.<br>Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}.<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources.</span>
@@ -38,7 +40,11 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
 	</div>
 `}
 
-module.exports.scripts = selectedProject => `
+module.exports.scripts = selectedProject => {
+    const { name, projectPathRelative, credentials } = selectedProject || {}
+    shellHandler = createShellHandler(vscode.window.activeTerminal)
+    const projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
+    return `
     var parent = document.querySelector(".modal-parent")
     X = document.querySelector(".x")
     X.addEventListener("click", disappearX);
@@ -51,7 +57,7 @@ module.exports.scripts = selectedProject => `
         foldersList.style.animation = "none"
     }, 5000)
     ${selectedProject ? `
-        renderProjectInfo("${selectedProject.name}", "${selectedProject.projectPathRelative}", "${selectedProject.credentials}")` :""
+        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${credentials}")` :""
     }
     function renderProjectInfo(name, folder, credentials) {
         if (!name) return
@@ -118,4 +124,4 @@ module.exports.scripts = selectedProject => `
         }
         
     }
-`
+`}
