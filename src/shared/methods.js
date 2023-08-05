@@ -6,21 +6,17 @@ let db
 
 const { 
     timeExt,
-    isWindows,
     targetTxt,
     tfVarsPostix,
     rootFolderName,
     tfTargetPostix,
     credentialsKey,
     powershellType,
-    tfInitCommandId,
-    tfPlanCommandId,
     initSuccessMessage,
     initEmptyDirMessage,
     planSuccessMessage1,
     planSuccessMessage2,
     tfPlanVarsCommandId,
-    tfValidateCommandId,
     tfApplyVarsCommandId,
     tfPlanTargetCommandId,
     tfApplyTargetCommandId,
@@ -72,14 +68,6 @@ const getRawCommand = commandId => commandId.
     replace(tfVarsPostix, "")
 
 module.exports.getRawCommand = getRawCommand
-
-const getBashTFCommand = (commandId, tfOption) => tfOption ? `${getRawCommand(commandId)} -${getOptionKey(commandId)}="${tfOption}"` : commandId
-
-module.exports.getBashTFCommand = getBashTFCommand
-
-const getBashFunctionInvocation = cmdId => "terraform." + cmdId
-
-module.exports.getBashFunctionInvocation = getBashFunctionInvocation
 
 module.exports.getCompletionPercentage = (barCreationTimestamp, barCompletionTimestamp, isDefaultDuration = false) => {
     const now = Date.now()
@@ -175,15 +163,6 @@ module.exports.getOption = async (commandId, option, shellType) => {
     if (isWithVarsFile) return await getVarsFile(shellType)
 } 
 
-const successMessage = commandId =>{
-    const rawCommand = commandId.replace(tfTargetPostix, "")
-    return rawCommand === tfPlanCommandId && planSuccessMessage1 ||
-        rawCommand === tfPlanCommandId && planSuccessMessage2 ||
-        rawCommand === tfValidateCommandId && validateSuccessMessage ||
-        rawCommand === tfInitCommandId && initSuccessMessage
-}
-
-module.exports.successMessage = successMessage
 
 const planSuccessful = outputFile => outputFile.indexOf(planSuccessMessage1) > -1 || outputFile.indexOf(planSuccessMessage2) > -1
 module.exports.planSuccessful = planSuccessful
