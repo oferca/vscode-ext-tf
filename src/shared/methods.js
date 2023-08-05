@@ -267,7 +267,8 @@ module.exports.createWebviewPanel = () => {
         'terraformDashboard',
         'Terraform Dashboard',
         vscode.ViewColumn.One,
-        { enableScripts: true }
+        { enableScripts: true,
+            retainContextWhenHidden: true }
     )
     panel.onDidDispose(() => {
         panel.webview.disposed = true

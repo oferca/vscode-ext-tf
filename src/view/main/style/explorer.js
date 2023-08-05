@@ -677,6 +677,7 @@ POPUP
   background: #EE9EFF;
 }
 
+
 .explorer .expandable{
   min-height: 194px;
 }

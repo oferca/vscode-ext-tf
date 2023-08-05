@@ -70,7 +70,6 @@ class WebViewManager {
       this.withAnimation = false
     }
 
-
     handlePreferences(message) {
       if (!message.folder) return
 

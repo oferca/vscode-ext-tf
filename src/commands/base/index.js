@@ -136,9 +136,13 @@ class CommandHandlerPrototype {
     async sendCommands(cb = () => {}) {
         const { activeTerminal } = this.stateManager
         const command = getRawCommand(this.commandId)
-        const option = this.addOption ? `-${getOptionKey(this.commandId)}="${this.stateManager.getState(optionKey)}"` : ""
-        this.fileHandler && this.fileHandler.initialized ? await this.shellHandler.runTfCommand(this.outputFile)
-            : activeTerminal.sendText(`terraform ${command} ${option}`)
+        const options = this.addOption ? this.stateManager.getState(optionKey).split(",").reduce((optionsStr, option) => {
+            const par = this.commandId.indexOf("var.file") > -1 ? "\"" : "'"
+            optionsStr += ` -${getOptionKey(this.commandId)}=${par}${option.trim()}${par}`
+            return optionsStr
+        }, "") : ""
+        this.redirect ? await this.shellHandler.runTfCommand(this.outputFile)
+            : activeTerminal.sendText(`terraform ${command} ${options}`)
         if (this.overlayTerminal) setTimeout(() =>
             {
                 this.overlayTerminal.dispose()

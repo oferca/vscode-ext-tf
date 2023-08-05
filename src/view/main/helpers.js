@@ -1,6 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
+const util = require('util');
+const statAsync = util.promisify(fs.stat);
 
 const workspaceFolders = vscode.workspace.workspaceFolders;
 const projectRoot = workspaceFolders[0].uri.fsPath
@@ -27,6 +29,9 @@ async function findFilesWithExtension (startPath, targetExtension, fileList) {
       fileList[projectName] = fileList[projectName] || {}
       fileList[projectName].name = projectName
       const content = fs.readFileSync(filePath, 'utf8').replace(/\s/g, '');
+
+      const stats = await statAsync(filePath)
+      fileList[projectName].lastModifiedTimestamp = Math.max(fileList[projectName].lastModifiedTimestamp || 0, stats.mtime.getTime());
 
       const resourcesRegex = new RegExp("resource\"", 'g');
       const resourcesMatches = content.match(resourcesRegex);

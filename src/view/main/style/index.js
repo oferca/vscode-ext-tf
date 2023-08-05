@@ -220,14 +220,13 @@ a.command:hover, a.command, a.command:focus {
     text-align: left;
   }
 
-  #main-modal{
+  .explorer #main-modal{
     text-align: left;
     background: var(--vscode-settings-focusedRowBackground)
   }
 
   #overlay {
     z-index: -1;
-    height: 100%;
     width: 100%;
     position: absolute;
     top: 0px;
@@ -238,5 +237,9 @@ a.command:hover, a.command, a.command:focus {
     background: rgba(16, 18, 18, 0.96);
     z-index: 999;
     transition: 0.3s background;
+  }
+
+  .sidebar .expandable {
+    margin-bottom: 10px;
   }
 `

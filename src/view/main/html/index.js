@@ -22,7 +22,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
     credentials = isExplorer ? `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
     overlayClass = completed ? 'active' : ""
-    overlayCall = completed ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : ""
+    overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : ""
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>
@@ -36,7 +36,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     const vscode = acquireVsCodeApi();
   </script>
 </head>
-<body class="${isExplorer ? "explorer" : '' } " >
+<body class="${isExplorer ? "explorer" : "sidebar" } " >
 <div id="overlay" class="${overlayClass}"></div>
 
 ${ explorerHTML }
@@ -63,6 +63,7 @@ ${ explorerHTML }
           <div class="expandable">
           ${ actions.map(action => {
             if (action.menuOnly) return
+            if (action.excludeExplorer && isExplorer) return
             const type = action.label.indexOf("Apply") > -1 ? "warning" : ""
             if (action.handler) return (`
             <div
@@ -97,6 +98,11 @@ ${ explorerHTML }
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
     var IS_EXPLORER = null
     var CURRENT_PATH = null
+    setTimeout(() => {
+      document.getElementById("folders-list").classList.remove("animated")
+      document.getElementById("folders-list").style.animation = "none"
+      animation
+  }, 5000)
     function getExplorerCredentials() {
       const explorerCredentials = document.getElementById("credentials")
       if (!explorerCredentials) return

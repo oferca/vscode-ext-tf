@@ -76,7 +76,7 @@ module.exports.errorStatus = "error"
 
 module.exports.noCredentials = "no-credentials"
 
-module.exports.noCredentialsMsg = "Did you set credentials in terminal ?"
+module.exports.noCredentialsMsg = "Did you set credentials ?"
 
 // module.exports.gotoTerminal = { title: 'Go To Terminal' };
 

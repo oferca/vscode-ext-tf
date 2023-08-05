@@ -57,6 +57,7 @@ async function activate(context) {
 		vscode.commands.registerCommand(
 			openProjectsCommandId,
 			async () => {
+				logger.log("open-projects-from-bar")
 				if (isPanelOpen(explorer)) return explorer.reveal(column)
 				explorer = await webViewManager.initProjectExplorer(withAnimation)
 				if (!explorer) return

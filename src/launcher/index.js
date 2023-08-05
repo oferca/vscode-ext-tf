@@ -76,6 +76,7 @@ class CommandsLauncher {
 
     async verifyOpenTerminal(actionLabel) {
         if (vscode.window.activeTerminal) return vscode.window.activeTerminal
+        if (actionLabel.toLowerCase().indexOf === "open explorer" > -1) return
         vscode.window.showInformationMessage( openTerminalTxt(actionLabel) );
         const terminal = await vscode.window.createTerminal();
         terminal.show();

@@ -7,6 +7,7 @@ const { TerraformInitHandler } = require("../commands/init")
 const { TerraformApplyHandler } = require("../commands/apply")
 const { TerraformOutputHandler } = require("../commands/output")
 const { CredentialsHandler } = require("../commands/credentials")
+const { OpenExplorerHandler } = require("../commands/open-explorer")
 const { TerraformValidateHandler } = require("../commands/validate")
 const { ChangeFolderHandler } = require("../commands/change-folder")
 const { TerraformPlanTargetHandler } = require("../commands/plan/target")
@@ -25,6 +26,12 @@ module.exports.getActions = stateManager => {
     const displayedCredentials = credentials ? (prefCredentials + credentials.substring(credentials.length - maxLength)) : null
 
     return [
+        {
+            label: 'Terraform Explorer',
+            kind: vscode.QuickPickItemKind.Separator,
+            excludeExplorer: true
+        },
+        { handler: OpenExplorerHandler, label: "Open Explorer", icon: "$(ports-open-browser-icon)", excludeExplorer: true },
         {
             label: 'Plan Synopsis',
             kind: vscode.QuickPickItemKind.Separator,

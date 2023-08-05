@@ -2,7 +2,7 @@ const vscode = require('vscode');
 const { capitalizeFirst, getNamespacedCredentialsKey } = require('../../../shared/methods');
 const { credentialsSetText } = require('../../../shared/constants');
 
-const folders = (list, stateManager) => list && list.sort((a, b) => a.resources + a.modules > b.resources + b.modules ? -1 : 1).map(
+const folders = (list, stateManager) => list && list.sort((a, b) => a.lastModifiedTimestamp > b.lastModifiedTimestamp ? -1 : 1).map(
     project => {
         const { projectPath, projectPathRelative, name, regions } = project,
           namespacedCredentialsKey = getNamespacedCredentialsKey(projectPath),
@@ -26,7 +26,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
     return `
       <div id="filemanager" >
 		<div class="breadcrumbs"><span class="folderName">${rootFolderName} Terraform Projects</span></div>
-		<ul class="data ${!completed && withAnimation ? 'animated': ''}" style="">
+		<ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list, stateManager)}
         </ul>
 		<div class="nothingfound" style="display: none;">
@@ -42,6 +42,11 @@ module.exports.scripts = selectedProject => `
     X.addEventListener("click", disappearX);
     IS_EXPLORER=true
     let content
+    setTimeout(() => {
+        document.getElementById("folders-list").classList.remove("animated")
+        document.getElementById("folders-list").style.animation = "none"
+        animation
+    }, 5000)
     ${selectedProject ? `
         renderProjectInfo("${selectedProject.name}", "${selectedProject.projectPathRelative}", "${selectedProject.credentials}")` :""
     }
@@ -68,7 +73,7 @@ module.exports.scripts = selectedProject => `
         setTimeout(() => {
             overlay = document.createElement('div');
             overlay.id = "overlay"
-            overlay.style.height = document.getElementById("modal-container").clientHeight + "px"
+            overlay.style.height = document.body.clientHeight + "px"
             document.body.appendChild(overlay);
             setTimeout(() => overlay.classList.add("active"))
         })
