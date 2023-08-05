@@ -1,15 +1,12 @@
-const vscode = require('vscode');
 const exec = require('child_process').exec;
 const { ShellHandler } = require("./shell-prototype")
 
 const {
-    addOptionDef,
-    successMessage,
-    getBashTFCommand,
-    getBashFunctionInvocation
+    addOptionDef
 } = require("../methods")
-    
+
 const { noColorExt, timeExt } = require("../constants")
+const { successMessage, getBashFunctionInvocation, getBashTFCommand } = require("./helpers")
 
 class BashHandler extends ShellHandler{
     paramName

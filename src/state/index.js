@@ -21,8 +21,8 @@ const {
     shellNoticeIntervalHasSupportedSec
 } = require("../shared/constants")
 
-const { unsupportedShellNote, isPowershell, isCmd } = require("../shared/methods")
-const { createShellHandler } = require("../shared/methods-cycle")
+const { unsupportedShellNote, isCmd } = require("../shared/methods")
+const { createShellHandler, isPowershell } = require("../shared/methods-cycle")
 
 const secondsInWeek = 60 * 60 * 24 * 7
 const secondsInHour = 60 * 60

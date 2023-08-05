@@ -6,21 +6,17 @@ let db
 
 const { 
     timeExt,
-    isWindows,
     targetTxt,
     tfVarsPostix,
     rootFolderName,
     tfTargetPostix,
     credentialsKey,
     powershellType,
-    tfInitCommandId,
-    tfPlanCommandId,
     initSuccessMessage,
     initEmptyDirMessage,
     planSuccessMessage1,
     planSuccessMessage2,
     tfPlanVarsCommandId,
-    tfValidateCommandId,
     tfApplyVarsCommandId,
     tfPlanTargetCommandId,
     tfApplyTargetCommandId,
@@ -73,14 +69,6 @@ const getRawCommand = commandId => commandId.
 
 module.exports.getRawCommand = getRawCommand
 
-const getBashTFCommand = (commandId, tfOption) => tfOption ? `${getRawCommand(commandId)} -${getOptionKey(commandId)}="${tfOption}"` : commandId
-
-module.exports.getBashTFCommand = getBashTFCommand
-
-const getBashFunctionInvocation = cmdId => "terraform." + cmdId
-
-module.exports.getBashFunctionInvocation = getBashFunctionInvocation
-
 module.exports.getCompletionPercentage = (barCreationTimestamp, barCompletionTimestamp, isDefaultDuration = false) => {
     const now = Date.now()
     const currentProgress = (now - barCreationTimestamp)
@@ -128,18 +116,6 @@ const isWsl = terminal =>
 
 module.exports.isCmd = isCmd
 
-const isPowershell = terminal =>
-    terminal && (
-        terminal.name === '' && !terminal.creationOptions.shellPath && isWindows ||
-        terminal.name.toLowerCase().indexOf("pwsh") > -1 ||
-        terminal.name.toLowerCase().indexOf("powershell") > -1 ||
-        terminal.creationOptions.shellPath &&
-        (
-            terminal.creationOptions.shellPath.toLowerCase().indexOf("pwsh") > -1 ||
-            terminal.creationOptions.shellPath.toLowerCase().indexOf("powershell") > -1
-        )
-    )
-module.exports.isPowershell = isPowershell
 
 module.exports.featuresDisabled = terminal => !terminal || isUnsupportedShell(terminal)
 
@@ -187,15 +163,6 @@ module.exports.getOption = async (commandId, option, shellType) => {
     if (isWithVarsFile) return await getVarsFile(shellType)
 } 
 
-const successMessage = commandId =>{
-    const rawCommand = commandId.replace(tfTargetPostix, "")
-    return rawCommand === tfPlanCommandId && planSuccessMessage1 ||
-        rawCommand === tfPlanCommandId && planSuccessMessage2 ||
-        rawCommand === tfValidateCommandId && validateSuccessMessage ||
-        rawCommand === tfInitCommandId && initSuccessMessage
-}
-
-module.exports.successMessage = successMessage
 
 const planSuccessful = outputFile => outputFile.indexOf(planSuccessMessage1) > -1 || outputFile.indexOf(planSuccessMessage2) > -1
 module.exports.planSuccessful = planSuccessful
@@ -278,3 +245,14 @@ module.exports.createWebviewPanel = () => {
 
 module.exports.isPanelOpen = projectExplorerPanel => projectExplorerPanel && (!projectExplorerPanel.q || projectExplorerPanel.q && !projectExplorerPanel.q.isDisposed)
 
+module.exports.sortProjects = (a, b) => {
+    const sameTimestamp = a.lastModifiedTimestamp = b.lastModifiedTimestamp
+    if (!sameTimestamp) return a.lastModifiedTimestamp > b.lastModifiedTimestamp ? -1 : 1
+    const totalA = a.resources + a.modules + a.datasources
+    const totalB = b.resources + b.modules + b.datasources
+    return totalA > totalB ? -1 : 1 
+}
+
+module.exports.isLegitFolder = (fileType, fileName) => {
+    return fileType === vscode.FileType.Directory && fileName !== ".terraform" && fileName !== ".git"
+}

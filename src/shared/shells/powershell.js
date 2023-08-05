@@ -4,7 +4,8 @@ const path = require('path');
 const vscode = require('vscode');
 const { ShellHandler } = require("./shell-prototype")
 const { noColorExt, timeExt } = require("../constants")
-const { removeLastInstance, successMessage, addOptionDef, getBashTFCommand, getBashFunctionInvocation } = require("../methods")
+const { removeLastInstance, addOptionDef } = require("../methods")
+const { successMessage, getBashFunctionInvocation, getBashTFCommand } = require("./helpers")
 
 class PowershellHandler extends ShellHandler {
     paramName
