@@ -164,7 +164,10 @@ module.exports.getOption = async (commandId, option, shellType) => {
 } 
 
 
-const planSuccessful = outputFile => outputFile.indexOf(planSuccessMessage1) > -1 || outputFile.indexOf(planSuccessMessage2) > -1
+const planSuccessful = outputFile =>
+    outputFile.indexOf(planSuccessMessage1) > -1 ||
+    outputFile.indexOf(planSuccessMessage2) > -1
+
 module.exports.planSuccessful = planSuccessful
 
 const initSuccessful = outputFile => outputFile.indexOf(initSuccessMessage) > -1
@@ -246,13 +249,20 @@ module.exports.createWebviewPanel = () => {
 module.exports.isPanelOpen = projectExplorerPanel => projectExplorerPanel && (!projectExplorerPanel.q || projectExplorerPanel.q && !projectExplorerPanel.q.isDisposed)
 
 module.exports.sortProjects = (a, b) => {
-    const sameTimestamp = a.lastModifiedTimestamp = b.lastModifiedTimestamp
-    if (!sameTimestamp) return a.lastModifiedTimestamp > b.lastModifiedTimestamp ? -1 : 1
+    const sameTimestamp = a.lastModifiedTimestamp === b.lastModifiedTimestamp
+    if (!sameTimestamp) return a.lastModifiedTimestamp > b.lastModifiedTimestamp ? 1 : -1
     const totalA = a.resources + a.modules + a.datasources
     const totalB = b.resources + b.modules + b.datasources
-    return totalA > totalB ? -1 : 1 
+    return totalA > totalB ? 1 : -1 
 }
 
 module.exports.isLegitFolder = (fileType, fileName) => {
     return fileType === vscode.FileType.Directory && fileName !== ".terraform" && fileName !== ".git"
+}
+
+const sleep = ms => new Promise((resolve) => setTimeout(resolve, ms))
+
+module.exports.sendText = async (terminal, text) => {
+    await terminal.sendText(text)
+    await sleep(400)
 }

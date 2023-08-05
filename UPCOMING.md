@@ -1,6 +1,7 @@
 Bugs:
+* Delay every sendCommand
+* icon
 * clicking plan twice in a row creates wrong messages
-* Plan with error not working
 * Clear unsupported shell
 * unsupported sgell init spins forever
 * Output spins forever

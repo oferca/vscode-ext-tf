@@ -1,9 +1,9 @@
 const vscode = require('vscode');
-const { capitalizeFirst, getNamespacedCredentialsKey } = require('../../../shared/methods');
+const { capitalizeFirst, getNamespacedCredentialsKey, sortProjects } = require('../../../shared/methods');
 const { createShellHandler } = require('../../../shared/methods-cycle');
-const { credentialsSetText } = require('../../../shared/constants');
+const { credentialsSetText, disableShowOnStartupKey } = require('../../../shared/constants');
 
-const folders = (list, stateManager) => list && list.sort((a, b) => a.lastModifiedTimestamp > b.lastModifiedTimestamp ? -1 : 1).map(
+const folders = (list, stateManager) => list && list.sort(sortProjects).map(
     project => {
         const { projectPath, projectPathRelative, name, regions } = project,
           namespacedCredentialsKey = getNamespacedCredentialsKey(projectPath),
@@ -27,7 +27,27 @@ const folders = (list, stateManager) => list && list.sort((a, b) => a.lastModifi
 module.exports.html = (list, completed, withAnimation, stateManager) => {
     const workspaceFolders = vscode.workspace.workspaceFolders;
     const rootFolderName = capitalizeFirst(workspaceFolders[0].name)
+    const checked = !stateManager.getState(disableShowOnStartupKey) ? "checked" : ""
     return `
+    <label class="checkbox-label">
+        <input type="checkbox" id="myCheckbox" ${checked}>
+        <span class="checkmark"></span>
+        Show on startup
+      </label>
+
+  <script>
+    // JavaScript code to handle the checkbox change event
+    const checkbox = document.getElementById('myCheckbox');
+
+    checkbox.addEventListener('change', (event) => {
+      if (event.target.checked) {
+        vscode.postMessage({ command: 'show-on-startup' })
+      } else {
+        vscode.postMessage({ command: 'dont-show-on-startup' })
+      }
+    });
+  </script>
+
       <div id="filemanager" >
 		<div class="breadcrumbs"><span class="folderName">${rootFolderName} Terraform Projects</span></div>
 		<ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">

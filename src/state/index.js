@@ -21,7 +21,7 @@ const {
     shellNoticeIntervalHasSupportedSec
 } = require("../shared/constants")
 
-const { unsupportedShellNote, isCmd } = require("../shared/methods")
+const { unsupportedShellNote, isCmd, sendText } = require("../shared/methods")
 const { createShellHandler, isPowershell } = require("../shared/methods-cycle")
 
 const secondsInWeek = 60 * 60 * 24 * 7
@@ -115,7 +115,7 @@ class StateManager {
 	    if (!shouldGiveNotice || isUnsupportedTerminal) return
         this.logger.log({ msg: shellHandler.getCheckTFCommand()})
 		this.updateState(lastTerminalNoticeKey, now)
-        setTimeout(() => terminal.sendText("clear; " + createShellHandler(terminal).getCheckTFCommand()), 600)
+        setTimeout(async () => await sendText(terminal, "clear; " + createShellHandler(terminal).getCheckTFCommand()), 600)
     }
     init() {
         this.now = new Date().getTime();

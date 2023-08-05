@@ -1,3 +1,4 @@
+const { isWindows } = require("./constants")
 const { BashHandler } = require("./shells/bash")
 const { PowershellHandler } = require("./shells/powershell")
 

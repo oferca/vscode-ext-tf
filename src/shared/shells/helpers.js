@@ -15,3 +15,10 @@ module.exports.getBashFunctionInvocation = getBashFunctionInvocation
 module.exports.getBashTFCommand = (commandId, tfOption) => {
     return tfOption ? `${getRawCommand(commandId)} -${getOptionKey(commandId)}="${tfOption}"` : commandId
 }
+
+const sleep = ms => new Promise((resolve) => setTimeout(resolve, ms))
+
+module.exports.sendTextShell = async (terminal, text) => {
+    await terminal.sendText(text)
+    await sleep(300)
+}

@@ -6,7 +6,7 @@ const {
 } = require("../methods")
 
 const { noColorExt, timeExt } = require("../constants")
-const { successMessage, getBashFunctionInvocation, getBashTFCommand } = require("./helpers")
+const { successMessage, getBashFunctionInvocation, getBashTFCommand, sendTextShell } = require("./helpers")
 
 class BashHandler extends ShellHandler{
     paramName
@@ -48,9 +48,9 @@ class BashHandler extends ShellHandler{
     getInitShellCommands() {
         return [this.getChangeFolderCmd()].concat(this.getCredentialsSetter() + ";")
     }
-    deleteTerminalCurrentLine () {
+    async deleteTerminalCurrentLine () {
         const { activeTerminal } = this.stateManager
-        activeTerminal.sendText("< < Skip command line execution") // delibarate parse error
+        await sendTextShell(activeTerminal, "< < Skip command line execution") // delibarate parse error
     }
 
     constructor(...args){

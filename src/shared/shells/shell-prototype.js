@@ -1,4 +1,5 @@
 const { isWindows, credentialsKey } = require("../constants")
+const { sendTextShell } = require("./helpers")
 
 class ShellHandler {
     fileEncoding
@@ -11,18 +12,21 @@ class ShellHandler {
         if (!activeTerminal.definitions) activeTerminal.definitions = {}
         const bashDefined = activeTerminal.definitions[this.commandId + (this.tfOption || "")]
         const definitions = this.tfCommandDefinitions();
-        this.getInitShellCommands().filter(c => c != null).forEach(activeTerminal.sendText)
+        const shellCommands = this.getInitShellCommands().filter(c => c != null)
+        for (let key in shellCommands){
+            await sendTextShell(activeTerminal, shellCommands[key])
+        }
         activeTerminal.tfCredentials = this.stateManager.getState(credentialsKey)
         activeTerminal.tfFolder = this.stateManager.getUserFolder() 
-        if (!bashDefined) activeTerminal.sendText(definitions)
+        if (!bashDefined) await sendTextShell(activeTerminal, definitions)
         activeTerminal.definitions[this.commandId] = true
     }
 
     async runTfCommand (outputFile) {
         const { activeTerminal } = this.stateManager
         await this.handleDefinitions()
-        activeTerminal.sendText(`clear`);
-        activeTerminal.sendText(`terraform.${this.commandId} ${this.paramName}"${outputFile}" \ `);
+        await sendTextShell(activeTerminal, `clear`);
+        await sendTextShell(activeTerminal, `terraform.${this.commandId} ${this.paramName}"${outputFile}" \ `);
     }
 
     synthesizePath(_path) {

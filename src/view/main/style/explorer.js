@@ -721,4 +721,70 @@ POPUP
 	overflow-x: scroll;
 	overflow-y: clip;
 }
+
+
+
+  
+  /* Custom style for the checkbox */
+  .checkbox-label {
+    display: block;
+    position: relative;
+    padding-left: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    margin-right: 40px;
+    top: 10px;
+    font-size: 11px;
+    color: #a7b0da;
+    line-height: 15px;
+}
+  
+  /* Hide the default checkbox */
+  .checkbox-label input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+  }
+  
+  /* Create a custom checkmark */
+  .checkmark {
+	position: absolute;
+    top: 0;
+    left: 0;
+    height: 8px;
+    width: 8px;
+    background-color: transparent;
+    border: 2px solid #a7b0da;
+  }
+  
+  /* Style the checkmark when the checkbox is checked */
+  .checkbox-label input:checked ~ .checkmark {
+	background-color: background-color: transparent;; /* Replace with your desired checkmark color */
+	border-color: #476c89; /* Replace with your desired checkmark color */
+  }
+  
+  /* Adjust the size and position of the checkmark (optional) */
+  .checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+  }
+  
+  /* Show the checkmark when the checkbox is checked */
+  .checkbox-label input:checked ~ .checkmark:after {
+	display: block;
+  }
+  
+  /* Customize the checkmark appearance (optional) */
+  .checkbox-label .checkmark:after {
+	left: 2px;
+    top: 0px;
+    width: 3px;
+    height: 5px;
+    border: solid #c0bfd2;
+    border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg);
+  }
+  
 `

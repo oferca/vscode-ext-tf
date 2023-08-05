@@ -86,15 +86,14 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
         let notification
         if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`/*, gotoTerminal*/);
-
+        
         const summary = this.redirect && this.fileHandler.getCompletionSummary(),
-            progressFileName = `${this.outputFile}.${noColorExt}`,
             outputLogsMsg = this.redirect ? ` [ Watch Logs.](file:${this.fileHandler.outputFileVSCodePath})` : '',
             hasErrors = summary === errorStatus || summary === noCredentials,
             errTxt = `Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg),
             warnTxt = `Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg
 
-        if (hasErrors) notification = vscode.window.showErrorMessage(errTxt/*, gotoTerminal*/);
+        if (hasErrors) notification = vscode.window.showErrorMessage(errTxt);
         if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(warnTxt/*, gotoTerminal*/);
         if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg/*, gotoTerminal*/);
         return notification
@@ -136,7 +135,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                     resolve()
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
-                    setTimeout(self.notifyCompletion, 500)
+                    setTimeout(self.notifyCompletion, 1000)
                 }
             }, 100)
             setTimeout(() => {

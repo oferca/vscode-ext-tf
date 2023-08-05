@@ -144,11 +144,13 @@ class WebViewManager {
       this.projectExplorer && this.projectExplorer.dispose()
 
       await this.updateProjectsCache()
+      if (!tfProjectsCache) return
       const { subscriptions } = this.context,
       missingProjects = !tfProjectsCache || !tfProjectsCache.length
       if (missingProjects) return vscode.window.showInformationMessage(noProjectsExistsTxt)
 
       const panel = createWebviewPanel()
+      panel.iconPath = vscode.Uri.joinPath(this.context.extensionUri, "assets", "terraform_logo.png");
       this.projectExplorer = panel.webview
       this.projectExplorer.onDidReceiveMessage(this.handleWebviewMessage, undefined, subscriptions )
 

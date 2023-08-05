@@ -5,19 +5,18 @@ const {
 	openMenuCommandId,
 	openMenuButtonText,
 	openProjectsCommandId,
-	openProjectsButtonText
+	openProjectsButtonText,
+	disableShowOnStartupKey
 } = require("./shared/constants")
 const {
 	isPanelOpen,
 } = require("./shared/methods")
-const {
-	createShellHandler
-} = require("./shared/methods-cycle")
 
 const { CommandsLauncher } = require("./launcher/index.js")
 const { ActionButton } = require("./action-button.js")
 const { WebViewManager } = require("./view/main")
-const { StateManager } = require("./state/index.js")
+const { StateManager } = require("./state/index.js");
+const { OpenExplorerHandler } = require('./commands/open-explorer');
 
 const appRoot = path.resolve(__dirname);
 var pjson = require(appRoot + '/../package.json');
@@ -55,23 +54,24 @@ async function activate(context) {
 				launcher.showQuickPick()
 			}
 		)
+
+		const openExplorer = async () => {
+			if (isPanelOpen(explorer)) return explorer.reveal(column)
+			explorer = await webViewManager.initProjectExplorer(withAnimation)
+			if (!explorer) return
+			withAnimation = false
+			disposables.push(explorer)
+			await webViewManager.render()
+		}
 		
 		vscode.commands.registerCommand(
 			openProjectsCommandId,
-			async () => {
-				logger.log("open-projects-from-bar")
-				if (isPanelOpen(explorer)) return explorer.reveal(column)
-				explorer = await webViewManager.initProjectExplorer(withAnimation)
-				if (!explorer) return
-				withAnimation = false
-				disposables.push(explorer)
-				await webViewManager.render()
-			}
+			openExplorer
 		)
-		setTimeout(async () => {
-			// DONT SHOW IF THERE ARE NO PROJECTS
-			// explorer = await webViewManager.initProjectExplorer()
-			// await webViewManager.render()
+		setTimeout(() => {
+			if (stateManager.getState(disableShowOnStartupKey)) return
+			(new OpenExplorerHandler(context, logger))
+				.execute("startup")
 		})
 
 		const toDispose = [

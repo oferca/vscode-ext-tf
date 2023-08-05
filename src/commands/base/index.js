@@ -5,6 +5,7 @@ const { BashHandler } = require("../../shared/shells/bash")
 const { PowershellHandler } = require("../../shared/shells/powershell")
 
 const {
+    sendText,
     getOption,
     getOptionKey,
     getRawCommand
@@ -119,7 +120,7 @@ class CommandHandlerPrototype {
             this.overlayTerminal.show();
         }
        
-        this.shellHandler.deleteTerminalCurrentLine()
+        await this.shellHandler.deleteTerminalCurrentLine()
         this.redirect ? this.initFileHandler(onChildProcessCompleteStep1) : onChildProcessCompleteStep1()
     }
 
@@ -142,7 +143,7 @@ class CommandHandlerPrototype {
             return optionsStr
         }, "") : ""
         this.redirect ? await this.shellHandler.runTfCommand(this.outputFile)
-            : activeTerminal.sendText(`terraform ${command} ${options}`)
+            : await sendText(activeTerminal, `terraform ${command} ${options}`)
         if (this.overlayTerminal) setTimeout(() =>
             {
                 this.overlayTerminal.dispose()

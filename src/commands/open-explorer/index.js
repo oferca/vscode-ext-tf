@@ -7,9 +7,9 @@ class OpenExplorerHandler {
     logger
     context
 
-    async execute () {
+    async execute (source) {
         vscode.commands.executeCommand(openProjectsCommandId)
-        this.logger.log("open-explorer-from-menu")
+        this.logger.log("open-explorer-from-" + source)
     }
 
     constructor(context, logger) {

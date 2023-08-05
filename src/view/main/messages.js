@@ -1,21 +1,19 @@
 const fs = require('fs');
 const vscode = require('vscode');
 const { ChatGPTHandler }  = require('../../commands/chat-gpt')
-const { openMenuCommandId, credentialsKey, selectedProjectPathKey } = require("../../shared/constants")
+const { openMenuCommandId, credentialsKey, selectedProjectPathKey, disableShowOnStartupKey } = require("../../shared/constants")
 
 module.exports.handleCommand = async (command, logger, launchHandler, launch, tfCommandCallback, webViewManager, message, stateManager) =>
 {
+    logger.log({ command, source: "webview" })
     switch(command){
         case 'openTFLauncher':
-            logger.log({ msg: "openTFLauncher", source: "webview" })
             vscode.commands.executeCommand(openMenuCommandId, 'workbench.view.easy-terraform-commands');
             break;
 
         case 'openOutputFile':
-            logger.log({ msg: "openOutputFile", source: "webview" })
-            vscode.workspace.openTextDocument(launchHandler.fileHandler.outputFileNoColor).then(async (doc) => {
-                vscode.window.showTextDocument(doc); 
-            })
+            launchHandler.fileHandler && vscode.workspace.openTextDocument(launchHandler.fileHandler.outputFileNoColor)
+                .then(vscode.window.showTextDocument)
             break;
 
         case 'chat-gpt':
@@ -33,7 +31,12 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
             stateManager.updateState(selectedProjectPathKey, null )
             return command
             break;
-    
+        case 'show-on-startup':
+            stateManager.updateState(disableShowOnStartupKey, false)
+            break;
+        case 'dont-show-on-startup': 
+            stateManager.updateState(disableShowOnStartupKey, true)
+            break;
         default:
             if (!command) break;
             if (command === "render") return command
