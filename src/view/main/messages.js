@@ -17,7 +17,7 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
             break;
 
         case 'chat-gpt':
-            if (!launchHandler) return logger.log({ msg: "failed-chat-gpt", source: "webview"})
+            if (!launchHandler || !launchHandler.fileHandler) return logger.log({ msg: "failed-chat-gpt", source: "webview"})
             webViewManager.outputFileContent = fs.readFileSync(
                 launchHandler.fileHandler.outputFileNoColor,
                 launchHandler.shellHandler.fileEncoding)

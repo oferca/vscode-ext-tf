@@ -150,7 +150,7 @@ module.exports.chatGPTPromptText = "Query copied to clipboard. ***PLEASE PASTE (
 
 module.exports.emptyPlanTxt = "No plan output found. Please run \"Plan\" and try again."
 
-module.exports.errorsInPlanTxt = "Please fix errors in Plan and try again."
+module.exports.errorsInPlanTxt = "Please use after successful run of 'terraform plan'"
 
 module.exports.lastActionKey = "tfPreviousAction"
 

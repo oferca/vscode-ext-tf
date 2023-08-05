@@ -1,27 +1,35 @@
 # Terraform Dashboard ChatGPT Plus 
 The [Terraform Dashboard Plus with ChatGPT extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
-adds a *commands dashboard* and *progress monitor* to terraform commands.
-It also *helps with a summary of "terraform plan" by ChatGPT*.
+offers an AI-supported interactive dashboard and progress monitor for Terraform, streamlining infrastructure management and deployment
 
 # Features
 * Eliminates the need for typing.
+* Seamless switching between multiple Terraform environments
 * **Interactive progress monitor** keep you informed with execution progress.
-* **"terraform plan" summary by ChatGPT** - helps copy - pasting and querying plan output in OpenAi chat.
+* **"terraform plan" summary by ChatGPT** - Creates queries for ChatGPT to summarize the plan
 * Fully integrated with VSCode Environment. External terminal not required.
 * Persistent execution logs.
 
 
 # How to use
 
-#### Expand "Terraform" menu in side panel
+### Click "Terraform Projects" button in status bar
 Or
-### Click "Terraform" button in status bar
+#### Expand "Terraform" menu in side panel
 Or
 #### Click '⌘⇧T' (Ctrl / Cmd + Shift + T)
 <br>
 
 Then click desired command. That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉🎉
 # Examples
+<p align="left">
+<img src="assets/dashboard.gif" width=75%>
+<br/>
+<em>A multi environment dashboard for easy commands execution</em>
+</p>
+<br>
+<br>
+
 <p align="left">
 <img src="assets/launcher.gif" width=75%>
 <br/>

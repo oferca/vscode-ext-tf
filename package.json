@@ -1,10 +1,10 @@
 {
   "icon": "assets/terraform_logo.png",
   "name": "easy-terraform-commands",
-  "displayName": "Terraform Dashboard Plus with ChatGPT",
+  "displayName": "Terraform Dashboard Plus",
   "publisher": "oferkafry",
-  "description": "One-click terraform runner and progress monitor, plan output synopsis by ChatGPT",
-  "version": "1.9.5",
+  "description": "AI-supported interactive dashboard for Terraform",
+  "version": "2.0.0",
   "engines": {
     "vscode": "^1.67.2"
   },
