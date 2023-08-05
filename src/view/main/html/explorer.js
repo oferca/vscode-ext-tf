@@ -1,24 +1,24 @@
 const vscode = require('vscode');
-const { capitalizeFirst, getNamespacedCredentialsKey } = require('../../../shared/methods');
+const { capitalizeFirst, getNamespacedCredentialsKey, sortProjects } = require('../../../shared/methods');
 const { credentialsSetText } = require('../../../shared/constants');
 
-const folders = (list, stateManager) => list && list.sort((a, b) => a.lastModifiedTimestamp > b.lastModifiedTimestamp ? -1 : 1).map(
-    project => {
-        const { projectPath, projectPathRelative, name, regions } = project,
-          namespacedCredentialsKey = getNamespacedCredentialsKey(projectPath),
-          credentials = stateManager.getState(namespacedCredentialsKey),
-          credentialsTxt = credentials && credentials.length ? credentialsSetText : "" 
-        return`
-            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPath}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPath}'; appear('${name}', '${projectPath}', '${projectPathRelative}', '${credentialsTxt}');" >
-                <a title="${projectPathRelative}" class="folders project">
-                    <span class="icon folder full"></span>
-                    <span class="name">${capitalizeFirst(name)}</span>
-                    <span class="details">Regions: ${regions.join(', ')}.<br>Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}.<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources.</span>
-                </a>
-            </li>
-        `
-    }
-).join("")
+const folders = (list, stateManager) => list && list.sort(sortProjects).map(
+        project => {
+            const { projectPath, projectPathRelative, name, regions } = project,
+            namespacedCredentialsKey = getNamespacedCredentialsKey(projectPath),
+            credentials = stateManager.getState(namespacedCredentialsKey),
+            credentialsTxt = credentials && credentials.length ? credentialsSetText : "" 
+            return`
+                <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPath}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPath}'; appear('${name}', '${projectPath}', '${projectPathRelative}', '${credentialsTxt}');" >
+                    <a title="${projectPathRelative}" class="folders project">
+                        <span class="icon folder full"></span>
+                        <span class="name">${capitalizeFirst(name)}</span>
+                        <span class="details">Regions: ${regions.join(', ')}.<br>Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}.<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources.</span>
+                    </a>
+                </li>
+            `
+        }
+    ).join("")
 
 module.exports.html = (list, completed, withAnimation, stateManager) => {
     const workspaceFolders = vscode.workspace.workspaceFolders;
