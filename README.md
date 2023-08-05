@@ -5,8 +5,8 @@ offers an AI-supported interactive dashboard and progress monitor for Terraform,
 # Features
 * Eliminates the need for typing.
 * Seamless switching between multiple Terraform environments
-* **Interactive progress monitor** keep you informed with execution progress.
-* **"terraform plan" summary by ChatGPT** - Creates queries for ChatGPT to summarize the plan
+* Interactive progress monitor keep you informed with execution progress.
+* "terraform plan" summary by ChatGPT - Generates queries for ChatGPT for plan summation
 * Fully integrated with VSCode Environment. External terminal not required.
 * Persistent execution logs.
 
