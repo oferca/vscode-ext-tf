@@ -25,6 +25,9 @@ class ShellHandler {
         activeTerminal.sendText(`terraform.${this.commandId} ${this.paramName}"${outputFile}" \ `);
     }
 
+    synthesizePath(_path) {
+        return _path
+    }
     getChangeFolderCmd() {
         const folder = this.stateManager.getUserFolder()
         return folder ? `cd "${folder}";` :""

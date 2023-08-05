@@ -13,7 +13,7 @@ const {
 } = require("../../shared/methods")
 
 const workspaceFolders = vscode.workspace.workspaceFolders;
-const projectRoot = workspaceFolders[0].uri.fsPath
+const projectRoot = workspaceFolders ? workspaceFolders[0].uri.fsPath : null
 const isEven = (item, idx) => (idx / 2 === Math.floor(idx / 2))
 const isOdd = (item, idx) => !isEven(item, idx)
 
@@ -22,6 +22,7 @@ function onlyUnique(value, index, array) {
 }
 
 async function findFilesWithExtension (startPath, targetExtension, fileList) {
+  if (!projectRoot) return []
   fileList = fileList || {};
   const items = await vscode.workspace.fs.readDirectory(vscode.Uri.file(startPath));
 
