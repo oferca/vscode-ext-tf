@@ -27,7 +27,7 @@ module.exports.getActions = stateManager => {
 
     return [
         {
-            label: 'Terraform Explorer',
+            label: 'Explorer Dashboard',
             kind: vscode.QuickPickItemKind.Separator,
             excludeExplorer: true
         },
