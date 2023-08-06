@@ -84,7 +84,10 @@ ${ explorerHTML }
             </div>
           
             `)
-          if (action.kind === -1 ) return ('</div><div class="expandable"><h4 class="title">' + action.label + '</h4>' )
+          const strongSeperator = action.kind === -1 && (action.seperatorType !== "weak" || !isExplorer)
+          const weakSeperator = action.kind === -1 && action.seperatorType === "weak" && isExplorer
+          if (strongSeperator) return ('</div><div class="expandable"><h4 class="title">' + action.label + '</h4>' )
+          if (weakSeperator) return ('<h4 class="title">' + action.label + '</h4>' )
         }).join("")}
         </div>
         </div>

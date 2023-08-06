@@ -687,7 +687,7 @@ POPUP
 }
 
 .explorer #display-output-2{
-  justify-content: center;
+  justify-content: left;
 }
 
 .explorer #display-output-2 button{

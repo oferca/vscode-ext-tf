@@ -38,8 +38,6 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     launchProgress(cb) {
-        if (!this.redirect) return cb()
-
         this.barCreationTimestamp = Date.now()
         this.currentBarCompletionPercentage = 0
         this.barCompletionTimestamp = this.barCreationTimestamp + this.fileHandler.durationEstimate * 1000
@@ -87,7 +85,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         let notification
         if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`/*, gotoTerminal*/);
         
-        const summary = this.redirect && this.fileHandler.getCompletionSummary(),
+        const summary = this.redirect && this.fileHandler.completionSummary,
             outputLogsMsg = this.redirect ? ` [ Watch Logs.](file:${this.fileHandler.outputFileVSCodePath})` : '',
             hasErrors = summary === errorStatus || summary === noCredentials,
             errTxt = `Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg),
@@ -135,7 +133,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                     resolve()
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
-                    setTimeout(self.notifyCompletion, 1000)
+                    setTimeout(self.notifyCompletion, 500)
                 }
             }, 100)
             setTimeout(() => {
@@ -155,8 +153,9 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         const self = this
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp(source)
-            self.launchProgressNotification(cb)
-            self.runBash()
+            if (this.redirect) self.launchProgressNotification(cb)
+            const completionCB = this.redirect ? () => {} : cb
+            self.runBash(completionCB)
         }
         await this.init(onChildProcessCompleteStep2)
     }

@@ -21,6 +21,10 @@ const {
     tfPlanTargetCommandId,
     tfApplyTargetCommandId,
     validateSuccessMessage,
+    tfUpgradePostix,
+    tfForceUnlockPostix,
+    tfInitUpgradeCommandId,
+    tfForceUnlockCommandId,
 } = require("./constants")
 
 const { findFilesWithExtension } = require("../view/main/helpers")
@@ -59,13 +63,17 @@ module.exports.calculateAverageDuration = (dataFolder, commandId, encoding) => {
 
 const getOptionKey = commandId =>
     commandId.indexOf(tfTargetPostix) > -1 && "target" ||
-    commandId.indexOf(tfVarsPostix) > -1 && "var-file"
+    commandId.indexOf(tfVarsPostix) > -1 && "var-file" ||
+    commandId.indexOf(tfUpgradePostix) > -1 && "upgrade" ||
+    commandId.indexOf(tfForceUnlockPostix) > -1 && ""
 
 module.exports.getOptionKey = getOptionKey
 
 const getRawCommand = commandId => commandId.
     replace(tfTargetPostix, "").
-    replace(tfVarsPostix, "")
+    replace(tfVarsPostix, "").
+    replace(tfUpgradePostix, "").
+    replace(tfForceUnlockPostix, "")
 
 module.exports.getRawCommand = getRawCommand
 
@@ -133,9 +141,9 @@ module.exports.handleDeactivation = () => {
 	this.firstActivation = false
 }
 
-const getTargetResource = value => vscode.window.showInputBox({
+const getTargetResource = (value, placeHolder = targetTxt) => vscode.window.showInputBox({
     value,
-    placeHolder: targetTxt,
+    placeHolder,
 });
 
 const getVarsFile = async shellType => {
@@ -152,9 +160,13 @@ const getVarsFile = async shellType => {
 module.exports.getOption = async (commandId, option, shellType) => {
     const isWithTarget = [tfPlanTargetCommandId, tfApplyTargetCommandId].includes(commandId)
     const isWithVarsFile = [tfPlanVarsCommandId, tfApplyVarsCommandId].includes(commandId)
+    const isWithUpgrade  = [tfInitUpgradeCommandId].includes(commandId)
+    const isWithForceUnlock = [tfForceUnlockCommandId].includes(commandId)
 
     if (isWithTarget) return await getTargetResource(option)
     if (isWithVarsFile) return await getVarsFile(shellType)
+    if (isWithUpgrade) return ""
+    if (isWithForceUnlock) return await getTargetResource(option, "Enter Lock Id")
 } 
 
 
