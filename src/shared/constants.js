@@ -26,6 +26,14 @@ const tfVarsPostix = ".var.file"
 
 module.exports.tfVarsPostix = tfVarsPostix
 
+const tfUpgradePostix = ".upgrade"
+
+module.exports.tfUpgradePostix = tfUpgradePostix
+
+module.exports.tfInitUpgradeCommandId = "init" + tfUpgradePostix
+
+module.exports.tfForceUnlockCommandId = "force-unlock"
+
 module.exports.tfPlanTargetCommandId = "plan" + tfTargetPostix
 
 module.exports.tfPlanVarsCommandId = "plan" + tfVarsPostix

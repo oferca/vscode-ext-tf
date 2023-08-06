@@ -18,7 +18,9 @@ const {
     tfPlanVarsCommandId,
     tfApplyVarsCommandId,
     tfPlanTargetCommandId,
-    tfApplyTargetCommandId
+    tfApplyTargetCommandId,
+    tfInitUpgradeCommandId,
+    tfForceUnlockCommandId
 } = require("../../shared/constants")
 
 let defaultTarget
@@ -135,15 +137,19 @@ class CommandHandlerPrototype {
     }
 
     async sendCommands(cb = () => {}) {
-        const { activeTerminal } = this.stateManager
+        // Appologies for overcomplication
         const command = getRawCommand(this.commandId)
-        const options = this.addOption ? this.stateManager.getState(optionKey).split(",").reduce((optionsStr, option) => {
+        const option = this.stateManager.getState(optionKey)
+        let options = this.addOption ? (option || "").split(",").reduce((optionsStr, option) => {
             const par = this.commandId.indexOf("var.file") > -1 ? "\"" : "'"
             optionsStr += ` -${getOptionKey(this.commandId)}=${par}${option.trim()}${par}`
+            if (this.commandId === tfInitUpgradeCommandId) return "-upgrade"
+            if (this.commandId === tfForceUnlockCommandId) return ""
             return optionsStr
         }, "") : ""
+        if (this.commandId === tfForceUnlockCommandId) options = option
         this.redirect ? await this.shellHandler.runTfCommand(this.outputFile)
-            : await sendText(activeTerminal, `terraform ${command} ${options}`)
+            : this.shellHandler.runSimpleCommand(command, options)
         if (this.overlayTerminal) setTimeout(() =>
             {
                 this.overlayTerminal.dispose()

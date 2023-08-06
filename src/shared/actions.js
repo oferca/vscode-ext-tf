@@ -14,6 +14,8 @@ const { TerraformPlanTargetHandler } = require("../commands/plan/target")
 const { TerraformPlanVarsHandler } = require("../commands/plan/vars-file")
 const { TerraformApplyTargetHandler } = require("../commands/apply/target")
 const { TerraformApplyVarsHandler } = require("../commands/apply/vars-file")
+const { TerraformInitUpgradeHandler } = require('../commands/init/upgrade')
+const { TerraformUnlockHandler } = require('../commands/unlock')
 
 const maxLength = 40
 
@@ -54,6 +56,13 @@ module.exports.getActions = stateManager => {
         { handler: TerraformPlanVarsHandler, label: "Plan -var-file", icon: "$(settings-sync-view-icon)"  },
         { handler: TerraformApplyVarsHandler, label: "Apply -var-file", icon: "$(play-circle)" },
         {
+            label: 'Miscellaneous',
+            kind: vscode.QuickPickItemKind.Separator,
+            seperatorType: "weak"
+        },
+        { handler: TerraformInitUpgradeHandler, label: "Init -upgrade", icon: "$(ports-open-browser-icon)" },
+        { handler: TerraformUnlockHandler, label: "Force-unlock", icon: "$(ports-open-browser-icon)" },
+        {
             label: 'Target Resources',
             kind: vscode.QuickPickItemKind.Separator
         },
@@ -85,6 +94,7 @@ module.exports.getActions = stateManager => {
             icon: "$(key)",
             id: "tfCredentials",
             menuOnly: true
-        },
+        }
+        
     ]
 }

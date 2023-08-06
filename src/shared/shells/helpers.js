@@ -1,4 +1,4 @@
-const { tfTargetPostix, tfPlanCommandId, planSuccessMessage1, planSuccessMessage2, tfValidateCommandId, validateSuccessMessage, tfInitCommandId, initSuccessMessage } = require("../constants")
+const { tfTargetPostix, tfVarsPostix, tfUpgradePostix, tfForceUnlockPostix, tfPlanCommandId, planSuccessMessage1, planSuccessMessage2, tfValidateCommandId, validateSuccessMessage, tfInitCommandId, initSuccessMessage } = require("../constants")
 
 module.exports.successMessage = commandId =>{
     const rawCommand = commandId.replace(tfTargetPostix, "")
@@ -12,8 +12,23 @@ const getBashFunctionInvocation = cmdId => "terraform." + cmdId
 
 module.exports.getBashFunctionInvocation = getBashFunctionInvocation
 
+const getOptionKey = commandId =>
+    commandId.indexOf(tfTargetPostix) > -1 && "target" ||
+    commandId.indexOf(tfVarsPostix) > -1 && "var-file" ||
+    commandId.indexOf(tfUpgradePostix) > -1 && "upgrade" ||
+    commandId.indexOf(tfForceUnlockPostix) > -1 && ""
+
+const getRawCommand = commandId => commandId.
+    replace(tfTargetPostix, "").
+    replace(tfVarsPostix, "").
+    replace(tfUpgradePostix, "").
+    replace(tfForceUnlockPostix, "")
+
 module.exports.getBashTFCommand = (commandId, tfOption) => {
-    return tfOption ? `${getRawCommand(commandId)} -${getOptionKey(commandId)}="${tfOption}"` : commandId
+    const rawCommand = getRawCommand(commandId)
+    const optionKey = getOptionKey(commandId)
+    return (tfOption ? `${rawCommand} -${optionKey}="${tfOption}"` : commandId)
+        .replace("init.upgrade", "init -upgrade")
 }
 
 const sleep = ms => new Promise((resolve) => setTimeout(resolve, ms))

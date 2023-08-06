@@ -35,7 +35,10 @@ class FileHandler {
     initialized
     moduleFolder
     averageFromCmd
+    completionStatus
     durationEstimate
+    completionSummary
+    outputFileNotEmpty
 
     deleteOldFiles() {
         const secondsInDay = 86400
@@ -112,23 +115,30 @@ class FileHandler {
                 this.outputFile,
                 this.shellHandler.fileEncoding
             )
+            const output = removeColors(outputFile)
+            this.updateCompletionsSummary(output)
             fs.writeFile(
                 this.outputFileNoColor,
-                removeColors(outputFile),
+                output,
                 { encoding: "utf8" },
                 this.outputCB
             )
         }catch(e) {} // might take some time until file is created
     }
 
-    getCompletionSummary() {
-        const outputFile = fs.readFileSync(this.outputFileNoColor, "utf-8")
+    updateCompletionsSummary (outputFile) {
+        if (this.successMessage) return
+
         const warnings = getWarnings(outputFile)
-        const message = tfCommandSuccess(outputFile)
-        return message ? {
+        this.successMessage = tfCommandSuccess(outputFile)
+        const isOutputFileEmpty = outputFile === "" && !this.outputFileNotEmpty
+        if (!isOutputFileEmpty) this.outputFileNotEmpty = true
+
+        this.completionSummary = this.successMessage ? {
             warnings,
-            message
-        } : outputFile === "" ? noCredentials : errorStatus
+            message: this.successMessage
+        } : (isOutputFileEmpty ? noCredentials : errorStatus)
+
     }
 
     get outputFileVSCodePath() {
@@ -142,9 +152,10 @@ class FileHandler {
         this.outputCB = () => {}
         this.commandId = commandId
         this.firstActivation = false
+        this.completionStatus = null
+        this.stateManager = stateManager
         this.shellHandler = shellHandler
         this.averageFromCmd = averageFromCmd
-        this.stateManager = stateManager
         this.handleDataFolder = this.handleDataFolder.bind(this)
         this.convertOutputToReadable = this.convertOutputToReadable.bind(this)
     }
