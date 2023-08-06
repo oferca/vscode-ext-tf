@@ -4,7 +4,7 @@
   "displayName": "Terraform Dashboard Plus",
   "publisher": "oferkafry",
   "description": "AI-supported interactive dashboard for Terraform",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "engines": {
     "vscode": "^1.67.2"
   },
