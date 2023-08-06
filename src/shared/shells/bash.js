@@ -1,12 +1,7 @@
 const exec = require('child_process').exec;
 const { ShellHandler } = require("./shell-prototype")
-
-const {
-    addOptionDef
-} = require("../methods")
-
 const { noColorExt, timeExt } = require("../constants")
-const { successMessage, getBashFunctionInvocation, getBashTFCommand, sendTextShell } = require("./helpers")
+const { successMessage, getBashFunctionInvocation, getBashTFCommand, sendTextShell, addOptionDef } = require("./helpers")
 
 class BashHandler extends ShellHandler{
     paramName

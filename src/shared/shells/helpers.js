@@ -30,3 +30,9 @@ module.exports.removeLastInstance = (badtext, str) => {
     pttwo = str.substring(charpos+(badtext.length));
     return (ptone+pttwo);
 }
+
+const addOptionDef = (commandId, tfOption) => commandId.
+    replace(tfTargetPostix, ` -${getOptionKey(commandId)}="${tfOption}" `).
+    replace(tfVarsPostix, ` -${getOptionKey(commandId)}="${tfOption}" `)
+
+module.exports.addOptionDef = addOptionDef

@@ -3,8 +3,7 @@ const os = require('os');
 const path = require('path');
 const { ShellHandler } = require("./shell-prototype")
 const { noColorExt, timeExt } = require("../constants")
-const { addOptionDef } = require("../methods")
-const { successMessage, getBashFunctionInvocation, getBashTFCommand, sendTextShell, removeLastInstance } = require("./helpers")
+const { successMessage, getBashFunctionInvocation, getBashTFCommand, sendTextShell, removeLastInstance, addOptionDef } = require("./helpers")
 
 class PowershellHandler extends ShellHandler {
     paramName
