@@ -46,7 +46,7 @@ class StateManager {
 
         // Log message
         const { timeSinceLastUseSec, usedOnce } = this
-        await this.logger.log({ msg: this.shouldRemind ? reminder : instructions, timeSinceLastUseSec, usedOnce })
+        await this.logger.log({ message: this.shouldRemind ? reminder : instructions, timeSinceLastUseSec, usedOnce })
 
         // Update welcome notified
         this.updateState(welcomeNotifiedKey, true);
@@ -113,7 +113,6 @@ class StateManager {
             isUnsupportedTerminal = isCmd(terminal) || (isWindows && !isPowershell(terminal))
             
 	    if (!shouldGiveNotice || isUnsupportedTerminal) return
-        this.logger.log({ msg: shellHandler.getCheckTFCommand()})
 		this.updateState(lastTerminalNoticeKey, now)
         setTimeout(async () => await sendText(terminal, "clear; " + createShellHandler(terminal).getCheckTFCommand()), 600)
     }

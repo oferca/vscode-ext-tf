@@ -10,14 +10,14 @@ class ChatGPTHandler {
 
     async execute (source, cb, fileContent) {
         if (!fileContent || fileContent.length < 50) {
-            this.logger.log({ msg: "failed-chat-gpt", source })
+            this.logger.log({ message: "failed-chat-gpt", source })
             return await vscode.window.showInformationMessage(emptyPlanTxt)
         }
         if (!planSuccessful(fileContent)){
-            this.logger.log({ msg: "failed-chat-gpt", source })
+            this.logger.log({ message: "failed-chat-gpt", source })
             return await vscode.window.showInformationMessage(errorsInPlanTxt)
         }
-        this.logger.log({ msg: "chat-gpt", source: "webview"})
+        this.logger.log({ message: "chat-gpt", source: "webview"})
         const optimizedContent = optimize(fileContent)
         await vscode.env.clipboard.writeText(optimizedContent)
         await vscode.window.showInformationMessage(chatGPTPromptText,  { modal: true })
