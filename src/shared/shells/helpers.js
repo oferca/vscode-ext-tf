@@ -22,3 +22,11 @@ module.exports.sendTextShell = async (terminal, text) => {
     await terminal.sendText(text)
     await sleep(300)
 }
+
+module.exports.removeLastInstance = (badtext, str) => {
+    var charpos = str.lastIndexOf(badtext);
+    if (charpos<0) return str;
+    ptone = str.substring(0,charpos);
+    pttwo = str.substring(charpos+(badtext.length));
+    return (ptone+pttwo);
+}

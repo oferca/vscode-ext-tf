@@ -195,14 +195,6 @@ module.exports.getWarnings = outputFile => {
     return warningsArr.map(section => section.split("│")[0]).join(", ").replace("╷ ,","")
 }
 
-module.exports.removeLastInstance = (badtext, str) => {
-    var charpos = str.lastIndexOf(badtext);
-    if (charpos<0) return str;
-    ptone = str.substring(0,charpos);
-    pttwo = str.substring(charpos+(badtext.length));
-    return (ptone+pttwo);
-}
-
 module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (document => {
     if (document.fileName === fileName) {
         const folder = vscode.workspace.workspaceFolders[0];

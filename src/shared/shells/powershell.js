@@ -3,15 +3,15 @@ const os = require('os');
 const path = require('path');
 const { ShellHandler } = require("./shell-prototype")
 const { noColorExt, timeExt } = require("../constants")
-const { removeLastInstance, addOptionDef } = require("../methods")
-const { successMessage, getBashFunctionInvocation, getBashTFCommand, sendTextShell } = require("./helpers")
+const { addOptionDef } = require("../methods")
+const { successMessage, getBashFunctionInvocation, getBashTFCommand, sendTextShell, removeLastInstance } = require("./helpers")
 
 class PowershellHandler extends ShellHandler {
     paramName
     filePrefix
     async invokeWithCWD(cb) {
         const cwdFileName = `cwd-${this.stateManager.uniqueId}.txt`
-        await sendText(this.stateManager.activeTerminal, `Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "${cwdFileName}") -Value $PWD`);
+        await sendTextShell(this.stateManager.activeTerminal, `Set-Content -Path (Join-Path -Path ${os.tmpdir()} -ChildPath "${cwdFileName}") -Value $PWD`);
         let counter = 0
         const waitForCWD = setInterval(() => {
             const cwdFilePath = path.join(os.tmpdir(), cwdFileName)
