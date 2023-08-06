@@ -72,7 +72,7 @@ module.exports.reminderNote =  "Launch terraform commands with Terraform Dashboa
 
 module.exports.openMenuCommandId = "terraform.action"
 
-module.exports.openMenuButtonText = `$(terminal) TF`
+module.exports.openMenuButtonText = `$(menu) Commands`
 
 module.exports.openProjectsButtonText = `$(terminal) Terraform Projects`
 

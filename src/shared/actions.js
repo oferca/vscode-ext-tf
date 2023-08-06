@@ -60,8 +60,8 @@ module.exports.getActions = stateManager => {
             kind: vscode.QuickPickItemKind.Separator,
             seperatorType: "weak"
         },
-        { handler: TerraformInitUpgradeHandler, label: "Init -upgrade", icon: "$(ports-open-browser-icon)" },
-        { handler: TerraformUnlockHandler, label: "Force-unlock", icon: "$(ports-open-browser-icon)" },
+        { handler: TerraformInitUpgradeHandler, label: "Init -upgrade", icon: "$(cloud-download)" },
+        { handler: TerraformUnlockHandler, label: "Force-unlock", icon: "$(unlock)" },
         {
             label: 'Target Resources',
             kind: vscode.QuickPickItemKind.Separator
