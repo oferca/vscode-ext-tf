@@ -1,10 +1,10 @@
 {
   "icon": "assets/terraform_logo.png",
   "name": "easy-terraform-commands",
-  "displayName": "Terraform Dashboard Plus",
+  "displayName": "Terraform Dashboard ChatGPT Plus",
   "publisher": "oferkafry",
   "description": "AI-supported interactive dashboard for Terraform",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "engines": {
     "vscode": "^1.67.2"
   },

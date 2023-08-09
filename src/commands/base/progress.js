@@ -10,12 +10,11 @@ const {
 } = require("../../shared/methods")
 
 const {
-    noColorExt,
     errorStatus,
-    /*, gotoTerminal*/
     noCredentials,
     noCredentialsMsg,
     tfApplyCommandId,
+    notificationTimout,
     maxNotificationTime,
     maxCompletionPercentage
 } = require('../../shared/constants');
@@ -37,7 +36,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         )
     }
 
-    launchProgress(cb) {
+    launchProgress(outputUpdatedCallback, complatedCallback = () => {}) {
         this.barCreationTimestamp = Date.now()
         this.currentBarCompletionPercentage = 0
         this.barCompletionTimestamp = this.barCreationTimestamp + this.fileHandler.durationEstimate * 1000
@@ -49,7 +48,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         const openDocumentHandler = createFolderCollapser(this.fileHandler.outputFileNoColor, listener, this.fileHandler)
         listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler)
 
-        this.fileHandler.outputCB = (bottom = false) => {
+        this.fileHandler.outputCB = (bottom = false, content) => {
             const editor = vscode.window.activeTextEditor;
             if (!editor || !this.fileHandler.outputFileNoColor) return
             const outputFileOpen = editor.document.fileName.toLowerCase() === this.fileHandler.outputFileNoColor.toLowerCase()
@@ -58,7 +57,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                 const range = editor.document.lineAt(lastLine).range;
                 editor.revealRange(range, vscode.TextEditorRevealType.Default);
             }
-            // if (bottom || this.fileHandler.completed) scrollEventListener.dispose()
+            outputUpdatedCallback(content)
         }
 
         this.textDocumentListener = listener
@@ -67,7 +66,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             location: vscode.ProgressLocation.Notification,
             title: getProgressMsg(this.commandId),//  + progressFileMsg,
             cancellable: true
-        }, (progress, token) => this.progressUpdate(progress, token, cb))
+        }, (progress, token) => this.progressUpdate(progress, token, complatedCallback))
     }
 
     completed() {
@@ -85,13 +84,16 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         let notification
         if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`/*, gotoTerminal*/);
         
-        const summary = this.redirect && this.fileHandler.completionSummary,
+        const summary = this.redirect && this.fileHandler.completionSummary || {},
             outputLogsMsg = this.redirect ? ` [ Watch Logs.](file:${this.fileHandler.outputFileVSCodePath})` : '',
             hasErrors = summary === errorStatus || summary === noCredentials,
             errTxt = `Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg),
             warnTxt = `Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg
 
         if (hasErrors) notification = vscode.window.showErrorMessage(errTxt);
+        if (summary === noCredentials) this.stateManager.missingCredentials = true
+    
+
         if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(warnTxt/*, gotoTerminal*/);
         if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg/*, gotoTerminal*/);
         return notification
@@ -133,7 +135,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                     resolve()
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
-                    setTimeout(self.notifyCompletion, 500)
+                    setTimeout(self.notifyCompletion, notificationTimout)
                 }
             }, 100)
             setTimeout(() => {
@@ -144,17 +146,17 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         return p;
     }
 
-    launchProgressNotification(cb) {
-        this.launchProgress(cb)
+    launchProgressNotification(outputUpdatedCallback, completedCallback) {
+        this.launchProgress(outputUpdatedCallback, completedCallback)
     }
 
-    async execute(source, cb) {
+    async execute(source, completedCallback, outputUpdatedCallback = () => {}) {
         this.updateRunCount()
         const self = this
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp(source)
-            if (this.redirect) self.launchProgressNotification(cb)
-            const completionCB = this.redirect ? () => {} : cb
+            if (this.redirect) self.launchProgressNotification(outputUpdatedCallback, completedCallback)
+            const completionCB = this.redirect ? () => {} : completedCallback
             self.runBash(completionCB)
         }
         await this.init(onChildProcessCompleteStep2)

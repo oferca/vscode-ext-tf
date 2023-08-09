@@ -115,13 +115,13 @@ class FileHandler {
                 this.outputFile,
                 this.shellHandler.fileEncoding
             )
-            const output = removeColors(outputFile)
+            contentNoColors = removeColors(outputFile)
             this.updateCompletionsSummary(output)
             fs.writeFile(
                 this.outputFileNoColor,
-                output,
+                this.contentNoColors,
                 { encoding: "utf8" },
-                this.outputCB
+                () => this.outputCB(false, contentNoColors)
             )
         }catch(e) {} // might take some time until file is created
     }
@@ -131,7 +131,7 @@ class FileHandler {
 
         const warnings = getWarnings(outputFile)
         this.successMessage = tfCommandSuccess(outputFile)
-        const isOutputFileEmpty = outputFile === "" && !this.outputFileNotEmpty
+        const isOutputFileEmpty = outputFile.length < 50 && !this.outputFileNotEmpty
         if (!isOutputFileEmpty) this.outputFileNotEmpty = true
 
         this.completionSummary = this.successMessage ? {

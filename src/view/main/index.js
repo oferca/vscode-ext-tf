@@ -7,7 +7,6 @@ const {
   credentialsKey,
   changeFolderKey,
   credentialsSetText,
-  noProjectsExistsTxt,
   selectedProjectPathKey
 } = require("../../shared/constants");
 
@@ -17,7 +16,7 @@ const {
   getNamespacedCredentialsKey
 } = require("../../shared/methods");
 
-const { handleCommand, createCB } = require('./messages');
+const { handleCommand, createCompletedCallback } = require('./messages');
 
 let tfProjectsCache = null;
 
@@ -29,7 +28,7 @@ class WebViewManager {
   webViewProviderScm
   webViewProviderExplorer
 
-    async render(completed = false, tfCommand){
+    async render(completed = false, tfCommand, verifyCredentials){
 
       const folder = this.stateManager.getState(changeFolderKey),
         namespacedCredentialsKey = getNamespacedCredentialsKey(folder),
@@ -64,9 +63,12 @@ class WebViewManager {
         this.selectedProject,
         this.context,
         this.stateManager,
+        verifyCredentials
       )
-
+      
       this.projectExplorer.html = html(...paramsExplorer)
+      this.projectExplorer.postMessage({ command: 'refactor' });
+
       this.withAnimation = false
     }
 
@@ -93,7 +95,7 @@ class WebViewManager {
       const oldPrefs = message.tfCommand ? this.handlePreferences(message) : null,
         { tfCommand, command } = message,
         { handler, launch } = this.commandsLauncher,
-        cb = createCB(
+        completedCallback = createCompletedCallback(
           message,
           handler,
           this.render,
@@ -106,7 +108,7 @@ class WebViewManager {
         this.logger,
         handler,
         launch,
-        cb,
+        completedCallback,
         this,
         message,
         this.stateManager
@@ -116,7 +118,7 @@ class WebViewManager {
     }
   
     initSideBarView () {
-
+      this.init()
       const sideBarWebView = {
         enableScripts: true,
           resolveWebviewView: webviewView => {
@@ -139,7 +141,7 @@ class WebViewManager {
     }
 
     async initProjectExplorer(withAnimation = true) {
-      
+      this.init()
       this.withAnimation = withAnimation
       this.projectExplorer && this.projectExplorer.dispose()
 
@@ -156,6 +158,10 @@ class WebViewManager {
 
       setTimeout(this.updateProjectsCache)
       return panel
+    }
+
+    init () {
+      this.stateManager.webViewManager = this
     }
 
     async handleWebviewMessage (message){
@@ -187,11 +193,13 @@ class WebViewManager {
     }
 
     updateOutputFile () {
-      const { handler } =  this.commandsLauncher,
-       { fileHandler, shellHandler } = handler || {},
-      outputFileExists = fileHandler && fileHandler.initialized
-
-      this.outputFileContent = outputFileExists ? fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding) : undefined
+      try {
+        
+        const { handler } =  this.commandsLauncher,
+        { fileHandler, shellHandler } = handler || {},
+        outputFileExists = fileHandler && fileHandler.initialized
+        this.outputFileContent = outputFileExists ? fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding) : undefined
+      }catch(e){} // output file might not exist
     }
 
     constructor(context, logger, stateManager, commandsLauncher){

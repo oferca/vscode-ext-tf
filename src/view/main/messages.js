@@ -1,7 +1,7 @@
 const fs = require('fs');
 const vscode = require('vscode');
 const { ChatGPTHandler }  = require('../../commands/chat-gpt')
-const { openMenuCommandId, credentialsKey, selectedProjectPathKey, disableShowOnStartupKey } = require("../../shared/constants")
+const { openMenuCommandId, credentialsKey, selectedProjectPathKey, disableShowOnStartupKey, reRenderTimout } = require("../../shared/constants")
 
 module.exports.handleCommand = async (command, logger, launchHandler, launch, tfCommandCallback, webViewManager, message, stateManager) =>
 {
@@ -40,30 +40,45 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
         default:
             if (!command) break;
             if (command === "render") return command
+
             webViewManager.commandLaunched = true
-            const cb = () => setTimeout(tfCommandCallback)
+
+            const outputUpdatedCallback = outputFileContent => webViewManager
+                .projectExplorer
+                .postMessage({ outputFileContent });
+
+            const completedCallback = () => setTimeout(tfCommandCallback)
             webViewManager.outputFileContent = null
+
             await launch(
                 command,
                 "webview",
-                cb
+                outputUpdatedCallback,
+                completedCallback
             )
   }
 }
 
-module.exports.createCB = (message, handler, reRender, oldPrefs, stateManager) => () => {
+module.exports.createCompletedCallback = (message, handler, reRender, oldPrefs, stateManager) => () => {
     if (oldPrefs){
         stateManager.setUserFolder(oldPrefs.userFolder)
         stateManager.updateState(credentialsKey, oldPrefs.credentials)
     }
-    reRender(true, message.tfCommand)
+    setTimeout(() =>
+        reRender(true, message.tfCommand, stateManager.missingCredentials),
+    reRenderTimout)
+    
     if (!handler) return
     const { fileHandler, shellHandler } = handler
     if (!fileHandler) return
     fileHandler.convertOutputToReadable()
-    this.outputFileContent = fileHandler.initialized ?
+    try {
+        this.outputFileContent = fileHandler.initialized ?
         fs.readFileSync( fileHandler.outputFileNoColor, shellHandler.fileEncoding)
         : undefined
+    }
+    catch(e){}
+   
     
   }
   

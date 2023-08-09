@@ -62,6 +62,10 @@ module.exports.maxCompletionPercentage = 95
 
 module.exports.maxNotificationTime = 1000 * 60 * 60 // 1hr
 
+module.exports.notificationTimout = 500 
+
+module.exports.reRenderTimout = module.exports.notificationTimout + 100
+
 module.exports.defaultEstimate = 10
 
 module.exports.rootFolderName = "vscode-tf-commands"
@@ -85,8 +89,6 @@ module.exports.errorStatus = "error"
 module.exports.noCredentials = "no-credentials"
 
 module.exports.noCredentialsMsg = "Did you set valid credentials ?"
-
-// module.exports.gotoTerminal = { title: 'Go To Terminal' };
 
 module.exports.planSuccessMessage1 = "Terraform will perform"
 

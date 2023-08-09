@@ -23,6 +23,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
     credentials = isExplorer ? `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
+    outputFileContent = isExplorer ? `<br><textarea id="output-file" name="output-file" rows="5" cols="150"></textarea>` : ""
     overlayClass = completed ? 'active' : ""
     overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : ""
     shellHandler = createShellHandler(vscode.window.activeTerminal),
@@ -52,10 +53,10 @@ ${ explorerHTML }
         <h2 id="intro" ><div class="content">Click Terraform Command</div></h2>
         ${warningHTML}
         <div id="display-output-2" class="button-container" style="display:none;" >
-            <button id="watch-logs-button" class="button output ${disableLogs} " onclick="postMessage(\'openOutputFile\', IS_EXPLORER)">
+            <button id="watch-logs-button" class="button output ${disableLogs} " onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)">
               <div id="watch-logs" class="${disabledButtonLogs}" onclick="this.classList.remove('animated-button-text')">${logsButtonText} Logs</div>
             </button>
-            <button class="button output chat-gpt ${isChatGPTDisabled}" onclick="this.classList.remove('animated-button-text');postMessage(\'chat-gpt\', IS_EXPLORER)" title="${chatGPTTitle}">
+            <button class="button output chat-gpt ${isChatGPTDisabled}" onclick="this.classList.remove('animated-button-text');postMessageFromWebview(\'chat-gpt\', IS_EXPLORER)" title="${chatGPTTitle}">
               <div id="chat-gpt" class="${chatGPTAnimation}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
             </button>
         </div>
@@ -65,6 +66,7 @@ ${ explorerHTML }
         <div id="main-container">
           <div class="button-container">
           <div class="expandable">
+          ${outputFileContent}
           ${ actions.map(action => {
             if (action.menuOnly) return
             if (action.excludeExplorer && isExplorer) return
@@ -117,7 +119,7 @@ ${ explorerHTML }
       return document.getElementById("credentials").value
     }
     ${overlayCall}
-    function postMessage(command) {
+    function postMessageFromWebview(command) {
       const credentials = getExplorerCredentials()
  
       const message = {
@@ -126,7 +128,6 @@ ${ explorerHTML }
         folder: CURRENT_PATH,
         credentials
       }
-      console.log("POSTING", message)
       vscode.postMessage(message);
     }
     function showLogsButton (tfCommand) {
@@ -152,7 +153,6 @@ ${ explorerHTML }
         folder: CURRENT_PATH,
         credentials
       }
-      console.log("POSTING", message)
       vscode.postMessage(message);
     }
     ${isExplorer && explorerScripts(selectedProject) }
