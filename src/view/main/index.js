@@ -194,7 +194,6 @@ class WebViewManager {
 
     updateOutputFile () {
       try {
-        
         const { handler } =  this.commandsLauncher,
         { fileHandler, shellHandler } = handler || {},
         outputFileExists = fileHandler && fileHandler.initialized

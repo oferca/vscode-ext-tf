@@ -97,7 +97,7 @@ class CommandHandlerPrototype {
         )
     }
 
-    async init(step2) {
+    async init(runCommandScriptCallback) {
         setDefaultOption(this.commandId, this.stateManager.getState(optionKey))
         const newOption =  this.addOption ? (await this.getOption()) : null
         this.stateManager.updateState(optionKey, newOption)
@@ -115,7 +115,7 @@ class CommandHandlerPrototype {
         const onChildProcessCompleteStep1 = async () => {
             const { activeTerminal } = this.stateManager
             if (!activeTerminal) return
-            await step2()
+            await runCommandScriptCallback()
         }
         if (!this.fileHandlerInitialized){
             this.overlayTerminal = vscode.window.createTerminal();

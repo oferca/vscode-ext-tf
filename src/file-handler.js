@@ -77,7 +77,7 @@ class FileHandler {
         return true
     }
 
-    handleDataFolder(error, stdout, stderr, cb) {
+    handleDataFolder(error, stdout, stderr, runCommandCallback) {
         const subFolderName = extractCWD(stdout)
         this.cwd = subFolderName
         this.dataFolder = this.shellHandler.handleDataPath(
@@ -90,7 +90,7 @@ class FileHandler {
         this.deleteOldFiles()
         this.durationEstimate = this.calculateAverageDuration() || defaultEstimate
         this.initialized = true
-        cb()
+        runCommandCallback()
     }
 
     get isDefaultDuration() {
@@ -115,11 +115,11 @@ class FileHandler {
                 this.outputFile,
                 this.shellHandler.fileEncoding
             )
-            contentNoColors = removeColors(outputFile)
-            this.updateCompletionsSummary(output)
+            const contentNoColors = removeColors(outputFile)
+            this.updateCompletionsSummary(contentNoColors)
             fs.writeFile(
                 this.outputFileNoColor,
-                this.contentNoColors,
+                contentNoColors,
                 { encoding: "utf8" },
                 () => this.outputCB(false, contentNoColors)
             )
