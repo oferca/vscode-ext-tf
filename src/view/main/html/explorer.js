@@ -65,10 +65,7 @@ module.exports.scripts = selectedProject => {
     shellHandler = createShellHandler(vscode.window.activeTerminal)
     const projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
     return `
-    // Handle the message inside the webview
-        window.addEventListener('message', event => {
-            document.getElementById("output-file").value = event.data.outputFileContent
-        });
+    
     var parent = document.querySelector(".modal-parent")
     X = document.querySelector(".x")
     X.addEventListener("click", disappearX);
@@ -116,6 +113,7 @@ module.exports.scripts = selectedProject => {
         renderProjectInfo(name, pathRelative, credentials)
         parent.style.display = "block";
         addOverlay()
+        scrollInterval = undefined
     }
 
     function removeOverlay(){

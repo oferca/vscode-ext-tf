@@ -242,4 +242,5 @@ a.command:hover, a.command, a.command:focus {
   .sidebar .expandable {
     margin-bottom: 10px;
   }
+  
 `

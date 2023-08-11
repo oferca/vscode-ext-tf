@@ -43,9 +43,13 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
 
             webViewManager.commandLaunched = true
 
-            const outputUpdatedCallback = outputFileContent => webViewManager
+            const outputUpdatedCallback = outputFileContent => {
+                webViewManager
                 .projectExplorer
                 .postMessage({ outputFileContent });
+                
+                webViewManager.outputFileContent = outputFileContent
+            }
 
             const completedCallback = () => setTimeout(tfCommandCallback)
             webViewManager.outputFileContent = null

@@ -63,12 +63,10 @@ class WebViewManager {
         this.selectedProject,
         this.context,
         this.stateManager,
-        verifyCredentials
+        this.outputFileContent
       )
       
       this.projectExplorer.html = html(...paramsExplorer)
-      this.projectExplorer.postMessage({ command: 'refactor' });
-
       this.withAnimation = false
     }
 

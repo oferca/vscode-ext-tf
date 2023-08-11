@@ -5,9 +5,10 @@ const { animatedButtonStyle } = require("../style/animated-button")
 const { html: getExplorerHTML } = require("./explorer")
 const { scripts: explorerScripts } = require("./explorer");
 const { capitalizeFirst } = require('../../../shared/methods');
+const { additionalText } = require('../../../shared/constants');
 const { createShellHandler } = require("../../../shared/methods-cycle");
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
@@ -23,7 +24,8 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
     credentials = isExplorer ? `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
-    outputFileContent = isExplorer ? `<br><textarea id="output-file" name="output-file" rows="5" cols="150"></textarea>` : ""
+    outputContent = _outputFileContent ? _outputFileContent + (completed ? additionalText : "") : "",
+    outputFileContent = isExplorer ? `<br><textarea placeholder="Terminal logs" disabled id="output-file" name="output-file" rows="8" >${completed ? outputContent : ""}</textarea>` : ""
     overlayClass = completed ? 'active' : ""
     overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : ""
     shellHandler = createShellHandler(vscode.window.activeTerminal),
@@ -62,11 +64,11 @@ ${ explorerHTML }
         </div>
           ${x}
         </div>
+        ${outputFileContent}
 
         <div id="main-container">
           <div class="button-container">
           <div class="expandable">
-          ${outputFileContent}
           ${ actions.map(action => {
             if (action.menuOnly) return
             if (action.excludeExplorer && isExplorer) return
@@ -104,6 +106,33 @@ ${ explorerHTML }
     </div>
   </div>
   <script>
+  // Handle the message inside the webview
+  var currentScrollTop = 0
+  var scrollInterval = undefined
+  scrollOutputDown(false)
+  
+  function scrollOutputDown(animated = true) {
+    if (scrollInterval) return
+
+    const content = document.getElementById("output-file")
+    const animatedScroll = () => {
+      currentScrollTop = currentScrollTop + 2;
+      content.scrollTop = currentScrollTop
+      if (currentScrollTop < content.scrollHeight) return
+      clearInterval(scrollInterval)
+      scrollInterval = undefined
+    }
+
+    if (animated) scrollInterval = setInterval(animatedScroll, 0.25)
+    if (!animated) content.scrollTop = content.scrollHeight
+  }
+
+  window.addEventListener('message', event => {
+    if (!event.data.outputFileContent) return
+    const content = document.getElementById("output-file")
+    content.value = event.data.outputFileContent
+    scrollOutputDown()
+  });
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
     var IS_EXPLORER = null
     var CURRENT_PATH = "${projectPathSynthesized}"
@@ -154,6 +183,20 @@ ${ explorerHTML }
         credentials
       }
       vscode.postMessage(message);
+
+      let counter = 0
+      const content = document.getElementById("output-file")
+      content.value = ""
+      const pleaseWaitInterval = setInterval(() => {
+        const baseContent = "Initializing, please wait..."
+        const outputStarted = content.value.indexOf(baseContent) === -1 && content.value.length > baseContent.length + 10
+        console.log(content, "**"+content.value+"ii")
+        if (outputStarted) return clearInterval(pleaseWaitInterval)
+        let dots = counter == 1 ? "." : ( counter == 2 ? ".." : "")
+        content.value = baseContent + dots
+        if (counter > 2) counter = 0
+        counter++
+      }, 1000)
     }
     ${isExplorer && explorerScripts(selectedProject) }
   </script>

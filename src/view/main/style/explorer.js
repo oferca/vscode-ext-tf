@@ -708,15 +708,21 @@ POPUP
 }
 
 #credentials{
-	background: var(--vscode-settings-focusedRowBackground);
-	color: var(--vscode-input-foreground);
 	margin-top: 10px;
 	padding: 3px;
+}
+#credentials, #output-file{
+	background: var(--vscode-settings-focusedRowBackground);
+	color: var(--vscode-input-foreground);
 }
 #credentials::placeholder{
 	color: var(--vscode-input-placeholderForeground)
 }
 
+#output-file{
+	width: 65vw;
+	padding: 3px;
+}
 .project {
 	overflow-x: scroll;
 	overflow-y: clip;

@@ -189,3 +189,5 @@ module.exports.credentialsSetText = "Credentials Saved. Overwrite to change."
 module.exports.noProjectsExistsTxt = "No terraform projects were found in this workspace"
 
 module.exports.disableShowOnStartupKey = "tfShowOnStartup"
+
+module.exports.additionalText = "* More terraform cli output in terminal."
