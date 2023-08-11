@@ -28,7 +28,7 @@ class WebViewManager {
   webViewProviderScm
   webViewProviderExplorer
 
-    async render(completed = false, tfCommand, verifyCredentials){
+    async render(completed = false, tfCommand, missingCredentials){
 
       const folder = this.stateManager.getState(changeFolderKey),
         namespacedCredentialsKey = getNamespacedCredentialsKey(folder),
@@ -63,7 +63,8 @@ class WebViewManager {
         this.selectedProject,
         this.context,
         this.stateManager,
-        this.outputFileContent
+        this.outputFileContent,
+        missingCredentials
       )
       
       this.projectExplorer.html = html(...paramsExplorer)

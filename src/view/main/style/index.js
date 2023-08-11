@@ -243,4 +243,19 @@ a.command:hover, a.command, a.command:focus {
     margin-bottom: 10px;
   }
   
+  @keyframes blink {
+    0%, 50%, 100% {
+      border: 1px solid transparent;
+    }
+    25%, 75% {
+      border: 2px solid var(--vscode-inputValidation-errorBorder);
+    }
+  }
+  
+  .blinking-border {
+    border: 2px solid transparent;
+    animation: blink 3s infinite;
+  }
+
+  
 `

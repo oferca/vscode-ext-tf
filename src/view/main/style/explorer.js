@@ -722,13 +722,12 @@ POPUP
 #output-file{
 	width: 65vw;
 	padding: 3px;
+	margin-top: 10px;
 }
 .project {
 	overflow-x: scroll;
 	overflow-y: clip;
 }
-
-
 
   
   /* Custom style for the checkbox */

@@ -8,7 +8,7 @@ const { capitalizeFirst } = require('../../../shared/methods');
 const { additionalText } = require('../../../shared/constants');
 const { createShellHandler } = require("../../../shared/methods-cycle");
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, _missingCredentials) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
@@ -23,9 +23,15 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
-    credentials = isExplorer ? `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : ""
+    credentials = isExplorer ? `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : "",
+    missingCredentials = credentials.length && _missingCredentials ? `setTimeout(() => {
+      const credentials = document.getElementById("credentials")
+      credentials.scrollIntoView({ behavior: "smooth" })
+      credentials.classList.toggle("blinking-border")
+      setTimeout(() => credentials.classList.toggle("blinking-border"), 5000)
+    })` : ""
     outputContent = _outputFileContent ? _outputFileContent + (completed ? additionalText : "") : "",
-    outputFileContent = isExplorer ? `<br><textarea placeholder="Terminal logs" disabled id="output-file" name="output-file" rows="8" >${completed ? outputContent : ""}</textarea>` : ""
+    outputFileContent = isExplorer ? `<textarea placeholder="Terminal logs" disabled id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea>` : ""
     overlayClass = completed ? 'active' : ""
     overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : ""
     shellHandler = createShellHandler(vscode.window.activeTerminal),
@@ -110,7 +116,7 @@ ${ explorerHTML }
   var currentScrollTop = 0
   var scrollInterval = undefined
   scrollOutputDown(false)
-  
+  ${missingCredentials}
   function scrollOutputDown(animated = true) {
     if (scrollInterval) return
 
@@ -190,7 +196,6 @@ ${ explorerHTML }
       const pleaseWaitInterval = setInterval(() => {
         const baseContent = "Initializing, please wait..."
         const outputStarted = content.value.indexOf(baseContent) === -1 && content.value.length > baseContent.length + 10
-        console.log(content, "**"+content.value+"ii")
         if (outputStarted) return clearInterval(pleaseWaitInterval)
         let dots = counter == 1 ? "." : ( counter == 2 ? ".." : "")
         content.value = baseContent + dots

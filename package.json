@@ -4,7 +4,7 @@
   "displayName": "Terraform Dashboard ChatGPT Plus",
   "publisher": "oferkafry",
   "description": "AI-supported interactive dashboard for Terraform",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "engines": {
     "vscode": "^1.67.2"
   },

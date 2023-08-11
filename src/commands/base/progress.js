@@ -36,7 +36,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         )
     }
 
-    launchProgress(outputUpdatedCallback, complatedCallback = () => {}) {
+    launchProgress(outputUpdatedCallback, completedCallback = () => {}) {
         this.barCreationTimestamp = Date.now()
         this.currentBarCompletionPercentage = 0
         this.barCompletionTimestamp = this.barCreationTimestamp + this.fileHandler.durationEstimate * 1000
@@ -66,7 +66,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             location: vscode.ProgressLocation.Notification,
             title: getProgressMsg(this.commandId),//  + progressFileMsg,
             cancellable: true
-        }, (progress, token) => this.progressUpdate(progress, token, complatedCallback))
+        }, (progress, token) => this.progressUpdate(progress, token, completedCallback))
     }
 
     completed() {
@@ -105,7 +105,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         if (this.fileHandler.completed) setTimeout(() => this.fileHandler.outputCB(true), 100)
     }
 
-    async progressUpdate(progress, token, cb = () => { }) {
+    async progressUpdate(progress, token, completedCallback = () => { }) {
         token.onCancellationRequested(() => {
             console.log("User canceled the long running operation");
             clearInterval(this.intervalID);
@@ -131,7 +131,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                     })
                     clearInterval(self.intervalID);
                     clearInterval(completedIntervalId)
-                    cb()
+                    completedCallback()
                     resolve()
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
