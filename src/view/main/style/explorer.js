@@ -724,6 +724,7 @@ POPUP
 	padding: 3px;
 	margin-top: 10px;
 }
+
 .project {
 	overflow-x: scroll;
 	overflow-y: clip;

@@ -4,7 +4,7 @@
   "displayName": "Terraform Dashboard Plus",
   "publisher": "oferkafry",
   "description": "Enhance your terraform experience with an intuitive user interface",
-  "version": "2.1.9",
+  "version": "2.2.0",
   "engines": {
     "vscode": "^1.67.2"
   },

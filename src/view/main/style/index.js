@@ -258,4 +258,79 @@ a.command:hover, a.command, a.command:focus {
   }
 
   
+
+  @keyframes progress {
+    0% { --percentage: 0; }
+    100% { --percentage: var(--value); }
+  }
+  
+  @property --percentage {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+  
+  [role="progressbar"] {
+    --percentage: var(--value);
+    --primary: var(--vscode-button-background);
+    --secondary: var(--vscode-button-secondaryBackground);
+    --size: 60px;
+    animation: progress 0.5s 0.5s forwards;
+    width: var(--size);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+  
+  [role="progressbar"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(var(--primary) calc(var(--percentage) * 1%), var(--secondary) 0);
+    mask: radial-gradient(white 55%, transparent 0);
+    mask-mode: alpha;
+    -webkit-mask: radial-gradient(#0000 55%, #000 0);
+    -webkit-mask-mode: alpha;
+  }
+  
+  [role="progressbar"]::after {
+    counter-reset: percentage var(--value);
+    content: counter(percentage) '%';
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: calc(var(--size) / 5);
+    color: var(--primary);
+  }
+
+
+  #circular-pb{
+    position: absolute;
+    right: 6vw;
+    top: 83px;
+  }
+
+  #output-file-fs{
+    position: absolute;
+    margin-top: -53px;
+    margin-left: 5px;
+    font-size: 55px;
+    color: var(--vscode-button-foreground)
+    transition: 0.5s opacity;
+    opacity: 0.05;
+    width: 30%;
+    cursor: pointer;
+  }
+  #output-file-fs:hover{
+    opacity: 1;
+    transition: 0.5s opacity;
+
+  }
+ 
+
+  
 `

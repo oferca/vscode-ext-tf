@@ -31,11 +31,12 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
       setTimeout(() => credentials.classList.toggle("blinking-border"), 5000)
     })` : ""
     outputContent = _outputFileContent ? _outputFileContent + (completed ? additionalText : "") : "",
-    outputFileContent = isExplorer ? `<textarea placeholder="Terminal logs" disabled id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea>` : ""
+    outputFileContent = isExplorer ? `<textarea placeholder="Terminal logs" disabled id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs">&#x2922;</div>` : ""
     overlayClass = completed ? 'active' : ""
     overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : ""
     shellHandler = createShellHandler(vscode.window.activeTerminal),
     projectPathSynthesized = shellHandler.synthesizePath((selectedProject || {}).projectPath),
+    circularPBStyle = "--size: 30px; --value: 0; display: none;" // "--value: 100;" + completed ? "" : "display: none;",
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>
@@ -57,6 +58,9 @@ ${ explorerHTML }
     <div id="main-modal" class="modal ${modalAnimated}"">
       <div id="project-info" ${projectInfoStyle}>
       </div>
+      
+      <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
+
       <div id="top-container" class="${invalidate}">
         <h2 id="intro" ><div class="content">Click Terraform Command</div></h2>
         ${warningHTML}
@@ -134,8 +138,20 @@ ${ explorerHTML }
     if (!animated) content.scrollTop = content.scrollHeight
   }
 
+  let maxPercentage = 0
+
+  function updateCompletionPercentage(completionPercentage) {
+    if (completionPercentage < maxPercentage) return
+    maxPercentage = completionPercentage
+    const circularProgressBar = document.getElementById("circular-pb")
+    circularProgressBar.style = "--value: "+Math.floor(completionPercentage)+"; display: auto;"
+    circularProgressBar.setAttribute("aria-valuenow", completionPercentage)
+  }
+
   window.addEventListener('message', event => {
-    if (!event.data.outputFileContent) return
+    const { completionPercentage, outputFileContent } = event.data
+    if (completionPercentage) setTimeout(() => updateCompletionPercentage(completionPercentage))
+    if (!outputFileContent) return
     const content = document.getElementById("output-file")
     content.value = event.data.outputFileContent
     scrollOutputDown()
