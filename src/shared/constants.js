@@ -146,6 +146,8 @@ module.exports.credentialsKey = "tfCredentialsKey"
 
 module.exports.selectedProjectPathKey = "tfselectedProjectPath"
 
+module.exports.lastSelectedProjectPathKey = "tflastSelectedProjectPath"
+
 module.exports.stationIdKey = "tfStationId"
 
 module.exports.dashboardExpendedOnceKey = "tfFirstDashboardExpand"

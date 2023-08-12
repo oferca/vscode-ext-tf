@@ -248,10 +248,10 @@ module.exports.isPanelOpen = projectExplorerPanel => projectExplorerPanel && (!p
 
 module.exports.sortProjects = (a, b) => {
     const sameTimestamp = a.lastModifiedTimestamp === b.lastModifiedTimestamp
-    if (!sameTimestamp) return a.lastModifiedTimestamp > b.lastModifiedTimestamp ? 1 : -1
+    if (!sameTimestamp) return a.lastModifiedTimestamp > b.lastModifiedTimestamp ? -1 : 1
     const totalA = a.resources + a.modules + a.datasources
     const totalB = b.resources + b.modules + b.datasources
-    return totalA > totalB ? 1 : -1 
+    return totalA > totalB ? -1 : 1 
 }
 
 module.exports.isLegitFolder = (fileType, fileName) => {

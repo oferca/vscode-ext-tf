@@ -116,6 +116,7 @@ ${ explorerHTML }
   var currentScrollTop = 0
   var scrollInterval = undefined
   scrollOutputDown(false)
+  setTimeout(() => document.getElementById("myCheckbox").scrollIntoView({ behavior: "smooth" }))
   ${missingCredentials}
   function scrollOutputDown(animated = true) {
     if (scrollInterval) return

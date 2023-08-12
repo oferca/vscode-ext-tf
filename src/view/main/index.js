@@ -7,7 +7,8 @@ const {
   credentialsKey,
   changeFolderKey,
   credentialsSetText,
-  selectedProjectPathKey
+  selectedProjectPathKey,
+  lastSelectedProjectPathKey
 } = require("../../shared/constants");
 
 const {
@@ -57,6 +58,9 @@ class WebViewManager {
       const paramsExplorer = [...params]
       const selected = this.selectedProject || {}
       selected.credentials = credentials ? credentialsSetText : ""
+
+      const lastSelectedProject = tfProjectsCache.find(project => project.projectPath === this.stateManager.getState(lastSelectedProjectPathKey))
+      if (lastSelectedProject) lastSelectedProject.lastModifiedTimestamp = Date.now()
 
       paramsExplorer.push(
         tfProjectsCache,
