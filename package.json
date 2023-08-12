@@ -3,8 +3,8 @@
   "name": "easy-terraform-commands",
   "displayName": "Terraform Dashboard Plus",
   "publisher": "oferkafry",
-  "description": "A dashboard for Terraform",
-  "version": "2.1.2",
+  "description": "Easy to use, intuitive interface for terraform client",
+  "version": "2.1.4",
   "engines": {
     "vscode": "^1.67.2"
   },
