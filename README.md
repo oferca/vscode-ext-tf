@@ -1,6 +1,6 @@
 # [Terraform Dashboard Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-Enhance your terraform experience with an intuitive user interface
+Interactive dashboard for terraform commands. Enhance your terraform experience and productivity.
 
 # Features
 * Seamless navigation and transition between all your Terraform projects.
