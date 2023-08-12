@@ -1,10 +1,10 @@
 {
   "icon": "assets/terraform_logo.png",
   "name": "easy-terraform-commands",
-  "displayName": "Advanced Terraform Dashboard Plus",
+  "displayName": "Terraform Dashboard Plus",
   "publisher": "oferkafry",
-  "description": "An intuitive user interface and dashboard for terraform. Streamlines development and enhances productivity",
-  "version": "2.1.7",
+  "description": "Enhance your terraform experience with an intuitive user interface",
+  "version": "2.1.8",
   "engines": {
     "vscode": "^1.67.2"
   },
