@@ -1,12 +1,12 @@
 # [Terraform Dashboard Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
-Easy to use yet powerfull UI for wokring locally with terraform.
 
-Upgrades your terraform cli experience with 1-click runners, progress monitors and integrated AI.
+Easy to use, intuitive interface for terraform client.
 
 # Features
-* 1-Click command launcher
-* Progress monitor
-* **Free** ChatGPT integration
+* Run commands with a simple click
+* Switch projects effortlessly
+* Watch a progress bar as commands execute
+* Get **Free** ChatGPT insight summary into "terraform plan"
 
 # Examples
 <p align="left">
