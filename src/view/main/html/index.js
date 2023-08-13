@@ -26,17 +26,20 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     credentials = isExplorer ? `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : "",
     missingCredentials = credentials.length && _missingCredentials ? `setTimeout(() => {
       const credentials = document.getElementById("credentials")
+      if (!credentials) return
       credentials.scrollIntoView({ behavior: "smooth" })
       credentials.classList.toggle("blinking-border")
       setTimeout(() => credentials.classList.toggle("blinking-border"), 5000)
     })` : ""
     outputContent = _outputFileContent ? _outputFileContent + (completed ? additionalText : "") : "",
-    outputFileContent = isExplorer ? `<textarea placeholder="Terminal logs" disabled id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs">&#x2922;</div>` : ""
+    outputFileContent = isExplorer ? `<textarea disabled id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs">&#x2922;</div>` : ""
     overlayClass = completed ? 'active' : ""
     overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : ""
     shellHandler = createShellHandler(vscode.window.activeTerminal),
     projectPathSynthesized = shellHandler.synthesizePath((selectedProject || {}).projectPath),
-    circularPBStyle = "--size: 30px; --value: 0; display: none;" // "--value: 100;" + completed ? "" : "display: none;",
+    circularPBStyle = "--size: 25px; --value: 0; display: none;" // "--value: 100;" + completed ? "" : "display: none;",
+    projectTitleStyle = completed ? "opacity: 0" : ""
+    seperator= isExplorer ? `<div class="seperator-container" ><div class="seperator" ></div></div>` : "",
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>
@@ -56,12 +59,16 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
 ${ explorerHTML }
   <div class="modal-parent" id="modal-container" ${modalParentStyle}>
     <div id="main-modal" class="modal ${modalAnimated}"">
+    <h1 id="project-title" style="${projectTitleStyle}"></h1>
+    ${outputFileContent}
+    ${seperator}
       <div id="project-info" ${projectInfoStyle}>
       </div>
-      
-      <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
+      ${seperator}
 
       <div id="top-container" class="${invalidate}">
+      <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
+
         <h2 id="intro" ><div class="content">Click Terraform Command</div></h2>
         ${warningHTML}
         <div id="display-output-2" class="button-container" style="display:none;" >
@@ -74,8 +81,6 @@ ${ explorerHTML }
         </div>
           ${x}
         </div>
-        ${outputFileContent}
-
         <div id="main-container">
           <div class="button-container">
           <div class="expandable">
@@ -111,6 +116,7 @@ ${ explorerHTML }
             <div class="pref-container"><div class="pref select-folder">${preferences.folder ? "Folder selected." : ""}</div><a class="pref select-folder pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfFolder").label}', isExplorer: IS_EXPLORER})")> ${preferences.folder ? "change" : "Select folder"} </a></div>
             <div class="pref-container"><div class="pref credentials">${preferences.credentials ? "Credentials set." : ""}</div><a class="pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfCredentials").label}', isExplorer: IS_EXPLORER })"> ${preferences.credentials ? "change" : "Enter credentials"} </a></div>
           </div>
+          ${seperator}
           ${credentials}
         <br>
     </div>
@@ -120,12 +126,16 @@ ${ explorerHTML }
   var currentScrollTop = 0
   var scrollInterval = undefined
   scrollOutputDown(false)
-  setTimeout(() => document.getElementById("myCheckbox").scrollIntoView({ behavior: "smooth" }))
+  setTimeout(() => {
+    const checkbox = document.getElementById("myCheckbox")
+    if (checkbox) checkbox.scrollIntoView({ behavior: "smooth" })}
+    )
   ${missingCredentials}
   function scrollOutputDown(animated = true) {
     if (scrollInterval) return
 
     const content = document.getElementById("output-file")
+    if (!content) return
     const animatedScroll = () => {
       currentScrollTop = currentScrollTop + 2;
       content.scrollTop = currentScrollTop
@@ -136,6 +146,10 @@ ${ explorerHTML }
 
     if (animated) scrollInterval = setInterval(animatedScroll, 0.25)
     if (!animated) content.scrollTop = content.scrollHeight
+
+    if (!content.value || content.value.length < 60) return
+    content.style.backgroundImage = "none"
+    content.style.opacity = "1"
   }
 
   let maxPercentage = 0
@@ -152,9 +166,12 @@ ${ explorerHTML }
     const { completionPercentage, outputFileContent } = event.data
     if (completionPercentage) setTimeout(() => updateCompletionPercentage(completionPercentage))
     if (!outputFileContent) return
+    document.getElementById("project-title").style.opacity = "0"
     const content = document.getElementById("output-file")
     content.value = event.data.outputFileContent
     scrollOutputDown()
+    content.style.backgroundImage = "none"
+    content.style.opacity = "1"
   });
   ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
     var IS_EXPLORER = null
@@ -219,6 +236,9 @@ ${ explorerHTML }
         if (counter > 2) counter = 0
         counter++
       }, 1000)
+
+      content.style.backgroundImage = "none"
+      document.getElementById("project-title").style.opacity = "0"
     }
     ${isExplorer && explorerScripts(selectedProject) }
   </script>

@@ -1,5 +1,6 @@
-module.exports.style= `
+const matrixBackground = "https://media.tenor.com/IvyuPtEfzhoAAAAC/matrix.gif" //"https://github.com/oferca/vscode-ext-tf/blob/main/assets/matrix.gif"
 
+module.exports.style = `
 .explorer .prefs{
   display: none;
 }
@@ -698,17 +699,17 @@ POPUP
 .explorer #intro .content{
   position: absolute;
   width: 100%;
-  font-size: 16px;
-  margin-top: 25px;
+  font-size: 15px;
 }
 
 .explorer h4 {
   color: var(--vscode-editor-foreground);
   word-spacing: normal;
+  font-size: 15px;
 }
 
 #credentials{
-	margin-top: 10px;
+	margin-top: -10px;
 	padding: 3px;
 }
 #credentials, #output-file{
@@ -720,9 +721,13 @@ POPUP
 }
 
 #output-file{
-	width: 65vw;
+	width: 63vw;
 	padding: 3px;
-	margin-top: 10px;
+	margin-top: 15px;
+	border-radius: 8px;
+	background-image: url(${matrixBackground});
+	opacity: 0.4;
+	transition: 0.5s background-image;
 }
 
 .project {

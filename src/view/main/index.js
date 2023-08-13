@@ -20,7 +20,6 @@ const {
 const { handleCommand, createCompletedCallback } = require('./messages');
 
 let tfProjectsCache = null;
-
 class WebViewManager {
   intro
   sideBarWebView

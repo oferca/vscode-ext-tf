@@ -82,9 +82,11 @@ module.exports.scripts = selectedProject => {
     }
     function renderProjectInfo(name, folder, credentials) {
         if (!name) return
+        const projectTitle = name.charAt(0).toUpperCase() + name.slice(1)
+        document.getElementById("project-title").innerHTML = projectTitle
         document.getElementById("project-info").innerHTML = \`
         <h4 title="\${name}">
-        \${name.charAt(0).toUpperCase() + name.slice(1)}
+        \${projectTitle} Environment
         </h4>
         <ol>
             <li class="path" title="\${folder}">\${folder}</li>

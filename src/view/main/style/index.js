@@ -1,5 +1,4 @@
 const vscode = require('vscode');
-const path = require('path');
 
 module.exports.style= context => `
 #main-container{
@@ -216,6 +215,17 @@ a.command:hover, a.command, a.command:focus {
     }
   }
 
+  #project-title{
+    position: absolute;
+    margin-top: 51px;
+    left: 45px;
+    opacity: 1;
+    transition: 0.5s all;
+  }
+
+  #project-info{
+    margin-bottom: 25px;
+  }
   #project-info li.path{
     text-align: left;
   }
@@ -274,7 +284,7 @@ a.command:hover, a.command, a.command:focus {
     --percentage: var(--value);
     --primary: var(--vscode-button-background);
     --secondary: var(--vscode-button-secondaryBackground);
-    --size: 60px;
+    --size: 50px;
     animation: progress 0.5s 0.5s forwards;
     width: var(--size);
     aspect-ratio: 1;
@@ -307,11 +317,10 @@ a.command:hover, a.command, a.command:focus {
     color: var(--primary);
   }
 
-
   #circular-pb{
     position: absolute;
-    right: 6vw;
-    top: 83px;
+    right: 11vw;
+    margin-top: -95px;
   }
 
   #output-file-fs{
@@ -331,6 +340,15 @@ a.command:hover, a.command, a.command:focus {
 
   }
  
-
+  .seperator{
+    width: 63vw;
+    border-bottom: 1px var(--vscode-menu-border) solid;
+    height: 3px;
+  }
+  .seperator-container {
+    display: flex;
+    justify-content: left;
+    margin-bottom: 8px;
+  }
   
 `
