@@ -11,21 +11,21 @@ module.exports.style= context => `
     margin-top: 12px;
     width: 100%;
 }
-.button.output, #quicklaunch-menu{
+.button.output1, #quicklaunch-menu{
   background-color: var(--vscode-button-secondaryBackground);
   color: var(--vscode-button-secondaryForeground);
 }
-.button.output{
+.button.output1{
   position: absolute;
   top: 0px;
 }
-.explorer .button.output{
+.explorer .button.output1{
   position: inherit;
 }
-.button.output.chat-gpt{
+.button.output1.chat-gpt{
   top: 35px;
 }
-.button.output.chat-gpt .disabled, .button.output .disabled{
+.button.output1.chat-gpt .disabled, .button.output1 .disabled{
   color: var(--vscode-button-foreground);
   opacity: 0.5;
 }
@@ -98,7 +98,7 @@ a.command:hover, a.command, a.command:focus {
     border: 1px solid var(--vscode-button-border,transparent);
     line-height: 18px;
     font-size: 14px;
-    min-width: 140px;
+    min-width: 147px;
   }
   .pref-change{
     margin: 3px 5px;
@@ -155,7 +155,7 @@ a.command:hover, a.command, a.command:focus {
   .button-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: top;
     flex-wrap: wrap;
   }
 

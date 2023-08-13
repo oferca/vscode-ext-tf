@@ -678,20 +678,15 @@ POPUP
   background: #EE9EFF;
 }
 
-
-.explorer .expandable{
-  min-height: 194px;
-}
-
 .explorer .button-container{
   justify-content: left;
 }
 
-.explorer #display-output-2{
+.explorer #display-output-21{
   justify-content: left;
 }
 
-.explorer #display-output-2 button{
+.explorer #display-output-21 button{
   margin-top: 25px;
   justify-content: center;
 }
@@ -709,8 +704,10 @@ POPUP
 }
 
 #credentials{
-	margin-top: -10px;
 	padding: 3px;
+	width: 50vw;
+	margin-top: -10px;
+
 }
 #credentials, #output-file{
 	background: var(--vscode-settings-focusedRowBackground);
