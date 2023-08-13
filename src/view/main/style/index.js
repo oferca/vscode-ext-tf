@@ -219,8 +219,9 @@ a.command:hover, a.command, a.command:focus {
     position: absolute;
     margin-top: 51px;
     left: 45px;
-    opacity: 1;
+    opacity: 0.9;
     transition: 0.5s all;
+    z-index: 99;
   }
 
   #project-info{
@@ -320,7 +321,7 @@ a.command:hover, a.command, a.command:focus {
   #circular-pb{
     position: absolute;
     right: 11vw;
-    margin-top: -95px;
+    margin-top: -85px;
   }
 
   #output-file-fs{

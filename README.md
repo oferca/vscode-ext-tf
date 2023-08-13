@@ -9,9 +9,9 @@ Interactive dashboard for terraform commands. Enhance your terraform experience 
 
 # Demos
 <p align="left">
-<img src="assets/dashboard.gif" width=75%>
+<img src="assets/matrix1.gif" width=75%>
 <br/>
-<em>The dashboard</em>
+<em>Interactive Dashboard</em>
 </p>
 <br>
 <br>

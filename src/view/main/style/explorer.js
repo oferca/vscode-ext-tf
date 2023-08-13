@@ -1,4 +1,4 @@
-const matrixBackground = "https://media.tenor.com/IvyuPtEfzhoAAAAC/matrix.gif" //"https://github.com/oferca/vscode-ext-tf/blob/main/assets/matrix.gif"
+const matrixBackground = "https://github.com/oferca/vscode-ext-tf/blob/main/assets/matrix.gif?raw=true"
 
 module.exports.style = `
 .explorer .prefs{
