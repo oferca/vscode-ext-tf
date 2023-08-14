@@ -4,9 +4,10 @@ const { CommandHandlerPrototype } = require(".")
 const {
     getRawCommand,
     getProgressMsg,
+    capitalizeFirst,
+    featuresDisabled,
     createFolderCollapser,
-    getCompletionPercentage,
-    capitalizeFirst
+    getCompletionPercentage
 } = require("../../shared/methods")
 
 const {
@@ -151,6 +152,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     async execute(source, completedCallback, outputUpdatedCallback = () => {}) {
+
+        if (featuresDisabled(this.stateManager.activeTerminal)) return await vscode.window.showInformationMessage("Please use supported terminal such as Powershell or bash")
         this.updateRunCount()
         const self = this
         const onChildProcessCompleteStep2 = async () => {

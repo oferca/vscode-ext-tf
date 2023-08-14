@@ -120,7 +120,7 @@ class FileHandler {
             fs.writeFile(
                 this.outputFileNoColor,
                 contentNoColors,
-                { encoding: "utf8" },
+                { encoding: this.shellHandler.fileEncoding },
                 () => this.outputCB(false, contentNoColors)
             )
         }catch(e) {} // might take some time until file is created

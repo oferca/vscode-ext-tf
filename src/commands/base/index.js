@@ -5,10 +5,10 @@ const { BashHandler } = require("../../shared/shells/bash")
 const { PowershellHandler } = require("../../shared/shells/powershell")
 
 const {
-    sendText,
     getOption,
     getOptionKey,
-    getRawCommand
+    getRawCommand,
+    featuresDisabled
 } = require("../../shared/methods")
 
 const {
@@ -67,6 +67,7 @@ class CommandHandlerPrototype {
     }
 
     async execute(source, cb) {
+        if (featuresDisabled(this.stateManager.activeTerminal)) return await vscode.window.showInformationMessage("Please use supported terminal such as powershell or bash")
         this.updateRunCount()
         const self = this
         const onChildProcessCompleteStep2 = async () => {

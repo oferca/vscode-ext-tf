@@ -75,7 +75,7 @@ class StateManager {
         const lastNoticeTS = this.getState(lastShellDisclaimerKey) || 0
         const timeSinceLastNotice = (this.now - lastNoticeTS) / 1000
         const interval = hasSupportedTerminal ? shellNoticeIntervalHasSupportedSec : shellNoticeIntervalSec
-        const timeToShowDisclaimer = timeSinceLastNotice > interval
+        const timeToShowDisclaimer = true // timeSinceLastNotice > interval
         if (!timeToShowDisclaimer) return
         this.updateState(lastShellDisclaimerKey, this.now);
         const neverRemind = this.getState(dontRemindDisclaimerKey) || false

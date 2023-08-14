@@ -1,8 +1,10 @@
 Bugs:
-* credential dont work multiple projects
-* Replacing credetial works but new credentials are missing
+* windows utf-8 in windows
+* windows path connected
 * Clear unsupported shell
-* unsupported shell, bash mfish 
+* unsupported shell, git bash "terraform init" not working/ Nan% complete
+* cmd not wokring at all
+* unsupported redirect should always be false+
 Features:
 * Move used project to beginning of list
 *colored view

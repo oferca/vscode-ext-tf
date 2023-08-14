@@ -48,7 +48,6 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
                 webViewManager
                 .projectExplorer
                 .postMessage({ outputFileContent, completionPercentage });
-                
                 webViewManager.outputFileContent = outputFileContent
             }
 
