@@ -97,7 +97,7 @@ function deactivate() { }
 function initHandlers (context, logger, disableState, pref ) {
 
     const stateManager = new StateManager(context, logger, disableState, disableState, pref ),
-        openMenuButton = new ActionButton(context, logger, openMenuCommandId, openMenuButtonText, 0),
+        openMenuButton = new ActionButton(context, logger, openMenuCommandId, openMenuButtonText, 1),
         openProjectsButton = new ActionButton(context, logger, openProjectsCommandId, openProjectsButtonText, 1),
         launcher = new CommandsLauncher(context, logger, stateManager),
         webViewManager = new WebViewManager(context, logger, stateManager, launcher)
