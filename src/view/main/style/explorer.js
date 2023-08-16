@@ -213,7 +213,7 @@ body {
 	font-size: 15px;
 	font-weight: 700;
 	line-height: 20px;
-	width: 150px;
+	width: -webkit-fill-available;
 	white-space: nowrap;
 	display: inline-block;
 	position: absolute;
@@ -226,7 +226,7 @@ body {
 	color: #b6c1c9;
     font-size: 12px;
     font-weight: 400;
-    width: 55px;
+    width: -webkit-fill-available;
     height: 10px;
     top: 50px;
     white-space: nowrap;

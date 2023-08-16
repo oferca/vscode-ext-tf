@@ -73,28 +73,28 @@ module.exports.getActions = stateManager => {
             kind: vscode.QuickPickItemKind.Separator,
             menuOnly: true
         },
-        { handler: ClearStateHandler, label: "Clear preferences", icon: "$(clear-all)", menuOnly: true },
-        {
-            handler: ChangeFolderHandler,
-            label: folder ? 
-                `Change Terraform Folder (${displayedFolderName})`
-                : "Select Terraform Folder",
-            matches: label =>
-                label.indexOf("Change Terraform Folder") > -1 ||
-                label.indexOf("Select Terraform Folder") > -1,
-            icon: "$(folder-opened)",
-            id: "tfFolder",
-            menuOnly: true
-        },
-        {
-            handler: CredentialsHandler,
-            label: credentials ? 
-                `Change Credentials (${displayedCredentials})`
-                : "Set Credentials",
-            icon: "$(key)",
-            id: "tfCredentials",
-            menuOnly: true
-        }
+        // { handler: ClearStateHandler, label: "Clear preferences", icon: "$(clear-all)", menuOnly: true },
+        // {
+        //     handler: ChangeFolderHandler,
+        //     label: folder ? 
+        //         `Change Terraform Folder (${displayedFolderName})`
+        //         : "Select Terraform Folder",
+        //     matches: label =>
+        //         label.indexOf("Change Terraform Folder") > -1 ||
+        //         label.indexOf("Select Terraform Folder") > -1,
+        //     icon: "$(folder-opened)",
+        //     id: "tfFolder",
+        //     menuOnly: true
+        // },
+        // {
+        //     handler: CredentialsHandler,
+        //     label: credentials ? 
+        //         `Change Credentials (${displayedCredentials})`
+        //         : "Set Credentials",
+        //     icon: "$(key)",
+        //     id: "tfCredentials",
+        //     menuOnly: true
+        // }
         
     ]
 }

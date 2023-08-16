@@ -1,3 +1,4 @@
+const path = require('path');
 const vscode = require('vscode');
 const { capitalizeFirst, getNamespacedCredentialsKey, sortProjects } = require('../../../shared/methods');
 const { createShellHandler } = require('../../../shared/methods-cycle');
@@ -5,19 +6,23 @@ const { credentialsSetText, disableShowOnStartupKey } = require('../../../shared
 
 const folders = (list, stateManager) => list && list.sort(sortProjects).map(
     project => {
-        const { projectPath, projectPathRelative, name, regions } = project,
+        const { projectPath, projectPathRelative, name, regions, projectRoot } = project,
           namespacedCredentialsKey = getNamespacedCredentialsKey(projectPath),
           credentials = stateManager.getState(namespacedCredentialsKey),
           credentialsTxt = credentials && credentials.length ? credentialsSetText : "",
           shellHandler = createShellHandler(vscode.window.activeTerminal),
           projectPathSynthesized = shellHandler.synthesizePath(projectPath),
-          projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
+          projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative),
+          workspaceFolder = path.basename(projectRoot),
+          regionsStr = regions.length ? `Regions: ${regions.join(', ')}. ` : "", 
+          details = `Workspace: ${capitalizeFirst(workspaceFolder)}<br>Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
+          title = details.replaceAll("<br>", ", ").replaceAll("<b>", "")
         return`
             <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}');" >
                 <a title="${projectPathRelativeSynthesized}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
-                    <span class="details">Path: ${projectPathRelative}<br>Regions: ${regions.join(', ')}<br>Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources</span>
+                    <span class="details" title="${title}">${details}</span>
                 </a>
             </li>
         `
@@ -25,8 +30,6 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
 ).join("")
 
 module.exports.html = (list, completed, withAnimation, stateManager) => {
-    const workspaceFolders = vscode.workspace.workspaceFolders;
-    const rootFolderName = capitalizeFirst(workspaceFolders[0].name)
     const checked = !stateManager.getState(disableShowOnStartupKey) ? "checked" : ""
     return `
     <label class="checkbox-label">
@@ -49,7 +52,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
   </script>
 
       <div id="filemanager" >
-		<div class="breadcrumbs"><span class="folderName">${rootFolderName} Terraform Projects</span></div>
+		<div class="breadcrumbs"><span class="folderName">Terraform Projects</span></div>
 		<ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list, stateManager)}
         </ul>

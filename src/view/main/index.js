@@ -76,6 +76,7 @@ class WebViewManager {
 
     handlePreferences(message) {
       if (!message.folder) return
+      if (!message.isExplorer) return
 
       const credentialsAlreadySet = message.credentials === credentialsSetText,
         explorerCredentialsNamespace = getNamespacedCredentialsKey(message.folder),

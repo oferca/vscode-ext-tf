@@ -57,7 +57,7 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
             await launch(
                 command,
                 "webview",
-                outputUpdatedCallback,
+                message.isExplorer ? outputUpdatedCallback : undefined,
                 completedCallback
             )
   }
@@ -68,8 +68,7 @@ module.exports.createCompletedCallback = (message, handler, reRender, oldPrefs, 
         stateManager.setUserFolder(oldPrefs.userFolder)
         stateManager.updateState(credentialsKey, oldPrefs.credentials)
     }
-    setTimeout(() =>
-        reRender(true, message.tfCommand, stateManager.missingCredentials),
+    setTimeout(() => message.isExplorer && reRender(true, message.tfCommand, stateManager.missingCredentials),
     reRenderTimout)
     
     if (!handler) return

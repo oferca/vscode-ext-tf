@@ -116,11 +116,7 @@ ${ explorerHTML }
       </div>
         </div>
         </div>
-      <div class="prefs">
-            <div class="pref-container" ><div class="pref clear"><a class="pref-change" onclick="vscode.postMessage({ tfCommand: 'Clear preferences', isExplorer: IS_EXPLORER })"> Clear preferences </a></div></div>
-            <div class="pref-container"><div class="pref select-folder">${preferences.folder ? "Folder selected." : ""}</div><a class="pref select-folder pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfFolder").label}', isExplorer: IS_EXPLORER})")> ${preferences.folder ? "change" : "Select folder"} </a></div>
-            <div class="pref-container"><div class="pref credentials">${preferences.credentials ? "Credentials set." : ""}</div><a class="pref-change" onclick="vscode.postMessage({ tfCommand: '${actions.find(action => action.id === "tfCredentials").label}', isExplorer: IS_EXPLORER })"> ${preferences.credentials ? "change" : "Enter credentials"} </a></div>
-          </div>
+     
           ${seperator}
           ${credentials}
         <br>
@@ -218,6 +214,7 @@ ${ explorerHTML }
       }
     }
     function launchTFCommand(tfCommand, el) {
+      const demiElement = { value: {}, style: {} }
       const credentials = getExplorerCredentials()
       el.classList.add('animated-button');
       showLogsButton(tfCommand)
@@ -230,7 +227,7 @@ ${ explorerHTML }
       vscode.postMessage(message);
 
       let counter = 0
-      const content = document.getElementById("output-file")
+      const content = document.getElementById("output-file") || demiElement
       content.value = ""
       const pleaseWaitInterval = setInterval(() => {
         const baseContent = "Initializing, please wait..."
@@ -243,7 +240,8 @@ ${ explorerHTML }
       }, 1000)
 
       content.style.backgroundImage = "none"
-      document.getElementById("project-title").style.opacity = "0"
+      const projectTitle = document.getElementById("project-title") || demiElement
+      if (projectTitle) projectTitle.style.opacity = "0"
     }
     ${isExplorer && explorerScripts(selectedProject) }
   </script>

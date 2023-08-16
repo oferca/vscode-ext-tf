@@ -201,11 +201,12 @@ module.exports.getWarnings = outputFile => {
     return warningsArr.map(section => section.split("│")[0]).join(", ").replace("╷ ,","")
 }
 
-module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (document => {
+module.exports.createFolderCollapser = (fileName, listener) => (document => {
     if (document.fileName === fileName) {
-        const folder = vscode.workspace.workspaceFolders[0];
-        const uri = vscode.Uri.file(folder.uri.fsPath + "/.terraform");
-        vscode.commands.executeCommand('workbench.files.action.collapseExplorerFolders', uri);
+        // for (let workspaceFolder in vscode.workspace.workspaceFolders){
+        //     const uri = vscode.Uri.file(workspaceFolder.uri.fsPath + "/.terraform");
+        //     vscode.commands.executeCommand('workbench.files.action.collapseExplorerFolders', uri);
+        // }
         listener && listener.dispose()
     }
 })
@@ -214,16 +215,29 @@ module.exports.createFolderCollapser = (fileName, listener, fileHandler) => (doc
 const targetExtension = '.tf';
 const fileList = [];
 
+const getWorkspaceProjects = () => {
+
+
+
+}
+
 module.exports.getProjectsCache = async (tfProjectsCache) => {
     if (tfProjectsCache) return tfProjectsCache
+    const noOpenWorkspace = !vscode.workspace.workspaceFolders || !vscode.workspace.workspaceFolders.length
 
-    const workspacePath = vscode.workspace.rootPath;
-    if (!workspacePath) {
+    if (noOpenWorkspace) {
       vscode.window.showErrorMessage('No workspace is opened.');
       return;
     }
-    const tfFiles = await findFilesWithExtension(workspacePath, targetExtension, fileList)
-    return Object.keys(tfFiles).filter(x => tfFiles[x].isProject).map(x => tfFiles[x]) 
+
+    let result = []
+    for (let idx in vscode.workspace.workspaceFolders){
+        const projectRoot = vscode.workspace.workspaceFolders[idx].uri.fsPath
+        const tfFiles = await findFilesWithExtension(projectRoot, targetExtension, fileList, projectRoot)
+        result = Object.assign(result, tfFiles)
+    }
+
+    return Object.keys(result).filter(x => result[x].isProject).map(x => result[x])
 }
 
 module.exports.capitalizeFirst = str => str.charAt(0).toUpperCase() + str.slice(1)

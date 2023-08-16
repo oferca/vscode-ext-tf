@@ -50,7 +50,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler)
 
         this.fileHandler.outputCB = (bottom = false, content) => {
-            outputUpdatedCallback(content, this.completionPercentage)
+            outputUpdatedCallback && outputUpdatedCallback(content, this.completionPercentage)
             const editor = vscode.window.activeTextEditor;
             if (!editor || !this.fileHandler.outputFileNoColor) return
             const outputFileOpen = editor.document.fileName.toLowerCase() === this.fileHandler.outputFileNoColor.toLowerCase()

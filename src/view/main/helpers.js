@@ -12,8 +12,6 @@ const {
   getRelativeFolderPath
 } = require("../../shared/methods-cycle")
 
-const workspaceFolders = vscode.workspace.workspaceFolders;
-const projectRoot = workspaceFolders ? workspaceFolders[0].uri.fsPath : null
 const isEven = (item, idx) => (idx / 2 === Math.floor(idx / 2))
 const isOdd = (item, idx) => !isEven(item, idx)
 
@@ -25,8 +23,7 @@ const isLegitFolder = (fileType, fileName) => {
   return fileType === vscode.FileType.Directory && fileName !== ".terraform" && fileName !== ".git"
 }
 
-async function findFilesWithExtension (startPath, targetExtension, fileList = {}) {
-  if (!projectRoot) return []
+async function findFilesWithExtension (startPath, targetExtension, fileList = {}, projectRoot) {
   const items = await vscode.workspace.fs.readDirectory(vscode.Uri.file(startPath));
 
   for (const item of items){
@@ -35,7 +32,7 @@ async function findFilesWithExtension (startPath, targetExtension, fileList = {}
       filePath = path.join(startPath, fileName),
       legit = isLegitFolder(fileType, fileName)
 
-    if (legit) await findFilesWithExtension(filePath, targetExtension, fileList)
+    if (legit) await findFilesWithExtension(filePath, targetExtension, fileList, projectRoot)
     if (path.extname(filePath) !== targetExtension) continue;
 
     const projectName = path.basename(path.dirname(filePath)),
@@ -57,6 +54,7 @@ async function findFilesWithExtension (startPath, targetExtension, fileList = {}
 
       fileList[projectName].isProject = true
       fileList[projectName].projectPath = startPath;
+      fileList[projectName].projectRoot = projectRoot;
       fileList[projectName].projectPathRelative = getRelativeFolderPath(startPath, projectRoot)
       fileList[projectName].providers = providers || []
 
