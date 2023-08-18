@@ -89,8 +89,11 @@ module.exports.scripts = selectedProject => {
     function renderProjectInfo(name, folder, credentials, workspace) {
         if (!name) return
         const projectTitle = name.charAt(0).toUpperCase() + name.slice(1)
-        document.getElementById("project-title").innerHTML = projectTitle
-        document.getElementById("project-info").innerHTML = \`
+        const projectTitleEl = document.getElementById("project-title") || {}
+        const projectInfoEl = document.getElementById("project-info") || {}
+        const projectCredsEl = document.getElementById("credentials") || { style: {} }
+        projectTitleEl.innerHTML = projectTitle
+        projectInfoEl.innerHTML = \`
         <h4 title="\${name}">
         \${projectTitle} Environment
         </h4>
@@ -99,13 +102,13 @@ module.exports.scripts = selectedProject => {
             <li class="workspace" title="\${workspace}">\${capitalizeFirst(workspace)}</li>
         </ol>
         \`
-        document.getElementById("credentials").innerHTML = \`\${credentials || ''}\`
-        document.getElementById("credentials").onkeyup="this.style.color='inherit';this.style.fontWeight='normal';"
+        projectCredsEl.innerHTML = \`\${credentials || ''}\`
+        projectCredsEl.onkeyup="this.style.color='inherit';this.style.fontWeight='normal';"
 
         if (credentials !== "${credentialsSetText}") return
 
-        document.getElementById("credentials").style.color = "var(--vscode-editorOverviewRuler-currentContentForeground)"
-        document.getElementById("credentials").style.fontWeight = "bold"
+        projectCredsEl.style.color = "var(--vscode-editorOverviewRuler-currentContentForeground)"
+        projectCredsEl.style.fontWeight = "bold"
     }
     let overlay
     function addOverlay(){

@@ -16,14 +16,15 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,
     explorerHTML = isExplorer ? getExplorerHTML(explorerParams, completed, withAnimation, stateManager) : '',
     modalAnimated = !completed ? 'animated' : '',
-    warningHTML = preferences.showWarning ? '<div class="title prefs warning">Preferences Active</div>' : "",
+    warningHTML = preferences.showWarning && false ? '<div class="title prefs warning">Preferences Active</div>' : "",
     disableLogs = disableLogsButton ? "disabled" : "",
     disabledButtonLogs = disableLogsButton ? "disabled" : "animated-button-text",
     logsButtonText = tfCommand ? capitalizeFirst(tfCommand): "Watch",
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
-    credentials = isExplorer ? `<br>
+    shouldAlertCreds = isExplorer && tfCommand && tfCommand.indexOf("plan") > -1 && !stateManager.getState("tfCredsNotice")
+    credentials = shouldAlertCreds ? `<br>
     <textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>
       <ul class="wrapper">
         <li  id="creds-tooltip" class="icon instagram">
@@ -61,6 +62,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     circularPBStyle = "--size: 25px; --value: 0; display: none;" // "--value: 100;" + completed ? "" : "display: none;",
     seperator= isExplorer ? `<div class="seperator-container" ><div class="seperator" ></div></div>` : "",
     x = isExplorer ? `<span class="x">&times;</span>` : ""
+    if (shouldAlertCreds) stateManager.updateState("tfCredsNotice", true)
     return `
 <html>
 <head>
