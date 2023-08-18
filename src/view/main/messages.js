@@ -51,7 +51,7 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
                 webViewManager.outputFileContent = outputFileContent
             }
 
-            const completedCallback = () => setTimeout(tfCommandCallback)
+            const completedCallback = feedback => setTimeout(() => tfCommandCallback(feedback))
             webViewManager.outputFileContent = null
 
             await launch(
@@ -63,12 +63,12 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
   }
 }
 
-module.exports.createCompletedCallback = (message, handler, reRender, oldPrefs, stateManager) => () => {
+module.exports.createCompletedCallback = (message, handler, reRender, oldPrefs, stateManager) => feedback => {
     if (oldPrefs){
         stateManager.setUserFolder(oldPrefs.userFolder)
         stateManager.updateState(credentialsKey, oldPrefs.credentials)
     }
-    setTimeout(() => message.isExplorer && reRender(true, message.tfCommand, stateManager.missingCredentials),
+    setTimeout(() => message.isExplorer && reRender(true, message.tfCommand, stateManager.missingCredentials, feedback),
     reRenderTimout)
     
     if (!handler) return

@@ -1,14 +1,17 @@
 const vscode = require('vscode');
 const { style } = require("../style")
 const { style : explorerStyle } = require("../style/explorer")
+const { style : toastStyle } = require("../style/toast")
 const { animatedButtonStyle } = require("../style/animated-button")
 const { html: getExplorerHTML } = require("./explorer")
 const { scripts: explorerScripts } = require("./explorer");
 const { capitalizeFirst } = require('../../../shared/methods');
 const { additionalText } = require('../../../shared/constants');
 const { createShellHandler } = require("../../../shared/methods-cycle");
+const { success, error, warning, info } = require('./feedback');
+const { toast } = require('./toast');
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, _missingCredentials) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, _missingCredentials, feedback) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
@@ -61,7 +64,14 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     projectPathSynthesized = shellHandler.synthesizePath((selectedProject || {}).projectPath),
     circularPBStyle = "--size: 25px; --value: 0; display: none;" // "--value: 100;" + completed ? "" : "display: none;",
     seperator= isExplorer ? `<div class="seperator-container" ><div class="seperator" ></div></div>` : "",
+    feedbackHtml = feedback ? (
+      feedback.type === "success" && success(feedback.msg) ||
+      feedback.type === "info" && info(feedback.msg) ||
+      feedback.type === "warning" && warning(feedback.msg) ||
+      feedback.type === "error" && error(feedback.msg)
+    ): ""
     x = isExplorer ? `<span class="x">&times;</span>` : ""
+
     if (shouldAlertCreds) stateManager.updateState("tfCredsNotice", true)
     return `
 <html>
@@ -70,6 +80,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     ${style(isExplorer ? context : null)}
     ${animatedButtonStyle}
     ${isExplorer && explorerStyle }
+    ${isExplorer && toastStyle }
   </style>
   <script>
     const vscode = acquireVsCodeApi();
@@ -265,6 +276,9 @@ ${ explorerHTML }
       if (projectTitle) projectTitle.style.opacity = "0"
     }
     ${isExplorer && explorerScripts(selectedProject) }
+
+    ${toast}
+    ${feedbackHtml}
   </script>
 
 </body>

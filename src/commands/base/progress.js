@@ -77,13 +77,17 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         return this.fileHandler.completed || applyPlanCompleted || noRedirectCompleted
     }
 
-    notifyCompletion() {
+    notifyCompletion(completedCallback) {
         const rawCommand = getRawCommand(this.commandId),
             capitalized = capitalizeFirst(rawCommand),
             completionTerm = this.redirect ? "completed" : rawCommand === "apply" ? "planning completed" : "ended"
 
         let notification
-        if (!this.redirect) notification = vscode.window.showInformationMessage("Terraform " + capitalized + ` ${completionTerm}.`/*, gotoTerminal*/);
+        let generalMessage
+        if (!this.redirect) {
+            generalMessage = "Terraform " + capitalized + ` ${completionTerm}.`
+            notification = vscode.window.showInformationMessage(message);
+        }
         
         const summary = this.redirect && this.fileHandler.completionSummary || {},
             outputLogsMsg = this.redirect ? ` [ Watch Logs.](file:${this.fileHandler.outputFileVSCodePath})` : '',
@@ -97,9 +101,20 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             this.logger.log("missing-credentials")
         }
     
+        const hasWarnings = summary.warnings && summary.warnings.length
+        if (hasWarnings) notification = vscode.window.showWarningMessage(warnTxt);
+        let successMessage
+        if (!notification) {
+            successMessage = rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg
+            notification = vscode.window.showInformationMessage(successMessage);
+        }
 
-        if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(warnTxt/*, gotoTerminal*/);
-        if (!notification) notification = vscode.window.showInformationMessage(rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg/*, gotoTerminal*/);
+        completedCallback(
+            generalMessage && { type: 'info', msg: generalMessage } ||
+            hasErrors && { type: 'error', msg: errTxt} ||
+            hasWarnings && { type: 'warning', msg: warnTxt} ||
+            { type: 'success', msg: successMessage }
+        )
         return notification
     }
 
@@ -135,11 +150,10 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                     })
                     clearInterval(self.intervalID);
                     clearInterval(completedIntervalId)
-                    completedCallback()
                     resolve()
                     const isApply = self.commandId.indexOf(tfApplyCommandId) > -1
                     if (self.fileHandler.isDefaultDuration && isApply) return
-                    setTimeout(self.notifyCompletion, notificationTimout)
+                    setTimeout(() => self.notifyCompletion(completedCallback), notificationTimout)
                 }
             }, 100)
             setTimeout(() => {

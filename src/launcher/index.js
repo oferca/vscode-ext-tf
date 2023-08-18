@@ -60,8 +60,8 @@ class CommandsLauncher {
         const CommandHandler = getActions(this.stateManager).find(action => (actionLabel === action.label || (action.matches && action.matches(actionLabel)))).handler
         this.handler = new CommandHandler( this.context, this.logger, this.stateManager)
         const isPreviousActionPlan = this.stateManager.getState(lastActionKey) && this.stateManager.getState(lastActionKey).toLowerCase().indexOf("plan") > -1
-        const cbWithState = () => {
-            completedCallback && completedCallback()
+        const cbWithState = feedback => {
+            completedCallback && completedCallback(feedback)
             const hasOutput = this.handler.fileHandler && this.handler.fileHandler.redirect
             if (!(this.handler.commandId && hasOutput)) return
             const outputFileContent = hasOutput  ? this.handler.fileHandler.getOutputFileContent() : this.stateManager.getState(lastOutputKey)

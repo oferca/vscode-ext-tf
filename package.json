@@ -15,7 +15,7 @@
   "activationEvents": [
     "onStartupFinished"
   ],
-  "main": "./src/extension.js",
+  "main": "./src/extension.js", 
   "contributes": {
     "viewsContainers": {
       "activitybar": [
