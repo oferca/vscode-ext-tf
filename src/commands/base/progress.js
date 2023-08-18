@@ -92,7 +92,10 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             warnTxt = `Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg
 
         if (hasErrors) notification = vscode.window.showErrorMessage(errTxt);
-        if (summary === noCredentials) this.stateManager.missingCredentials = true
+        if (summary === noCredentials) {
+            this.stateManager.missingCredentials = true
+            this.logger.log("missing-credentials")
+        }
     
 
         if (summary.warnings && summary.warnings.length) notification = vscode.window.showWarningMessage(warnTxt/*, gotoTerminal*/);

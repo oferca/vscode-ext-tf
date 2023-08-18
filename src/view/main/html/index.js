@@ -23,7 +23,15 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
-    credentials = isExplorer ? `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>` : "",
+    credentials = isExplorer ? `<br>
+    <textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>
+      <ul class="wrapper">
+        <li  id="creds-tooltip" class="icon instagram">
+          <span  class="tooltip">It seems that credentials are missing or not valid. You may add a script that sets credentials.\nFor example for windows powershell:\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."
+            </span>
+            </li>
+      </ul>
+    ` : "",
     last = `
     <div class="expandable" id="display-output-2" style="display:none;">
       <h4 class="title">Result</h4>
@@ -36,13 +44,14 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     </div>
 
     `,
-    missingCredentials = credentials.length && _missingCredentials ? `setTimeout(() => {
+    isMissingCredentials = credentials.length && _missingCredentials
+    missingCredentials = isMissingCredentials ? `setTimeout(() => {
       const credentials = document.getElementById("credentials")
       if (!credentials) return
       credentials.scrollIntoView({ behavior: "smooth" })
       credentials.classList.toggle("blinking-border")
       setTimeout(() => credentials.classList.toggle("blinking-border"), 5000)
-    })` : ""
+    }, 1000)` : ""
     outputContent = _outputFileContent ? _outputFileContent + (completed ? additionalText : "") : "",
     outputFileContent = isExplorer ? `<textarea disabled id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs">&#x2922;</div>` : ""
     overlayClass = completed ? 'active' : ""
@@ -127,6 +136,16 @@ ${ explorerHTML }
   var currentScrollTop = 0
   var scrollInterval = undefined
   scrollOutputDown(false)
+
+  
+  ${isMissingCredentials ? `
+    const mouseoverEvent = new Event('mouseover');
+    const credsTooltip = document.getElementById("creds-tooltip")
+    credsTooltip && credsTooltip.classList.add("activated")
+    document.body.onclick = () => credsTooltip && credsTooltip.remove()
+  ` : ""}
+
+
   setTimeout(() => {
     const checkbox = document.getElementById("myCheckbox")
     if (checkbox) checkbox.scrollIntoView({ behavior: "smooth" })}
@@ -237,7 +256,7 @@ ${ explorerHTML }
         content.value = baseContent + dots
         if (counter > 2) counter = 0
         counter++
-      }, 1000)
+      }, 600)
 
       content.style.backgroundImage = "none"
       const projectTitle = document.getElementById("project-title") || demiElement

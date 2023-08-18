@@ -18,7 +18,7 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
           details = `Workspace: ${capitalizeFirst(workspaceFolder)}<br>Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
           title = details.replaceAll("<br>", ", ").replaceAll("<b>", "")
         return`
-            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}');" >
+            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${path.basename(projectRoot)}');" >
                 <a title="${projectPathRelativeSynthesized}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
@@ -64,7 +64,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
 `}
 
 module.exports.scripts = selectedProject => {
-    const { name, projectPathRelative, credentials } = selectedProject || {}
+    const { name, projectPathRelative, credentials, projectRoot } = selectedProject || {}
     shellHandler = createShellHandler(vscode.window.activeTerminal)
     const projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
     return `
@@ -81,9 +81,12 @@ module.exports.scripts = selectedProject => {
         foldersList.style.animation = "none"
     }, 5000)
     ${selectedProject ? `
-        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${credentials}")` :""
+        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${credentials}", "${projectRoot}")` :""
     }
-    function renderProjectInfo(name, folder, credentials) {
+    function capitalizeFirst (str) {
+        return  str.charAt(0).toUpperCase() + str.slice(1)
+    }
+    function renderProjectInfo(name, folder, credentials, workspace) {
         if (!name) return
         const projectTitle = name.charAt(0).toUpperCase() + name.slice(1)
         document.getElementById("project-title").innerHTML = projectTitle
@@ -92,7 +95,8 @@ module.exports.scripts = selectedProject => {
         \${projectTitle} Environment
         </h4>
         <ol>
-            <li class="path" title="\${folder}">\${folder}</li>
+             <li class="path" title="\${folder}">\${folder}</li>
+            <li class="workspace" title="\${workspace}">\${capitalizeFirst(workspace)}</li>
         </ol>
         \`
         document.getElementById("credentials").innerHTML = \`\${credentials || ''}\`
@@ -114,8 +118,8 @@ module.exports.scripts = selectedProject => {
         })
     }
 
-    function appear(name, folder, pathRelative, credentials) {
-        renderProjectInfo(name, pathRelative, credentials)
+    function appear(name, folder, pathRelative, credentials, workspace) {
+        renderProjectInfo(name, pathRelative, credentials, workspace)
         parent.style.display = "block";
         addOverlay()
         scrollInterval = undefined

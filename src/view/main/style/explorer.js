@@ -646,31 +646,39 @@ POPUP
 }
 #project-info li {
   counter-increment: my-awesome-counter;
-  margin: 0.25rem;
+  margin: 4px 0.25rem;
 }
 #project-info li::before {
 	background: var(--vscode-badge-background);
     width: auto;
-    height: 1.4rem;
-    border-radius: 50%;
+    height: 1.7rem;
+    border-radius: 45%;
     display: inline-block;
-    line-height: 1.4rem;
+    line-height: 1.7rem;
     color: white;
     text-align: center;
     margin-right: 0.5rem;
     padding: 0;
-    min-width: 3.4em;
+    
 }
 
 #project-info li.project-name::before {
   content: "Project";
 }
-#project-info li.path::before {
-	content: "Path";
+#project-info li.path::before, #project-info li.workspace::before {
     color: var(--vscode-button-foreground);
     background: var(--vscode-button-background);
     opacity: 0.8;
 }
+#project-info li.path::before {
+	content: "Path";
+	min-width: 5.4em;
+}
+#project-info li.workspace::before {
+	content: "Workspace";
+	min-width: 6.7em;
+}
+
 #project-info ol ol li::before {
   background: #DE51FF;
 }
