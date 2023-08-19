@@ -339,6 +339,9 @@ a.command:hover, a.command, a.command:focus {
     width: 95%;
     cursor: pointer;
   }
+  #output-file-fs.matrix{
+    display: none;
+  }
   #output-file-fs:hover{
     opacity: 1;
     transition: 0.5s opacity;
