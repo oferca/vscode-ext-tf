@@ -93,7 +93,9 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             outputLogsMsg = this.redirect ? ` [ Watch Logs.](file:${this.fileHandler.outputFileVSCodePath})` : '',
             hasErrors = summary === errorStatus || summary === noCredentials,
             errTxt = `Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg),
-            warnTxt = `Terraform ${capitalized} ended with warnings. ` + summary.message + outputLogsMsg
+            errTxtPref = errTxt.replace(outputLogsMsg, ""),
+            warnTxtPref = `Terraform ${capitalized} ended with warnings. ` + summary.message,
+            warnTxt = warnTxtPref + outputLogsMsg
 
         if (hasErrors) notification = vscode.window.showErrorMessage(errTxt);
         if (summary === noCredentials) {
@@ -111,9 +113,9 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
 
         completedCallback(
             generalMessage && { type: 'info', msg: generalMessage } ||
-            hasErrors && { type: 'error', msg: errTxt} ||
-            hasWarnings && { type: 'warning', msg: warnTxt} ||
-            { type: 'success', msg: successMessage }
+            hasErrors && { type: 'error', msg: errTxtPref} ||
+            hasWarnings && { type: 'warning', msg: warnTxtPref} ||
+            { type: 'success', msg: successMessage.replace(outputLogsMsg, "") }
         )
         return notification
     }

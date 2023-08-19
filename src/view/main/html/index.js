@@ -9,7 +9,6 @@ const { capitalizeFirst } = require('../../../shared/methods');
 const { additionalText } = require('../../../shared/constants');
 const { createShellHandler } = require("../../../shared/methods-cycle");
 const { success, error, warning, info } = require('./feedback');
-const { toast } = require('./toast');
 
 module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, _missingCredentials, feedback) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
@@ -26,16 +25,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
-    shouldAlertCreds = isExplorer && tfCommand && tfCommand.indexOf("plan") > -1 && !stateManager.getState("tfCredsNotice")
-    credentials = shouldAlertCreds ? `<br>
-    <textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>
-      <ul class="wrapper">
-        <li  id="creds-tooltip" class="icon instagram">
-          <span  class="tooltip">It seems that credentials are missing or not valid. You may add a script that sets credentials.\nFor example for windows powershell:\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."
-            </span>
-            </li>
-      </ul>
-    ` : "",
+    credentials = `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>`,
     last = `
     <div class="expandable" id="display-output-2" style="display:none;">
       <h4 class="title">Result</h4>
@@ -48,31 +38,29 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     </div>
 
     `,
-    isMissingCredentials = credentials.length && _missingCredentials
+    isMissingCredentials = credentials.length && _missingCredentials,
     missingCredentials = isMissingCredentials ? `setTimeout(() => {
       const credentials = document.getElementById("credentials")
       if (!credentials) return
       credentials.scrollIntoView({ behavior: "smooth" })
       credentials.classList.toggle("blinking-border")
       setTimeout(() => credentials.classList.toggle("blinking-border"), 5000)
-    }, 1000)` : ""
+    }, 1000)` : "",
     outputContent = _outputFileContent ? _outputFileContent + (completed ? additionalText : "") : "",
-    outputFileContent = isExplorer ? `<textarea disabled id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs">&#x2922;</div>` : ""
-    overlayClass = completed ? 'active' : ""
-    overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : ""
+    outputFileContent = isExplorer ? `<textarea disabled id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs">&#x2922;</div>` : "",
+    overlayClass = completed ? 'active' : "",
+    overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : "",
     shellHandler = createShellHandler(vscode.window.activeTerminal),
     projectPathSynthesized = shellHandler.synthesizePath((selectedProject || {}).projectPath),
-    circularPBStyle = "--size: 25px; --value: 0; display: none;" // "--value: 100;" + completed ? "" : "display: none;",
+    circularPBStyle = "--size: 25px; --value: 0; display: none;", // "--value: 100;" + completed ? "" : "display: none;",
     seperator= isExplorer ? `<div class="seperator-container" ><div class="seperator" ></div></div>` : "",
-    feedbackHtml = feedback ? (
+    feedbackScript = feedback ? (
       feedback.type === "success" && success(feedback.msg) ||
       feedback.type === "info" && info(feedback.msg) ||
       feedback.type === "warning" && warning(feedback.msg) ||
       feedback.type === "error" && error(feedback.msg)
-    ): ""
+    ): "",
     x = isExplorer ? `<span class="x">&times;</span>` : ""
-
-    if (shouldAlertCreds) stateManager.updateState("tfCredsNotice", true)
     return `
 <html>
 <head>
@@ -91,6 +79,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
 
 ${ explorerHTML }
   <div class="modal-parent" id="modal-container" ${modalParentStyle}>
+  <div id="snackbar"></div>
     <div id="main-modal" class="modal ${modalAnimated}"">
     <h1 id="project-title"></h1>
     ${outputFileContent}
@@ -138,7 +127,6 @@ ${ explorerHTML }
       </div>
         </div>
         </div>
-     
           ${seperator}
           ${credentials}
         <br>
@@ -277,8 +265,7 @@ ${ explorerHTML }
     }
     ${isExplorer && explorerScripts(selectedProject) }
 
-    ${toast}
-    ${feedbackHtml}
+    ${feedbackScript}
   </script>
 
 </body>

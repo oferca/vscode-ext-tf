@@ -1,8 +1,9 @@
-module.exports.success = msg => `alertSuccess("${msg}")`
+const snackbar = (msg, type) => `var x = document.getElementById("snackbar");x.innerHTML="${msg}";x.classList.add("show", "${type}");setTimeout(function(){ x.classList.remove("show"); }, 300000);document.body.onclick = () => x.remove();`
 
-module.exports.warning = msg => `alertWarning("${msg}")`
+module.exports.success = msg => snackbar(msg, "success")
 
-module.exports.error = msg => `alertError("${msg}")`
+module.exports.warning = msg => snackbar(msg, "warning")
 
-module.exports.info = msg => `alertInfo("${msg}")`
+module.exports.error = msg => snackbar(msg, "error")
 
+module.exports.info = msg => snackbar(msg, "info")
