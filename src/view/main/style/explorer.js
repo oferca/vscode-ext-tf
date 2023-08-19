@@ -635,9 +635,10 @@ POPUP
 #project-info li{
   font-size: 14px;
   text-align: left;
-  line-height: 22px;
+  line-height: 25px;
   overflow: hidden;
   white-space: nowrap;
+  color: var(--vscode-descriptionForeground)
 }
 
 #project-info ol {
@@ -646,20 +647,16 @@ POPUP
 }
 #project-info li {
   counter-increment: my-awesome-counter;
-  margin: 4px 0.25rem;
+  margin: 19px 0.25rem 0;
 }
 #project-info li::before {
-	background: var(--vscode-badge-background);
     width: auto;
-    height: 1.7rem;
-    border-radius: 45%;
-    display: inline-block;
-    line-height: 1.7rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
     color: white;
     text-align: center;
-    margin-right: 0.5rem;
     padding: 0;
-    
+	color: var(--vscode-button-foreground);
 }
 
 #project-info li.project-name::before {
@@ -667,16 +664,16 @@ POPUP
 }
 #project-info li.path::before, #project-info li.workspace::before {
     color: var(--vscode-button-foreground);
-    background: var(--vscode-button-background);
-    opacity: 0.8;
+    position: absolute;
+    margin-top: -16px;
 }
 #project-info li.path::before {
 	content: "Path";
-	min-width: 5.4em;
+	opacity: 0.8;
 }
 #project-info li.workspace::before {
 	content: "Workspace";
-	min-width: 6.7em;
+	opacity: 0.8;
 }
 
 #project-info ol ol li::before {
