@@ -241,7 +241,11 @@ ${ explorerHTML }
         outputArea.classList.remove(...outputArea.classList);
         outputAreaFS.classList.remove("matrix");
         outputArea.classList.add("running")
-        outputArea.scrollIntoView({ behavior: "smooth" })
+        const mainModal = document.getElementById("main-modal")
+        mainModal && mainModal.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       })
       const credentials = getExplorerCredentials()
       el.classList.add('animated-button');

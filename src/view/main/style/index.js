@@ -438,16 +438,19 @@ a.command:hover, a.command, a.command:focus {
   background: transparent;
 }
 
-
-
 .wrapper .intro.activated .tooltip,
 .wrapper .intro.activated .tooltip::before {
   background: #3ad959;
   color: black;
 }
+
 .wrapper .intro:hover, .wrapper .icon:hover span{
   background: transparent;
 }
 
+u.logs{
+  cursor: pointer;
+  font-weight: 500;
+}
 
 `
