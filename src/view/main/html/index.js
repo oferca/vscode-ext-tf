@@ -25,7 +25,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
-    credentials = `<br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=... ; \n$Env:AWS_SECRET_ACCESS_KEY=..."></textarea>`,
+    credentials = `<h4 class="title env-vars">Environment Variables Script:</h4><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Enter credentials script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>`,
     last = `
     <div class="expandable" id="display-output-2" style="display:none;">
       <h4 class="title">Result</h4>
@@ -38,7 +38,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     </div>
 
     `,
-    isMissingCredentials = credentials.length && _missingCredentials,
+    isMissingCredentials = credentials.length && _missingCredentials && feedback && feedback.type === "error",
     missingCredentials = isMissingCredentials ? `setTimeout(() => {
       const credentials = document.getElementById("credentials")
       if (!credentials) return
@@ -47,7 +47,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
       setTimeout(() => credentials.classList.toggle("blinking-border"), 5000)
     }, 1000)` : "",
     outputContent = _outputFileContent ? _outputFileContent + (completed ? additionalText : "") : "",
-    outputFileContent = isExplorer ? `<textarea disabled id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs">&#x2922;</div>` : "",
+    outputFileContent = isExplorer ? `<textarea disabled class="${feedback ? feedback.type + " feedback" : "matrix" }" id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs">&#x2922;</div>` : "",
     overlayClass = completed ? 'active' : "",
     overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : "",
     shellHandler = createShellHandler(vscode.window.activeTerminal),
@@ -137,7 +137,7 @@ ${ explorerHTML }
   var currentScrollTop = 0
   var scrollInterval = undefined
   scrollOutputDown(false)
-
+  const demiElement = { value: {}, style: {}, classList: { add: () => {}, remove: () => {} } }
   
   ${isMissingCredentials ? `
     const mouseoverEvent = new Event('mouseover');
@@ -191,6 +191,7 @@ ${ explorerHTML }
     document.getElementById("project-title").style.opacity = "0"
     const content = document.getElementById("output-file")
     content.value = event.data.outputFileContent
+    content.classList.remove("matrix")
     scrollOutputDown()
     content.style.backgroundImage = "none"
     content.style.opacity = "1"
@@ -234,9 +235,14 @@ ${ explorerHTML }
       }
     }
     function launchTFCommand(tfCommand, el) {
-      const demiElement = { value: {}, style: {} }
+      setTimeout(() => {
+        const outputArea = document.getElementById("output-file") || demiElement
+        outputArea.classList.remove(...outputArea.classList);
+        outputArea.classList.add("running")
+      })
       const credentials = getExplorerCredentials()
       el.classList.add('animated-button');
+
       showLogsButton(tfCommand)
       const message = {
         tfCommand,

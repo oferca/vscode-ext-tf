@@ -66,7 +66,7 @@ h4.output{
     background-color: var(--vscode-button-secondaryBackground);
     color: var(--vscode-button-secondaryForeground);
 }
-.warning {
+#snackbar.warning-disabled {
   color: red;
   font-weight: bold;
   top: 57px;
@@ -202,6 +202,10 @@ a.command:hover, a.command, a.command:focus {
     font-size: 14px;
     text-align: center;
   }
+  h4.title.env-vars{
+    text-align: left;
+  }
+
 
   @keyframes callToActionAnim {
     0% {
@@ -329,10 +333,10 @@ a.command:hover, a.command, a.command:focus {
     margin-top: -53px;
     margin-left: 5px;
     font-size: 55px;
-    color: var(--vscode-button-foreground)
+    color: var(--vscode-button-background)
     transition: 0.5s opacity;
     opacity: 0.05;
-    width: 30%;
+    width: 95%;
     cursor: pointer;
   }
   #output-file-fs:hover{

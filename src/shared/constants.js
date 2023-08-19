@@ -192,4 +192,4 @@ module.exports.noProjectsExistsTxt = "No terraform projects were found in this w
 
 module.exports.disableShowOnStartupKey = "tfShowOnStartup"
 
-module.exports.additionalText = "* More terraform cli output in terminal."
+module.exports.additionalText = "* Watch terminal for additional output logs *"

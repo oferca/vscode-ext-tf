@@ -730,10 +730,54 @@ POPUP
 	padding: 3px;
 	margin-top: 15px;
 	border-radius: 8px;
-	background-image: url(${matrixBackground});
 	opacity: 0.4;
-	transition: 0.5s background-image;
+	transition: 0.5s border, 0.5 background-image;
 }
+#output-file.matrix{
+	background-image: url(${matrixBackground});
+	transition: 0.5s border;
+}
+
+#output-file.running{
+	--angle: 0deg;
+	border: 3px solid;
+	border-image: linear-gradient(var(--angle),  var(--vscode-button-background), var(--vscode-button-secondaryBackground)) 1;
+	animation: 10s rotate linear infinite;
+	transition: 0.5s border, 0.5 background-image;
+}
+
+@keyframes rotate {
+	to {
+		--angle: 360deg;
+	}
+}
+
+@property --angle {
+	syntax: '<angle>';
+	initial-value: 0deg;
+	inherits: false;
+}	
+
+#output-file.feedback:not(.running){
+	border-image: none;
+}
+
+#output-file.error{
+    border: 2px solid var(--vscode-editorMarkerNavigationError-background);
+}
+
+#output-file.success{
+    border: 2px solid var(--vscode-terminalCommandDecoration-successBackground);
+}
+
+#output-file.warning{
+    border: 2px solid var(--vscode-statusBarItem-warningBackground);
+}
+
+#output-file.info{
+    border: 2px solid var(--vscode-editorMarkerNavigationInfo-background); 
+}
+
 
 .project {
 	overflow-x: scroll;
