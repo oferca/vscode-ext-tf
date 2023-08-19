@@ -83,12 +83,13 @@ ${ explorerHTML }
     <div id="main-modal" class="modal ${modalAnimated}"">
     <h1 id="project-title"></h1>
     ${outputFileContent}
+    <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
+
     ${seperator}
       <div id="project-info" ${projectInfoStyle}>
       </div>
       ${seperator}
 
-      <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
 
         ${warningHTML}
         

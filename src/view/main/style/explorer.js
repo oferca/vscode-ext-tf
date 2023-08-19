@@ -723,12 +723,14 @@ POPUP
 }
 
 #output-file{
-	width: 63vw;
+	width: 62vw;
 	padding: 3px;
 	margin-top: 15px;
 	border-radius: 8px;
 	opacity: 0.4;
 	transition: 0.5s border, 0.5 background-image;
+	z-index: 9999;
+    position: relative;
 }
 #output-file.matrix{
 	background-image: url(${matrixBackground});
