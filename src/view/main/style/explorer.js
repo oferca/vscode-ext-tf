@@ -638,9 +638,27 @@ POPUP
   line-height: 25px;
   overflow: hidden;
   white-space: nowrap;
-  color: var(--vscode-descriptionForeground)
+  color: var(--vscode-descriptionForeground);
+  display: inline-table;
 }
-
+#project-info li:first-child{
+	margin-right: 20px;
+}
+#project-info li:nth-child(3){
+	margin-left: 36px;
+}
+#project-info li.seperator{
+	position: absolute;
+    border-right: 1px solid var(--vscode-menu-border);
+    height: 35px;
+    margin-top: 4px;
+	width: 0px;
+	border-bottom: none;
+}
+#project-info li:first-child::after{
+	height: 20px;
+	border-right: 1px solid var(--vscode-descriptionForeground);
+}
 #project-info ol {
   list-style: none;
   counter-reset: my-awesome-counter;
@@ -648,6 +666,7 @@ POPUP
 #project-info li {
   counter-increment: my-awesome-counter;
   margin: 19px 0.25rem 0;
+  color: var(--vscode-descriptionForeground);
 }
 #project-info li::before {
     width: auto;
@@ -706,6 +725,23 @@ POPUP
   color: var(--vscode-editor-foreground);
   word-spacing: normal;
   font-size: 14px;
+}
+
+.explorer .expandable h4.title{
+    text-align: left;
+    margin-left: 10px;
+    font-weight: 540;
+    line-height: 24px;
+}
+.explorer .expandable.seperator{
+	border-right: 1px solid var(--vscode-menu-border);
+    margin: 0px 8px;
+    margin-top: 36px;
+    width: 0px;
+    height: 140px;
+}
+.explorer .expandable.seperator.first{
+	display: none;
 }
 .explorer h1 {
   font-size: 28px;

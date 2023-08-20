@@ -158,6 +158,10 @@ a.command:hover, a.command, a.command:focus {
     justify-content: center;
     align-items: top;
     flex-wrap: wrap;
+    margin: 30px auto 20px;
+  }
+  .commands-title{
+    position: absolute;
   }
 
   .button:not(.disabled):hover {
@@ -230,7 +234,7 @@ a.command:hover, a.command, a.command:focus {
   }
 
   #project-info{
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   #project-info li.path, #project-info li.workspace{
     text-align: left;

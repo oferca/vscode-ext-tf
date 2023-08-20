@@ -10,6 +10,8 @@ const { additionalText } = require('../../../shared/constants');
 const { createShellHandler } = require("../../../shared/methods-cycle");
 const { success, error, warning, info } = require('./feedback');
 
+let firstSeperator
+
 module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, _missingCredentials, feedback) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
@@ -25,7 +27,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
-    credentials = `<h4 class="title env-vars">Environment Variables Script:</h4><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[OPTIONAL - Can also be set in terminal]\nEnter environment variables setting script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>`,
+    credentials = `<h4 class="title env-vars">Environment Variables Script</h4><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[OPTIONAL - Can also be set in terminal]\nEnter environment variables setting script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>`,
     last = `
     <div class="expandable" id="display-output-2" style="display:none;">
       <h4 class="title">Result</h4>
@@ -89,12 +91,12 @@ ${ explorerHTML }
       <div id="project-info" ${projectInfoStyle}>
       </div>
       ${seperator}
-
-
         ${warningHTML}
-        
           ${x}
         <div id="main-container">
+        <h4 title="Terraform Commands" class="commands-title">
+        Commands
+        </h4>
           <div class="button-container">
             <div class="expandable">
             ${ actions.concat("last").map(action => {
@@ -114,12 +116,15 @@ ${ explorerHTML }
               <span></span>
               <span></span>
               ${action.label}
-              </div>
-            
+              </div>          
               `)
             const strongSeperator = action.kind === -1 && (action.seperatorType !== "weak" || !isExplorer)
             const weakSeperator = action.kind === -1 && action.seperatorType === "weak" && isExplorer
-            if (strongSeperator) return ('</div><div class="expandable"><h4 class="title">' + action.label + '</h4>' )
+            if (strongSeperator) {
+              const seperatorClass = !firstSeperator ? "first" : ""
+              firstSeperator = true
+              return (`</div><div class="expandable ${seperatorClass} seperator"></div><div class="expandable"><h4 class="title">` + action.label + '</h4>' )
+            }
             if (weakSeperator) return ('<h4 class="title">' + action.label + '</h4>' )
             if (action === "last") return last
 

@@ -94,11 +94,12 @@ module.exports.scripts = selectedProject => {
         const projectCredsEl = document.getElementById("credentials") || { style: {} }
         projectTitleEl.innerHTML = projectTitle
         projectInfoEl.innerHTML = \`
-        <h4 title="\${name}">
-        \${projectTitle} Environment
+        <h4 title="\${name} project">
+        \${projectTitle} Project
         </h4>
         <ol>
              <li class="path" title="\${folder}">\${folder}</li>
+             <li class="seperator"></li>
             <li class="workspace" title="\${workspace}">\${capitalizeFirst(workspace)}</li>
         </ol>
         \`

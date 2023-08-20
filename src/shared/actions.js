@@ -41,7 +41,7 @@ module.exports.getActions = stateManager => {
         },
         { handler: ChatGPTHandler, label: "ChatGPT Synopsis", icon: "$(ports-open-browser-icon)", menuOnly: true },
         {
-            label: 'Terraform Commands',
+            label: 'Terraform Actions',
             kind: vscode.QuickPickItemKind.Separator
         },
         { handler: TerraformInitHandler, label: "Init", icon: "$(extensions-install-count)" },
