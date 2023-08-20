@@ -705,7 +705,10 @@ POPUP
 .explorer h4 {
   color: var(--vscode-editor-foreground);
   word-spacing: normal;
-  font-size: 15px;
+  font-size: 14px;
+}
+.explorer h1 {
+  font-size: 28px;
 }
 
 #credentials{
@@ -731,6 +734,7 @@ POPUP
 	transition: 0.5s border, 0.5 background-image;
 	z-index: 9999;
     position: relative;
+	box-shadow: 0.5px 0.5px 1px var(--vscode-editor-foreground);
 }
 #output-file.matrix{
 	background-image: url(${matrixBackground});
