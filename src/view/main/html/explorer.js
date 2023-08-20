@@ -94,7 +94,7 @@ module.exports.scripts = selectedProject => {
         const projectCredsEl = document.getElementById("credentials") || { style: {} }
         projectTitleEl.innerHTML = projectTitle
         projectInfoEl.innerHTML = \`
-        <h4 title="\${name} project">
+        <h4 title="\${name} project" class="section-title">
         \${projectTitle} Project
         </h4>
         <ol>

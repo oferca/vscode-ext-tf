@@ -158,7 +158,7 @@ a.command:hover, a.command, a.command:focus {
     justify-content: center;
     align-items: top;
     flex-wrap: wrap;
-    margin: 30px auto 20px;
+    margin: 42px auto 20px;
   }
   .commands-title{
     position: absolute;
@@ -233,9 +233,6 @@ a.command:hover, a.command, a.command:focus {
     z-index: 99;
   }
 
-  #project-info{
-    margin-bottom: 10px;
-  }
   #project-info li.path, #project-info li.workspace{
     text-align: left;
   }
@@ -355,13 +352,13 @@ a.command:hover, a.command, a.command:focus {
  
   .seperator{
     width: 63vw;
-    border-bottom: 1px var(--vscode-menu-border) solid;
+    border-bottom: 1px var(--vscode-notifications-border) solid;
     height: 3px;
+    margin: 12px 0px;
   }
   .seperator-container {
     display: flex;
     justify-content: left;
-    margin-bottom: 8px;
   }
   
 

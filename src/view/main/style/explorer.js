@@ -649,7 +649,7 @@ POPUP
 }
 #project-info li.seperator{
 	position: absolute;
-    border-right: 1px solid var(--vscode-menu-border);
+    border-right: 1px solid var(--vscode-notifications-border);
     height: 35px;
     margin-top: 4px;
 	width: 0px;
@@ -733,8 +733,19 @@ POPUP
     font-weight: 540;
     line-height: 24px;
 }
+.explorer h4.section-title{
+    color: var(--vscode-editor-foreground);
+    word-spacing: normal;
+    font-size: 14px;
+    background: var(--vscode-editorPane-background);
+    margin-top: -12px;
+    padding: 5px;
+    width: 62vw;
+	border-bottom: 1px var(--vscode-notifications-border) solid;
+	margin-bottom: 13px;
+}
 .explorer .expandable.seperator{
-	border-right: 1px solid var(--vscode-menu-border);
+	border-right: 1px solid var(--vscode-notifications-border);
     margin: 0px 8px;
     margin-top: 36px;
     width: 0px;
@@ -749,8 +760,9 @@ POPUP
 
 #credentials{
 	padding: 3px;
-	width: 50vw;
-	margin-top: -10px;
+	width: 62vw;
+	margin-top: -20px;
+	border: 1px solid var(--vscode-notifications-border);
 
 }
 #credentials, #output-file{
@@ -770,7 +782,7 @@ POPUP
 	transition: 0.5s border, 0.5 background-image;
 	z-index: 9999;
     position: relative;
-	box-shadow: 0.5px 0.5px 1px var(--vscode-editor-foreground);
+	box-shadow: 0.5px 0.5px 1px var(--vscode-notifications-border);
 }
 #output-file.matrix{
 	background-image: url(${matrixBackground});

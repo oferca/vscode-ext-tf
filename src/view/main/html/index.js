@@ -10,13 +10,11 @@ const { additionalText } = require('../../../shared/constants');
 const { createShellHandler } = require("../../../shared/methods-cycle");
 const { success, error, warning, info } = require('./feedback');
 
-let firstSeperator
-
 module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, _missingCredentials, feedback) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
-    projectInfoStyle = `style="display: ${isExplorer ? 'block' : 'none'};"`,
+    projectInfoStyle = `style="display: ${isExplorer ? 'block' : 'none'}; margin-top: 20px;"`,
     modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,
     explorerHTML = isExplorer ? getExplorerHTML(explorerParams, completed, withAnimation, stateManager) : '',
     modalAnimated = !completed ? 'animated' : '',
@@ -27,7 +25,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
-    credentials = `<h4 class="title env-vars">Environment Variables Script</h4><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[OPTIONAL - Can also be set in terminal]\nEnter environment variables setting script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>`,
+    credentials = `<h4 class="title env-vars section-title">Environment Variables Script</h4><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[OPTIONAL - Can also be set in terminal]\nEnter environment variables setting script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>`,
     last = `
     <div class="expandable" id="display-output-2" style="display:none;">
       <h4 class="title">Result</h4>
@@ -63,6 +61,8 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
       feedback.type === "error" && error(feedback.msg)
     ): "",
     x = isExplorer ? `<span class="x">&times;</span>` : ""
+    let firstSeperator
+
     return `
 <html>
 <head>
@@ -86,15 +86,13 @@ ${ explorerHTML }
     <h1 id="project-title"></h1>
     ${outputFileContent}
     <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
-
-    ${seperator}
       <div id="project-info" ${projectInfoStyle}>
       </div>
       ${seperator}
         ${warningHTML}
           ${x}
         <div id="main-container">
-        <h4 title="Terraform Commands" class="commands-title">
+        <h4 title="Terraform Commands" class="commands-title section-title">
         Commands
         </h4>
           <div class="button-container">
