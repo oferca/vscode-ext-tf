@@ -327,7 +327,7 @@ a.command:hover, a.command, a.command:focus {
   #circular-pb{
     position: absolute;
     right: 9vw;
-    margin-top: 20px;
+    margin-top: 60px;
   }
 
   #output-file-fs{
