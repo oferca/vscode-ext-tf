@@ -704,6 +704,7 @@ POPUP
 
 .explorer .button-container{
   justify-content: left;
+  margin: 42px auto 20px;
 }
 
 .explorer #display-output-21{
@@ -898,4 +899,17 @@ POPUP
     transform: rotate(45deg);
   }
   
+  #filemanager .data li.folders.current::before{
+	content: "\\3E";
+    position: absolute;
+    top: 42px;
+    left: 51px;
+    color: white;
+    z-index: 9999;
+    font-size: 22px;
+    transform: scaleY(1.5);
+  }
+  #filemanager .data li.folders.current{
+	/*background-color: #2c4a62;*/
+  }
 `

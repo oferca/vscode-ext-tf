@@ -6,19 +6,19 @@ const { credentialsSetText, disableShowOnStartupKey } = require('../../../shared
 
 const folders = (list, stateManager) => list && list.sort(sortProjects).map(
     project => {
-        const { projectPath, projectPathRelative, name, regions, projectRoot } = project,
+        const { current, projectPath, projectPathRelative, name, regions, projectRoot } = project,
           namespacedCredentialsKey = getNamespacedCredentialsKey(projectPath),
           credentials = stateManager.getState(namespacedCredentialsKey),
           credentialsTxt = credentials && credentials.length ? credentialsSetText : "",
           shellHandler = createShellHandler(vscode.window.activeTerminal),
           projectPathSynthesized = shellHandler.synthesizePath(projectPath),
           projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative),
-          workspaceFolder = path.basename(projectRoot),
-          regionsStr = regions.length ? `Regions: ${regions.join(', ')}. ` : "", 
-          details = `Workspace: ${capitalizeFirst(workspaceFolder)}<br>Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
+          workspaceFolder = current ? "." : path.basename(projectRoot),
+          regionsStr = current ? "": regions.length ? `Regions: ${regions.join(', ')}. ` : "", 
+          details = current ? "Run commands in current folder" : `Workspace: ${capitalizeFirst(workspaceFolder)}<br>Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
           title = details.replaceAll("<br>", ", ").replaceAll("<b>", "")
         return`
-            <li class="folders" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${path.basename(projectRoot)}');" >
+            <li class="folders ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : path.basename(projectRoot)}');" >
                 <a title="${projectPathRelativeSynthesized}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
@@ -81,7 +81,7 @@ module.exports.scripts = selectedProject => {
         foldersList.style.animation = "none"
     }, 5000)
     ${selectedProject ? `
-        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${credentials}", "${projectRoot}")` :""
+        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${credentials}", "${projectRoot || ""}")` :""
     }
     function capitalizeFirst (str) {
         return  str.charAt(0).toUpperCase() + str.slice(1)
@@ -92,15 +92,16 @@ module.exports.scripts = selectedProject => {
         const projectTitleEl = document.getElementById("project-title") || {}
         const projectInfoEl = document.getElementById("project-info") || {}
         const projectCredsEl = document.getElementById("credentials") || { style: {} }
+        const currentStyle = !workspace || workspace === "Active Terminal" ? "display: none;" : ""
         projectTitleEl.innerHTML = projectTitle
         projectInfoEl.innerHTML = \`
-        <h4 title="\${name} project" class="section-title">
+        <h4 style="\${currentStyle}" title="\${name} project" class="section-title">
         \${projectTitle} Project
         </h4>
         <ol>
              <li class="path" title="\${folder}">\${folder}</li>
-             <li class="seperator"></li>
-            <li class="workspace" title="\${workspace}">\${capitalizeFirst(workspace)}</li>
+             <li style="\${currentStyle}" class="seperator"></li>
+             <li style="\${currentStyle}" class="workspace" title="\${workspace}">\${workspace ? capitalizeFirst(workspace) : ""}</li>
         </ol>
         \`
         projectCredsEl.innerHTML = \`\${credentials || ''}\`
@@ -111,14 +112,11 @@ module.exports.scripts = selectedProject => {
         projectCredsEl.style.color = "var(--vscode-editorOverviewRuler-currentContentForeground)"
         projectCredsEl.style.fontWeight = "bold"
     }
-    let overlay
+    
     function addOverlay(){
         setTimeout(() => {
-            overlay = document.createElement('div');
-            overlay.id = "overlay"
-            overlay.style.height = document.body.clientHeight + "px"
-            document.body.appendChild(overlay);
-            setTimeout(() => overlay.classList.add("active"))
+            const modalContainer = document.getElementById("modal-container")
+            modalContainer.style.backgroundColor = "rgba(0, 0, 0, 0.9)"
         })
     }
 
@@ -130,9 +128,11 @@ module.exports.scripts = selectedProject => {
     }
 
     function removeOverlay(){
-        overlay.classList.remove("active")
-        overlay.style.height = 0
-        setTimeout(overlay.remove, 600)
+        
+        setTimeout(() => {
+            const modalContainer = document.getElementById("modal-container")
+            modalContainer.style.backgroundColor = "#0e3858"
+        }, 600)
     }
 
     function disappearX() {

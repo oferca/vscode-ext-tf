@@ -158,7 +158,6 @@ a.command:hover, a.command, a.command:focus {
     justify-content: center;
     align-items: top;
     flex-wrap: wrap;
-    margin: 42px auto 20px;
   }
   .commands-title{
     position: absolute;
@@ -455,4 +454,7 @@ u.logs{
   font-weight: 500;
 }
 
+#modal-container{
+  transition: 0.5s background;
+}
 `

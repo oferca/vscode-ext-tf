@@ -25,7 +25,8 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
     chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
     chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
-    credentials = `<h4 class="title env-vars section-title">Environment Variables Script</h4><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[OPTIONAL - Can also be set in terminal]\nEnter environment variables setting script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>`,
+    credentials = isExplorer ? `<h4 class="title env-vars section-title">Environment Variables Script</h4><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[OPTIONAL - Can also be set in terminal]\nEnter environment variables setting script. For example:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>` : "",
+    commandsTitle = isExplorer ? `<h4 title="Terraform Commands" class="commands-title section-title">Commands</h4>` : ""
     last = `
     <div class="expandable" id="display-output-2" style="display:none;">
       <h4 class="title">Result</h4>
@@ -92,9 +93,7 @@ ${ explorerHTML }
         ${warningHTML}
           ${x}
         <div id="main-container">
-        <h4 title="Terraform Commands" class="commands-title section-title">
-        Commands
-        </h4>
+        ${commandsTitle}
           <div class="button-container">
             <div class="expandable">
             ${ actions.concat("last").map(action => {

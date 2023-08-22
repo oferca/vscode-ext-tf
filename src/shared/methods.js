@@ -133,7 +133,7 @@ module.exports.getLogFileName = () => {
 	return path.join(rootFolder, "run.log")
 }
 
-module.exports.unsupportedShellNote = terminal => `For best terraform experience please use a supported shell: Powershell or Bash based terminal. Current terminal: "${terminal.name}".`
+module.exports.unsupportedShellNote = terminal => `For best terraform experience please use a supported shell: Powershell or Bash based terminal. Active Terminal: "${terminal.name}".`
 
 module.exports.handleDeactivation = () => {
     const logFileName = getOSFileName()
@@ -237,7 +237,16 @@ module.exports.getProjectsCache = async (tfProjectsCache) => {
         result = Object.assign(result, tfFiles)
     }
 
-    return Object.keys(result).filter(x => result[x].isProject).map(x => result[x])
+    const currentTerminal = {
+        name: "Active Terminal",
+        current: true,
+        lastModifiedTimestamp: Date.now(),
+        projectPath: ".",
+        path: ".",
+        projectPathRelative: ".",
+    }
+
+    return [currentTerminal].concat(Object.keys(result).filter(x => result[x].isProject).map(x => result[x]))
 }
 
 module.exports.capitalizeFirst = str => str.charAt(0).toUpperCase() + str.slice(1)
