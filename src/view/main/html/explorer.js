@@ -52,8 +52,8 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
   </script>
 
       <div id="filemanager" >
-      <div class="breadcrumbs"><span class="folderName">Terraform Projects</span></div>
-      <div class="breadcrumbs "><span class="folderName">Click To Select</span></div>
+      <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} "><span class="folderName">One-Click Command Runner </span></div>
+      <br><br><div class="breadcrumbs"><span class="folderName">Select A Terraform Project</span></div>
 
       <ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list, stateManager)}
@@ -90,7 +90,7 @@ module.exports.scripts = selectedProject => {
         const projectInfoEl = document.getElementById("project-info") || {}
         const projectCredsEl = document.getElementById("credentials") || { style: {} }
         const isCurrentTerminal = !workspace || workspace === "Active Terminal"
-        const folderTitle = isCurrentTerminal ? "Active Terminal Folder" : folder
+        const folderTitle = isCurrentTerminal ? "Active Terminal Path" : folder
         const currentStyle = isCurrentTerminal ? "display: none;" : ""
         projectTitleEl.innerHTML = projectTitle
         projectInfoEl.innerHTML = \`

@@ -49,6 +49,7 @@ body {
 	position: relative;
 	margin: 100px auto 50px;
   text-align: left;
+  margin-top: 63px;	
 }
 
 @media all and (max-width: 965px) {
@@ -62,6 +63,40 @@ body {
 /*-------------------------
 	Breadcrumps
 -------------------------*/
+
+
+
+#filemanager .breadcrumbs.header {
+    background:  linear-gradient(to right,  white, var(--vscode-textLink-foreground), var(--vscode-textLink-foreground), var(--vscode-textLink-foreground), white);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 500% auto;
+    background-position: 150% center;
+    background-repeat: no-repeat;
+	text-align: center;
+	font-size: 32px;
+	margin-top: 33px;
+}
+#filemanager .breadcrumbs.header.anim-text {
+	animation: h1anim 8s linear forwards;
+}
+#filemanager .breadcrumbs.header.static {
+	background: auto;
+	-webkit-text-fill-color: none;
+	font-size: auto;
+}
+@keyframes h1anim {
+    from {
+        background-position: 150% center;
+    }
+    to {
+        background-position: 0 center;
+      }
+}
+
+
+
 
 
 #filemanager .breadcrumbs {
@@ -170,7 +205,7 @@ body {
 -------------------------*/
 
 #filemanager .data {
-	margin-top: 60px;
+	margin-top: 40px;
 	z-index: -3;
 }
 
