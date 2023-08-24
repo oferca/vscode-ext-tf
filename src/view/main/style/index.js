@@ -457,4 +457,8 @@ u.logs{
 #modal-container{
   transition: 0.5s background;
 }
+.desc{
+  font-size: 14px;
+  margin-left: 5px;
+}
 `

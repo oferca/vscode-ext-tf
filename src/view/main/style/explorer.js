@@ -914,14 +914,14 @@ POPUP
   }
   .button-pulse {
 	animation: pulse infinite cubic-bezier(0.25, 0, 0, 1);
-	animation-duration: 7s;
-	animation-delay: 5s;
+	animation-duration: 11s;
+	animation-delay: 3s;
   }
   @keyframes pulse {
-	0%, 30.0001%, 100%{
+	0%, 18.0001%, 100%{
 		box-shadow: 0 0 0 0 white;
 	}
-	30%{
+	18%{
 		box-shadow: 0 0 0 14px rgba(255, 255, 255, 0); 
 	}
   }
