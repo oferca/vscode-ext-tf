@@ -75,7 +75,7 @@ body {
     background-position: 150% center;
     background-repeat: no-repeat;
 	text-align: center;
-	font-size: 32px;
+	font-size: 30px;
 	margin-top: 33px;
 }
 #filemanager .breadcrumbs.header.anim-text {
@@ -83,7 +83,7 @@ body {
 }
 #filemanager .breadcrumbs.header.static {
 	background: auto;
-	-webkit-text-fill-color: none;
+	-webkit-text-fill-color: inherit;
 	font-size: auto;
 }
 @keyframes h1anim {
@@ -95,12 +95,8 @@ body {
       }
 }
 
-
-
-
-
 #filemanager .breadcrumbs {
-	color: #ffffff;
+	color: #e7e7e9;
 	margin-left:20px;
 	font-size: 24px;
 	font-weight: 700;
@@ -108,7 +104,7 @@ body {
 }
 
 #filemanager .breadcrumbs a:link, .breadcrumbs a:visited {
-	color: #ffffff;
+	color: #e7e7e9;
 	text-decoration: none;
 }
 

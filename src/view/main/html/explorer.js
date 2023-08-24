@@ -52,7 +52,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
   </script>
 
       <div id="filemanager" >
-      <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} "><span class="folderName">One-Click Command Runner </span></div>
+      <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} "><span class="folderName">One-Click Terraform Commands Runner </span></div>
       <br><br><div class="breadcrumbs"><span class="folderName">Select A Terraform Project</span></div>
 
       <ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">
