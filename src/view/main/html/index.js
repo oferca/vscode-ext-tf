@@ -140,7 +140,6 @@ ${ explorerHTML }
   var currentScrollTop = 0
   var scrollInterval = undefined
   scrollOutputDown(false)
-  const demiElement = { value: {}, style: {}, classList: { add: () => {}, remove: () => {}, scrollIntoView: () => {} } }
   
   ${isMissingCredentials ? `
     const mouseoverEvent = new Event('mouseover');

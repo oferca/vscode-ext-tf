@@ -66,7 +66,6 @@ module.exports.scripts = selectedProject => {
     shellHandler = createShellHandler(vscode.window.activeTerminal)
     const projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
     return `
-    
     var parent = document.querySelector(".modal-parent")
     X = document.querySelector(".x")
     X.addEventListener("click", disappearX);
@@ -90,14 +89,16 @@ module.exports.scripts = selectedProject => {
         const projectTitleEl = document.getElementById("project-title") || {}
         const projectInfoEl = document.getElementById("project-info") || {}
         const projectCredsEl = document.getElementById("credentials") || { style: {} }
-        const currentStyle = !workspace || workspace === "Active Terminal" ? "display: none;" : ""
+        const isCurrentTerminal = !workspace || workspace === "Active Terminal"
+        const folderTitle = isCurrentTerminal ? "Active Terminal Folder" : folder
+        const currentStyle = isCurrentTerminal ? "display: none;" : ""
         projectTitleEl.innerHTML = projectTitle
         projectInfoEl.innerHTML = \`
         <h4 style="\${currentStyle}" title="\${name} project" class="section-title">
         \${projectTitle} Project
         </h4>
         <ol>
-             <li class="path" title="\${folder}">\${folder}</li>
+             <li class="path" title="\${folder}">\${folderTitle}</li>
              <li style="\${currentStyle}" class="seperator"></li>
              <li style="\${currentStyle}" class="workspace" title="\${workspace}">\${workspace ? capitalizeFirst(workspace) : ""}</li>
         </ol>
@@ -121,6 +122,12 @@ module.exports.scripts = selectedProject => {
     function appear(name, folder, pathRelative, credentials, workspace) {
         renderProjectInfo(name, pathRelative, credentials, workspace)
         parent.style.display = "block";
+        const circularProgressBar1 = document.getElementById("circular-pb")
+        if (circularProgressBar1 && workspace === "Active Terminal") {
+          circularProgressBar1.classList.add("active-terminal")
+        }else {
+          circularProgressBar1.classList.remove("active-terminal")
+        }
         addOverlay()
         scrollInterval = undefined
     }

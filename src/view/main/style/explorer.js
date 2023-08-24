@@ -645,15 +645,16 @@ POPUP
 	margin-right: 20px;
 }
 #project-info li:nth-child(3){
-	margin-left: 36px;
+	/*margin-left: -10px;*/
 }
 #project-info li.seperator{
-	position: absolute;
+	position: relative;
     border-right: 1px solid var(--vscode-notifications-border);
     height: 35px;
-    margin-top: 4px;
-	width: 0px;
-	border-bottom: none;
+    top: 6px;
+    width: 0px;
+    border-bottom: none;
+    right: 7px;
 }
 #project-info li:first-child::after{
 	height: 20px;
@@ -743,7 +744,6 @@ POPUP
     padding: 5px;
     width: 62vw;
 	border-bottom: 1px var(--vscode-notifications-border) solid;
-	margin-bottom: 13px;
 }
 .explorer .expandable.seperator{
 	border-right: 1px solid var(--vscode-notifications-border);

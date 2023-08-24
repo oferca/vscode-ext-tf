@@ -323,10 +323,13 @@ a.command:hover, a.command, a.command:focus {
     color: var(--primary);
   }
 
+  #circular-pb.active-terminal{
+    margin-top: 10px;
+  }
   #circular-pb{
     position: absolute;
     right: 9vw;
-    margin-top: 60px;
+    margin-top: -5px;
   }
 
   #output-file-fs{
