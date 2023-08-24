@@ -18,7 +18,7 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
           details = current ? "Run commands in current folder" : `Workspace: ${capitalizeFirst(workspaceFolder)}<br>Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
           title = details.replaceAll("<br>", ", ").replaceAll("<b>", "")
         return`
-            <li class="folders ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : path.basename(projectRoot)}');" >
+            <li class="button-pulse folders ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : path.basename(projectRoot)}');" >
                 <a title="${projectPathRelativeSynthesized}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
@@ -52,14 +52,12 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
   </script>
 
       <div id="filemanager" >
-		<div class="breadcrumbs"><span class="folderName">Terraform Projects</span></div>
-		<ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">
+      <div class="breadcrumbs"><span class="folderName">Terraform Projects</span></div>
+      <div class="breadcrumbs "><span class="folderName">Click To Select</span></div>
+
+      <ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list, stateManager)}
         </ul>
-		<div class="nothingfound" style="display: none;">
-			<div class="nofiles"></div>
-			<span>No files here.</span>
-		</div>
 	</div>
 `}
 
