@@ -152,7 +152,7 @@ class WebViewManager {
       await this.updateProjectsCache()
       if (!tfProjectsCache) return
       const { subscriptions } = this.context,
-      missingProjects = !tfProjectsCache || !tfProjectsCache.length
+      missingProjects = !tfProjectsCache || !tfProjectsCache.length < 2
       if (missingProjects) return // vscode.window.showInformationMessage(noProjectsExistsTxt)
 
       const panel = createWebviewPanel()
