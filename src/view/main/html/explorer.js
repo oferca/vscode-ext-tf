@@ -86,13 +86,11 @@ module.exports.scripts = selectedProject => {
     function renderProjectInfo(name, folder, credentials, workspace) {
         if (!name) return
         const projectTitle = name.charAt(0).toUpperCase() + name.slice(1)
-        const projectTitleEl = document.getElementById("project-title") || {}
         const projectInfoEl = document.getElementById("project-info") || {}
         const projectCredsEl = document.getElementById("credentials") || { style: {} }
         const isCurrentTerminal = !workspace || workspace === "Active Terminal"
         const folderTitle = isCurrentTerminal ? "Active Terminal Path" : folder
         const currentStyle = isCurrentTerminal ? "display: none;" : ""
-        projectTitleEl.innerHTML = projectTitle
         projectInfoEl.innerHTML = \`
         <h4 style="\${currentStyle}" title="\${name} project" class="section-title">
         \${projectTitle} Project

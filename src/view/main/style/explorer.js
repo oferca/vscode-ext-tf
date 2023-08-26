@@ -80,15 +80,23 @@ body {
 }
 #filemanager .breadcrumbs.header.anim-text {
 	animation: h1anim 8s linear forwards;
+
 }
 #filemanager .breadcrumbs.header.static {
-	background: auto;
-	-webkit-text-fill-color: inherit;
+	animation: h1animstatic 8s linear forwards;
 	font-size: auto;
 }
 @keyframes h1anim {
     from {
         background-position: 150% center;
+    }
+    to {
+        background-position: 0 center;
+      }
+}
+@keyframes h1animstatic {
+    from {
+        background-position: 100% center;
     }
     to {
         background-position: 0 center;
@@ -736,7 +744,7 @@ POPUP
 
 .explorer .button-container{
   justify-content: left;
-  margin: 42px auto 20px;
+  margin: 42px auto 0px;
 }
 
 .explorer #display-output-21{
@@ -781,7 +789,6 @@ POPUP
     margin: 0px 8px;
     margin-top: 36px;
     width: 0px;
-    height: 140px;
 }
 .explorer .expandable.seperator.first{
 	display: none;
@@ -806,9 +813,9 @@ POPUP
 }
 
 #output-file{
-	width: 62vw;
+	width: 40vw;
 	padding: 3px;
-	margin-top: 15px;
+	margin-top: 32px;
 	border-radius: 8px;
 	opacity: 0.4;
 	transition: 0.5s border, 0.5 background-image;

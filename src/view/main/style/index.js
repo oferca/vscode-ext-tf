@@ -223,15 +223,6 @@ a.command:hover, a.command, a.command:focus {
     }
   }
 
-  #project-title{
-    position: absolute;
-    margin-top: 51px;
-    left: 45px;
-    opacity: 0.9;
-    transition: 0.5s all;
-    z-index: 99;
-  }
-
   #project-info li.path, #project-info li.workspace{
     text-align: left;
   }
@@ -464,4 +455,30 @@ u.logs{
   font-size: 14px;
   margin-left: 5px;
 }
+
+.accordion {
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  outline: none;
+}
+.accordion.parameters{
+  margin-top: 20px;
+}
+
+.accordion::before{
+  content: "► ";
+  font-size: 11px;
+}
+.accordion.active::before{
+  content: "▼ ";
+  font-size: 11px;
+}
+
+.panel {
+  overflow: hidden;
+  height: 0px;
+  transition: 0.25s all;
+}
+
 `

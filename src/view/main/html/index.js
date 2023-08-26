@@ -28,16 +28,16 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     credentials = isExplorer ? `<h4 class="title env-vars section-title">Environment Variables Script</h4><div class="desc">Set required variables here or in terminal.</div><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="Example script:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>` : "",
     commandsTitle = isExplorer ? `<h4 title="Terraform Commands" class="commands-title section-title">Commands</h4>` : ""
     last = `
-    <div class="expandable" id="display-output-2" style="display:none;">
-      <h4 class="title">Result</h4>
-      <button id="watch-logs-button" class="command button output ${disableLogs} " onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)">
-        <div id="watch-logs" class="${disabledButtonLogs}" onclick="this.classList.remove('animated-button-text')">${logsButtonText} Logs</div>
-      </button>
-      <button class="command button output chat-gpt ${isChatGPTDisabled}" onclick="this.classList.remove('animated-button-text');postMessageFromWebview(\'chat-gpt\', IS_EXPLORER)" title="${chatGPTTitle}">
-        <div id="chat-gpt" class="${chatGPTAnimation}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
-      </button>
+      <div class="expandable" id="display-output-2" style="display:none;">
+        <h4 class="title">Result</h4>
+        <button id="watch-logs-button" class="command button output ${disableLogs} " onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)">
+          <div id="watch-logs" class="${disabledButtonLogs}" onclick="this.classList.remove('animated-button-text')">${logsButtonText} Logs</div>
+        </button>
+        <button class="command button output chat-gpt ${isChatGPTDisabled}" onclick="this.classList.remove('animated-button-text');postMessageFromWebview(\'chat-gpt\', IS_EXPLORER)" title="${chatGPTTitle}">
+          <div id="chat-gpt" class="${chatGPTAnimation}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
+        </button>
+      </div>
     </div>
-
     `,
     isMissingCredentials = credentials.length && _missingCredentials && feedback && feedback.type === "error",
     missingCredentials = isMissingCredentials ? `setTimeout(() => {
@@ -48,7 +48,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
       setTimeout(() => credentials.classList.toggle("blinking-border"), 5000)
     }, 1000)` : "",
     outputContent = _outputFileContent ? _outputFileContent + (completed ? additionalText : "") : "",
-    outputFileContent = isExplorer ? `<textarea disabled class="${feedback ? feedback.type + " feedback" : "matrix" }" id="output-file" name="output-file" rows="7" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs" class="${!feedback ? "matrix" : "" }" >&#x2922;</div>` : "",
+    outputFileContent = isExplorer ? `<textarea disabled class="${feedback ? feedback.type + " feedback" : "matrix" }" id="output-file" name="output-file" rows="9" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs" class="${!feedback ? "matrix" : "" }" >&#x2922;</div>` : "",
     overlayClass = completed ? 'active' : "",
     overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : "",
     shellHandler = createShellHandler(vscode.window.activeTerminal),
@@ -84,8 +84,6 @@ ${ explorerHTML }
   <div class="modal-parent" id="modal-container" ${modalParentStyle}>
   <div id="snackbar"></div>
     <div id="main-modal" class="modal ${modalAnimated}"">
-    <h1 id="project-title"></h1>
-    ${outputFileContent}
     <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
       <div id="project-info" ${projectInfoStyle}>
       </div>
@@ -119,8 +117,12 @@ ${ explorerHTML }
             const weakSeperator = action.kind === -1 && action.seperatorType === "weak" && isExplorer
             if (strongSeperator) {
               const seperatorClass = !firstSeperator ? "first" : ""
-              firstSeperator = true
-              return (`</div><div class="expandable ${seperatorClass} seperator"></div><div class="expandable"><h4 class="title">` + action.label + '</h4>' )
+              firstSeperator = (firstSeperator || 0) + 1
+              const terminal = firstSeperator == 2 ? `<div class="expandable">${outputFileContent}</div>
+              <div class="accordion desc parameters">Actions With Parameters</div>
+                <div class="panel">
+              ` : "" 
+              return (`</div><div class="expandable ${seperatorClass} seperator"></div>${terminal}<div class="expandable"><h4 class="title">` + action.label + '</h4>' )
             }
             if (weakSeperator) return ('<h4 class="title">' + action.label + '</h4>' )
             if (action === "last") return last
@@ -131,7 +133,12 @@ ${ explorerHTML }
         </div>
         </div>
           ${seperator}
-          ${credentials}
+          <div class="accordion desc">Set Credentials</div>
+            <div class="panel">
+            <br>
+
+              ${credentials}
+          </div>
         <br>
     </div>
   </div>
@@ -140,6 +147,22 @@ ${ explorerHTML }
   var currentScrollTop = 0
   var scrollInterval = undefined
   scrollOutputDown(false)
+
+  var acc = document.getElementsByClassName("accordion");
+  var i;
+
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.height === "200px") {
+        panel.style.height = "0px"
+      } else {
+        panel.style.height = "200px"
+      }
+    });
+  }
+
   
   ${isMissingCredentials ? `
     const mouseoverEvent = new Event('mouseover');
@@ -173,7 +196,6 @@ ${ explorerHTML }
     if (!content.value || content.value.length < 60) return
     content.style.backgroundImage = "none"
     content.style.opacity = "1"
-    document.getElementById("project-title").style.opacity = "0"
   }
 
   let maxPercentage = 0
@@ -190,7 +212,6 @@ ${ explorerHTML }
     const { completionPercentage, outputFileContent } = event.data
     if (completionPercentage) setTimeout(() => updateCompletionPercentage(completionPercentage))
     if (!outputFileContent) return
-    document.getElementById("project-title").style.opacity = "0"
     const content = document.getElementById("output-file")
     content.value = event.data.outputFileContent
     content.classList.remove("matrix")
@@ -244,10 +265,6 @@ ${ explorerHTML }
         outputAreaFS.classList.remove("matrix");
         outputArea.classList.add("running")
         const mainModal = document.getElementById("main-modal")
-        mainModal && mainModal.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
       })
       const credentials = getExplorerCredentials()
       el.classList.add('animated-button');
@@ -275,8 +292,6 @@ ${ explorerHTML }
       }, 600)
 
       content.style.backgroundImage = "none"
-      const projectTitle = document.getElementById("project-title") || demiElement
-      if (projectTitle) projectTitle.style.opacity = "0"
     }
     ${isExplorer && explorerScripts(selectedProject) }
 
