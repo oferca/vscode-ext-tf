@@ -15,7 +15,7 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
           projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative),
           workspaceFolder = current ? "." : path.basename(projectRoot),
           regionsStr = current ? "": regions.length ? `Regions: ${regions.join(', ')}. ` : "", 
-          details = current ? "Run commands in current folder" : `Workspace: ${capitalizeFirst(workspaceFolder)}<br>Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
+          details = current ? "Run commands in current folder" : `Workspace: ${capitalizeFirst(workspaceFolder)}, Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
           title = details.replaceAll("<br>", ", ").replaceAll("<b>", "")
         return`
             <li class="button-pulse folders ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : path.basename(projectRoot)}');" >
@@ -23,6 +23,7 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
                     <span class="details" title="${title}">${details}</span>
+                    <span class="name cta-arrow">Select</span>
                 </a>
             </li>
         `

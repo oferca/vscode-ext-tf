@@ -258,7 +258,7 @@ body {
 	position: absolute;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	top: 28px;
+	top: 35px;
 }
 
 #filemanager .data li .details {
@@ -267,7 +267,7 @@ body {
     font-weight: 400;
     width: -webkit-fill-available;
     height: 10px;
-    top: 50px;
+    top: 57px;
     white-space: nowrap;
     position: absolute;
     display: inline-block;
@@ -969,4 +969,66 @@ POPUP
 		box-shadow: 0 0 0 14px rgba(255, 255, 255, 0); 
 	}
   }
+
+
+
+  .cta-arrow:hover::before {
+	background-position-x: calc(100% - var(--shift-distance) * 3.5);
+	left: calc(var(--shift-distance) * -4);
+	transition: left 0.3s cubic-bezier(0.4, 1.7, 0.7, 0.8), right 0.3s ease,
+	  background-position 0.3s ease;
+  }
+
+  .cta-arrow:hover {
+    transform: translateX(var(--shift-distance));
+	padding-left: 15px;
+  }
+  .cta-arrow::before {
+		content: "";
+		display: block;
+		position: absolute;
+		top: 0.25rem;
+		right: 0.25rem;
+		left: calc(100% - 2rem);
+		border-radius: 2rem;
+		height: 2rem;
+		z-index: -1;
+		background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'%3E%3Ctitle%3EArrow Forward%3C/title%3E%3Cpath fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='48' d='M268 112l144 144-144 144M392 256H100'/%3E%3C/svg%3E");
+		background-repeat: no-repeat;
+		background-position-x: calc(100% - 0.4375rem);
+		background-position-y: center;
+		background-size: 1.125rem;
+		background-color: #a0d4e4;;
+		transition: left 0.3s cubic-bezier(0.34, 1.2, 0.64, 1), right 0.3s ease,
+		  background-position 0.3s ease;
+	    min-width: 30px;
+	  }
+	
+
+  .cta-arrow {
+	color: #b6c1c9; !important;
+    --shift-distance: 0.25rem;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 2rem;
+    height: 2rem;
+	width: 40px !important;
+    color: whitesmoke !important;
+    text-decoration: none;
+    position: absolute !important;
+	right: 0px !important;
+	left: auto !important;
+    padding-right: 2.5rem;
+    transform: translateX(0);
+    z-index: 1;
+    transition: color 0.15s ease-in-out, transform 0.3s ease, -webkit-transform 0.3s ease;
+    border-radius: 2em;
+	line-height: 40px !important;
+    height: 40px;
+	top: 0em !important;
+    right: 0.25rem !important;
+	cursor: pointer;
+	font-size: 13px !important;
+	font-style: italic !important;;
+}
 `
