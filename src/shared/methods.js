@@ -226,7 +226,7 @@ module.exports.getProjectsCache = async (tfProjectsCache) => {
     const noOpenWorkspace = !vscode.workspace.workspaceFolders || !vscode.workspace.workspaceFolders.length
 
     if (noOpenWorkspace) {
-      vscode.window.showErrorMessage('No workspace is opened.');
+      // vscode.window.showErrorMessage('No workspace is opened.');
       return;
     }
 
