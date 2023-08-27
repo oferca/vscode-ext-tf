@@ -329,14 +329,14 @@ a.command:hover, a.command, a.command:focus {
 
   #output-file-fs{
     position: absolute;
-    margin-top: -53px;
+    margin-top: 138px;
     margin-left: 5px;
-    font-size: 55px;
-    color: var(--vscode-button-background)
-    transition: 0.5s opacity;
-    opacity: 0.05;
+    font-size: 81px;
+    color: var(--vscode-button-background) transition: 0.5s opacity;
+    opacity: 0.1;
     width: 95%;
     cursor: pointer;
+    z-index: 99999;
   }
   #output-file-fs.matrix{
     display: none;
@@ -485,6 +485,11 @@ u.logs{
   transition: 0.25s all;
 }
 
-.project-block{
+.toggle-fullscreen{
+  position: absolute;
+  top: 4px;
+  left: 50px; 
+  font-size: 26px;
+  text-shadow: var(--vscode-button-background) 1px 0px 10px;
 }
 `
