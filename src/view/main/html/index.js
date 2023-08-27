@@ -104,7 +104,8 @@ ${ explorerHTML }
               <div class="accordion desc parameters project-block">Actions With Parameters</div>
                 <div class="panel">
               ` : "" 
-              return (`</div><div class="expandable ${seperatorClass} seperator"></div>${terminal}<div class="expandable"><h4 class="title">` + action.label.replace("Terraform Actions"," ") + '</h4>' )
+              const actionLabel = isExplorer ? action.label.replace("Terraform Actions"," ") : action.label
+              return (`</div><div class="expandable ${seperatorClass} seperator"></div>${terminal}<div class="expandable"><h4 class="title">` + actionLabel + '</h4>' )
             }
             if (weakSeperator) return ('<h4 class="title">' + action.label + '</h4>' )
           }).join("")}
