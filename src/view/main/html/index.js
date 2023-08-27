@@ -12,7 +12,6 @@ const { success, error, warning, info } = require('./feedback');
 
 module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, _missingCredentials, feedback) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
-    disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 ),
     isExplorer = !!explorerParams,
     projectInfoStyle = `style="display: ${isExplorer ? 'block' : 'none'}; margin-top: 20px;"`,
     modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,
@@ -100,7 +99,7 @@ ${ explorerHTML }
             if (strongSeperator) {
               const seperatorClass = !firstSeperator ? "first" : ""
               firstSeperator = (firstSeperator || 0) + 1
-              const terminal = firstSeperator == 2 ? `<div class="expandable">${outputFileContent}</div>
+              const terminal = isExplorer && (firstSeperator == 2) ? `<div class="expandable">${outputFileContent}</div>
               <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
               <div class="accordion desc parameters project-block">Actions With Parameters</div>
                 <div class="panel">
@@ -129,10 +128,10 @@ ${ explorerHTML }
   var currentScrollTop = 0
   var scrollInterval = undefined
   scrollOutputDown(false)
-
-  var acc = document.getElementsByClassName("accordion");
+  ${isExplorer ? `
+    var acc = document.getElementsByClassName("accordion");
   var i;
-
+  
   for (i = 0; i < acc.length; i++) {
     acc[i].addEventListener("click", function() {
       this.classList.toggle("active");
@@ -145,6 +144,7 @@ ${ explorerHTML }
     });
   }
 
+  ` : ""}
   
   ${isMissingCredentials ? `
     const mouseoverEvent = new Event('mouseover');

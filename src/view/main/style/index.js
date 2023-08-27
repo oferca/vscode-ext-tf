@@ -460,26 +460,30 @@ u.logs{
   margin-left: 5px;
 }
 
-.accordion {
+.explorer .accordion {
   cursor: pointer;
   width: 100%;
   text-align: left;
   outline: none;
 }
-.accordion.parameters{
+.explorer .accordion.parameters{
   margin-top: 20px;
 }
 
-.accordion::before{
+.explorer .accordion::before{
   content: "► ";
   font-size: 11px;
 }
-.accordion.active::before{
+.explorer .accordion.active::before{
   content: "▼ ";
   font-size: 11px;
 }
 
-.panel {
+.sidebar .accordion{
+  display: none;
+}
+
+.explorer .panel {
   overflow: hidden;
   height: 0px;
   transition: 0.25s all;
