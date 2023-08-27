@@ -817,7 +817,7 @@ POPUP
 }
 
 #output-file{
-	width: 40vw;
+	width: 43vw;
 	padding: 3px;
 	margin-top: 22px;
 	border-radius: 8px;
@@ -826,6 +826,7 @@ POPUP
 	z-index: 9999;
     position: relative;
 	box-shadow: 0.5px 0.5px 1px var(--vscode-notifications-border);
+	font-size: 2vh;
 }
 #output-file.matrix{
 	background-image: url(${matrixBackground});
@@ -851,6 +852,7 @@ POPUP
 	initial-value: 0deg;
 	inherits: false;
 }	
+
 
 #output-file.feedback:not(.running){
 	border-image: none;
