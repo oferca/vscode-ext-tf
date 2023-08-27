@@ -170,7 +170,11 @@ a.command:hover, a.command, a.command:focus {
   .button.command:not(.disabled):hover {
     background-color: var(--vscode-button-hoverBackground);
   }
-  
+  .explorer .button.command{
+    display: inherit;
+    text-align: left;
+    padding-left: 14px;
+  }
 
   body {
     font-family: Arial, sans-serif;
@@ -315,12 +319,12 @@ a.command:hover, a.command, a.command:focus {
   }
 
   #circular-pb.active-terminal{
-    margin-top: 10px;
+    margin-top: 190px;
   }
   #circular-pb{
     position: absolute;
     right: 9vw;
-    margin-top: -5px;
+    margin-top: 190px;
   }
 
   #output-file-fs{
@@ -481,4 +485,6 @@ u.logs{
   transition: 0.25s all;
 }
 
+.project-block{
+}
 `

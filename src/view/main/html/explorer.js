@@ -89,11 +89,11 @@ module.exports.scripts = selectedProject => {
         const projectInfoEl = document.getElementById("project-info") || {}
         const projectCredsEl = document.getElementById("credentials") || { style: {} }
         const isCurrentTerminal = !workspace || workspace === "Active Terminal"
-        const folderTitle = isCurrentTerminal ? "Active Terminal Path" : folder
-        const currentStyle = isCurrentTerminal ? "display: none;" : ""
+        const folderTitle = isCurrentTerminal ? "Current Terminal Path" : folder
+        const currentStyle = isCurrentTerminal ? "margin-top: 10px;" : ""
         projectInfoEl.innerHTML = \`
         <h4 style="\${currentStyle}" title="\${name} project" class="section-title">
-        \${projectTitle} Project
+        \${(projectTitle + " Project").replace("Active Terminal Project", "Current Terminal Folder")}
         </h4>
         <ol>
              <li class="path" title="\${folder}">\${folderTitle}</li>

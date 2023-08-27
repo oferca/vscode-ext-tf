@@ -19,26 +19,9 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     explorerHTML = isExplorer ? getExplorerHTML(explorerParams, completed, withAnimation, stateManager) : '',
     modalAnimated = !completed ? 'animated' : '',
     warningHTML = preferences.showWarning && false ? '<div class="title prefs warning">Preferences Active</div>' : "",
-    disableLogs = disableLogsButton ? "disabled" : "",
-    disabledButtonLogs = disableLogsButton ? "disabled" : "animated-button-text",
-    logsButtonText = tfCommand ? capitalizeFirst(tfCommand): "Watch",
-    isChatGPTDisabled = isPlanCompleted && planSucceded ? "" : "disabled",
-    chatGPTTitle = isPlanCompleted && planSucceded ? "Copy output to clipboard and open ChatGPT" : "To enable, click 'Plan' to run successful terraform plan.",
-    chatGPTAnimation = isPlanCompleted && planSucceded ? "animated-button-text" : "disabled",
+    planSuccess = isPlanCompleted && planSucceded,
     credentials = isExplorer ? `<h4 class="title env-vars section-title">Environment Variables Script</h4><div class="desc">Set required variables here or in terminal.</div><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="Example script:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>` : "",
-    commandsTitle = isExplorer ? `<h4 title="Terraform Commands" class="commands-title section-title">Commands</h4>` : ""
-    last = `
-      <div class="expandable" id="display-output-2" style="display:none;">
-        <h4 class="title">Result</h4>
-        <button id="watch-logs-button" class="command button output ${disableLogs} " onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)">
-          <div id="watch-logs" class="${disabledButtonLogs}" onclick="this.classList.remove('animated-button-text')">${logsButtonText} Logs</div>
-        </button>
-        <button class="command button output chat-gpt ${isChatGPTDisabled}" onclick="this.classList.remove('animated-button-text');postMessageFromWebview(\'chat-gpt\', IS_EXPLORER)" title="${chatGPTTitle}">
-          <div id="chat-gpt" class="${chatGPTAnimation}" onclick="this.classList.remove('animated-button-text')">ChatGPT Synopsis</div>
-        </button>
-      </div>
-    </div>
-    `,
+    commandsTitle = isExplorer ? `<h4 title="Terraform Commands" class="commands-title section-title">Run Commands</h4>` : ""
     isMissingCredentials = credentials.length && _missingCredentials && feedback && feedback.type === "error",
     missingCredentials = isMissingCredentials ? `setTimeout(() => {
       const credentials = document.getElementById("credentials")
@@ -56,7 +39,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     circularPBStyle = "--size: 25px; --value: 0; display: none;", // "--value: 100;" + completed ? "" : "display: none;",
     seperator= isExplorer ? `<div class="seperator-container" ><div class="seperator" ></div></div>` : "",
     feedbackScript = feedback ? (
-      feedback.type === "success" && success(feedback.msg) ||
+      feedback.type === "success" && success(feedback.msg, planSuccess) ||
       feedback.type === "info" && info(feedback.msg) ||
       feedback.type === "warning" && warning(feedback.msg) ||
       feedback.type === "error" && error(feedback.msg)
@@ -84,18 +67,16 @@ ${ explorerHTML }
   <div class="modal-parent" id="modal-container" ${modalParentStyle}>
   <div id="snackbar"></div>
     <div id="main-modal" class="modal ${modalAnimated}"">
-    <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
-      <div id="project-info" ${projectInfoStyle}>
+      <div id="project-info" class="project-block" ${projectInfoStyle}>
       </div>
       ${seperator}
         ${warningHTML}
           ${x}
-        <div id="main-container">
+        <div id="main-container" class="project-block">
         ${commandsTitle}
           <div class="button-container">
             <div class="expandable">
-            ${ actions.concat("last").map(action => {
-              if (action === "last") return last
+            ${ actions.map(action => {
               if (action.menuOnly) return
               if (action.excludeExplorer && isExplorer) return
               const type = action.label.indexOf("Apply") > -1 ? "warning" : ""
@@ -110,7 +91,7 @@ ${ explorerHTML }
               <span></span>
               <span></span>
               <span></span>
-              ${action.label}
+              Terraform ${action.label}
               </div>          
               `)
             const strongSeperator = action.kind === -1 && (action.seperatorType !== "weak" || !isExplorer)
@@ -119,21 +100,21 @@ ${ explorerHTML }
               const seperatorClass = !firstSeperator ? "first" : ""
               firstSeperator = (firstSeperator || 0) + 1
               const terminal = firstSeperator == 2 ? `<div class="expandable">${outputFileContent}</div>
-              <div class="accordion desc parameters">Actions With Parameters</div>
+              <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
+              <div class="accordion desc parameters project-block">Actions With Parameters</div>
                 <div class="panel">
               ` : "" 
-              return (`</div><div class="expandable ${seperatorClass} seperator"></div>${terminal}<div class="expandable"><h4 class="title">` + action.label + '</h4>' )
+              return (`</div><div class="expandable ${seperatorClass} seperator"></div>${terminal}<div class="expandable"><h4 class="title">` + action.label.replace("Terraform Actions"," ") + '</h4>' )
             }
             if (weakSeperator) return ('<h4 class="title">' + action.label + '</h4>' )
-            if (action === "last") return last
-
           }).join("")}
 
-      </div>
+          </div>
+          </div>
         </div>
         </div>
           ${seperator}
-          <div class="accordion desc">Set Credentials</div>
+          <div class="accordion desc project-block">Set Credentials</div>
             <div class="panel">
             <br>
 
@@ -219,7 +200,6 @@ ${ explorerHTML }
     content.style.backgroundImage = "none"
     content.style.opacity = "1"
   });
-  ${ commandLaunched ? "showLogsButton(\""+tfCommand+"\");" : ""}
     var IS_EXPLORER = null
     var CURRENT_PATH = "${projectPathSynthesized}"
     setTimeout(() => {
@@ -245,18 +225,6 @@ ${ explorerHTML }
       }
       vscode.postMessage(message);
     }
-    function showLogsButton (tfCommand) {
-      document.getElementById("display-output-2").style.display = "block"
-      
-      const disableLogsButton =  !tfCommand || (tfCommand.toLowerCase().indexOf("output") > -1 || tfCommand.toLowerCase().indexOf("apply") > -1 )
-      document.getElementById("watch-logs").classList.remove("disabled")
-      document.getElementById("watch-logs-button").classList.remove("disabled")
-      document.getElementById("watch-logs").classList.add(disableLogsButton ? "disabled" : "animated-button-text")
-
-      if (tfCommand !== "undefined"){
-        document.getElementById("watch-logs").innerHTML = 'Watch ' + tfCommand.charAt(0).toUpperCase() + tfCommand.slice(1) + ' Logs'
-      }
-    }
     function launchTFCommand(tfCommand, el) {
       setTimeout(() => {
         const outputArea = document.getElementById("output-file") || demiElement
@@ -269,7 +237,6 @@ ${ explorerHTML }
       const credentials = getExplorerCredentials()
       el.classList.add('animated-button');
 
-      showLogsButton(tfCommand)
       const message = {
         tfCommand,
         isExplorer: IS_EXPLORER,

@@ -767,18 +767,22 @@ POPUP
   word-spacing: normal;
   font-size: 14px;
 }
+.explorer .expandable{
+	display: inline-grid;
+}
 
 .explorer .expandable h4.title{
     text-align: left;
     margin-left: 10px;
     font-weight: 540;
     line-height: 24px;
+	min-height: 10px;
 }
 .explorer h4.section-title{
     color: var(--vscode-editor-foreground);
     word-spacing: normal;
     font-size: 14px;
-    background: var(--vscode-editorPane-background);
+    background: var(--vscode-panelSectionHeader-background);
     margin-top: -12px;
     padding: 5px;
     width: 62vw;
@@ -815,7 +819,7 @@ POPUP
 #output-file{
 	width: 40vw;
 	padding: 3px;
-	margin-top: 32px;
+	margin-top: 22px;
 	border-radius: 8px;
 	opacity: 0.4;
 	transition: 0.5s border, 0.5 background-image;
