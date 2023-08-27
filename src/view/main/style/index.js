@@ -171,9 +171,9 @@ a.command:hover, a.command, a.command:focus {
     background-color: var(--vscode-button-hoverBackground);
   }
   .explorer .button.command{
-    display: inherit;
+    display: block;
     text-align: left;
-    padding-left: 14px;
+    padding-left: 15px;
   }
 
   body {
@@ -319,12 +319,12 @@ a.command:hover, a.command, a.command:focus {
   }
 
   #circular-pb.active-terminal{
-    margin-top: 190px;
+    margin-top: 194px;
   }
   #circular-pb{
     position: absolute;
     right: 9vw;
-    margin-top: 190px;
+    margin-top: 194px;
   }
 
   #output-file-fs{
