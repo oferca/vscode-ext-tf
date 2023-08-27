@@ -68,7 +68,7 @@ module.exports.createCompletedCallback = (message, handler, reRender, oldPrefs, 
         stateManager.setUserFolder(oldPrefs.userFolder)
         stateManager.updateState(credentialsKey, oldPrefs.credentials)
     }
-    setTimeout(() => message.isExplorer && reRender(true, message.tfCommand, stateManager.missingCredentials, feedback),
+    setTimeout(() => reRender(true, message.tfCommand, stateManager.missingCredentials, feedback, !!message.isExplorer),
     reRenderTimout)
     
     if (!handler) return

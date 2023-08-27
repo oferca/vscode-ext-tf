@@ -127,6 +127,7 @@ ${ explorerHTML }
   // Handle the message inside the webview
   var currentScrollTop = 0
   var scrollInterval = undefined
+  var demiElement = { value: {}, style: {}, classList: {add: () => {}, remove: () => {} } }
   scrollOutputDown(false)
   ${isExplorer ? `
     var acc = document.getElementsByClassName("accordion");
@@ -230,7 +231,7 @@ ${ explorerHTML }
       setTimeout(() => {
         const outputArea = document.getElementById("output-file") || demiElement
         const outputAreaFS = document.getElementById("output-file-fs") || demiElement
-        outputArea.classList.remove(...outputArea.classList);
+        if (outputArea.classList.length) outputArea.classList.remove(...outputArea.classList);
         outputAreaFS.classList.remove("matrix");
         outputArea.classList.add("running")
         const mainModal = document.getElementById("main-modal")

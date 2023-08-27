@@ -28,7 +28,7 @@ class WebViewManager {
   webViewProviderScm
   webViewProviderExplorer
 
-    async render(completed = false, tfCommand, missingCredentials, feedback){
+    async render(completed = false, tfCommand, missingCredentials, feedback, isExplorer = true){
 
       const folder = this.stateManager.getState(changeFolderKey),
         namespacedCredentialsKey = getNamespacedCredentialsKey(folder),
@@ -49,7 +49,7 @@ class WebViewManager {
       this.updateOutputFile()
 
       if (this.sideBarWebView) this.sideBarWebView.html = html(...params)
-      if (!this.projectExplorer) return
+      if (!this.projectExplorer || !isExplorer) return
 
       tfProjectsCache = (await getProjectsCache(tfProjectsCache))
         .map(this.addCredentials)
@@ -77,7 +77,7 @@ class WebViewManager {
 
     handlePreferences(message) {
       if (!message.folder) return
-      if (!message.isExplorer) return
+     // if (!message.isExplorer) return
 
       const credentialsAlreadySet = message.credentials === credentialsSetText,
         explorerCredentialsNamespace = getNamespacedCredentialsKey(message.folder),
