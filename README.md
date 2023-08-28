@@ -1,6 +1,6 @@
 # [Terraform Dashboard Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-Interactive dashboard for terraform commands. Enhance your terraform experience and productivity.
+Supercharge your Terraform journey with a control center. Say goodbye to tedious typing! the [Terraform Dashboard Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention brings effortless, UI-driven execution and real-time monitoring of Terraform commands.
 
 # Features
 * Seamless navigation and transition between all your Terraform projects.
