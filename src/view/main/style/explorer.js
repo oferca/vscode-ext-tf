@@ -991,7 +991,7 @@ POPUP
 		right: 0.25rem;
 		left: calc(100% - 2rem);
 		border-radius: 2rem;
-		height: 2rem;
+		height: 1.8rem;
 		z-index: -1;
 		background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'%3E%3Ctitle%3EArrow Forward%3C/title%3E%3Cpath fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='48' d='M268 112l144 144-144 144M392 256H100'/%3E%3C/svg%3E");
 		background-repeat: no-repeat;
@@ -1023,8 +1023,8 @@ POPUP
     z-index: 1;
     transition: color 0.15s ease-in-out, transform 0.3s ease, -webkit-transform 0.3s ease;
     border-radius: 2em;
-	line-height: 40px !important;
-    height: 40px;
+	line-height: 37px !important;
+    height: 37px;
 	top: 0em !important;
     right: 0.25rem !important;
 	cursor: pointer;

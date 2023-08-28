@@ -94,7 +94,7 @@ module.exports.scripts = selectedProject => {
         const currentStyle = isCurrentTerminal ? "margin-top: 10px;" : ""
         projectInfoEl.innerHTML = \`
         <h4 style="\${currentStyle}" title="\${name} project" class="section-title">
-        \${(projectTitle + " Project").replace("Active Terminal Project", "Current Terminal Folder")}
+        \${(projectTitle).replace("Active Terminal", "Current Terminal Folder")}
         </h4>
         <ol>
              <li class="path" title="\${folder}">\${folderTitle}</li>
