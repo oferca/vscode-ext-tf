@@ -84,14 +84,14 @@ ${ explorerHTML }
               if (action.handler) return (`
               <div
                 href="#"
-                class="button command"
+                class="button command ${action.label}"
                 title="Run Terraform ${action.label.replace(" -", " with ")} in terminal"
                 onclick="launchTFCommand('${action.label}', this)"
                 >
                 <div class="spinner">
                   <i class="fa fa-refresh fa-spin spinner"></i>
                 </div>
-              Terraform ${action.label}
+              ${isExplorer ? "Terraform " : ""}${action.label}
               </div>          
               `)
             const strongSeperator = action.kind === -1 && (action.seperatorType !== "weak" || !isExplorer)

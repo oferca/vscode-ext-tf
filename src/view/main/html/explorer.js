@@ -18,7 +18,7 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
           details = current ? "Run commands in current folder" : `Workspace: ${capitalizeFirst(workspaceFolder)}, Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
           title = details.replaceAll("<br>", ", ").replaceAll("<b>", "")
         return`
-            <li class="button-pulse folders ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : path.basename(projectRoot)}');" >
+            <li class="button-pulse folders ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : projectRoot}', '${current ? "Active Terminal" : path.basename(projectRoot)}');" >
                 <a title="${projectPathRelativeSynthesized}" class="folders project">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
@@ -64,8 +64,9 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
 
 module.exports.scripts = selectedProject => {
     const { name, projectPathRelative, credentials, projectRoot } = selectedProject || {}
-    shellHandler = createShellHandler(vscode.window.activeTerminal)
-    const projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
+    const shellHandler = createShellHandler(vscode.window.activeTerminal),
+    displayedWorkspace = projectRoot ? path.basename(projectRoot) : "Active Terminal",
+    projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
     return `
     var parent = document.querySelector(".modal-parent")
     X = document.querySelector(".x")
@@ -79,12 +80,12 @@ module.exports.scripts = selectedProject => {
         foldersList.style.animation = "none"
     }, 5000)
     ${selectedProject ? `
-        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${credentials}", "${projectRoot || ""}")` :""
+        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${credentials}", "${projectRoot || ""}", "${displayedWorkspace}")` : ""
     }
     function capitalizeFirst (str) {
         return  str.charAt(0).toUpperCase() + str.slice(1)
     }
-    function renderProjectInfo(name, folder, credentials, workspace) {
+    function renderProjectInfo(name, folder, credentials, workspace, displayedWorkspace) {
         if (!name) return
         const projectTitle = name.charAt(0).toUpperCase() + name.slice(1)
         const projectInfoEl = document.getElementById("project-info") || {}
@@ -99,7 +100,7 @@ module.exports.scripts = selectedProject => {
         <ol>
              <li class="path" title="\${folder}">\${folderTitle}</li>
              <li style="\${currentStyle}" class="seperator"></li>
-             <li style="\${currentStyle}" class="workspace" title="\${workspace}">\${workspace ? capitalizeFirst(workspace) : ""}</li>
+             <li style="\${currentStyle}" class="workspace" title="\${workspace}">\${workspace ? capitalizeFirst(displayedWorkspace) : ""}</li>
         </ol>
         \`
         projectCredsEl.innerHTML = \`\${credentials || ''}\`
@@ -118,8 +119,8 @@ module.exports.scripts = selectedProject => {
         })
     }
 
-    function appear(name, folder, pathRelative, credentials, workspace) {
-        renderProjectInfo(name, pathRelative, credentials, workspace)
+    function appear(name, folder, pathRelative, credentials, workspace, displayedWorkspace) {
+        renderProjectInfo(name, pathRelative, credentials, workspace, displayedWorkspace)
         parent.style.display = "block";
         const circularProgressBar1 = document.getElementById("circular-pb")
         if (circularProgressBar1 && workspace === "Active Terminal") {

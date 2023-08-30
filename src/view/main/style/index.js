@@ -180,12 +180,28 @@ a.command:hover, a.command, a.command:focus {
   .button.command:not(.disabled):hover {
     background-color: var(--vscode-button-hoverBackground);
   }
-  .explorer .button.command{
+  .button.command{
     display: block;
     text-align: left;
     padding-left: 15px;
   }
-
+  .sidebar .button.command{
+    padding-left: 21px !important;
+    width: 120px !important;
+    min-width: 97px !important;
+  }
+  .sidebar .button.command.Explorer,
+  .sidebar .button.command.-var-file,
+  .sidebar .button.command.-upgrade,
+  .sidebar .button.command.Force-unlock,
+  .sidebar .button.command.-Target{
+    text-align: center;
+    padding-left: 0 !important;
+    width: 135px !important;
+  }
+  .sidebar .button.command{
+    padding-left: 31px;
+  }
   body {
     font-family: Arial, sans-serif;
     text-align: center;

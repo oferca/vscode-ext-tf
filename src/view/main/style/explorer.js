@@ -129,22 +129,6 @@ body {
 
 
 
-::-webkit-input-placeholder { /* WebKit browsers */
-	color:    #4d535e;
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-	color:    #4d535e;
-	opacity:  1;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-	color:    #4d535e;
-	opacity:  1;
-}
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-	color:    #4d535e;
-}
-
-
 /*-------------------------
 	Content area
 -------------------------*/
