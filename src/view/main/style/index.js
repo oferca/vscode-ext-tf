@@ -185,6 +185,10 @@ a.command:hover, a.command, a.command:focus {
     text-align: left;
     padding-left: 15px;
   }
+  .sidebar .button.command.animated-button .spinner{
+    width: 12px;
+    margin-right: 1px;
+  }
   .sidebar .button.command{
     padding-left: 21px !important;
     width: 120px !important;
@@ -198,6 +202,10 @@ a.command:hover, a.command, a.command:focus {
     text-align: center;
     padding-left: 0 !important;
     width: 135px !important;
+  }
+  .sidebar .button.command.Explorer .spinner{
+    display: none !important;
+
   }
   .sidebar .button.command{
     padding-left: 31px;
