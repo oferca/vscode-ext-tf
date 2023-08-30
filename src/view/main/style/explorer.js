@@ -59,10 +59,72 @@ body {
 	}
 }
 
-
 /*-------------------------
 	Breadcrumps
 -------------------------*/
+
+
+
+#filemanager .breadcrumbs.header {
+    background:  linear-gradient(to right,  white, var(--vscode-textLink-foreground), var(--vscode-textLink-foreground), var(--vscode-textLink-foreground), white);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 500% auto;
+    background-position: 150% center;
+    background-repeat: no-repeat;
+	text-align: center;
+	font-size: 30px;
+	margin-top: 33px;
+}
+#filemanager .breadcrumbs.header.anim-text {
+	animation: h1anim 8s linear forwards;
+
+}
+#filemanager .breadcrumbs.header.static {
+	animation: h1animstatic 8s linear forwards;
+	font-size: auto;
+}
+@keyframes h1anim {
+    from {
+        background-position: 150% center;
+    }
+    to {
+        background-position: 0 center;
+      }
+}
+@keyframes h1animstatic {
+    from {
+        background-position: 100% center;
+    }
+    to {
+        background-position: 0 center;
+      }
+}
+
+#filemanager .breadcrumbs {
+	color: #e7e7e9;
+	margin-left:20px;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 35px;
+}
+
+#filemanager .breadcrumbs a:link, .breadcrumbs a:visited {
+	color: #e7e7e9;
+	text-decoration: none;
+}
+
+#filemanager .breadcrumbs a:hover {
+	text-decoration: underline;
+}
+
+#filemanager .breadcrumbs .arrow {
+	color:  #6a6a72;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 20px;
+}
 
 
 
@@ -695,7 +757,7 @@ POPUP
 }
 
 #output-file{
-	width: 43vw;
+	width: 41vw;
 	padding: 3px;
 	margin-top: 22px;
 	border-radius: 8px;

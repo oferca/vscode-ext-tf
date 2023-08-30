@@ -89,7 +89,7 @@ a.command:hover, a.command, a.command:focus {
     box-sizing: border-box;
     display: flex;
     padding: 4px;
-    margin: 3px 7px;
+    margin: 1.8px 7px;
     border-radius: 2px;
     text-align: center;
     cursor: pointer;
@@ -101,6 +101,16 @@ a.command:hover, a.command, a.command:focus {
     min-width: 147px;
     box-shadow: 0.5px 0.5px 1px var(--vscode-button-separator);
   }
+
+  .sidebar .button{
+    margin-bottom: 4px;
+  }
+
+  .sidebar .animated-button .spinner {
+    width: 16px;
+    margin-right: 4px;
+  }
+
   .pref-change{
     margin: 3px 5px;
     cursor: pointer;
