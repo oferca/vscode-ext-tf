@@ -66,127 +66,6 @@ body {
 
 
 
-#filemanager .breadcrumbs.header {
-    background:  linear-gradient(to right,  white, var(--vscode-textLink-foreground), var(--vscode-textLink-foreground), var(--vscode-textLink-foreground), white);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 500% auto;
-    background-position: 150% center;
-    background-repeat: no-repeat;
-	text-align: center;
-	font-size: 30px;
-	margin-top: 33px;
-}
-#filemanager .breadcrumbs.header.anim-text {
-	animation: h1anim 8s linear forwards;
-
-}
-#filemanager .breadcrumbs.header.static {
-	animation: h1animstatic 8s linear forwards;
-	font-size: auto;
-}
-@keyframes h1anim {
-    from {
-        background-position: 150% center;
-    }
-    to {
-        background-position: 0 center;
-      }
-}
-@keyframes h1animstatic {
-    from {
-        background-position: 100% center;
-    }
-    to {
-        background-position: 0 center;
-      }
-}
-
-#filemanager .breadcrumbs {
-	color: #e7e7e9;
-	margin-left:20px;
-	font-size: 24px;
-	font-weight: 700;
-	line-height: 35px;
-}
-
-#filemanager .breadcrumbs a:link, .breadcrumbs a:visited {
-	color: #e7e7e9;
-	text-decoration: none;
-}
-
-#filemanager .breadcrumbs a:hover {
-	text-decoration: underline;
-}
-
-#filemanager .breadcrumbs .arrow {
-	color:  #6a6a72;
-	font-size: 24px;
-	font-weight: 700;
-	line-height: 20px;
-}
-
-
-/*-------------------------
-	Search box
--------------------------*/
-
-
-#filemanager .search {
-	position: absolute;
-	padding-right: 30px;
-	cursor: pointer;
-	right: 0;
-	font-size: 17px;
-	color: #ffffff;
-	display: block;
-	width: 40px;
-	height: 40px;
-}
-
-#filemanager .search:before {
-	content: '';
-	position: absolute;
-	margin-top:12px;
-	width: 10px;
-	height: 11px;
-	border-radius: 50%;
-	border: 2px solid #ffffff;
-	right: 8px;
-}
-
-#filemanager .search:after {
-	content: '';
-	width: 3px;
-	height: 10px;
-	background-color: #ffffff;
-	border-radius: 2px;
-	position: absolute;
-	top: 23px;
-	right: 6px;
-	-webkit-transform: rotate(-45deg);
-	transform: rotate(-45deg);
-}
-
-#filemanager .search input[type=search] {
-	border-radius: 2px;
-	color: #4D535E;
-	background-color: #FFF;
-	width: 250px;
-	height: 44px;
-	margin-left: -215px;
-	padding-left: 20px;
-	text-decoration-color: #4d535e;
-	font-size: 16px;
-	font-weight: 400;
-	line-height: 20px;
-	display: none;
-	outline: none;
-	border: none;
-	padding-right: 10px;
-	-webkit-appearance: none;
-}
 
 ::-webkit-input-placeholder { /* WebKit browsers */
 	color:    #4d535e;
@@ -627,7 +506,6 @@ POPUP
   background: var( --vscode-editor-background);
   width: 70%;
   padding: 30px;
-  border-radius: 6px;
   position: absolute;
   inset: 50%;
   transform: translate(-50%, -50%);

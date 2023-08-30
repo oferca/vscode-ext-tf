@@ -56,6 +56,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     ${isExplorer && explorerStyle }
     ${isExplorer && toastStyle }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script>
     const vscode = acquireVsCodeApi();
   </script>
@@ -87,10 +88,9 @@ ${ explorerHTML }
                 title="Run Terraform ${action.label.replace(" -", " with ")} in terminal"
                 onclick="launchTFCommand('${action.label}', this)"
                 >
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
+                <div class="spinner">
+                  <i class="fa fa-refresh fa-spin spinner"></i>
+                </div>
               Terraform ${action.label}
               </div>          
               `)
