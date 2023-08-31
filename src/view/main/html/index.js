@@ -5,8 +5,6 @@ const { style : toastStyle } = require("../style/toast")
 const { animatedButtonStyle } = require("../style/animated-button")
 const { html: getExplorerHTML } = require("./explorer")
 const { scripts: explorerScripts } = require("./explorer");
-const { capitalizeFirst } = require('../../../shared/methods');
-const { additionalText } = require('../../../shared/constants');
 const { createShellHandler } = require("../../../shared/methods-cycle");
 const { success, error, warning, info } = require('./feedback');
 
@@ -36,7 +34,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : "",
     shellHandler = createShellHandler(vscode.window.activeTerminal),
     projectPathSynthesized = shellHandler.synthesizePath((selectedProject || {}).projectPath),
-    circularPBStyle = "--size: 25px; --value: 0; display: none;", // "--value: 100;" + completed ? "" : "display: none;",
+    tfPBStyle = "visibility: hidden;",
     seperator= isExplorer ? `<div class="seperator-container" ><div class="seperator" ></div></div>` : "",
     feedbackScript = feedback ? (
       feedback.type === "success" && success(feedback.msg, planSuccess) ||
@@ -46,7 +44,6 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     ): "",
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     let firstSeperator
-
     return `
 <html>
 <head>
@@ -100,7 +97,12 @@ ${ explorerHTML }
               const seperatorClass = !firstSeperator ? "first" : ""
               firstSeperator = (firstSeperator || 0) + 1
               const terminal = isExplorer && (firstSeperator == 2) ? `<div class="expandable">${outputFileContent}</div>
-              <div id="circular-pb" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="${circularPBStyle}"></div>
+              <div id="tf-progress" style="${tfPBStyle}" class="container">
+                <div class="progress">
+                  <div class="progress-bar" id="progress-bar" style="background-color: red;"></div>
+                </div>
+              </div>
+
               <div class="accordion desc parameters project-block">Actions With Parameters</div>
                 <div class="panel">
               ` : "" 
@@ -186,10 +188,19 @@ ${ explorerHTML }
 
   function updateCompletionPercentage(completionPercentage) {
     if (completionPercentage < maxPercentage) return
+    ${!isExplorer ? "return" : ""}
     maxPercentage = completionPercentage
-    const circularProgressBar = document.getElementById("circular-pb")
-    circularProgressBar.style = "--value: "+Math.floor(completionPercentage)+"; display: auto;"
-    circularProgressBar.setAttribute("aria-valuenow", completionPercentage)
+    const tfProgressBar = document.getElementById("tf-progress")
+    tfProgressBar.style = "display: auto;"
+    const perc = Math.floor(completionPercentage)
+    const progressBar = document.getElementById("progress-bar")
+    let backgroundColor = "#86e01e"
+    if (perc > 5) backgroundColor = "#f63a0f" 
+    if (perc > 18) backgroundColor = "#f27011" 
+    if (perc > 35) backgroundColor = "#f2b01e" 
+    if (perc > 50) backgroundColor = "#f2d31bf" 
+    if (perc > 65) backgroundColor = "#86e01e" 
+    progressBar.style = "width: "+perc+"%;background-color:" + backgroundColor + ";"
   }
 
   window.addEventListener('message', event => {

@@ -1,6 +1,6 @@
 const snackbar = (msg, type, planSuccess) => {
   const chatGPT = planSuccess ? ` <br>Or see ChatGPT Synopsis in <i onclick=\\"postMessageFromWebview('chat-gpt', IS_EXPLORER)\\"><u class=\\"logs\\">OpenAI Chat</u></i>.` : ""
-  const message = msg + ` <br>See logs in terminal and in <i onclick=\\"postMessageFromWebview('openOutputFile', IS_EXPLORER)\\"><u class=\\"logs\\">Terraform Output Logs</u></i>.` + chatGPT
+  const message = msg + ` <br><i onclick=\\"postMessageFromWebview('openOutputFile', IS_EXPLORER)\\"><u class=\\"logs\\">Examine Terraform Output Logs</u></i>.` + chatGPT
   return `var x = document.getElementById("snackbar");x.innerHTML="${message}";x.classList.add("show", "${type}");setTimeout(function(){ x.classList.remove("show"); }, 300000);document.body.onclick = () => { x.remove(); const outputArea = document.getElementById("output-file") || demiElement; outputArea.classList.remove(...outputArea.classList); }`
 }
 

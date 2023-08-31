@@ -122,11 +122,11 @@ module.exports.scripts = selectedProject => {
     function appear(name, folder, pathRelative, credentials, workspace, displayedWorkspace) {
         renderProjectInfo(name, pathRelative, credentials, workspace, displayedWorkspace)
         parent.style.display = "block";
-        const circularProgressBar1 = document.getElementById("circular-pb")
-        if (circularProgressBar1 && workspace === "Active Terminal") {
-          circularProgressBar1.classList.add("active-terminal")
+        const tfProgressBar1 = document.getElementById("tf-progress")
+        if (tfProgressBar1 && workspace === "Active Terminal") {
+          tfProgressBar1.classList.add("active-terminal")
         }else {
-          circularProgressBar1.classList.remove("active-terminal")
+          tfProgressBar1.classList.remove("active-terminal")
         }
         addOverlay()
         scrollInterval = undefined

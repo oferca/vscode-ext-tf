@@ -352,20 +352,15 @@ a.command:hover, a.command, a.command:focus {
     color: var(--primary);
   }
 
-  #circular-pb.active-terminal{
-    margin-top: 194px;
-  }
-  #circular-pb{
-    position: absolute;
-    right: 9vw;
-    margin-top: 194px;
+  #tf-progress{
+    margin-top: 5px;
   }
 
   #output-file-fs{
     position: absolute;
     margin-top: 138px;
     margin-left: 5px;
-    font-size: 62px;
+    font-size: 48px;
     color: var(--vscode-button-background) transition: 0.5s opacity;
     opacity: 0.1;
     width: 95%;
@@ -501,7 +496,7 @@ u.logs{
   outline: none;
 }
 .explorer .accordion.parameters{
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .explorer .accordion::before{
@@ -526,8 +521,82 @@ u.logs{
 .toggle-fullscreen{
   position: absolute;
   top: 4px;
-  left: 40px; 
-  font-size: 22px;
+  left: 30px; 
+  font-size: 18px;
   text-shadow: var(--vscode-button-background) 1px 0px 10px;
 }
+
+
+/* Progress */
+
+.container {
+  width: 63vw;
+  text-align: center;
+}
+
+.container .progress {
+  margin: 0 auto;
+  width: 62vw;
+  text-align: left;
+}
+
+.progress {
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.progress-bar {
+  height: 16px;
+  border-radius: 4px;
+	background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+  background-image: -moz-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+  background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+  -webkit-transition: 0.4s linear;
+  -moz-transition: 0.4s linear;
+  -o-transition: 0.4s linear;
+  transition: 0.4s linear;
+  -webkit-transition-property: width, background-color;
+  -moz-transition-property: width, background-color;
+  -o-transition-property: width, background-color;
+  transition-property: width, background-color;
+  -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/*
+ * Note: using adjacent or general sibling selectors combined with
+ *       pseudo classes doesn't work in Safari 5.0 and Chrome 12.
+ *       See this article for more info and a potential fix:
+ *       https://css-tricks.com/webkit-sibling-bug/
+ */
+
+#five:checked ~ .progress > .progress-bar {
+  width: 5%;
+  background-color: #f63a0f;
+}
+
+#twentyfive:checked ~ .progress > .progress-bar {
+  width: 25%;
+  background-color: #f27011;
+}
+
+#fifty:checked ~ .progress > .progress-bar {
+  width: 50%;
+  background-color: #f2b01e;
+}
+
+#seventyfive:checked ~ .progress > .progress-bar {
+  width: 75%;
+  background-color: #f2d31b;
+}
+
+#onehundred:checked ~ .progress > .progress-bar {
+  width: 100%;
+  background-color: #86e01e;
+}
+
 `

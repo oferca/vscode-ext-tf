@@ -2,7 +2,7 @@ module.exports.style = `
 #snackbar {
     visibility: hidden;
     color: #fff;
-    text-align: center;
+    text-align: left;
     border-radius: 2px;
     padding: 7px;
     position: fixed;
