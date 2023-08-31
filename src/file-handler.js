@@ -9,6 +9,7 @@ const {
     noColorExt,
     errorStatus,
     noCredentials,
+    additionalText,
     rootFolderName,
     defaultEstimate,
     hasSupportedTerminalKey
@@ -106,6 +107,12 @@ class FileHandler {
             this.outputFileNoColor,
             this.shellHandler.fileEncoding
         )
+    }
+
+    referUserToTerminal(){
+        if (!this.initialized) return
+        const content = this.getOutputFileContent()
+        fs.writeFileSync(this.outputFileNoColor, content + "\n " + additionalText)
     }
     
     

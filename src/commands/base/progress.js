@@ -117,6 +117,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             hasWarnings && { type: 'warning', msg: warnTxtPref} ||
             { type: 'success', msg: successMessage.replace(outputLogsMsg, "") }
         )
+        this.fileHandler.referUserToTerminal()
+
         return notification
     }
 
@@ -127,6 +129,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     async progressUpdate(progress, token, completedCallback = () => { }) {
+
         token.onCancellationRequested(() => {
             console.log("User canceled the long running operation");
             clearInterval(this.intervalID);
