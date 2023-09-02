@@ -145,7 +145,8 @@ body {
 
 #filemanager .data li {
 	border-radius: 3px;
-	background-color: #4a7da5;
+	/* background-color: #4a7da5; */
+	background-color: #375f7f;
 	width: 307px;
 	height: 118px;
 	list-style-type: none;
@@ -174,8 +175,8 @@ body {
 
 #filemanager .data li .name {
 	color: #ffffff;
-	font-size: 15px;
-	font-weight: 700;
+	font-size: 17px;
+	font-weight: 545;
 	line-height: 20px;
 	width: -webkit-fill-available;
 	white-space: nowrap;
@@ -183,20 +184,21 @@ body {
 	position: absolute;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	top: 35px;
+	top: 40px;
 }
 
 #filemanager .data li .details {
 	color: #b6c1c9;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 400;
     width: -webkit-fill-available;
     height: 10px;
-    top: 57px;
+    top: 64px;
     white-space: nowrap;
     position: absolute;
     display: inline-block;
     line-height: 15px;
+	opacity: 0.65;
 }
 
 #filemanager .nothingfound {
@@ -908,25 +910,26 @@ POPUP
 	padding-left: 15px;
   }
   .cta-arrow::before {
-		content: "";
-		display: block;
-		position: absolute;
-		top: 0.25rem;
-		right: 0.25rem;
-		left: calc(100% - 2rem);
-		border-radius: 2rem;
-		height: 1.8rem;
-		z-index: -1;
-		background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'%3E%3Ctitle%3EArrow Forward%3C/title%3E%3Cpath fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='48' d='M268 112l144 144-144 144M392 256H100'/%3E%3C/svg%3E");
-		background-repeat: no-repeat;
-		background-position-x: calc(100% - 0.4375rem);
-		background-position-y: center;
-		background-size: 1.125rem;
-		background-color: var(--folder-color);
-		transition: left 0.3s cubic-bezier(0.34, 1.2, 0.64, 1), right 0.3s ease,
-		  background-position 0.3s ease;
-	    min-width: 30px;
-	  }
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0.25rem;
+	right: 0.25rem;
+	left: calc(100% - 2rem);
+	border-radius: 2rem;
+	height: 1.8rem;
+	z-index: -1;
+	background-image: url("data:image/svg+xml,%0A%3Csvg xmlns='http://www.w3.org/2000/svg' class='ionicon' viewBox='0 0 512 512'%3E%3Ctitle%3EArrow Forward%3C/title%3E%3Cpath fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='48' d='M268 112l144 144-144 144M392 256H100'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position-x: calc(100% - 0.4375rem);
+	background-position-y: center;
+	background-size: 1.125rem;
+	background-color: var(--folder-color);
+	transition: left 0.3s cubic-bezier(0.34, 1.2, 0.64, 1), right 0.3s ease,
+		background-position 0.3s ease;
+	min-width: 30px;
+	opacity: 0.8;
+	}
 	
 
   .cta-arrow {
@@ -942,7 +945,7 @@ POPUP
     position: absolute !important;
 	right: 0px !important;
 	left: auto !important;
-    padding-right: 2.5rem;
+    padding-right: 2.25rem;
     transform: translateX(0);
     z-index: 1;
     transition: color 0.15s ease-in-out, transform 0.3s ease, -webkit-transform 0.3s ease;
