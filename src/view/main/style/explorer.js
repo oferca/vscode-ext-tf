@@ -295,8 +295,8 @@ body {
 	content: '';
 	float: left;
 	clear: left;
-
-	background-color: #a0d4e4;
+    background-color: var(--folder-color);
+	/*background-color: #a0d4e4;*/
 	width: 3em;
 	height: 2.25em;
 
@@ -867,18 +867,18 @@ POPUP
     transform: rotate(45deg);
   }
   
-  #filemanager .data li.folders.current::before{
-	content: "\\3E";
+  #filemanager .data li.folders::before{
+	content: var(--folder-letter);
     position: absolute;
-    top: 42px;
+    top: 45px;
     left: 51px;
     color: white;
     z-index: 9999;
     font-size: 22px;
-    transform: scaleY(1.5);
   }
-  #filemanager .data li.folders.current{
-	/*background-color: #2c4a62;*/
+  #filemanager .data li.folders.current::before{
+	transform: scaleY(1.5);
+	top: 42px;
   }
   .button-pulse {
 	animation: pulse infinite cubic-bezier(0.25, 0, 0, 1);
@@ -922,7 +922,7 @@ POPUP
 		background-position-x: calc(100% - 0.4375rem);
 		background-position-y: center;
 		background-size: 1.125rem;
-		background-color: #a0d4e4;;
+		background-color: var(--folder-color);
 		transition: left 0.3s cubic-bezier(0.34, 1.2, 0.64, 1), right 0.3s ease,
 		  background-position 0.3s ease;
 	    min-width: 30px;

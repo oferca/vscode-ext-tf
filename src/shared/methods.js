@@ -2,7 +2,6 @@ const fs = require('fs');
 const os = require('os');
 const path = require("path")
 const vscode = require('vscode');
-let db
 
 const { 
     timeExt,
@@ -12,24 +11,27 @@ const {
     tfTargetPostix,
     credentialsKey,
     powershellType,
+    tfUpgradePostix,
     initSuccessMessage,
     initEmptyDirMessage,
     planSuccessMessage1,
     planSuccessMessage2,
+    tfForceUnlockPostix,
     tfPlanVarsCommandId,
     tfApplyVarsCommandId,
     tfPlanTargetCommandId,
     tfApplyTargetCommandId,
-    validateSuccessMessage,
-    tfUpgradePostix,
-    tfForceUnlockPostix,
     tfInitUpgradeCommandId,
+    validateSuccessMessage,
     tfForceUnlockCommandId,
 } = require("./constants")
 
 const { findFilesWithExtension } = require("../view/main/helpers")
 
 const maxPercentage = 98
+
+let colorIterator = 0
+const folderColors = {}
 
 module.exports.createOutputFileName = (dataFolder, commandId) => {
     const filename = "terraform-" + commandId + "-" + new Date().toISOString().replaceAll(":","-") + "." + commandId + ".txt"
@@ -66,6 +68,20 @@ const getOptionKey = commandId =>
     commandId.indexOf(tfVarsPostix) > -1 && "var-file" ||
     commandId.indexOf(tfUpgradePostix) > -1 && "upgrade" ||
     commandId.indexOf(tfForceUnlockPostix) > -1 && ""
+
+const addFolderColor = project => {
+    const colors = [
+        undefined,
+        "#fee4cb",
+        "#e9e7fd",
+        "#ffd3e2",
+        "#c8f7dc",
+        "#d5deff"
+    ]
+    project.folderColor = project.folderColor || colors[colorIterator]
+    colorIterator++
+    if (colorIterator > colors.length - 1) colorIterator = 0
+}
 
 module.exports.getOptionKey = getOptionKey
 
@@ -246,7 +262,9 @@ module.exports.getProjectsCache = async (tfProjectsCache) => {
         projectPathRelative: ".",
     }
 
-    return [currentTerminal].concat(Object.keys(result).filter(x => result[x].isProject).map(x => result[x]))
+    const projects = [currentTerminal].concat(Object.keys(result).filter(x => result[x].isProject).map(x => result[x]))
+    projects.forEach(addFolderColor)
+    return projects
 }
 
 module.exports.capitalizeFirst = str => str.charAt(0).toUpperCase() + str.slice(1)

@@ -18,7 +18,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     warningHTML = preferences.showWarning && false ? '<div class="title prefs warning">Preferences Active</div>' : "",
     planSuccess = isPlanCompleted && planSucceded,
     credentials = isExplorer ? `<h4 class="title env-vars section-title">Environment Variables Script</h4><div class="desc">Set required variables here or in terminal.</div><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="Example script:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>` : "",
-    commandsTitle = isExplorer ? `<h4 title="Terraform Commands" class="commands-title section-title">Run Commands</h4>` : ""
+    commandsTitle = isExplorer ? `<h4 title="Terraform Commands" id="commands-title" class="commands-title section-title">Run Commands</h4>` : ""
     isMissingCredentials = credentials.length && _missingCredentials && feedback && feedback.type === "error",
     missingCredentials = isMissingCredentials ? `setTimeout(() => {
       const credentials = document.getElementById("credentials")

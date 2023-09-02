@@ -6,7 +6,7 @@ const { credentialsSetText, disableShowOnStartupKey } = require('../../../shared
 
 const folders = (list, stateManager) => list && list.sort(sortProjects).map(
     project => {
-        const { current, projectPath, projectPathRelative, name, regions, projectRoot } = project,
+        const { current, projectPath, projectPathRelative, name, regions, projectRoot, folderColor } = project,
           namespacedCredentialsKey = getNamespacedCredentialsKey(projectPath),
           credentials = stateManager.getState(namespacedCredentialsKey),
           credentialsTxt = credentials && credentials.length ? credentialsSetText : "",
@@ -16,10 +16,11 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
           workspaceFolder = current ? "." : path.basename(projectRoot),
           regionsStr = current ? "": regions.length ? `Regions: ${regions.join(', ')}. ` : "", 
           details = current ? "Run commands in current folder" : `Workspace: ${capitalizeFirst(workspaceFolder)}, Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
-          title = details.replaceAll("<br>", ", ").replaceAll("<b>", "")
+          title = details.replaceAll("<br>", ", ").replaceAll("<b>", ""),
+          folderLetter = current ? "\\3E" : capitalizeFirst(name).substr(0,1)
         return`
-            <li class="button-pulse folders ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : projectRoot}', '${current ? "Active Terminal" : path.basename(projectRoot)}');" >
-                <a title="${projectPathRelativeSynthesized}" class="folders project">
+            <li style="--folder-letter: '${folderLetter}';" class="button-pulse folders ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : projectRoot}', '${current ? "Active Terminal" : path.basename(projectRoot)}', '${folderColor}');" >
+                <a title="${projectPathRelativeSynthesized}" class="folders project" style="--folder-color: ${folderColor || "#a0d4e4"};">
                     <span class="icon folder full"></span>
                     <span class="name">${capitalizeFirst(name)}</span>
                     <span class="details" title="${title}">${details}</span>
@@ -63,7 +64,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
 `}
 
 module.exports.scripts = selectedProject => {
-    const { name, projectPathRelative, credentials, projectRoot } = selectedProject || {}
+    const { name, projectPathRelative, credentials, projectRoot, folderColor } = selectedProject || {}
     const shellHandler = createShellHandler(vscode.window.activeTerminal),
     displayedWorkspace = projectRoot ? path.basename(projectRoot) : "Active Terminal",
     projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
@@ -80,12 +81,12 @@ module.exports.scripts = selectedProject => {
         foldersList.style.animation = "none"
     }, 5000)
     ${selectedProject ? `
-        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${credentials}", "${projectRoot || ""}", "${displayedWorkspace}")` : ""
+        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${credentials}", "${projectRoot || ""}", "${displayedWorkspace}", "${folderColor}")` : ""
     }
     function capitalizeFirst (str) {
         return  str.charAt(0).toUpperCase() + str.slice(1)
     }
-    function renderProjectInfo(name, folder, credentials, workspace, displayedWorkspace) {
+    function renderProjectInfo(name, folder, credentials, workspace, displayedWorkspace, folderColor) {
         if (!name) return
         const projectTitle = name.charAt(0).toUpperCase() + name.slice(1)
         const projectInfoEl = document.getElementById("project-info") || {}
@@ -93,8 +94,9 @@ module.exports.scripts = selectedProject => {
         const isCurrentTerminal = !workspace || workspace === "Active Terminal"
         const folderTitle = isCurrentTerminal ? "Current Terminal Path" : folder
         const currentStyle = isCurrentTerminal ? "margin-top: 10px;" : ""
+        document.getElementById("commands-title").style.color = folderColor
         projectInfoEl.innerHTML = \`
-        <h4 style="\${currentStyle}" title="\${name} project" class="section-title">
+        <h4 style="\${currentStyle} color:\${folderColor};" title="\${name} project" class="section-title">
         \${(projectTitle).replace("Active Terminal", "Current Terminal Folder")}
         </h4>
         <ol>
@@ -119,8 +121,8 @@ module.exports.scripts = selectedProject => {
         })
     }
 
-    function appear(name, folder, pathRelative, credentials, workspace, displayedWorkspace) {
-        renderProjectInfo(name, pathRelative, credentials, workspace, displayedWorkspace)
+    function appear(name, folder, pathRelative, credentials, workspace, displayedWorkspace, folderColor) {
+        renderProjectInfo(name, pathRelative, credentials, workspace, displayedWorkspace, folderColor)
         parent.style.display = "block";
         const tfProgressBar1 = document.getElementById("tf-progress")
         if (tfProgressBar1 && workspace === "Active Terminal") {
