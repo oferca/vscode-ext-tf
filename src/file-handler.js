@@ -9,7 +9,6 @@ const {
     noColorExt,
     errorStatus,
     noCredentials,
-    additionalText,
     rootFolderName,
     defaultEstimate,
     hasSupportedTerminalKey
@@ -74,7 +73,7 @@ class FileHandler {
             args.push(step2Cb)
             this.handleDataFolder(...args)
         });
-        
+
         return true
     }
 
@@ -109,31 +108,31 @@ class FileHandler {
         )
     }
 
-    referUserToTerminal(){
+    referUserToTerminal() {
         if (!this.initialized) return
         const content = this.getOutputFileContent()
         fs.writeFileSync(this.outputFileNoColor, content + "\n " + additionalText)
     }
-    
-    
+
+
     convertOutputToReadable() {
-        try{
+        try {
             const outputFile = fs.readFileSync(
                 this.outputFile,
                 this.shellHandler.fileEncoding
             )
             const contentNoColors = removeColors(outputFile)
             this.updateCompletionsSummary(contentNoColors)
-            fs.writeFile(
+            true && fs.writeFile(
                 this.outputFileNoColor,
                 contentNoColors,
-                { encoding: this.shellHandler.fileEncoding },
+                { encoding: this.shellHandler.fileEncoding || "utf-8"},
                 () => this.outputCB(false, contentNoColors)
             )
-        }catch(e) {} // might take some time until file is created
+        } catch (e) { } // might take some time until file is created
     }
 
-    updateCompletionsSummary (outputFile) {
+    updateCompletionsSummary(outputFile) {
         if (this.successMessage) return
 
         const warnings = getWarnings(outputFile)
@@ -156,7 +155,7 @@ class FileHandler {
         this.logger = logger
         this.context = context
         this.initialized = false
-        this.outputCB = () => {}
+        this.outputCB = () => { }
         this.commandId = commandId
         this.firstActivation = false
         this.completionStatus = null
