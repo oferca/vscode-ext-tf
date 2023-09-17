@@ -15,18 +15,20 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
           projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative),
           workspaceFolder = current ? "." : path.basename(projectRoot),
           regionsStr = current ? "": regions.length ? `Regions: ${regions.join(', ')}. ` : "", 
-          details = current ? "Run commands in current folder" : `Workspace: ${capitalizeFirst(workspaceFolder)}, Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
+          details = current ? "Run commands in current folder" : `Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
           title = details.replaceAll("<br>", ", ").replaceAll("<b>", ""),
           folderLetter = current ? "\\3E" : capitalizeFirst(name).substr(0,1)
         return`
-            <li style="--folder-letter: '${folderLetter}';" class="button-pulse folders ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : projectRoot}', '${current ? "Active Terminal" : path.basename(projectRoot)}', '${folderColor}');" >
-                <a title="${projectPathRelativeSynthesized}" class="folders project" style="--folder-color: ${folderColor || "#a0d4e4"};">
-                    <span class="icon folder full"></span>
-                    <span class="name">${capitalizeFirst(name)}</span>
-                    <span class="details" title="${title}">${details}</span>
-                    <span class="name cta-arrow">Select</span>
-                </a>
-            </li>
+            <div class="card button-pulse ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : projectRoot}', '${current ? "Active Terminal" : path.basename(projectRoot)}', '${folderColor}');" >
+                <div class="card-header">
+                    Workspace: ${capitalizeFirst(workspaceFolder)}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">${capitalizeFirst(name)}</h5>
+                    <p title="${title} class="card-text">${details}</p>
+                    <a class="btn btn-primary">Select</a>
+                </div>
+            </div>
         `
     }
 ).join("")
@@ -69,7 +71,7 @@ module.exports.scripts = selectedProject => {
     displayedWorkspace = projectRoot ? path.basename(projectRoot) : "Active Terminal",
     projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
     return `
-    var parent = document.querySelector(".modal-parent")
+    var parent = document.querySelector(".tf-modal-parent")
     X = document.querySelector(".x")
     X.addEventListener("click", disappearX);
     IS_EXPLORER=true
@@ -116,7 +118,7 @@ module.exports.scripts = selectedProject => {
     
     function addOverlay(){
         setTimeout(() => {
-            const modalContainer = document.getElementById("modal-container")
+            const modalContainer = document.getElementById("tf-modal-container")
             modalContainer.style.backgroundColor = "rgba(0, 0, 0, 0.9)"
         })
     }
@@ -137,16 +139,16 @@ module.exports.scripts = selectedProject => {
     function removeOverlay(){
         
         setTimeout(() => {
-            const modalContainer = document.getElementById("modal-container")
+            const modalContainer = document.getElementById("tf-modal-container")
             modalContainer.style.backgroundColor = "#0e3858"
         }, 600)
     }
 
     function disappearX() {
         parent.style.display = "none";
-        var modal = document.querySelector(".modal")
-        modal.classList.add("animated")
-        document.getElementById("main-modal").classList.add("animated")
+        var tfModal = document.querySelector(".tf-modal")
+        tfModal.classList.add("animated")
+        document.getElementById("main-tf-modal").classList.add("animated")
         vscode.postMessage({ command: 'unselected-project', isExplorer: IS_EXPLORER });
         vscode.postMessage({ command: 'render', isExplorer: IS_EXPLORER })
         removeOverlay()
@@ -155,11 +157,11 @@ module.exports.scripts = selectedProject => {
     parent.addEventListener("click", disappearParent)
     
     function disappearParent(e) {
-        if (e.target.className == "modal-parent") {
+        if (e.target.className == "tf-modal-parent") {
             parent.style.display = "none";
-            var modal = document.querySelector(".modal")
-            modal.classList.add("animated")
-            document.getElementById("main-modal").classList.add("animated")
+            var tfModal = document.querySelector(".tf-modal")
+            tfModal.classList.add("animated")
+            document.getElementById("main-tf-modal").classList.add("animated")
             vscode.postMessage({ command: 'unselected-project', isExplorer: IS_EXPLORER });
             vscode.postMessage({ command: 'render', isExplorer: IS_EXPLORER })
             removeOverlay()

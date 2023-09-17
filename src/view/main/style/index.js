@@ -11,21 +11,21 @@ module.exports.style= context => `
     margin-top: 12px;
     width: 100%;
 }
-.button.output1, #quicklaunch-menu{
+.tf-button.output1, #quicklaunch-menu{
   background-color: var(--vscode-button-secondaryBackground);
   color: var(--vscode-button-secondaryForeground);
 }
-.button.output1{
+.tf-button.output1{
   position: absolute;
   top: 0px;
 }
-.explorer .button.output1{
+.explorer .tf-button.output1{
   position: inherit;
 }
-.button.output1.chat-gpt{
+.tf-tf-button.output1.chat-gpt{
   top: 35px;
 }
-.button.output1.chat-gpt .disabled, .button.output1 .disabled{
+.button.output1.chat-gpt .disabled, .tf-button.output1 .disabled{
   color: var(--vscode-button-foreground);
   opacity: 0.5;
 }
@@ -80,7 +80,7 @@ a.command:hover, a.command, a.command:focus {
   text-decoration: none;
   outline: none;
 }
-.button {
+.tf-button {
     background-color: var(--vscode-button-background);
     color: var(--vscode-button-foreground);
     transition: background-color 0.3s;
@@ -89,7 +89,7 @@ a.command:hover, a.command, a.command:focus {
     box-sizing: border-box;
     display: flex;
     padding: 4px;
-    margin: 1.8px 7px;
+    margin: 1.8px 0;
     border-radius: 2px;
     text-align: center;
     cursor: pointer;
@@ -100,6 +100,7 @@ a.command:hover, a.command, a.command:focus {
     font-size: 14px;
     min-width: 147px;
     box-shadow: 0.5px 0.5px 1px var(--vscode-button-separator);
+    height: 26px;
   }
 
   .sidebar .button{
@@ -165,7 +166,7 @@ a.command:hover, a.command, a.command:focus {
   }
   .button-container {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: top;
     flex-wrap: wrap;
   }
@@ -173,41 +174,42 @@ a.command:hover, a.command, a.command:focus {
     position: absolute;
   }
 
-  .button:not(.disabled):hover {
+  .tf-button:not(.disabled):hover {
     background-color: var(--vscode-button-secondaryHoverBackground);
   }
   
-  .button.command:not(.disabled):hover {
+  .tf-button.command:not(.disabled):hover {
     background-color: var(--vscode-button-hoverBackground);
   }
-  .button.command{
+  .tf-button.command{
     display: block;
     text-align: left;
     padding-left: 15px;
+    margin-bottom: 4px;
   }
-  .sidebar .button.command.animated-button .spinner{
+  .sidebar .tf-button.command.animated-tf-button .spinner{
     width: 12px;
     margin-right: 1px;
   }
-  .sidebar .button.command{
+  .sidebar .tf-button.command{
     padding-left: 21px !important;
     width: 120px !important;
     min-width: 97px !important;
   }
-  .sidebar .button.command.Explorer,
-  .sidebar .button.command.-var-file,
-  .sidebar .button.command.-upgrade,
-  .sidebar .button.command.Force-unlock,
-  .sidebar .button.command.-Target{
+  .sidebar .tf-button.command.Explorer,
+  .sidebar .tf-button.command.-var-file,
+  .sidebar .tf-button.command.-upgrade,
+  .sidebar .tf-button.command.Force-unlock,
+  .sidebar .tf-button.command.-Target{
     text-align: center;
     padding-left: 0 !important;
     width: 135px !important;
   }
-  .sidebar .button.command.Explorer .spinner{
+  .sidebar .tf-button.command.Explorer .spinner{
     display: none !important;
 
   }
-  .sidebar .button.command{
+  .sidebar .tf-button.command{
     padding-left: 31px;
   }
   body {
@@ -218,7 +220,7 @@ a.command:hover, a.command, a.command:focus {
   h2 {
     color: var(--vscode-foreground);
   }
-  .animated-button-text {
+  .animated-tf-button-text {
     color: var(--vscode-button-foreground);
   }
   h2, .animated-button-text {
@@ -265,7 +267,7 @@ a.command:hover, a.command, a.command:focus {
     text-align: left;
   }
 
-  .explorer #main-modal{
+  .explorer #main-tf-modal{
     text-align: left;
     background: var(--vscode-settings-focusedRowBackground)
   }
@@ -315,7 +317,7 @@ a.command:hover, a.command, a.command:focus {
     initial-value: 0;
   }
   
-  [role="progressbar"] {
+  [role="progressbar1"] {
     --percentage: var(--value);
     --primary: var(--vscode-button-background);
     --secondary: var(--vscode-button-secondaryBackground);
@@ -330,7 +332,7 @@ a.command:hover, a.command, a.command:focus {
     place-items: center;
   }
   
-  [role="progressbar"]::before {
+  [role="progressbar1"]::before {
     content: "";
     position: absolute;
     top: 0;
@@ -344,7 +346,7 @@ a.command:hover, a.command, a.command:focus {
     -webkit-mask-mode: alpha;
   }
   
-  [role="progressbar"]::after {
+  [role="progressbar1"]::after {
     counter-reset: percentage var(--value);
     content: counter(percentage) '%';
     font-family: Helvetica, Arial, sans-serif;
@@ -354,6 +356,8 @@ a.command:hover, a.command, a.command:focus {
 
   #tf-progress{
     margin-top: 5px;
+    width: 62vw;
+    background: rgba(0, 0, 0, 0.25);
   }
 
   #output-file-fs{
@@ -481,7 +485,7 @@ u.logs{
   font-weight: 500;
 }
 
-#modal-container{
+#tf-modal-container{
   transition: 0.5s background;
 }
 .desc{
@@ -494,6 +498,7 @@ u.logs{
   width: 100%;
   text-align: left;
   outline: none;
+  color: rgb(255, 211, 226);
 }
 .explorer .accordion.parameters{
   margin-top: 15px;
@@ -516,6 +521,11 @@ u.logs{
   overflow: hidden;
   height: 0px;
   transition: 0.25s all;
+  display: flex;
+  text-align: left;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
 }
 
 .toggle-fullscreen{
@@ -534,13 +544,13 @@ u.logs{
   text-align: center;
 }
 
-.container .progress {
+.container .progress1 {
   margin: 0 auto;
   width: 62vw;
   text-align: left;
 }
 
-.progress {
+.progress1 {
   padding: 4px;
   background: rgba(0, 0, 0, 0.25);
   border-radius: 6px;
@@ -565,6 +575,9 @@ u.logs{
   transition-property: width, background-color;
   -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.25), inset 0 1px rgba(255, 255, 255, 0.1);
+  width: 0%;
+  text-align: right;
+  padding-right: 5px;
 }
 
 /*
@@ -574,27 +587,27 @@ u.logs{
  *       https://css-tricks.com/webkit-sibling-bug/
  */
 
-#five:checked ~ .progress > .progress-bar {
+#five:checked ~ .progress1 > .progress-bar {
   width: 5%;
   background-color: #f63a0f;
 }
 
-#twentyfive:checked ~ .progress > .progress-bar {
+#twentyfive:checked ~ .progress1 > .progress-bar {
   width: 25%;
   background-color: #f27011;
 }
 
-#fifty:checked ~ .progress > .progress-bar {
+#fifty:checked ~ .progress1 > .progress-bar {
   width: 50%;
   background-color: #f2b01e;
 }
 
-#seventyfive:checked ~ .progress > .progress-bar {
+#seventyfive:checked ~ .progres1 > .progress-bar {
   width: 75%;
   background-color: #f2d31b;
 }
 
-#onehundred:checked ~ .progress > .progress-bar {
+#onehundred:checked ~ .progres1s > .progress-bar {
   width: 100%;
   background-color: #86e01e;
 }

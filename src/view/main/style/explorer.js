@@ -541,7 +541,7 @@ footer #tzine-actions iframe{
 POPUP
 */
 
-.modal-parent {
+.tf-modal-parent {
   position: fixed;
   inset: 0;
   height: 100vh;
@@ -550,7 +550,7 @@ POPUP
   z-index: 1000;
 }
 
-.modal {
+.tf-modal {
   background: var( --vscode-editor-background);
   width: 70%;
   padding: 30px;
@@ -565,7 +565,7 @@ POPUP
   overflow-y: scroll;
   overflow-x: hidden;
 }
-.modal.animated{
+.tf-modal.animated{
   animation: 1s drop;
 }
 
@@ -588,7 +588,7 @@ POPUP
 
 @media only screen and (max-width: 600px) {
 
-  .modal,
+  .tf-modal,
   .center {
       width: 80%;
       padding: 1rem;
@@ -668,7 +668,7 @@ POPUP
   background: #EE9EFF;
 }
 
-.explorer .button-container{
+.explorer .tf-button-container{
   justify-content: left;
   margin: 42px auto 0px;
 }
@@ -677,7 +677,7 @@ POPUP
   justify-content: left;
 }
 
-.explorer #display-output-21 button{
+.explorer #display-output-21 tf-button{
   margin-top: 25px;
   justify-content: center;
 }
@@ -692,9 +692,6 @@ POPUP
   color: var(--vscode-editor-foreground);
   word-spacing: normal;
   font-size: 14px;
-}
-.explorer .expandable{
-	display: inline-grid;
 }
 
 .explorer .expandable h4.title{
@@ -743,16 +740,17 @@ POPUP
 }
 
 #output-file{
-	width: 41vw;
-	padding: 3px;
-	margin-top: 22px;
-	border-radius: 8px;
-	opacity: 0.4;
-	transition: 0.5s border, 0.5 background-image;
-	z-index: 9999;
+	width: 36vw;
+    height: 150px;
+    padding: 3px;
+    margin-top: 22px;
+    border-radius: 8px;
+    opacity: 0.4;
+    transition: 0.5s border, 0.5 background-image;
+    z-index: 9999;
     position: relative;
-	box-shadow: 0.5px 0.5px 1px var(--vscode-notifications-border);
-	font-size: 2vh;
+    box-shadow: 0.5px 0.5px 1px var(--vscode-notifications-border);
+    font-size: 2vh;
 }
 #output-file.matrix{
 	background-image: url(${matrixBackground});

@@ -1,5 +1,5 @@
 module.exports.animatedButtonStyle = `
-.button .spinner{
+.tf-button .spinner{
   width: 0px;
   transition: 0.25s width;
   overflow: hidden;

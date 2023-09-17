@@ -31,7 +31,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     outputFileContent = isExplorer ? `<textarea disabled class="${feedback ? feedback.type + " feedback" : "matrix" }" id="output-file" name="output-file" rows="9" >${completed ? outputContent : ""}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs" class="${!feedback ? "matrix" : "" }" >&#x2922;
     <div class="toggle-fullscreen">Full Screen</div></div>` : "",
     overlayClass = completed ? 'active' : "",
-    overlayCall = completed && isExplorer ? "document.querySelector('.modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : "",
+    overlayCall = completed && isExplorer ? "document.querySelector('.tf-modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : "",
     shellHandler = createShellHandler(vscode.window.activeTerminal),
     projectPathSynthesized = shellHandler.synthesizePath((selectedProject || {}).projectPath),
     tfPBStyle = "visibility: hidden;",
@@ -54,7 +54,8 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     ${isExplorer && toastStyle }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ <script>
     const vscode = acquireVsCodeApi();
   </script>
 </head>
@@ -62,9 +63,9 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
 <div id="overlay" class="${overlayClass}"></div>
 
 ${ explorerHTML }
-  <div class="modal-parent" id="modal-container" ${modalParentStyle}>
+  <div class="tf-modal-parent" id="tf-modal-container" ${modalParentStyle}>
   <div id="snackbar"></div>
-    <div id="main-modal" class="modal ${modalAnimated}"">
+    <div id="main-tf-modal" class="tf-modal ${modalAnimated}"">
       <div id="project-info" class="project-block" ${projectInfoStyle}>
       </div>
       ${seperator}
@@ -81,7 +82,7 @@ ${ explorerHTML }
               if (action.handler) return (`
               <div
                 href="#"
-                class="button command ${action.label}"
+                class="tf-button command ${action.label}"
                 title="Run Terraform ${action.label.replace(" -", " with ")} in terminal"
                 onclick="launchTFCommand('${action.label}', this)"
                 >
@@ -97,12 +98,9 @@ ${ explorerHTML }
               const seperatorClass = !firstSeperator ? "first" : ""
               firstSeperator = (firstSeperator || 0) + 1
               const terminal = isExplorer && (firstSeperator == 2) ? `<div class="expandable">${outputFileContent}</div>
-              <div id="tf-progress" style="${tfPBStyle}" class="container">
-                <div class="progress">
-                  <div class="progress-bar" id="progress-bar" style="background-color: red;"></div>
-                </div>
+              <div class="progress" id="tf-progress">
+                <div class="progress-bar" id="progress-bar-bt" style="${tfPBStyle}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
               </div>
-
               <div class="accordion desc parameters project-block">Actions With Parameters</div>
                 <div class="panel">
               ` : "" 
@@ -193,14 +191,10 @@ ${ explorerHTML }
     const tfProgressBar = document.getElementById("tf-progress")
     tfProgressBar.style = "display: auto;"
     const perc = Math.floor(completionPercentage)
-    const progressBar = document.getElementById("progress-bar")
-    let backgroundColor = "#86e01e"
-    if (perc > 5) backgroundColor = "#f63a0f" 
-    if (perc > 18) backgroundColor = "#f27011" 
-    if (perc > 35) backgroundColor = "#f2b01e" 
-    if (perc > 50) backgroundColor = "#f2d31bf" 
-    if (perc > 65) backgroundColor = "#86e01e" 
-    progressBar.style = "width: "+perc+"%;background-color:" + backgroundColor + ";"
+    const progressBar = document.getElementById("progress-bar-bt")
+    progressBar.style = "width: "+perc+"%;text-align: right;"
+    progressBar.setAttribute("aria-valuenow", perc)
+    progressBar.innerHTML = perc+"%"
   }
 
   window.addEventListener('message', event => {
@@ -246,7 +240,7 @@ ${ explorerHTML }
         if (outputArea.classList.length) outputArea.classList.remove(...outputArea.classList);
         outputAreaFS.classList.remove("matrix");
         outputArea.classList.add("running")
-        const mainModal = document.getElementById("main-modal")
+        const mainModal = document.getElementById("main-tf-modal")
       })
       const credentials = getExplorerCredentials()
       el.classList.add('animated-button');
