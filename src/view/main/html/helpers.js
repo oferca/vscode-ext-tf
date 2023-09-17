@@ -58,7 +58,7 @@ module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent) 
                 <div id="project-info" class="project-block" ${projectInfoStyle}>
                 </div>
                 <div class="accordion desc parameters project-block">Actions With Parameters</div>
-                <div class="panel">
+                <div class="tf-panel">
             ` : `<div class="expandable ${seperatorClass} seperator"></div>` 
             return (`</div>
                 

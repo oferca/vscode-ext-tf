@@ -18,7 +18,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     modalAnimated = !completed ? 'animated' : '',
     warningHTML = preferences.showWarning && false ? '<div class="title prefs warning">Preferences Active</div>' : "",
     planSuccess = isPlanCompleted && planSucceded,
-    credentials = isExplorer ? `<h4 class="title env-vars section-title">Environment Variables Script</h4><div class="desc">Set required variables here or in terminal.</div><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="Example script:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>` : "",
+    credentials = isExplorer ? `<h4 class="title env-vars section-title">Environment Variables Script</h4><div class="desc">Set required variables here or in terminal.</div><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="Enter a script such as (in case terminal is powershell):\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>` : "",
     commandsTitle = isExplorer ? `<h4 title="Terraform Commands" id="commands-title" class="commands-title section-title"></h4>` : ""
     isMissingCredentials = credentials.length && _missingCredentials && feedback && feedback.type === "error",
     missingCredentials = isMissingCredentials ? `setTimeout(() => {
@@ -80,7 +80,7 @@ ${ explorerHTML }
       </div>
           ${seperator}
           <div class="accordion desc project-block">Set Credentials</div>
-            <div class="panel">
+            <div class="tf-panel">
             <br>
               ${credentials}
           </div>

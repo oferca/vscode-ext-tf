@@ -728,9 +728,9 @@ POPUP
 #credentials{
 	padding: 3px;
 	width: 62vw;
-	margin-top: -20px;
+	margin-top: -35px;
 	border: 1px solid var(--vscode-notifications-border);
-
+	font-size: 14px;
 }
 #credentials, #output-file{
 	background: var(--vscode-settings-focusedRowBackground);

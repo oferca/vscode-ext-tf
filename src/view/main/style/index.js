@@ -519,11 +519,10 @@ u.logs{
   display: none;
 }
 
-.explorer .panel {
+.explorer .tf-panel {
   overflow: hidden;
   height: 0px;
   transition: 0.25s all;
-  display: flex;
   text-align: left;
   align-items: flex-start;
   text-align: left;

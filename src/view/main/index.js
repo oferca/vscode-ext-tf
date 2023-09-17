@@ -192,7 +192,7 @@ class WebViewManager {
     }
     
     addCredentials (project) {
-        project.credentials = this.stateManager.getState(getNamespacedCredentialsKey(project)) || ""
+        project.credentials = this.stateManager.getState(getNamespacedCredentialsKey(project.projectPath)) || ""
         return project
     }
 
