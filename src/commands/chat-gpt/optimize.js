@@ -5,7 +5,6 @@ module.exports.optimize = outputFileContent => {
     const tokens = [warningToken, errorToken, titleToken, planToken, forcesReplacementToken, changedToken];
     const lines = outputFileContent.split("\n");
     let lastToken
-    if (outputFileContent.length / 4 < 4000) return chatGPTFirstLine + outputFileContent
     const filtered = lines.reduce((query, lineParam) => {
         const line = lineParam.replace("│", "").replace("╵", "").replace("╷", "")
         let hasToken = tokens.reduce((accumulator, token) => {
@@ -31,5 +30,9 @@ module.exports.optimize = outputFileContent => {
         if (line.indexOf("has changed") > -1) return query;
         return (query + "\n" + line)
     }, "")
-    return chatGPTFirstLine + filtered
+
+    const summary = chatGPTFirstLine + filtered
+    const rest = outputFileContent.substr(0, 3600 * 4 - (summary.length))
+
+    return summary + rest
 }
