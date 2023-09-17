@@ -107,7 +107,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         if (hasWarnings) notification = vscode.window.showWarningMessage(warnTxt);
         let successMessage
         if (!notification) {
-            successMessage = rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + summary.message + outputLogsMsg
+            successMessage = rawCommand === "Plan" ? `Terraform ${capitalized} ${completionTerm}. ` : "" + (summary.message || `Terraform ${capitalized} completed.`) + outputLogsMsg
             notification = vscode.window.showInformationMessage(successMessage);
         }
 
@@ -115,7 +115,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             generalMessage && { type: 'info', msg: generalMessage } ||
             hasErrors && { type: 'error', msg: errTxtPref} ||
             hasWarnings && { type: 'warning', msg: warnTxtPref} ||
-            { type: 'success', msg: successMessage.replace(outputLogsMsg, "") }
+            { type: 'success', msg: (successMessage || "").replace(outputLogsMsg, "") }
         )
         this.fileHandler.referUserToTerminal()
 
