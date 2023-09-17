@@ -106,7 +106,10 @@ a.command:hover, a.command, a.command:focus {
   .sidebar .button{
     margin-bottom: 4px;
   }
-
+  body.sidebar{
+    background: transparent;
+    color: var(--vscode-button-foreground);
+  }
   .sidebar .animated-button .spinner {
     width: 16px;
     margin-right: 4px;
@@ -147,10 +150,9 @@ a.command:hover, a.command, a.command:focus {
     margin: 10px;
   }
   p{
-    text-align: center;
+    text-align: left;
     justify-content: center;
     align-items: center;
-    max-width: 300px;
   }
   .quick-launch{
     text-align: center;

@@ -66,7 +66,7 @@ body {
 
 
 #filemanager .breadcrumbs.header {
-    background:  linear-gradient(to right,  white, var(--vscode-textLink-foreground), var(--vscode-textLink-foreground), var(--vscode-textLink-foreground), white);
+    background:  linear-gradient(to right,  #343a40, var(--vscode-textLink-foreground), var(--vscode-textLink-foreground), #343a40, #343a40);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -79,7 +79,6 @@ body {
 }
 #filemanager .breadcrumbs.header.anim-text {
 	animation: h1anim 8s linear forwards;
-
 }
 #filemanager .breadcrumbs.header.static {
 	animation: h1animstatic 8s linear forwards;
@@ -105,9 +104,10 @@ body {
 #filemanager .breadcrumbs {
 	color: #e7e7e9;
 	margin-left:20px;
-	font-size: 24px;
+	font-size: 22px;
 	font-weight: 700;
 	line-height: 35px;
+	text-align: left;
 }
 
 #filemanager .breadcrumbs a:link, .breadcrumbs a:visited {
@@ -955,5 +955,45 @@ POPUP
 	cursor: pointer;
 	font-size: 13px !important;
 	font-style: italic !important;;
+}
+.card{
+	margin-bottom: 30px;
+	height: 140px;
+	cursor: pointer;
+	transition: 0.25s all;
+}
+.card p {
+	overflow: hidden;
+    height: 55px;
+}
+.card:hover {
+	background-color: #343a40!important;
+	color: #fff;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.card-text{
+	color: gray;
+	font-size: 0.84rem;
+
+}
+.card-header {
+    padding: 0.45rem 1.25rem !important;
+	font-size: 0.91rem !important;
+}
+.card-body {
+	padding: 1rem 1.25rem 1.25rem;
+}
+.card-title {
+    margin-bottom: 0.7rem;
+	font-size: 1.1rem !important;
+}
+.h5, h5 {
+    font-size: 1.15rem !important;
+}
+body.explorer {
+	background: lightgray;
+}
+.folderName{
+	color: #343a40;
 }
 `

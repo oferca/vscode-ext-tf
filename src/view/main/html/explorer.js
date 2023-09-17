@@ -15,18 +15,17 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
           projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative),
           workspaceFolder = current ? "." : path.basename(projectRoot),
           regionsStr = current ? "": regions.length ? `Regions: ${regions.join(', ')}. ` : "", 
-          details = current ? "Run commands in current folder" : `Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}<br>Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
+          details = current ? "Run commands in current folder" : `Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}. Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
           title = details.replaceAll("<br>", ", ").replaceAll("<b>", ""),
           folderLetter = current ? "\\3E" : capitalizeFirst(name).substr(0,1)
         return`
-            <div class="card button-pulse ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : projectRoot}', '${current ? "Active Terminal" : path.basename(projectRoot)}', '${folderColor}');" >
+            <div class="card shadow button-pulse ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : projectRoot}', '${current ? "Active Terminal" : path.basename(projectRoot)}', '${folderColor}');" >
                 <div class="card-header">
-                    Workspace: ${capitalizeFirst(workspaceFolder)}
+                    ${capitalizeFirst(workspaceFolder)}
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">${capitalizeFirst(name)}</h5>
-                    <p title="${title} class="card-text">${details}</p>
-                    <a class="btn btn-primary">Select</a>
+                    <p title="${title}" class="card-text">${details}</p>
                 </div>
             </div>
         `
@@ -56,9 +55,9 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
   </script>
 
       <div id="filemanager" >
-      <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} "><span class="folderName">One-Click Terraform Commands Runner </span></div>
-      <br><br><div class="breadcrumbs"><span class="folderName">Select A Terraform Project</span></div>
-
+      <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} "><span class="folderName">One-Click Terraform Commands Runner </span>
+      <br><br><div class="breadcrumbs"><span class="folderName ${!completed && withAnimation ? 'anim-text': 'static'}">Select A Terraform Project</span></div>
+      </div>
       <ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list, stateManager)}
         </ul>
