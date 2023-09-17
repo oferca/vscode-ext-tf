@@ -16,7 +16,7 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
                 .then(vscode.window.showTextDocument)
             break;
 
-        case 'chat-gpt':
+        case 'ChatGPT Synopsis':
             if (!launchHandler || !launchHandler.fileHandler) return logger.log({ message: "failed-chat-gpt", source: "webview"})
             webViewManager.outputFileContent = fs.readFileSync(
                 launchHandler.fileHandler.outputFileNoColor,

@@ -31,15 +31,10 @@ module.exports.getActions = stateManager => {
         },
         { handler: OpenExplorerHandler, label: "Open Explorer", icon: "$(ports-open-browser-icon)", excludeExplorer: true },
         {
-            label: 'Plan Synopsis',
-            kind: vscode.QuickPickItemKind.Separator,
-            menuOnly: true
-        },
-        { handler: ChatGPTHandler, label: "ChatGPT Synopsis", icon: "$(ports-open-browser-icon)", menuOnly: true },
-        {
             label: 'Terraform Actions',
             kind: vscode.QuickPickItemKind.Separator
         },
+        { handler: ChatGPTHandler, label: "ChatGPT Synopsis", icon: "$(ports-open-browser-icon)", onPlanSuccess: true,  topLevel, bType: "info"  },
         { handler: TerraformInitHandler, label: "Init", icon: "$(extensions-install-count)", topLevel, bType: "primary" },
         { handler: TerraformValidateHandler, label: "Validate", icon: "$(issue-closed)", topLevel, bType: "success" },
         { handler: TerraformOutputHandler, label: "Output", icon: "$(note)", topLevel, bType: "secondary" },

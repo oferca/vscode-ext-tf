@@ -6,8 +6,8 @@ const snackbar = (msg, type, planSuccess) => {
 
 module.exports.success = (msg, planSuccess) => snackbar(msg, "success", planSuccess)
 
-module.exports.warning = msg => snackbar(msg, "warning")
+module.exports.warning = (msg, planSuccess) => snackbar(msg, "warning", planSuccess)
 
 module.exports.error = msg => snackbar(msg, "error")
 
-module.exports.info = msg => snackbar(msg, "info")
+module.exports.info = (msg, planSuccess) => snackbar(msg, "info", planSuccess)

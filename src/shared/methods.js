@@ -200,16 +200,18 @@ const validateSuccessful = outputFile => outputFile.indexOf(validateSuccessMessa
 
 const extractPlanTotal = outputFile => {
     const section = outputFile.split("Plan: ")
-    if (section.length === 1) return
+    if (section.length === 1) return 'No changes.'
     const summary = section[1].split(".")[0]+ "."
-    if (summary.length > 100) return
+    if (summary.length > 100) return 'No changes.'
     return summary
 }
 
-module.exports.tfCommandSuccess = outputFile => (planSuccessful(outputFile) && extractPlanTotal(outputFile))
-    || (initSuccessful(outputFile) && initSuccessMessage)
-    || (initEmptyDir(outputFile) && initEmptyDirMessage)
-    || (validateSuccessful(outputFile) && validateSuccessMessage)
+module.exports.tfCommandSuccess = outputFile => {
+    if (planSuccessful(outputFile)) return extractPlanTotal(outputFile)
+    if (initSuccessful(outputFile)) return initSuccessMessage
+    if (initEmptyDir(outputFile)) return initEmptyDirMessage
+    if (validateSuccessful(outputFile)) return validateSuccessMessage
+}
 
 module.exports.getWarnings = outputFile => {
     const warningsArr = outputFile.split("Warning:")

@@ -4,7 +4,7 @@
   "displayName": "Terraform Dashboard Plus",
   "publisher": "oferkafry",
   "description": "Supercharge your Terraform journey with a control center. Say goodbye to tedious typing as this extension brings effortless, UI-driven execution and real-time monitoring to Terraform commands.",
-  "version": "2.6.7",
+  "version": "2.6.8",
   "engines": {
     "vscode": "^1.67.2"
   },

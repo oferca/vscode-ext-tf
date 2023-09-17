@@ -111,7 +111,7 @@ class FileHandler {
     referUserToTerminal() {
         if (!this.initialized) return
         const content = this.getOutputFileContent()
-        fs.writeFileSync(this.outputFileNoColor, content + "\n " + additionalText)
+        fs.writeFileSync(this.outputFileNoColor, content + "\n " + additionalText || "")
     }
 
 
@@ -133,7 +133,7 @@ class FileHandler {
     }
 
     updateCompletionsSummary(outputFile) {
-        if (this.successMessage) return
+        if (this.successMessage || !outputFile || outputFile.length < 50) return
 
         const warnings = getWarnings(outputFile)
         this.successMessage = tfCommandSuccess(outputFile)

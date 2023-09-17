@@ -38,11 +38,11 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     seperator= isExplorer ? `<div class="seperator-container" ><div class="seperator" ></div></div>` : "",
     feedbackScript = feedback ? (
       feedback.type === "success" && success(feedback.msg, planSuccess) ||
-      feedback.type === "info" && info(feedback.msg) ||
-      feedback.type === "warning" && warning(feedback.msg) ||
+      feedback.type === "info" && info(feedback.msg, planSuccess) ||
+      feedback.type === "warning" && warning(feedback.msg, planSuccess) ||
       feedback.type === "error" && error(feedback.msg)
     ): "",
-    commandButtons = getCommandButtonsHTML(actions, isExplorer, outputFileContent)
+    commandButtons = getCommandButtonsHTML(actions, isExplorer, outputFileContent, planSuccess)
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>

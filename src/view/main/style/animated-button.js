@@ -15,7 +15,7 @@ module.exports.animatedButtonStyle = `
 .explorer .animated-button .fa-spinner{
   display: inline-block;
 }
-.animated-button .cmd-icon{
+.animated-button .cmd-icon:not(.no-spinner){
   display: none;
 }
 .explorer .fa-spinner{

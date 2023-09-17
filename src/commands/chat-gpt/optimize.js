@@ -4,8 +4,8 @@ const { errorToken, planToken, titleToken, warningToken, forcesReplacementToken,
 module.exports.optimize = outputFileContent => {
     const tokens = [warningToken, errorToken, titleToken, planToken, forcesReplacementToken, changedToken];
     const lines = outputFileContent.split("\n");
-    let beforeLast
     let lastToken
+    if (outputFileContent.length / 4 < 4000) return chatGPTFirstLine + outputFileContent
     const filtered = lines.reduce((query, lineParam) => {
         const line = lineParam.replace("│", "").replace("╵", "").replace("╷", "")
         let hasToken = tokens.reduce((accumulator, token) => {
