@@ -131,10 +131,13 @@ module.exports.scripts = selectedProject => {
         renderProjectInfo(name, pathRelative, credentials, workspace, displayedWorkspace, folderColor)
         parent.style.display = "block";
         const tfProgressBar1 = document.getElementById("tf-progress")
-        if (tfProgressBar1 && workspace === "Active Terminal") {
-          tfProgressBar1.classList.add("active-terminal")
-        }else {
-          tfProgressBar1.classList.remove("active-terminal")
+        if (tfProgressBar1){
+          if(workspace === "Active Terminal") {
+            tfProgressBar1.classList.add("active-terminal")
+           }
+           else {
+            tfProgressBar1.classList.remove("active-terminal")
+           }
         }
         addOverlay()
         scrollInterval = undefined
