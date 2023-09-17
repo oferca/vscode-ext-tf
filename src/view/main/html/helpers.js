@@ -14,13 +14,12 @@ const strongSeperator = (action, isExplorer) => action.kind === -1 && (action.se
 
 const weakSeperator = (action, isExplorer) => action.kind === -1 && action.seperatorType === "weak" && isExplorer
 
-const progressBar = `<div class="progress-bar" id="progress-bar-bt" style="${tfPBStyle}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>`
+const progressBar = `<div class="progress-bar" id="progress-bar-bt" style="visibility: hidden;" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div></div>`
 
 const actionLabel = (action, isExplorer) => isExplorer ? action.label.replace("Terraform Actions"," ") : action.label
 
 module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent) => {
     let firstSeperator
-    const tfPBStyle = "visibility: hidden;"
     return actions.map(action => {
         if (action.menuOnly) return
         if (action.excludeExplorer && isExplorer) return
