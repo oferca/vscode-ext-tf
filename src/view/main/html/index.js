@@ -13,14 +13,13 @@ const { getFunctions } = require("./functions")
 module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, _missingCredentials, feedback) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     isExplorer = !!explorerParams,
-    projectInfoStyle = `style="display: ${isExplorer ? 'block' : 'none'}; margin-top: 20px;"`,
     modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,
     explorerHTML = isExplorer ? getExplorerHTML(explorerParams, completed, withAnimation, stateManager) : '',
     modalAnimated = !completed ? 'animated' : '',
     warningHTML = preferences.showWarning && false ? '<div class="title prefs warning">Preferences Active</div>' : "",
     planSuccess = isPlanCompleted && planSucceded,
     credentials = isExplorer ? `<h4 class="title env-vars section-title">Environment Variables Script</h4><div class="desc">Set required variables here or in terminal.</div><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="Example script:\n\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>` : "",
-    commandsTitle = isExplorer ? `<h4 title="Terraform Commands" id="commands-title" class="commands-title section-title">Run Commands</h4>` : ""
+    commandsTitle = isExplorer ? `<h4 title="Terraform Commands" id="commands-title" class="commands-title section-title"></h4>` : ""
     isMissingCredentials = credentials.length && _missingCredentials && feedback && feedback.type === "error",
     missingCredentials = isMissingCredentials ? `setTimeout(() => {
       const credentials = document.getElementById("credentials")
@@ -54,11 +53,11 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     ${isExplorer && explorerStyle }
     ${isExplorer && toastStyle }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
- <script>
-    const vscode = acquireVsCodeApi();
-  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script>
+      const vscode = acquireVsCodeApi();
+    </script>
 </head>
 <body class="${isExplorer ? "explorer" : "sidebar" } ${invalidate}" >
 <div id="overlay" class="${overlayClass}"></div>
@@ -66,8 +65,7 @@ ${ explorerHTML }
   <div class="tf-modal-parent" id="tf-modal-container" ${modalParentStyle}>
   <div id="snackbar"></div>
     <div id="main-tf-modal" class="tf-modal ${modalAnimated}"">
-      <div id="project-info" class="project-block" ${projectInfoStyle}>
-      </div>
+     
     ${seperator}
         ${warningHTML}
           ${x}

@@ -96,11 +96,15 @@ module.exports.scripts = selectedProject => {
         if (!name) return
         const projectTitle = name.charAt(0).toUpperCase() + name.slice(1)
         const projectInfoEl = document.getElementById("project-info") || {}
+        const commandsTitleEl = document.getElementById("commands-title") || {}
         const projectCredsEl = document.getElementById("credentials") || { style: {} }
         const isCurrentTerminal = !workspace || workspace === "Active Terminal"
         const folderTitle = isCurrentTerminal ? "Current Terminal Path" : folder
         const currentStyle = isCurrentTerminal ? "margin-top: 10px;" : ""
         document.getElementById("commands-title").style.color = folderColor
+        commandsTitleEl.innerHTML = \`
+        Run in \${(projectTitle).replace("Active Terminal", "Current Terminal Folder")}
+        \`
         projectInfoEl.innerHTML = \`
         <h4 style="\${currentStyle} color:\${folderColor};" title="\${name} project" class="section-title">
         \${(projectTitle).replace("Active Terminal", "Current Terminal Folder")}

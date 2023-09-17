@@ -742,7 +742,7 @@ POPUP
 
 #output-file{
 	width: 41vw;
-    height: 150px;
+    height: 204px;
     padding: 3px;
     margin-top: 22px;
     border-radius: 8px;
@@ -752,6 +752,13 @@ POPUP
     position: relative;
     box-shadow: 0.5px 0.5px 1px var(--vscode-notifications-border);
     font-size: 2vh;
+	margin-left: 10px;
+}
+
+@media all and (max-width: 860px) {
+	#output-file{
+		width: 35vw;
+	}
 }
 #output-file.matrix{
 	background-image: url(${matrixBackground});

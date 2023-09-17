@@ -364,7 +364,7 @@ a.command:hover, a.command, a.command:focus {
 
   #output-file-fs{
     position: absolute;
-    margin-top: 138px;
+    margin-top: -45px;
     margin-left: 5px;
     font-size: 48px;
     color: var(--vscode-button-background) transition: 0.5s opacity;
@@ -536,6 +536,7 @@ u.logs{
   left: 30px; 
   font-size: 18px;
   text-shadow: var(--vscode-button-background) 1px 0px 10px;
+  color: white;
 }
 
 
@@ -614,4 +615,12 @@ u.logs{
   background-color: #86e01e;
 }
 
+.btn.cmd {
+  display: block;
+  color: var(--vscode-button-foreground);
+  font-size: 14px;
+  min-width: 170px;
+  margin: 8px 0px;
+  text-align: left;
+}
 `

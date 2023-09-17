@@ -14,7 +14,8 @@ module.exports.style = `
     max-height: 16px;
     display: table;
     font-weight: normal;
-}
+    font-size: 14px;
+  }
 #snackbar.error{
     background-color: var(--vscode-editorMarkerNavigationError-background);
 }

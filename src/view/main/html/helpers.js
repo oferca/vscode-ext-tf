@@ -1,15 +1,34 @@
-const getButtonHTML = (action, isExplorer) => `
-    <div
-        href="#"
-        class="tf-button command ${action.label}"
-        title="Run Terraform ${action.label.replace(" -", " with ")} in terminal"
-        onclick="launchTFCommand('${action.label}', this)">
-        <div class="spinner">
-            <i class="fa fa-refresh fa-spin spinner"></i>
-        </div>
-        ${isExplorer ? "Terraform " : ""}${action.label}
-    </div>       
+const getButtonHTML = (action, isExplorer) => {
+    const title =  `Run Terraform ${action.label.replace(" -", " with ")} in terminal`
+    const onclick = `launchTFCommand('${action.label}', this)`
+    const spinner = `<i class="fas fa-solid fa-spinner fa-spin"></i>`
+    const buttonText = `${isExplorer ? "Terraform " : ""}${action.label}`
+    const label = action.label.toLowerCase()
+    const buttonIconType = label.indexOf("init") > -1 && "download" ||
+        label.indexOf("validate") > -1 && "check" ||
+        label.indexOf("output") > -1 && "list" ||
+        label.indexOf("plan") > -1 && "paper-plane" ||
+        label.indexOf("apply") > -1 && "upload"
+
+    return action.topLevel ? `
+        <button type="button"
+            class="btn cmd btn-${action.bType}"
+            title="${title}"
+            onclick="${onclick}">
+            ${spinner}
+            <i class="cmd-icon fas fa-${buttonIconType}"></i> &nbsp ${buttonText}
+        </button>
+        ` : `
+        <div
+            href="#"
+            class="tf-button command ${action.label}"
+            title="${title}"
+            onclick="${onclick}">
+            ${spinner}
+            ${buttonText}
+        </div>       
     `
+}
 const strongSeperator = (action, isExplorer) => action.kind === -1 && (action.seperatorType !== "weak" || !isExplorer)
 
 const weakSeperator = (action, isExplorer) => action.kind === -1 && action.seperatorType === "weak" && isExplorer
@@ -20,6 +39,8 @@ const actionLabel = (action, isExplorer) => isExplorer ? action.label.replace("T
 
 module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent) => {
     let firstSeperator
+    const projectInfoStyle = `style="display: ${isExplorer ? 'block' : 'none'}; margin-top: 20px;"`
+
     return actions.map(action => {
         if (action.menuOnly) return
         if (action.excludeExplorer && isExplorer) return
@@ -34,12 +55,14 @@ module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent) 
             </div>
             <div class="progress" id="tf-progress">
                 ${progressBar}
+                <div id="project-info" class="project-block" ${projectInfoStyle}>
+                </div>
                 <div class="accordion desc parameters project-block">Actions With Parameters</div>
                 <div class="panel">
-            ` : "" 
+            ` : `<div class="expandable ${seperatorClass} seperator"></div>` 
             return (`</div>
-                <div class="expandable ${seperatorClass} seperator"></div>
-                ${terminal}
+                
+                ${terminal}<br>
                 <div class="expandable">
                 <h4 class="title">${actionLabel(action, isExplorer)}</h4>
             `)

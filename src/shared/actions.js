@@ -1,15 +1,12 @@
 const vscode = require('vscode')
 const { credentialsKey } = require("./constants")
 const { ChatGPTHandler } = require("../commands/chat-gpt")
-const { ClearStateHandler } = require("../commands/clear")
 const { TerraformPlanHandler } = require("../commands/plan")
 const { TerraformInitHandler } = require("../commands/init")
 const { TerraformApplyHandler } = require("../commands/apply")
 const { TerraformOutputHandler } = require("../commands/output")
-const { CredentialsHandler } = require("../commands/credentials")
 const { OpenExplorerHandler } = require("../commands/open-explorer")
 const { TerraformValidateHandler } = require("../commands/validate")
-const { ChangeFolderHandler } = require("../commands/change-folder")
 const { TerraformPlanTargetHandler } = require("../commands/plan/target")
 const { TerraformPlanVarsHandler } = require("../commands/plan/vars-file")
 const { TerraformApplyTargetHandler } = require("../commands/apply/target")
@@ -17,15 +14,14 @@ const { TerraformApplyVarsHandler } = require("../commands/apply/vars-file")
 const { TerraformInitUpgradeHandler } = require('../commands/init/upgrade')
 const { TerraformUnlockHandler } = require('../commands/unlock')
 
-const maxLength = 40
+const maxLength = 40,
+    topLevel = true
 
 module.exports.getActions = stateManager => {
     const folder = stateManager.getUserFolder()
     const credentials = stateManager.getState(credentialsKey)
     const prefFolder = folder && (folder.length < maxLength ? "" : "...")
     const prefCredentials = credentials && (credentials.length < maxLength ? "" : "...")
-    const displayedFolderName = folder ? (prefFolder + folder.substring(folder.length - maxLength)) : null
-    const displayedCredentials = credentials ? (prefCredentials + credentials.substring(credentials.length - maxLength)) : null
 
     return [
         {
@@ -44,11 +40,11 @@ module.exports.getActions = stateManager => {
             label: 'Terraform Actions',
             kind: vscode.QuickPickItemKind.Separator
         },
-        { handler: TerraformInitHandler, label: "Init", icon: "$(extensions-install-count)" },
-        { handler: TerraformValidateHandler, label: "Validate", icon: "$(issue-closed)"  },
-        { handler: TerraformOutputHandler, label: "Output", icon: "$(note)"  },
-        { handler: TerraformPlanHandler, label: "Plan", icon: "$(settings-sync-view-icon)"  },
-        { handler: TerraformApplyHandler, label: "Apply", icon: "$(play-circle)"  },
+        { handler: TerraformInitHandler, label: "Init", icon: "$(extensions-install-count)", topLevel, bType: "primary" },
+        { handler: TerraformValidateHandler, label: "Validate", icon: "$(issue-closed)", topLevel, bType: "success" },
+        { handler: TerraformOutputHandler, label: "Output", icon: "$(note)", topLevel, bType: "secondary" },
+        { handler: TerraformPlanHandler, label: "Plan", icon: "$(settings-sync-view-icon)", topLevel, bType: "warning" },
+        { handler: TerraformApplyHandler, label: "Apply", icon: "$(play-circle)", topLevel, bType: "danger" },
         {
             label: 'With tfVars file',
             kind: vscode.QuickPickItemKind.Separator
