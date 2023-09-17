@@ -21,7 +21,7 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
         return`
             <div class="card shadow button-pulse ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : projectRoot}', '${current ? "Active Terminal" : path.basename(projectRoot)}', '${folderColor}');" >
                 <div class="card-header">
-                    ${capitalizeFirst(workspaceFolder)}
+                ${current ? "Integrated Teminal" : capitalizeFirst(workspaceFolder)}
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">${capitalizeFirst(name)}</h5>
@@ -35,11 +35,16 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
 module.exports.html = (list, completed, withAnimation, stateManager) => {
     const checked = !stateManager.getState(disableShowOnStartupKey) ? "checked" : ""
     return `
-    <label class="checkbox-label">
-        <input type="checkbox" id="myCheckbox" ${checked}>
-        <span class="checkmark"></span>
-        Show on startup
-      </label>
+    
+
+    <div class="input-group mb-3 show-startup">
+    <div class="input-group-prepend">
+      <div class="input-group-text">
+        <input type="checkbox" id="myCheckbox" ${checked} aria-label="Checkbox for following text input">
+      </div>
+    </div>
+    Always open on startup
+  </div>
 
   <script>
     // JavaScript code to handle the checkbox change event

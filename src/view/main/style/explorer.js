@@ -580,10 +580,11 @@ POPUP
 }
 
 .x {
-  position: absolute;
-  inset: 10px 20px auto auto;
-  font-size: 40px;
-  cursor: pointer;
+    position: absolute;
+    inset: 0px 8px auto auto;
+    font-size: 32px;
+    cursor: pointer;
+    color: white;
 }
 
 @media only screen and (max-width: 600px) {
@@ -740,7 +741,7 @@ POPUP
 }
 
 #output-file{
-	width: 36vw;
+	width: 41vw;
     height: 150px;
     padding: 3px;
     margin-top: 22px;
@@ -958,13 +959,14 @@ POPUP
 }
 .card{
 	margin-bottom: 30px;
-	height: 140px;
-	cursor: pointer;
-	transition: 0.25s all;
+    height: 156px;
+    cursor: pointer;
+    transition: 0.25s all;
+	overflow: hidden;
 }
 .card p {
 	overflow: hidden;
-    height: 55px;
+    height: 60px;
 }
 .card:hover {
 	background-color: #343a40!important;
@@ -995,5 +997,18 @@ body.explorer {
 }
 .folderName{
 	color: #343a40;
+}
+.show-startup{
+    text-align: right;
+    position: absolute !important;
+    right: 50px;
+    top: 15px;
+    width: auto !important;
+	height: 20px;
+    line-height: 30px;
+	background-color: transparent !important;
+}
+.show-startup .input-group-text{
+   background: transparent !important;
 }
 `
