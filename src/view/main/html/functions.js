@@ -116,10 +116,10 @@ module.exports.getFunctions = isExplorer => `
         acc[i].addEventListener("click", function() {
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        if (panel.style.height === "200px") {
+        if (panel.style.height === "250px") {
             panel.style.height = "0px"
         } else {
-            panel.style.height = "200px"
+            panel.style.height = "250px"
         }
         });
     }

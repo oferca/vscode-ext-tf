@@ -101,6 +101,7 @@ a.command:hover, a.command, a.command:focus {
     min-width: 147px;
     box-shadow: 0.5px 0.5px 1px var(--vscode-button-separator);
     height: 26px;
+    width: 200px;
   }
 
   .sidebar .button{
