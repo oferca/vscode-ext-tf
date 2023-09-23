@@ -1,5 +1,6 @@
 
 const { errorToken, planToken, titleToken, warningToken, forcesReplacementToken, chatGPTFirstLine, changedToken, addedToken, removedToken } = require("../../shared/constants");
+const accountIDReplacements = new Map();
 
 module.exports.optimize = outputFileContent => {
     const tokens = [warningToken, errorToken, titleToken, planToken, forcesReplacementToken, changedToken];
@@ -28,11 +29,30 @@ module.exports.optimize = outputFileContent => {
         if (line.indexOf("(depends on a ") > -1) return query;
         if (line.indexOf("(config refers to") > -1) return query;
         if (line.indexOf("has changed") > -1) return query;
-        return (query + "\n" + line)
+        return (query + "\n" + replaceTokens(line))
     }, "")
 
     const summary = chatGPTFirstLine + filtered
     const rest = outputFileContent.substr(0, 3600 * 4 - (summary.length))
 
     return summary + rest
+}
+
+// Function to replace account IDs with unique replacements
+function replaceTokens(input) {
+  const regex = /\b\d{5,}\b/g; // Match numbers with 5 or more digits
+
+  // Replace each matched account ID with a unique replacement
+  let replacementCounter = 1;
+  const replacedString = input.replace(regex, (match) => {
+    if (!accountIDReplacements.has(match)) {
+      // Generate a unique replacement for the account ID
+      const replacement = `Token${replacementCounter}`;
+      accountIDReplacements.set(match, replacement);
+      replacementCounter++;
+    }
+    return accountIDReplacements.get(match);
+  });
+
+  return replacedString;
 }
