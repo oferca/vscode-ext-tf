@@ -13,7 +13,7 @@ class TerraformPlanTargetHandler extends TerraformPlanHandler {
         let completed = false
         
         const startTime = new Date().getTime();
-        const endTime = startTime + 130000; // 1 minutes in milliseconds
+        const endTime = startTime + 30000; // 1 minutes in milliseconds
     
         await launch(
             "State List",

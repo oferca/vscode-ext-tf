@@ -153,7 +153,7 @@ class FileHandler {
     }
 
     getStateList() {
-        return getLastStateList(this.dataFolder, this.encoding)
+        return getLastStateList(this.dataFolder, this.shellHandler.fileEncoding)
     }
 
     constructor(commandId, averageFromCmd, context, logger, stateManager, shellHandler, transformOutputColors) {

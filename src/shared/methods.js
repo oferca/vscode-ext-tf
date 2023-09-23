@@ -70,7 +70,8 @@ module.exports.getLastStateList = (dataFolder, encoding) => {
 
     filenames.forEach((name) => {
       const isStateList = name.indexOf(".state.list") > -1
-      if (!isStateList) return
+      const isTimeFile = name.indexOf(`.${timeExt}`) > -1
+      if (!isStateList || isTimeFile) return
 
       const lastUpdate = fs.statSync(path.resolve(dataFolder, name)).mtimeMs;
       if (lastUpdate < mostRecent) return

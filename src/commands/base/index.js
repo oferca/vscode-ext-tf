@@ -68,12 +68,12 @@ class CommandHandlerPrototype {
     }
 
     async execute(source, cb) {
-        if (this.executeHook) await this.executeHook()
         if (featuresDisabled(this.stateManager.activeTerminal)) return await vscode.window.showInformationMessage("Please use supported terminal such as powershell or bash")
         this.updateRunCount()
         const self = this
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp(source)
+            if (this.executeHook) await this.executeHook()
             self.runBash(cb)
         }
         await this.init(onChildProcessCompleteStep2)
