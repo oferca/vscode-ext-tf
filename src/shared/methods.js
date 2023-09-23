@@ -67,19 +67,23 @@ module.exports.getLastStateList = (dataFolder, encoding) => {
     const filenames = fs.readdirSync(dataFolder + "/");
     let mostRecent = 0
     let stateListFile = ""
-
+    let total = 0
     filenames.forEach((name) => {
       const isStateList = name.indexOf(".state.list") > -1
       const isTimeFile = name.indexOf(`.${timeExt}`) > -1
       if (!isStateList || isTimeFile) return
-
+      total++
       const lastUpdate = fs.statSync(path.resolve(dataFolder, name)).mtimeMs;
       if (lastUpdate < mostRecent) return
       mostRecent = lastUpdate
       stateListFile = path.resolve(dataFolder, name)
     });
 
-    return fs.readFileSync(stateListFile, encoding)
+    return {
+        content: fs.readFileSync(stateListFile, encoding),
+        ts: mostRecent,
+        total
+    }
 }
 
 const getOptionKey = commandId =>

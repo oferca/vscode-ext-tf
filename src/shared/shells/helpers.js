@@ -30,12 +30,15 @@ module.exports.getTFCliCommand = (commandId, tfOption) => {
     const optionKey = getOptionKey(commandId)
     return (tfOption ? `${rawCommand} -${optionKey}="${tfOption}"` : commandId)
         .replace("init.upgrade", "init -upgrade")
+        .replace("plan.target", "plan")
+        .replace("apply.target", "plan")
         .replace(".", " ")
 }
 
 const sleep = ms => new Promise((resolve) => setTimeout(resolve, ms))
 
 module.exports.sendTextShell = async (terminal, text) => {
+    if (terminal.isDisposed) return
     await terminal.sendText(text)
     await sleep(300)
 }

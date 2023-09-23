@@ -24,11 +24,11 @@ class ShellHandler {
         activeTerminal.definitions[this.commandId] = true
     }
 
-    async runTfCommand (outputFile) {
+    async runTfCommand (outputFile, options) {
         const { activeTerminal } = this.stateManager
         await this.handleDefinitions()
         await sendTextShell(activeTerminal, `clear`);
-        await sendTextShell(activeTerminal, `terraform.${this.commandId} ${this.paramName}"${outputFile}" \ `);
+        await sendTextShell(activeTerminal, `terraform.${this.commandId} ${this.paramName}"${outputFile}" ${options}\ `);
     }
 
     async runSimpleCommand (command, options) {

@@ -38,11 +38,11 @@ class PowershellHandler extends ShellHandler {
         echo "$p1${this.outputFileExt}"; echo \`n; ` : ``} \
         };
         function ${getBashFunctionInvocation(this.commandId)}(){
-        param ([string]$p1 )
+        param ([string]$p1 [string]$p2 )
         clear; 
         $startTSCommand = Get-Date -Format "yyyMMddHHmmssfff"; 
         echo "Running: terraform ${this.tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll(".", " ") } \`n\`nAt path: $pwd"; ${this.redirect ? `echo \`n; echo "Click Hyperlink in notification for output logs."; echo \`n;` : ""} echo "Please wait..."; \
-        terraform ${getTFCliCommand(this.commandId, this.tfOption)} ${this.redirect ? " > " + "\"$p1\"" : ""}; 
+        terraform ${getTFCliCommand(this.commandId, this.tfOption)}  " + "\"$p2\"" + "${this.redirect ? " > " + "\"$p1\"" : ""}; 
         finalize.${this.commandId} -p1 "$p1" -p2 "$startTSCommand"; 
         } `.replaceAll("\n", "")
     }

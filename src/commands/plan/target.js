@@ -1,9 +1,11 @@
+const vscode = require('vscode');
 const { TerraformPlanHandler } = require(".")
 const { tfPlanTargetCommandId } = require("../../shared/constants")
 
 class TerraformPlanTargetHandler extends TerraformPlanHandler {
 
-    stateList
+    targets
+    multipleTargetSelection
 
     async executeHook() {
         const { CommandsLauncher } = require("../../launcher")
@@ -13,33 +15,60 @@ class TerraformPlanTargetHandler extends TerraformPlanHandler {
         let completed = false
         
         const startTime = new Date().getTime();
-        const endTime = startTime + 30000; // 1 minutes in milliseconds
+        const endTime = startTime + 60000; // 1 minutes in milliseconds
     
         await launch(
             "State List",
             "get-resources",
             undefined,
-            () => { completed = true }
+            () => {}
         )
         let resolve
+        let tooLong
+        let stateList
+        let total = 0
+        let newStateFile = false
         const interval = setInterval(() => {
-            if (new Date().getTime() > endTime) completed = true
-            if (completed) resolve()
-        }, 200)
+            stateList = this.fileHandler.getStateList() || { ts: 0, content: "", total}
+            const tooLong =  (new Date().getTime() > endTime)
+            newStateFile = newStateFile || (stateList.total > total && total !== 0)
+            total = stateList.total
+            const newContent = newStateFile && stateList.content.length > 10
+            if (newContent || tooLong) resolve()
+        }, 500)
         
         await new Promise(_resolve => {
             resolve = _resolve
         })
         clearInterval(interval)
-        this.stateList = await this.fileHandler.getStateList()
+        if (tooLong) return
+
+        let tsAfter = 0
+        let tsBefore = 0
+        let showMenuAttempts = 0
+        let selectionDurationMS = 0
+        let targets = []
+
+        while (!(targets || []).length && (selectionDurationMS < 3000) && showMenuAttempts < 8){
+            tsBefore = new Date().getTime()
+            targets = await vscode.window.showQuickPick(stateList.content.split("\n"), {
+                canPickMany: true, // Enable multiple selections
+                placeHolder: 'Select one or more options'
+              })
+            tsAfter = new Date().getTime()
+            selectionDurationMS = tsAfter - tsBefore
+            showMenuAttempts++
+        }
+        if (!targets) return
+        this.targets = targets.join(",");
     }
     
     
 
     constructor(context, logger, stateManager){
         super(context, logger, stateManager, tfPlanTargetCommandId);
-        // this.redirect = false
         this.addOption = true
+        this.multipleTargetSelection = true
     }
 }
 

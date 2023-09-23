@@ -48,6 +48,7 @@ class CommandHandlerPrototype {
     fileHandler
     stateManager
     averageFromCmd
+    overlayTerminal
     textDocumentListener
 
     async logOp(source) {
@@ -122,7 +123,8 @@ class CommandHandlerPrototype {
             if (!activeTerminal) return
             await runCommandScriptCallback()
         }
-        if (!this.fileHandlerInitialized){
+        if (!this.fileHandlerInitialized && this.commandId.indexOf(".target") === -1){
+            this.overlayTerminal && this.overlayTerminal.dispose()
             this.overlayTerminal = vscode.window.createTerminal();
             this.overlayTerminal.show();
         }
@@ -144,18 +146,18 @@ class CommandHandlerPrototype {
     async sendCommands(cb = () => {}) {
         // Appologies for overcomplication
         const command = getRawCommand(this.commandId)
-        if (this.commandId === "plan.target") this.stateManager.updateState(optionKey, this.stateList)
+        if (this.multipleTargetSelection) this.stateManager.updateState(optionKey, this.targets)
 
         const option = this.stateManager.getState(optionKey)
         let options = this.addOption ? (option || "").split(",").reduce((optionsStr, option) => {
-            const par = this.commandId.indexOf("var.file") > -1 ? "\"" : "'"
-            optionsStr += ` -${getOptionKey(this.commandId)}=${par}${option.trim()}${par}`
+            const par = this.commandId.indexOf("var.file") > -1 ? "\"" : "\""
+            optionsStr += ` -${getOptionKey(this.commandId)}=${par}${option.trim().replaceAll("\"","\\\"")}${par}`
             if (this.commandId === tfInitUpgradeCommandId) return "-upgrade"
             if (this.commandId === tfForceUnlockCommandId) return ""
             return optionsStr
         }, "") : ""
         if (this.commandId === tfForceUnlockCommandId) options = option
-        this.redirect ? await this.shellHandler.runTfCommand(this.outputFile)
+        this.redirect ? await this.shellHandler.runTfCommand(this.outputFile, options)
             : this.shellHandler.runSimpleCommand(command, options)
         if (this.overlayTerminal) setTimeout(() =>
             {

@@ -163,7 +163,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                 }
             }, 100)
             setTimeout(() => {
-                cb()
+                cb && cb()
                 resolve();
             }, maxNotificationTime);
         });
