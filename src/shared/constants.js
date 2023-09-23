@@ -44,6 +44,8 @@ module.exports.tfApplyVarsCommandId = "apply" + tfVarsPostix
 
 module.exports.tfInitCommandId = "init"
 
+module.exports.tfStateListCommandId = "state.list"
+
 module.exports.tfValidateCommandId = "validate"
 
 module.exports.tfOutputCommandId = "output"

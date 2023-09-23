@@ -26,6 +26,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     lastRecorded
     progressFileMsg
     barCreationTimestamp
+    transformOutputColors
     barCompletionTimestamp
     currentBarCompletionPercentage
 
@@ -190,6 +191,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     constructor(context, logger, stateManager, shellHandler, commandId) {
         super(context, logger, stateManager, shellHandler, commandId);
         this.lastRecorded = 0
+        this.transformOutputColors = true
         this.execute = this.execute.bind(this)
         this.runBash = this.runBash.bind(this)
         this.completed = this.completed.bind(this)

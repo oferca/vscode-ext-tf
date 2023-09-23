@@ -1,4 +1,4 @@
-const { isWindows, credentialsKey } = require("../constants")
+const { isWindows, credentialsKey, noColorExt } = require("../constants")
 const { sendTextShell } = require("./helpers")
 
 class ShellHandler {
@@ -6,6 +6,7 @@ class ShellHandler {
     stateManager
     terminalNoticeText
     terminalNoticeTextL2
+    outputFileExt
 
     async handleDefinitions(simpleMode = false) {
         const { activeTerminal } = this.stateManager
@@ -48,12 +49,13 @@ class ShellHandler {
         return this.stateManager.getState(credentialsKey) || ""
     }
 
-    constructor(commandId, tfOption = null, redirect = true, stateManager) {
+    constructor(commandId, tfOption = null, redirect = true, stateManager, transformOutputColors) {
         this.commandId = commandId
         this.tfOption = tfOption
         this.redirect = redirect
         this.stateManager = stateManager
         this.fileEncoding = isWindows ? "UTF-16LE" : "utf-8"
+        this.outputFileExt = transformOutputColors ? `.${noColorExt}` : ""
     }
 }
 

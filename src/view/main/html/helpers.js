@@ -11,8 +11,10 @@ const getButtonHTML = (action, isExplorer) => {
         label.indexOf("plan") > -1 && "paper-plane" ||
         label.indexOf("chatgpt") > -1 && "globe" ||
         label.indexOf("apply") > -1 && "upload"
+    
+    const vscodeStyle = !(action.topLevel && isExplorer)
 
-    return action.topLevel ? `
+    return !vscodeStyle ? `
         <button type="button"
             class="btn cmd btn-${action.bType}"
             title="${title}"

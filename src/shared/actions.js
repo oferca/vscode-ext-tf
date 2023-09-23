@@ -3,6 +3,7 @@ const { credentialsKey } = require("./constants")
 const { ChatGPTHandler } = require("../commands/chat-gpt")
 const { TerraformPlanHandler } = require("../commands/plan")
 const { TerraformInitHandler } = require("../commands/init")
+const { TerraformStateListHandler } = require("../commands/state-list")
 const { TerraformApplyHandler } = require("../commands/apply")
 const { TerraformOutputHandler } = require("../commands/output")
 const { OpenExplorerHandler } = require("../commands/open-explorer")
@@ -40,6 +41,7 @@ module.exports.getActions = stateManager => {
         { handler: TerraformOutputHandler, label: "Output", icon: "$(note)", topLevel, bType: "secondary" },
         { handler: TerraformPlanHandler, label: "Plan", icon: "$(settings-sync-view-icon)", topLevel, bType: "warning" },
         { handler: TerraformApplyHandler, label: "Apply", icon: "$(play-circle)", topLevel, bType: "danger" },
+        { handler: TerraformStateListHandler, label: "State List", icon: "$(play-circle)", topLevel, bType: "info" },
         {
             label: 'With tfVars file',
             kind: vscode.QuickPickItemKind.Separator

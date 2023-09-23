@@ -157,10 +157,17 @@ module.exports.handleDeactivation = () => {
 	this.firstActivation = false
 }
 
-const getTargetResource = (value, placeHolder = targetTxt) => vscode.window.showInputBox({
+const getTextInput = (value, placeHolder = targetTxt) => vscode.window.showInputBox({
     value,
     placeHolder,
 });
+
+const getMultipleReources = async (value, placeHolder = targetTxt) => {
+    return await vscode.window.showInputBox({
+        value,
+        placeHolder,
+    });
+}
 
 const getVarsFile = async shellType => {
     let varFile = (await vscode.window.showOpenDialog({
@@ -179,10 +186,10 @@ module.exports.getOption = async (commandId, option, shellType) => {
     const isWithUpgrade  = [tfInitUpgradeCommandId].includes(commandId)
     const isWithForceUnlock = [tfForceUnlockCommandId].includes(commandId)
 
-    if (isWithTarget) return await getTargetResource(option)
+    if (isWithTarget) return await getMultipleReources(option)
     if (isWithVarsFile) return await getVarsFile(shellType)
     if (isWithUpgrade) return ""
-    if (isWithForceUnlock) return await getTargetResource(option, "Enter Lock Id")
+    if (isWithForceUnlock) return await getTextInput(option, "Enter Lock Id")
 } 
 
 

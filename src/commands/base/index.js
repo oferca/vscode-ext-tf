@@ -85,7 +85,8 @@ class CommandHandlerPrototype {
             this.context,
             this.logger,
             this.stateManager,
-            this.shellHandler
+            this.shellHandler,
+            this.transformOutputColors
         )
         this.fileHandler.init(cb)
     }
@@ -110,7 +111,8 @@ class CommandHandlerPrototype {
             this.commandId,
             this.stateManager.getState(optionKey),
             this.redirect,
-            this.stateManager
+            this.stateManager,
+            this.transformOutputColors
         )
 
         const onChildProcessCompleteStep1 = async () => {

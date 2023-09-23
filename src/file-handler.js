@@ -98,7 +98,8 @@ class FileHandler {
     }
 
     get outputFileNoColor() {
-        return this.outputFile + "." + noColorExt
+        const outputFileExt = this.transformOutputColors ? "." + noColorExt : ""
+        return this.outputFile + outputFileExt
     }
 
     getOutputFileContent() {
@@ -113,7 +114,6 @@ class FileHandler {
         const content = this.getOutputFileContent()
         fs.writeFileSync(this.outputFileNoColor, content + "\n " + additionalText || "")
     }
-
 
     convertOutputToReadable() {
         try {
@@ -151,7 +151,7 @@ class FileHandler {
         return `${this.shellHandler.filePrefix}${this.outputFileNoColor}`
     }
 
-    constructor(commandId, averageFromCmd, context, logger, stateManager, shellHandler) {
+    constructor(commandId, averageFromCmd, context, logger, stateManager, shellHandler, transformOutputColors) {
         this.logger = logger
         this.context = context
         this.initialized = false
@@ -162,6 +162,7 @@ class FileHandler {
         this.stateManager = stateManager
         this.shellHandler = shellHandler
         this.averageFromCmd = averageFromCmd
+        this.transformOutputColors = transformOutputColors 
         this.handleDataFolder = this.handleDataFolder.bind(this)
         this.convertOutputToReadable = this.convertOutputToReadable.bind(this)
     }
