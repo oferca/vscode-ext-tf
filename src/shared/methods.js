@@ -201,12 +201,11 @@ const getVarsFile = async shellType => {
 }
 
 module.exports.getOption = async (commandId, option, shellType) => {
-    const isWithTarget = [tfPlanTargetCommandId, tfApplyTargetCommandId].includes(commandId)
+
     const isWithVarsFile = [tfPlanVarsCommandId, tfApplyVarsCommandId].includes(commandId)
     const isWithUpgrade  = [tfInitUpgradeCommandId].includes(commandId)
     const isWithForceUnlock = [tfForceUnlockCommandId].includes(commandId)
 
-    if (isWithTarget) return await getMultipleResources(option, "Select Resources")
     if (isWithVarsFile) return await getVarsFile(shellType)
     if (isWithUpgrade) return ""
     if (isWithForceUnlock) return await getTextInput(option, "Enter Lock Id")

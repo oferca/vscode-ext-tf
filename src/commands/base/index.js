@@ -144,6 +144,8 @@ class CommandHandlerPrototype {
     async sendCommands(cb = () => {}) {
         // Appologies for overcomplication
         const command = getRawCommand(this.commandId)
+        if (this.commandId === "plan.target") this.stateManager.updateState(optionKey, this.stateList)
+
         const option = this.stateManager.getState(optionKey)
         let options = this.addOption ? (option || "").split(",").reduce((optionsStr, option) => {
             const par = this.commandId.indexOf("var.file") > -1 ? "\"" : "'"
