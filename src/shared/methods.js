@@ -63,6 +63,24 @@ module.exports.calculateAverageDuration = (dataFolder, commandId, encoding) => {
     return median(durations)
 }
 
+module.exports.getLastStateList = (dataFolder, encoding) => {
+    const filenames = fs.readdirSync(dataFolder + "/");
+    let mostRecent = 0
+    let stateListFile = ""
+
+    filenames.forEach((name) => {
+      const isStateList = name.indexOf(".state.list") > -1
+      if (!isStateList) return
+
+      const lastUpdate = fs.statSync(path.resolve(dataFolder, name)).mtimeMs;
+      if (lastUpdate < mostRecent) return
+      mostRecent = lastUpdate
+      stateListFile = path.resolve(dataFolder, name)
+    });
+
+    return fs.readFileSync(stateListFile, encoding)
+}
+
 const getOptionKey = commandId =>
     commandId.indexOf(tfTargetPostix) > -1 && "target" ||
     commandId.indexOf(tfVarsPostix) > -1 && "var-file" ||
@@ -162,7 +180,8 @@ const getTextInput = (value, placeHolder = targetTxt) => vscode.window.showInput
     placeHolder,
 });
 
-const getMultipleReources = async (value, placeHolder = targetTxt) => {
+const getMultipleResources = async (value, placeHolder = targetTxt) => {
+    
     return await vscode.window.showInputBox({
         value,
         placeHolder,
@@ -186,7 +205,7 @@ module.exports.getOption = async (commandId, option, shellType) => {
     const isWithUpgrade  = [tfInitUpgradeCommandId].includes(commandId)
     const isWithForceUnlock = [tfForceUnlockCommandId].includes(commandId)
 
-    if (isWithTarget) return await getMultipleReources(option)
+    if (isWithTarget) return await getMultipleResources(option, "Select Resources")
     if (isWithVarsFile) return await getVarsFile(shellType)
     if (isWithUpgrade) return ""
     if (isWithForceUnlock) return await getTextInput(option, "Enter Lock Id")

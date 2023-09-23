@@ -1,7 +1,6 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const vscode = require('vscode');
 const findRemoveSync = require('find-remove');
 
 const {
@@ -10,6 +9,7 @@ const {
     errorStatus,
     noCredentials,
     rootFolderName,
+    additionalText,
     defaultEstimate,
     hasSupportedTerminalKey
 } = require("./shared/constants")
@@ -20,6 +20,7 @@ const {
     removeColors,
     tfCommandSuccess,
     featuresDisabled,
+    getLastStateList,
     createOutputFileName,
     calculateAverageDuration
 } = require("./shared/methods")
@@ -149,6 +150,10 @@ class FileHandler {
 
     get outputFileVSCodePath() {
         return `${this.shellHandler.filePrefix}${this.outputFileNoColor}`
+    }
+
+    getStateList() {
+        return getLastStateList(this.dataFolder, this.encoding)
     }
 
     constructor(commandId, averageFromCmd, context, logger, stateManager, shellHandler, transformOutputColors) {

@@ -1,8 +1,9 @@
 const vscode = require('vscode');
 const { FileHandler } = require("../../file-handler")
-const { isPowershell } = require("../../shared/methods-cycle")
 const { BashHandler } = require("../../shared/shells/bash")
+const { isPowershell } = require("../../shared/methods-cycle")
 const { PowershellHandler } = require("../../shared/shells/powershell")
+
 
 const {
     getOption,
@@ -67,6 +68,7 @@ class CommandHandlerPrototype {
     }
 
     async execute(source, cb) {
+        if (this.executeHook) await this.executeHook()
         if (featuresDisabled(this.stateManager.activeTerminal)) return await vscode.window.showInformationMessage("Please use supported terminal such as powershell or bash")
         this.updateRunCount()
         const self = this

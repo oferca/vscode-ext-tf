@@ -175,7 +175,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     async execute(source, completedCallback, outputUpdatedCallback = () => {}) {
-
+        if (this.executeHook) await this.executeHook()
         if (featuresDisabled(this.stateManager.activeTerminal)) return await vscode.window.showInformationMessage("Please use supported terminal such as Powershell or bash")
         this.updateRunCount()
         const self = this
