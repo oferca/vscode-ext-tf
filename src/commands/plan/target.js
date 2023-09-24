@@ -51,7 +51,10 @@ class TerraformPlanTargetHandler extends TerraformPlanHandler {
 
         while (!(targets || []).length && (selectionDurationMS < 3000) && showMenuAttempts < 8){
             tsBefore = new Date().getTime()
-            targets = await vscode.window.showQuickPick(stateList.content.split("\n"), {
+            targets = await vscode.window.showQuickPick(stateList.content
+                .split("\n")
+                .map(resource => resource.replaceAll("\n", "").replaceAll("\r", "")),
+              {
                 canPickMany: true, // Enable multiple selections
                 placeHolder: 'Select one or more options'
               })
@@ -60,7 +63,7 @@ class TerraformPlanTargetHandler extends TerraformPlanHandler {
             showMenuAttempts++
         }
         if (!targets) return
-        this.targets = targets.join(",");
+        this.targets = targets.join(",")
     }
     
     

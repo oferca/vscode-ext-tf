@@ -45,9 +45,11 @@ class PowershellHandler extends ShellHandler {
         
         clear; 
         $startTSCommand = Get-Date -Format "yyyMMddHHmmssfff"; 
-        echo "Running: terraform ${this.tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll(".", " ") } "$p2" \`n\`nAt path: $pwd"; ${this.redirect ? `echo \`n; echo "Click Hyperlink in notification for output logs."; echo \`n;` : ""} echo "Please wait..."; \
-        terraform ${getTFCliCommand(this.commandId, this.tfOption)} $p2 ${this.redirect ? " > " + "\"$p1\"" : ""}; 
-        finalize.${this.commandId} -p1 "$p1" -p2 "$p2" "$startTSCommand"; 
+        $expressionBase = "terraform ${getTFCliCommand(this.commandId, this.tfOption)} " + $p2;
+        $expression = $expressionBase + ' ${this.redirect ? " > " + "\"$p1\"" : ""}';
+        echo "Running: terraform ${this.tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll(".", " ") } \`nCli command: \`n "$expressionBase" \`n\`nAt path: $pwd"; ${this.redirect ? `echo \`n; echo "Click Hyperlink in notification for output logs."; echo \`n;` : ""} echo "Please wait..."; \
+        Invoke-Expression $expression;
+        finalize.${this.commandId} -p1 "$p1" "$startTSCommand"; 
         } `.replaceAll("\n", "")
     }
     handleDataPath(str) {
