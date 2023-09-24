@@ -25,10 +25,10 @@ const getRawCommand = commandId => commandId.
     replace(tfUpgradePostix, "").
     replace(tfForceUnlockPostix, "")
 
-module.exports.getTFCliCommand = (commandId, tfOption) => {
+module.exports.getTFCliCommand = (commandId, tfOption, par = "\"") => {
     const rawCommand = getRawCommand(commandId)
     const optionKey = getOptionKey(commandId)
-    return (tfOption ? `${rawCommand} -${optionKey}="${tfOption}"` : commandId)
+    return (tfOption ? `${rawCommand} -${optionKey}=${par}${tfOption}${par}` : commandId)
         .replace("init.upgrade", "init -upgrade")
         .replace("plan.target", "plan")
         .replace("apply.target", "plan")
@@ -53,6 +53,6 @@ module.exports.removeLastInstance = (badtext, str) => {
 
 const addOptionDef = (commandId, tfOption) => commandId.
     replace(tfTargetPostix, ` -${getOptionKey(commandId)}="${tfOption}" `).
-    replace(tfVarsPostix, ` -${getOptionKey(commandId)}="${tfOption}" `)
+    replace(tfVarsPostix, ` -${getOptionKey(commandId)}='${tfOption}' `)
 
 module.exports.addOptionDef = addOptionDef

@@ -41,7 +41,6 @@ module.exports.getActions = stateManager => {
         { handler: TerraformOutputHandler, label: "Output", icon: "$(note)", topLevel, bType: "secondary" },
         { handler: TerraformPlanHandler, label: "Plan", icon: "$(settings-sync-view-icon)", topLevel, bType: "warning" },
         { handler: TerraformApplyHandler, label: "Apply", icon: "$(play-circle)", topLevel, bType: "danger" },
-        { handler: TerraformStateListHandler, label: "State List", icon: "$(play-circle)", topLevel, bType: "info" },
         {
             label: 'With tfVars file',
             kind: vscode.QuickPickItemKind.Separator
@@ -55,6 +54,7 @@ module.exports.getActions = stateManager => {
         },
         { handler: TerraformInitUpgradeHandler, label: "Init -upgrade", icon: "$(cloud-download)" },
         { handler: TerraformUnlockHandler, label: "Force-unlock", icon: "$(unlock)" },
+        { handler: TerraformStateListHandler, label: "State List", icon: "$(play-circle)"},
         {
             label: 'Target Resources',
             kind: vscode.QuickPickItemKind.Separator

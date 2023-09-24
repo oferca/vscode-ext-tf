@@ -154,7 +154,7 @@ class CommandHandlerPrototype {
 
         const option = this.stateManager.getState(optionKey)
         let options = this.addOption ? (option || "").split(",").reduce((optionsStr, option) => {
-            const par = this.commandId.indexOf("var.file") > -1 ? "\"" : "\""
+            const par = this.commandId.indexOf("var.file") > -1 ? "'" : "\""
             optionsStr += ` -${getOptionKey(this.commandId)}=${par}${option.trim().replaceAll("\"","\\\"")}${par}`
             if (this.commandId === tfInitUpgradeCommandId) return "-upgrade"
             if (this.commandId === tfForceUnlockCommandId) return ""

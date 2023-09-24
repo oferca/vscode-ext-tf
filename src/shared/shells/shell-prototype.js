@@ -2,11 +2,12 @@ const { isWindows, credentialsKey, noColorExt } = require("../constants")
 const { sendTextShell } = require("./helpers")
 
 class ShellHandler {
+    par
     fileEncoding
     stateManager
+    outputFileExt
     terminalNoticeText
     terminalNoticeTextL2
-    outputFileExt
 
     async handleDefinitions(simpleMode = false) {
         const { activeTerminal } = this.stateManager
@@ -40,7 +41,7 @@ class ShellHandler {
     synthesizePath(_path) {
         return _path
     }
-    
+
     getChangeFolderCmd() {
         const folder = this.stateManager.getUserFolder()
         return folder ? `cd "${folder}";` :""
@@ -58,6 +59,7 @@ class ShellHandler {
         this.sendConsoleOutput = sendConsoleOutput
         this.fileEncoding = isWindows ? "UTF-16LE" : "utf-8"
         this.outputFileExt = transformOutputColors ? `.${noColorExt}` : ""
+        this.par = commandId && commandId.indexOf("var.file") > -1 ? "'" : "\""
     }
 }
 

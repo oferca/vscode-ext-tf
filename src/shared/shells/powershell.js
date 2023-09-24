@@ -45,7 +45,7 @@ class PowershellHandler extends ShellHandler {
         
         clear; 
         $startTSCommand = Get-Date -Format "yyyMMddHHmmssfff"; 
-        $expressionBase = "terraform ${getTFCliCommand(this.commandId, this.tfOption)} " + $p2;
+        $expressionBase = "terraform ${getTFCliCommand(this.commandId, this.tfOption, this.par)} " + $p2;
         $expression = $expressionBase + ' ${this.redirect ? " > " + "\"$p1\"" : ""}';
         echo "Running: terraform ${this.tfOption ? addOptionDef(this.commandId, this.tfOption) : this.commandId.replaceAll(".", " ") } \`nCli command: \`n "$expressionBase" \`n\`nAt path: $pwd"; ${this.redirect ? `echo \`n; echo "Click Hyperlink in notification for output logs."; echo \`n;` : ""} echo "Please wait..."; \
         Invoke-Expression $expression;
