@@ -619,8 +619,53 @@ u.logs{
   display: block;
   color: var(--vscode-button-foreground);
   font-size: 14px;
-  min-width: 170px;
+  min-width: 173px;
   margin: 8px 0px;
   text-align: left;
+  position: relative;
+}
+.button-options{
+  position: absolute;
+  z-index: 999999999;
+  width: 20px;
+  opacity: 0;
+  display: flex;
+  text-align: right;
+  flex-direction: column;
+  margin-left: 150px;
+  padding-left: 31px;
+  margin-top: -6px;
+  cursor: pointer;
+  height: 45px;
+}
+.button-options .btn {
+  min-width: 100px;
+  max-width: 160px;
+  margin: 3px 0;
+  margin-top: 7px;
+  visibility: hidden;
+  transform: scale(0.1);
+  opacity: 0;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.button-options:hover{
+  width: 377px;
+  opacity: 1;
+  height: auto;
+}
+.button-options:hover .btn {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  opacity: 1;
+  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.cmd-icon.right{
+  z-index: 9999999;
+  align-self: inherit;
+  position: absolute;
+  right: 8px;
+  font-size: 14px;
+  top: 10px;
 }
 `

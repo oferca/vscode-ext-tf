@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { getActions } = require("../shared/actions")
+const { actions } = require("../shared/actions")
 const {
     lastActionKey,
     lastOutputKey,
@@ -24,8 +24,7 @@ class CommandsLauncher {
         let tsAfter = 0
         let tsBefore = 0
 
-        const labels = getActions(this.stateManager)
-            .map(action => ({
+        const labels = actions.map(action => ({
                 label: (action.icon || "") + "  " + action.label,
                 kind: action.kind
             }))
@@ -57,7 +56,7 @@ class CommandsLauncher {
 
     async launch (actionLabel, source = "menu", outputUpdatedCallback = () => {}, completedCallback) {
         this.stateManager.activeTerminal = await this.verifyOpenTerminal(actionLabel)
-        const CommandHandler = getActions(this.stateManager).find(action => (actionLabel === action.label || (action.matches && action.matches(actionLabel)))).handler
+        const CommandHandler = actions.find(action => (actionLabel === action.label || (action.matches && action.matches(actionLabel)))).handler
         this.handler = new CommandHandler( this.context, this.logger, this.stateManager)
         const cbWithState = feedback => {
             completedCallback && completedCallback(feedback)

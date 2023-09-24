@@ -1,7 +1,7 @@
 const fs = require('fs');
 const vscode = require('vscode');
 const { html } = require("./html");
-const { getActions } = require('../../shared/actions');
+const { actions } = require('../../shared/actions');
 
 const {
   credentialsKey,
@@ -37,7 +37,7 @@ class WebViewManager {
         preferences = { folder, credentials, showWarning },
         params = [
           preferences,
-          getActions(this.stateManager),
+          actions,
           Math.random(),
           hasPlan(tfCommand),
           tfCommand,

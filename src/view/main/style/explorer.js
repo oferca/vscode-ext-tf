@@ -757,7 +757,7 @@ POPUP
 
 @media all and (max-width: 860px) {
 	#output-file{
-		width: 35vw;
+		width: 34vw;
 	}
 }
 #output-file.matrix{

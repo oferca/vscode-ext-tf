@@ -98,7 +98,6 @@ ${ explorerHTML }
     ${missingCredentials}
     
     let maxPercentage = 0
-
     window.addEventListener('message', incomingMessageHandler);
     var IS_EXPLORER = null
     var CURRENT_PATH = "${projectPathSynthesized}"

@@ -1,26 +1,39 @@
-const getButtonHTML = (action, isExplorer) => {
+const { actions } = require("../../../shared/actions")
+
+const getButtonHTML = (action, isExplorer, actionParent) => {
     const title =  `Run Terraform ${action.label.replace(" -", " with ")} in terminal`
     const onclick = `launchTFCommand('${action.label}', this)`
     const spinner = `<i class="fas fa-solid fa-spinner fa-spin"></i>`
-    const buttonText = `${isExplorer ? "Terraform " : ""}${action.label}`.replace("Terraform ChatGPT", "ChatGPT")
+    const isVarButton = action.label.toLowerCase().indexOf("var-file") > -1
+    const isTargetButton = action.label.toLowerCase().indexOf("target") > -1
+    const isUpgradeButton = action.label.toLowerCase().indexOf("upgrade") > -1
+    const buttonText = isExplorer && isVarButton && "With Var File" ||
+        isExplorer && isTargetButton && "With Target" ||
+        isExplorer && isUpgradeButton && "Init and Upgrade" ||
+        (`${isExplorer ? "Terraform " : ""}${action.label}`
+        .replace("Terraform ChatGPT", "ChatGPT"))
     const label = action.label.toLowerCase()
     const addSpinner = label.indexOf("chatgpt") === -1
     const buttonIconType = label.indexOf("init") > -1 && "download" ||
         label.indexOf("validate") > -1 && "check" ||
-        label.indexOf("output") > -1 && "list" ||
+        label.indexOf("output") > -1 && "display" ||
         label.indexOf("plan") > -1 && "paper-plane" ||
         label.indexOf("chatgpt") > -1 && "globe" ||
         label.indexOf("apply") > -1 && "upload"
     
-    const vscodeStyle = !(action.topLevel && isExplorer)
-
-    return !vscodeStyle ? `
+    const modernTheme = action.topLevel && isExplorer || actionParent
+    const isChild = actionParent
+    const options = !isChild ? getOptions(action) : ""
+    if (!action.topLevel && isExplorer && !actionParent && !action.misc) return ""
+    return modernTheme ? `
+       ${options}
         <button type="button"
-            class="btn cmd btn-${action.bType}"
+            class="btn cmd btn-${action.bType || actionParent.bType}"
             title="${title}"
             onclick="${onclick}">
             ${addSpinner ? spinner : ""}
             <i class="cmd-icon ${addSpinner ? "" : "no-spinner"} fas fa-${buttonIconType}"></i> &nbsp ${buttonText}
+            ${options ? '<i class="cmd-icon right fas fa-list-ul"></i>' : ""}
         </button>
         ` : `
         <div
@@ -33,6 +46,19 @@ const getButtonHTML = (action, isExplorer) => {
         </div>       
     `
 }
+
+const getOptions = _action => {
+    if (!_action.isParent) return ""
+    const buttons = actions
+        .filter(action => action.parent === _action.label)
+        .map(action => getButtonHTML(action, true, _action)).join("")
+    return buttons ? `
+    <div class="button-options expandable">
+        ${buttons}
+    </div>
+    ` : ""
+}
+
 const strongSeperator = (action, isExplorer) => action.kind === -1 && (action.seperatorType !== "weak" || !isExplorer)
 
 const weakSeperator = (action, isExplorer) => action.kind === -1 && action.seperatorType === "weak" && isExplorer
@@ -66,7 +92,7 @@ module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent, 
                 <div class="tf-panel">
             ` : `<div class="expandable ${seperatorClass} seperator"></div>` 
             return (`</div>
-                ${terminal}<br>
+                ${terminal}
                 <div class="expandable">
                 <h4 class="title">${actionLabel(action, isExplorer)}</h4>
             `)
