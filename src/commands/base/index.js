@@ -39,7 +39,7 @@ const setDefaultOption = (commandId, option) =>{
 
 class CommandHandlerPrototype {
     db
-    abort
+    _abort
     redirect = true
     logger
     addOption
@@ -69,6 +69,7 @@ class CommandHandlerPrototype {
     }
 
     async execute(source, cb) {
+        if (this._abort) return
         if (featuresDisabled(this.stateManager.activeTerminal)) return await vscode.window.showInformationMessage("Please use supported terminal such as powershell or bash")
         this.updateRunCount()
         const self = this
@@ -81,7 +82,7 @@ class CommandHandlerPrototype {
        
     }
 
-    initFileHandler(cb) {
+    initFileHandler(cb = () => {}) {
         this.fileHandler = new FileHandler(
             this.commandId,
             this.averageFromCmd,
@@ -103,6 +104,7 @@ class CommandHandlerPrototype {
     }
 
     async init(runCommandScriptCallback) {
+        if (this._abort) return
         setDefaultOption(this.commandId, this.stateManager.getState(optionKey))
         const newOption =  this.addOption ? (await this.getOption()) : null
         this.stateManager.updateState(optionKey, newOption)
@@ -123,7 +125,7 @@ class CommandHandlerPrototype {
             if (!activeTerminal) return
             await runCommandScriptCallback()
         }
-        if (!this.fileHandlerInitialized && this.commandId.indexOf(".target") === -1){
+        if (!this.redirect && this.commandId.indexOf(".target") === -1){
             this.overlayTerminal && this.overlayTerminal.dispose()
             this.overlayTerminal = vscode.window.createTerminal();
             this.overlayTerminal.show();
@@ -138,13 +140,15 @@ class CommandHandlerPrototype {
     }
 
     async runBash(cb) {
+        if (this._abort) return
         setTimeout(() => {
             this.sendCommands(cb)
-        }, !(this.fileHandlerInitialized) ? 1000 : 500)
+        }, !(this.redirect) ? 1000 : 500)
     }
 
     async sendCommands(cb = () => {}) {
         // Appologies for overcomplication
+        if (this._abort) return
         const command = getRawCommand(this.commandId)
         if (this.multipleTargetSelection) this.stateManager.updateState(optionKey, this.targets)
 
@@ -171,8 +175,13 @@ class CommandHandlerPrototype {
         return this.fileHandler.outputFile
     }
 
+    abort () {
+        this._abort = true
+        this.logger.log({msg: "abort"})
+    }
     constructor(context, logger, stateManager, commandId) {
         this.logger = logger
+        this._abort = false
         this.context = context
         this.commandId = commandId
         this.stateManager = stateManager

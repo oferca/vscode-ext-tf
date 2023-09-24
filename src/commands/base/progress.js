@@ -39,6 +39,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     launchProgress(outputUpdatedCallback, completedCallback = () => {}) {
+        if (this._abort) return
         this.barCreationTimestamp = Date.now()
         this.currentBarCompletionPercentage = 0
         this.barCompletionTimestamp = this.barCreationTimestamp + this.fileHandler.durationEstimate * 1000
@@ -130,7 +131,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     async progressUpdate(progress, token, completedCallback = () => { }) {
-
+        if (this._abort) return
         token.onCancellationRequested(() => {
             console.log("User canceled the long running operation");
             clearInterval(this.intervalID);
@@ -175,6 +176,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
     }
 
     async execute(source, completedCallback, outputUpdatedCallback = () => {}) {
+        if (this._abort) return
         if (featuresDisabled(this.stateManager.activeTerminal)) return await vscode.window.showInformationMessage("Please use supported terminal such as Powershell or bash")
         this.updateRunCount()
         const self = this

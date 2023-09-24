@@ -1,4 +1,3 @@
-const vscode = require('vscode');
 const { TerraformPlanHandler } = require(".")
 const { TerraformResourceSelectorHandler } = require("../resources")
 const { tfPlanTargetCommandId } = require("../../shared/constants")

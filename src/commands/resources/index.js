@@ -9,8 +9,6 @@ module.exports = { TerraformResourceSelectorHandler: superclass => class extends
         const commandsLauncher = new CommandsLauncher(this.context, this.logger, this.stateManager)
         const { launch } = commandsLauncher
     
-        let completed = false
-        
         const startTime = new Date().getTime();
         const endTime = startTime + 60000; // 1 minutes in milliseconds
     
@@ -25,6 +23,7 @@ module.exports = { TerraformResourceSelectorHandler: superclass => class extends
         let stateList
         let total = 0
         let newStateFile = false
+        if (!this.fileHandler) this.initFileHandler()
         const interval = setInterval(() => {
             stateList = this.fileHandler.getStateList() || { ts: 0, content: "", total}
             const tooLong =  (new Date().getTime() > endTime)
@@ -48,9 +47,11 @@ module.exports = { TerraformResourceSelectorHandler: superclass => class extends
 
         while (!(targets || []).length && (selectionDurationMS < 3000) && showMenuAttempts < 8){
             tsBefore = new Date().getTime()
-            targets = await vscode.window.showQuickPick(stateList.content
+            const resources = stateList.content
                 .split("\n")
-                .map(resource => resource.replaceAll("\n", "").replaceAll("\r", "")),
+                .map(resource => resource.replaceAll("\n", "").replaceAll("\r", ""))
+            if (!resources || resources.length < 2) return this.abort()
+            targets = await vscode.window.showQuickPick(resources,
               {
                 canPickMany: true, // Enable multiple selections
                 placeHolder: 'Select one or more options'
