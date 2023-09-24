@@ -18,7 +18,7 @@ class BashHandler extends ShellHandler{
     export endVscTfPlan=$(date +%s); 
     echo \`expr $endVscTfPlan - "$2"\`> "$1"${"." + timeExt + "; \ "}
     ${this.redirect ? `export tf_output=$(cat "$1${this.outputFileExt}";);  ` : ``}
-    ${this.redirect ? `if [[ "$tf_output" == *"${successMessage(this.commandId)}"* ]]; then 
+    ${this.redirect && this.sendConsoleOutput ? `if [[ "$tf_output" == *"${successMessage(this.commandId)}"* ]]; then 
         echo "$(cat "$1")"; 
     fi;  ` : "" }
     ${this.redirect ? `

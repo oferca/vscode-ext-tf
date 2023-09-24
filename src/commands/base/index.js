@@ -75,7 +75,7 @@ class CommandHandlerPrototype {
         const self = this
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp(source)
-            if (this.executeHook) await this.executeHook()
+            if (this.executeHook) await this.executeHook(source)
             self.runBash(cb)
         }
         await this.init(onChildProcessCompleteStep2)
@@ -161,6 +161,7 @@ class CommandHandlerPrototype {
             return optionsStr
         }, "") : ""
         if (this.commandId === tfForceUnlockCommandId) options = option
+        this.shellHandler.sendConsoleOutput = this.sendConsoleOutput
         this.redirect ? await this.shellHandler.runTfCommand(this.outputFile, options)
             : this.shellHandler.runSimpleCommand(command, options)
         if (this.overlayTerminal) setTimeout(() =>
@@ -180,8 +181,8 @@ class CommandHandlerPrototype {
         this.logger.log({msg: "abort"})
     }
     constructor(context, logger, stateManager, commandId) {
-        this.logger = logger
         this._abort = false
+        this.logger = logger
         this.context = context
         this.commandId = commandId
         this.stateManager = stateManager

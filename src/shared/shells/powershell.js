@@ -30,7 +30,7 @@ class PowershellHandler extends ShellHandler {
         ${this.redirect ? `;while ($true) {if (Test-Path "$p1${this.outputFileExt}") {Start-Sleep -Seconds 1; break;}Start-Sleep -Seconds 0.1;}; \
         $tf_output=$(cat "$p1${this.outputFileExt}"); ` : ``} \
         ${this.redirect ? `if ( $tf_output -and $tf_output.Contains("${successMessage(this.commandId)}") ){
-            echo "$(cat "$p1")"; 
+            ${this.sendConsoleOutput ? 'echo "$(cat "$p1")";' : ''} 
             finalize.${this.commandId} -1 "$p1" "$startTSCommand"; 
         };  ` : ""}
         ${this.redirect ? `

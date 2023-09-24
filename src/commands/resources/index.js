@@ -14,7 +14,7 @@ module.exports = { TerraformResourceSelectorHandler: superclass => class extends
     
         await launch(
             "State List",
-            "get-resources",
+            "target-resources-command",
             undefined,
             () => {}
         )

@@ -40,6 +40,7 @@ class ShellHandler {
     synthesizePath(_path) {
         return _path
     }
+    
     getChangeFolderCmd() {
         const folder = this.stateManager.getUserFolder()
         return folder ? `cd "${folder}";` :""
@@ -49,11 +50,12 @@ class ShellHandler {
         return this.stateManager.getState(credentialsKey) || ""
     }
 
-    constructor(commandId, tfOption = null, redirect = true, stateManager, transformOutputColors) {
+    constructor(commandId, tfOption = null, redirect = true, stateManager, transformOutputColors, sendConsoleOutput = true) {
         this.commandId = commandId
         this.tfOption = tfOption
         this.redirect = redirect
         this.stateManager = stateManager
+        this.sendConsoleOutput = sendConsoleOutput
         this.fileEncoding = isWindows ? "UTF-16LE" : "utf-8"
         this.outputFileExt = transformOutputColors ? `.${noColorExt}` : ""
     }
