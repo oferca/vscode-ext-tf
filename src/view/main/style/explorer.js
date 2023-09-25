@@ -797,7 +797,7 @@ POPUP
 	  background-position: 180px;
 	}
 	100% {
-	  background-position: 180px;
+	  background-position: 360px;
 	}
   }
   @-webkit-keyframes shine {
@@ -808,7 +808,7 @@ POPUP
 	  background-position: 180px;
 	}
 	100% {
-	  background-position: 180px;
+	  background-position: 360px;
 	}
   }
   @-o-keyframes shine {
@@ -819,7 +819,7 @@ POPUP
 	  background-position: 180px;
 	}
 	100% {
-	  background-position: 180px;
+	  background-position: 360px;
 	}
   }
   @keyframes shine {
@@ -830,7 +830,7 @@ POPUP
 	  background-position: 180px;
 	}
 	100% {
-	  background-position: 180px;
+	  background-position: 360px;
 	}
   }
   
