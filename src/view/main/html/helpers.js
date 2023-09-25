@@ -18,7 +18,7 @@ const getButtonHTML = (action, isExplorer, actionParent) => {
     const addSpinner = label.indexOf("chatgpt") === -1
     const buttonIconType = label.indexOf("init") > -1 && "download" ||
         label.indexOf("validate") > -1 && "check" ||
-        label.indexOf("output") > -1 && "display" ||
+        label.indexOf("output") > -1 && "clipboard-list" ||
         label.indexOf("plan") > -1 && "paper-plane" ||
         label.indexOf("chatgpt") > -1 && "globe" ||
         label.indexOf("apply") > -1 && "upload"
