@@ -42,17 +42,17 @@ module.exports.actions = [
         { handler: TerraformUnlockHandler, label: "Force-unlock", icon: "$(unlock)", misc: true },
         { handler: TerraformStateListHandler, label: "State List", icon: "$(play-circle)", misc: true },
         {
-            label: 'With tfVars file',
-            kind: vscode.QuickPickItemKind.Separator
-        },
-        { handler: TerraformPlanVarsHandler, label: "Plan -var-file", icon: "$(settings-sync-view-icon)", parent: "Plan"   },
-        { handler: TerraformApplyVarsHandler, label: "Apply -var-file", icon: "$(play-circle)", parent: "Apply" },
-        {
             label: 'Target Resources',
             kind: vscode.QuickPickItemKind.Separator
         },
         { handler: TerraformPlanTargetHandler, label: "Plan -Target", icon: "$(settings-sync-view-icon)" , parent: "Plan" },
         { handler: TerraformApplyTargetHandler, label: "Apply -Target", icon: "$(play-circle)", parent: "Apply" },
+        {
+            label: 'With tfVars file',
+            kind: vscode.QuickPickItemKind.Separator
+        },
+        { handler: TerraformPlanVarsHandler, label: "Plan -var-file", icon: "$(settings-sync-view-icon)", parent: "Plan"   },
+        { handler: TerraformApplyVarsHandler, label: "Apply -var-file", icon: "$(play-circle)", parent: "Apply" },
         {
             label: 'Optional',
             kind: vscode.QuickPickItemKind.Separator,

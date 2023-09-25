@@ -194,4 +194,6 @@ module.exports.noProjectsExistsTxt = "No terraform projects were found in this w
 
 module.exports.disableShowOnStartupKey = "tfShowOnStartup"
 
+module.exports.tfResourcesSelectionKey = "tfResourcesSelection"
+
 module.exports.additionalText = "- Kindly examine the logs in the terminal as well"

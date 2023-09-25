@@ -21,7 +21,9 @@ const {
     tfPlanTargetCommandId,
     tfApplyTargetCommandId,
     tfInitUpgradeCommandId,
-    tfForceUnlockCommandId
+    tfForceUnlockCommandId,
+    tfResourcesSelectionKey,
+    lastSelectedProjectPathKey
 } = require("../../shared/constants")
 
 let defaultTarget
@@ -150,7 +152,10 @@ class CommandHandlerPrototype {
         // Appologies for overcomplication
         if (this._abort) return
         const command = getRawCommand(this.commandId)
-        if (this.multipleTargetSelection) this.stateManager.updateState(optionKey, this.targets)
+
+        const trResourcesKey = tfResourcesSelectionKey + this.stateManager.getState(lastSelectedProjectPathKey)
+        const targets = this.stateManager.getState(trResourcesKey)
+        if (this.multipleTargetSelection) this.stateManager.updateState(optionKey, targets)
 
         const option = this.stateManager.getState(optionKey)
         let options = this.addOption ? (option || "").split(",").reduce((optionsStr, option) => {
