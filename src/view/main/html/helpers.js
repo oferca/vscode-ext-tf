@@ -6,10 +6,12 @@ const getButtonHTML = (action, isExplorer, actionParent) => {
     const spinner = `<i class="fas fa-solid fa-spinner fa-spin"></i>`
     const isVarButton = action.label.toLowerCase().indexOf("var-file") > -1
     const isTargetButton = action.label.toLowerCase().indexOf("target") > -1
+    const isHistoryButton = action.label.toLowerCase().indexOf("history") > -1
     const isUpgradeButton = action.label.toLowerCase().indexOf("upgrade") > -1
     const buttonText = isExplorer && isVarButton && "With Var File" ||
         isExplorer && isTargetButton && "With Target" ||
         isExplorer && isUpgradeButton && "Init and Upgrade" ||
+        isExplorer && isHistoryButton && "History" ||
         (`${isExplorer ? "Terraform " : ""}${action.label}`
         .replace("Terraform ChatGPT", "ChatGPT"))
     const label = action.label.toLowerCase()
