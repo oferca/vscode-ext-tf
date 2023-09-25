@@ -1,9 +1,11 @@
-# [Terraform Dashboard Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+# [Terraform UI Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-Supercharge your Terraform journey with a control center. Say goodbye to tedious typing! the [Terraform Dashboard Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention brings effortless, UI-driven execution and real-time monitoring of Terraform commands.
+Supercharge your Terraform journey with a control center. Say goodbye to tedious typing! the [Terraform UI Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention brings effortless, UI-driven execution and real-time monitoring of Terraform commands.
 
 # Features
-* Seamless navigation and transition between all your Terraform projects.
+* Effortlessly persist and retrieve terraform plan logs history.
+* Work comfortably from within your code editor, unrestricted by the limitations of the integrated terminal.
+* Seamlessly navigate and transition between all your Terraform projects.
 * Visualize real-time execution progress of Terraform commands with a progress bar
 * Get **Free** ChatGPT insight summary into "terraform plan"
 
