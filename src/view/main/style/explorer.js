@@ -768,7 +768,7 @@ POPUP
 	background-position: 0;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
-	animation: shine 3s infinite linear;
+	animation: shine 7s infinite linear;
 	animation-fill-mode: forwards;
 	-webkit-text-size-adjust: none;
 	font-weight: 600;
@@ -791,47 +791,59 @@ POPUP
 }
 @-moz-keyframes shine {
 	0% {
-	  background-position: 0;
+	  background-position: -30px;
 	}
-	60% {
+	30% {
 	  background-position: 180px;
 	}
-	100% {
+	60% {
 	  background-position: 360px;
 	}
+	100% {
+		background-position: 360px;
+	  }
   }
   @-webkit-keyframes shine {
 	0% {
-	  background-position: 0;
+	  background-position: -30px;
 	}
-	60% {
+	30% {
 	  background-position: 180px;
 	}
 	100% {
 	  background-position: 360px;
 	}
+	100% {
+		background-position: 360px;
+	  }
   }
   @-o-keyframes shine {
 	0% {
-	  background-position: 0;
+	  background-position: -30px;
 	}
-	60% {
+	30% {
 	  background-position: 180px;
 	}
-	100% {
+	60% {
 	  background-position: 360px;
 	}
+	100% {
+		background-position: 360px;
+	  }
   }
   @keyframes shine {
 	0% {
-	  background-position: 0;
+	  background-position: -30px;
 	}
-	60% {
+	30% {
 	  background-position: 180px;
 	}
-	100% {
+	60% {
 	  background-position: 360px;
 	}
+	100% {
+		background-position: 360px;
+	  }
   }
   
 
