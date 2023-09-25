@@ -3,7 +3,7 @@
   "name": "easy-terraform-commands",
   "displayName": "Terraform UI Plus",
   "publisher": "oferkafry",
-  "description": "A full-blown UI for Terraform. Effortless persistence and retrieval of terraform plan logs, all within the comfort of your code editor.",
+  "description": "A full-blown UI for Terraform. Effortless persistence and retrieval of terraform plan logs history, all within the comfort of your code editor.",
   "version": "2.7.6",
   "engines": {
     "vscode": "^1.67.2"
