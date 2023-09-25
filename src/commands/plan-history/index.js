@@ -1,29 +1,39 @@
+const fs = require('fs');
+const path = require('path');
 const vscode = require('vscode');
-const { optimize } = require('./optimize');
+const { CommandHandlerPrototype } = require("../base")
+const { lastSelectedProjectPathKey, noColorExt } = require("../../shared/constants");
+const { capitalizeFirst } = require('../../shared/methods');
 
-class TerraformPlanHistoryHandler {
-    logger
-    context
+class TerraformPlanHistoryHandler extends CommandHandlerPrototype {
 
-    async execute (source, cb, fileContent) {
-        if (!fileContent || fileContent.length < 50) {
-            this.logger.log({ message: "failed-chat-gpt", source })
-            return await vscode.window.showInformationMessage(emptyPlanTxt)
-        }
-        if (!planSuccessful(fileContent)){
-            this.logger.log({ message: "failed-chat-gpt", source })
-            return await vscode.window.showInformationMessage(errorsInPlanTxt)
-        }
-        this.logger.log({ message: "chat-gpt", source: "webview"})
-        const optimizedContent = optimize(fileContent)
-        await vscode.env.clipboard.writeText(optimizedContent)
-        await vscode.window.showInformationMessage(chatGPTPromptText,  { modal: true })
-        await vscode.env.openExternal(vscode.Uri.parse("https://chat.openai.com/"))
+    async executeHook() {
+        if (!this.fileHandler) this.initFileHandler()
+        const dataFolder = this.fileHandler.dataFolder
+        fs.readdir(dataFolder, async (err, files) => {
+          const history = files
+            .filter(fileName => fileName.indexOf(noColorExt) > -1)
+            .map(filename => {
+                return {
+                    filename,
+                    label: `${capitalizeFirst(filename.split(".")[0].replaceAll("-"," "))
+                        }${filename.indexOf("target") ? ", with targeted resources" : ""
+                        }, ${new Date(fs.statSync(path.resolve(dataFolder, filename)).mtimeMs).toLocaleString()}`
+                    }})
+        const selection = await vscode.window.showQuickPick(history, {
+            placeHolder: "Select a history file",
+            title: "Select a history file"
+        });
+        const document = await vscode.workspace.openTextDocument(path.resolve(dataFolder, selection.filename))
+        vscode.window.showTextDocument(document)
+        
+        });
     }
 
-    constructor(context, logger) {
-        this.logger = logger
-        this.context = context
+    constructor(context, logger, stateManager) {
+        super(context, logger, stateManager, "plan-history");
+        this.skipTFCommand = true
+        this.redirect = true
     }
 }
 

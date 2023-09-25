@@ -49,6 +49,7 @@ class CommandHandlerPrototype {
     titleColor
     fileHandler
     stateManager
+    skipTFCommand
     averageFromCmd
     overlayTerminal
     textDocumentListener
@@ -78,6 +79,7 @@ class CommandHandlerPrototype {
         const onChildProcessCompleteStep2 = async () => {
             await self.logOp(source)
             if (this.executeHook) await this.executeHook(source)
+            if (this.skipTFCommand) return cb && cb()
             self.runBash(cb)
         }
         await this.init(onChildProcessCompleteStep2)
@@ -119,7 +121,7 @@ class CommandHandlerPrototype {
             this.stateManager.getState(optionKey),
             this.redirect,
             this.stateManager,
-            this.transformOutputColors
+            this.transformOutputColors,
         )
 
         const onChildProcessCompleteStep1 = async () => {
@@ -133,7 +135,7 @@ class CommandHandlerPrototype {
             this.overlayTerminal.show();
         }
        
-        await this.shellHandler.deleteTerminalCurrentLine()
+        if (!this.skipTFCommand) await this.shellHandler.deleteTerminalCurrentLine()
         this.redirect ? this.initFileHandler(onChildProcessCompleteStep1) : onChildProcessCompleteStep1()
     }
 
