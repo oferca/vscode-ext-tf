@@ -760,10 +760,80 @@ POPUP
 		width: 34vw;
 	}
 }
-#output-file.matrix{
-	background-image: url(${matrixBackground});
-	transition: 0.5s border;
+#output-file.shine{
+	/*background-image: url(${matrixBackground});*/
+	/*transition: 0.5s border;*/
+	color: #fff;
+	background: linear-gradient(to right, #4d4d4d 0, #fff 10%, #4d4d4d 20%);
+	background-position: 0;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	animation: shine 3s infinite linear;
+	animation-fill-mode: forwards;
+	-webkit-text-size-adjust: none;
+	font-weight: 600;
+	font-size: 38px;
+	text-decoration: none;
+	white-space: pre-line;
+	line-height: 50px;
+	word-wrap: break-word;
+	text-align: center;
 }
+
+
+@media all and (max-width:965px) {
+
+	#output-file.shine{
+		line-height: 43px;
+		font-size: 32px;
+	}
+
+}
+@-moz-keyframes shine {
+	0% {
+	  background-position: 0;
+	}
+	60% {
+	  background-position: 180px;
+	}
+	100% {
+	  background-position: 180px;
+	}
+  }
+  @-webkit-keyframes shine {
+	0% {
+	  background-position: 0;
+	}
+	60% {
+	  background-position: 180px;
+	}
+	100% {
+	  background-position: 180px;
+	}
+  }
+  @-o-keyframes shine {
+	0% {
+	  background-position: 0;
+	}
+	60% {
+	  background-position: 180px;
+	}
+	100% {
+	  background-position: 180px;
+	}
+  }
+  @keyframes shine {
+	0% {
+	  background-position: 0;
+	}
+	60% {
+	  background-position: 180px;
+	}
+	100% {
+	  background-position: 180px;
+	}
+  }
+  
 
 #output-file.running{
 	--angle: 0deg;

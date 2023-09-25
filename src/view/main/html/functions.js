@@ -4,7 +4,7 @@ module.exports.getFunctions = isExplorer => `
       const outputArea = document.getElementById("output-file") || demiElement
       const outputAreaFS = document.getElementById("output-file-fs") || demiElement
       if (outputArea.classList.length) outputArea.classList.remove(...outputArea.classList);
-      outputAreaFS.classList.remove("matrix");
+      outputAreaFS.classList.remove("shine");
       outputArea.classList.add("running")
       const mainModal = document.getElementById("main-tf-modal")
     })
@@ -59,7 +59,8 @@ module.exports.getFunctions = isExplorer => `
     if (!outputFileContent) return
     const content = document.getElementById("output-file")
     content.value = event.data.outputFileContent
-    content.classList.remove("matrix")
+    content.classList.remove("shine")
+    content.value = "";
     scrollOutputDown()
     content.style.backgroundImage = "none"
     content.style.opacity = "1"

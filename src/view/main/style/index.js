@@ -374,7 +374,7 @@ a.command:hover, a.command, a.command:focus {
     cursor: pointer;
     z-index: 99999;
   }
-  #output-file-fs.matrix{
+  #output-file-fs.shine{
     display: none;
   }
   #output-file-fs:hover{
