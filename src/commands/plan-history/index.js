@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
 const { CommandHandlerPrototype } = require("../base")
-const { lastSelectedProjectPathKey, noColorExt } = require("../../shared/constants");
+const { noColorExt } = require("../../shared/constants");
 const { capitalizeFirst } = require('../../shared/methods');
 
 class TerraformPlanHistoryHandler extends CommandHandlerPrototype {
