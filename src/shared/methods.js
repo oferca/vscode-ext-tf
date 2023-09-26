@@ -79,11 +79,11 @@ module.exports.getLastStateList = (dataFolder, encoding) => {
       stateListFile = path.resolve(dataFolder, name)
     });
 
-    return {
+    return stateListFile ? {
         content: fs.readFileSync(stateListFile, encoding),
         ts: mostRecent,
         total
-    }
+    } : null
 }
 
 const getOptionKey = commandId =>

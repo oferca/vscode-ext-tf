@@ -36,7 +36,7 @@ module.exports = { TerraformResourceSelectorHandler: superclass => class extends
             selectionDurationMS = tsAfter - tsBefore
             showMenuAttempts++
         }
-        if (!targets) return
+        if (!targets || !targets.length) return this.abort()
         this.stateManager.updateState(trResourcesKey, targets.map(target => target.label).join(","))
     }
     
@@ -58,16 +58,18 @@ module.exports = { TerraformResourceSelectorHandler: superclass => class extends
         let resolve
         let tooLong
         let stateList
-        let total = 0
         let newStateFile = false
+        let initialNumFiles = 0
         if (!this.fileHandler) this.initFileHandler()
         const interval = setInterval(() => {
-            stateList = this.fileHandler.getStateList() || { ts: 0, content: "", total}
             const tooLong =  (new Date().getTime() > endTime)
-            newStateFile = newStateFile || (stateList.total > total && total !== 0)
-            total = stateList.total
+            if (tooLong) resolve()
+            stateList = this.fileHandler.getStateList()
+            if (!stateList) return
+            newStateFile = newStateFile || (stateList.total > initialNumFiles)
+            initialNumFiles = stateList.total
             const newContent = newStateFile && stateList.content.length > 10
-            if (newContent || tooLong) resolve()
+            if (newContent) resolve()
         }, 500)
         
         await new Promise(_resolve => {
