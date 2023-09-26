@@ -18,7 +18,7 @@ module.exports = { TerraformResourceSelectorHandler: superclass => class extends
 
         while (!(targets || []).length && (selectionDurationMS < 3000) && showMenuAttempts < 8){
             tsBefore = new Date().getTime()
-            const resources = 
+            const rawResources = 
                 stateList.content
                 .split("\n")
                 .map(resource => resource.replaceAll("\n", "").replaceAll("\r", ""))
@@ -26,11 +26,31 @@ module.exports = { TerraformResourceSelectorHandler: superclass => class extends
                     label: resource,
                     picked: prevTargets.find(target => target === resource)
                 }))
-            if (!resources || resources.length < 2) return this.abort()
+            if (!rawResources || rawResources.length < 2) return this.abort()
+
+            const added = {}
+            const resources = rawResources.reduce((accumulator, rawResource) => {
+               const modules = rawResource.label.split("module.")
+               while (modules.length > 1){
+                 const lastPart = modules.pop()
+                 const moduleName = lastPart.split(".")[0]
+                 const module = modules.join("module.") + "module." + moduleName
+                 if (module.substring(0, 7) === ".module.") return accumulator
+                 if (added[module]) return accumulator
+                 added[module] = true
+                 accumulator.push(
+                    {
+                        label: module,
+                        picked: prevTargets.find(target => target === module)
+                     })
+               }
+               return accumulator
+            }, rawResources);
+
             targets = await vscode.window.showQuickPick(resources,
               {
                 canPickMany: true, // Enable multiple selections
-                placeHolder: `Select one or more targets for "terraform ${getRawCommand(this.commandId)}.`
+                placeHolder: `Select one or more targets for "terraform ${getRawCommand(this.commandId)}".`
               })
             tsAfter = new Date().getTime()
             selectionDurationMS = tsAfter - tsBefore
@@ -59,14 +79,14 @@ module.exports = { TerraformResourceSelectorHandler: superclass => class extends
         let tooLong
         let stateList
         let newStateFile = false
-        let initialNumFiles = 0
+        let initialNumFiles = null
         if (!this.fileHandler) this.initFileHandler()
         const interval = setInterval(() => {
             const tooLong =  (new Date().getTime() > endTime)
             if (tooLong) resolve()
             stateList = this.fileHandler.getStateList()
             if (!stateList) return
-            newStateFile = newStateFile || (stateList.total > initialNumFiles)
+            newStateFile = newStateFile || ((stateList.total > initialNumFiles) && initialNumFiles != null)
             initialNumFiles = stateList.total
             const newContent = newStateFile && stateList.content.length > 10
             if (newContent) resolve()

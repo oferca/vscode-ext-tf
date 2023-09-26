@@ -21,7 +21,6 @@ const {
 } = require('../../shared/constants');
 
 class ProgressHandlerPrototype extends CommandHandlerPrototype {
-    abort
     intervalID
     lastRecorded
     progressFileMsg
@@ -150,7 +149,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         const p = new Promise(resolve => {
             const completedIntervalId = setInterval(() => {
                 const completed = self.completed()
-                if (completed || self.abort) {
+                if (completed || self._abort) {
                     self.logger.log({
                         completed,
                         commandId: self.commandId

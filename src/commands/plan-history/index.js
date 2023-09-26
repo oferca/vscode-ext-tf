@@ -20,6 +20,7 @@ class TerraformPlanHistoryHandler extends CommandHandlerPrototype {
                         }${filename.indexOf("target") ? ", with targeted resources" : ""
                         }, ${new Date(fs.statSync(path.resolve(dataFolder, filename)).mtimeMs).toLocaleString()}`
                     }})
+        if (!history || !history.length) return await vscode.window.showInformationMessage("Plan outputs not found")
         const selection = await vscode.window.showQuickPick(history, {
             placeHolder: "Select a history file",
             title: "Select a history file"
