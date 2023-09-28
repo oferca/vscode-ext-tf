@@ -552,7 +552,8 @@ POPUP
 
 .tf-modal {
   background: var( --vscode-editor-background);
-  width: 70%;
+  width: 85%;
+  max-width: 800px;
   padding: 30px;
   position: absolute;
   inset: 50%;
@@ -709,7 +710,7 @@ POPUP
     background: var(--vscode-panelSectionHeader-background);
     margin-top: -12px;
     padding: 5px;
-    width: 62vw;
+    width: 75vw;
 	border-bottom: 1px var(--vscode-notifications-border) solid;
 }
 .explorer .expandable.seperator{
@@ -727,7 +728,7 @@ POPUP
 
 #credentials{
 	padding: 3px;
-	width: 62vw;
+	width: 75vw;
 	margin-top: -35px;
 	border: 1px solid var(--vscode-notifications-border);
 	font-size: 14px;
@@ -741,7 +742,7 @@ POPUP
 }
 
 #output-file{
-	width: 41vw;
+	width: 51vw;
     height: 204px;
     padding: 3px;
     margin-top: 22px;
@@ -752,14 +753,27 @@ POPUP
     position: relative;
     box-shadow: 0.5px 0.5px 1px var(--vscode-notifications-border);
     font-size: 2vh;
-	margin-left: 10px;
+	margin-left: 19px;
 }
 
 @media all and (max-width: 860px) {
 	#output-file{
-		width: 34vw;
+		width: 50vw;
 	}
 }
+
+@media all and (max-width: 820px) {
+	#output-file{
+		width: 44vw;
+	}
+}
+
+@media all and (max-width: 665px) {
+	#output-file{
+		width: 40vw;
+	}
+}
+
 #output-file.shine{
 	/*background-image: url(${matrixBackground});*/
 	/*transition: 0.5s border;*/

@@ -126,7 +126,7 @@ module.exports.scripts = selectedProject => {
     function addOverlay(){
         setTimeout(() => {
             const modalContainer = document.getElementById("tf-modal-container")
-            modalContainer.style.backgroundColor = "rgba(0, 0, 0, 0.9)"
+            modalContainer.style.backgroundColor = "rgba(0, 0, 0, 0.4)"
         })
     }
 

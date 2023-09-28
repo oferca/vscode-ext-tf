@@ -117,10 +117,11 @@ module.exports.getFunctions = isExplorer => `
         acc[i].addEventListener("click", function() {
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        if (panel.style.height === "133px") {
+        const actualHeight = panel.classList.contains("creds") ? "auto" : "133px"
+        if (panel.style.height === actualHeight) {
             panel.style.height = "0px"
         } else {
-            panel.style.height = "133px"
+            panel.style.height = actualHeight
         }
         });
     }

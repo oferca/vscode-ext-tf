@@ -121,7 +121,7 @@ class FileHandler {
             const outputFile = fs.readFileSync(
                 this.outputFile,
                 this.shellHandler.fileEncoding
-            )
+            ).replaceAll("/n", "")
             const contentNoColors = removeColors(outputFile)
             this.updateCompletionsSummary(contentNoColors)
             true && fs.writeFile(

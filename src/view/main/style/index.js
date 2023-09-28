@@ -272,7 +272,7 @@ a.command:hover, a.command, a.command:focus {
 
   .explorer #main-tf-modal{
     text-align: left;
-    background: var(--vscode-settings-focusedRowBackground)
+    background: var(--vscode-input-background);
   }
 
   #overlay {
@@ -359,7 +359,7 @@ a.command:hover, a.command, a.command:focus {
 
   #tf-progress{
     margin-top: 5px;
-    width: 62vw;
+    width: 75vw;
     background: rgba(0, 0, 0, 0.25);
   }
 
@@ -494,6 +494,7 @@ u.logs{
 .desc{
   font-size: 14px;
   margin-left: 5px;
+  color: var(--vscode-editor-foreground);
 }
 
 .explorer .accordion {
@@ -533,7 +534,7 @@ u.logs{
 .toggle-fullscreen{
   position: absolute;
   top: 4px;
-  left: 30px; 
+  left: 45px; 
   font-size: 18px;
   text-shadow: var(--vscode-button-background) 1px 0px 10px;
   color: white;
@@ -549,7 +550,7 @@ u.logs{
 
 .container .progress1 {
   margin: 0 auto;
-  width: 62vw;
+  width: 75vw;
   text-align: left;
 }
 
