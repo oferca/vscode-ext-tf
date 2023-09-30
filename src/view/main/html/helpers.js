@@ -1,4 +1,5 @@
 const { actions } = require("../../../shared/actions")
+const { isWindows } = require("../../../shared/constants")
 
 const getButtonHTML = (action, isExplorer, actionParent) => {
     const title =  `Run Terraform ${action.label.replace(" -", " with ")} in terminal`
@@ -72,6 +73,10 @@ const actionLabel = (action, isExplorer) => isExplorer ? action.label.replace("T
 module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent, planSuccess) => {
     let firstSeperator
     const projectInfoStyle = `style="display: ${isExplorer ? 'block' : 'none'}; margin-top: 20px;"`
+    const script = isWindows ?
+    "$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;" : 
+    "export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\nexport AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;"
+    const credentials = isExplorer ? `<h4 class="title env-vars section-title">Set Environment Variables</h4><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="[Optional] Set environment variables. For example:\n${script}\n..."></textarea>` : ""
 
     return actions.map(action => {
         if (action.menuOnly) return
@@ -88,9 +93,18 @@ module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent, 
             </div>
             <div class="progress" id="tf-progress">
                 ${progressBar}
+
+                ${seperator}
+                <h4 id="creds-title">Set credentials in terminal <b>or below:</b></h4>
+
+                    <div class="accordion desc creds project-block">Set Credentials</div>
+                    <div class="tf-panel creds">
+                        <br>
+                        ${credentials}
+                    </div>
                 <div id="project-info" class="project-block" ${projectInfoStyle}>
                 </div>
-                <div class="accordion desc parameters project-block">Actions With Parameters</div>
+                <div class="accordion desc parameters project-block">More commands</div>
                 <div class="tf-panel">
             ` : `<div class="expandable ${seperatorClass} seperator"></div>` 
             return (`</div>

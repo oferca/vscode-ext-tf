@@ -1110,6 +1110,7 @@ body.explorer {
 	height: 20px;
     line-height: 30px;
 	background-color: transparent !important;
+	font-size: 20px;
 }
 .show-startup .input-group-text{
    background: transparent !important;

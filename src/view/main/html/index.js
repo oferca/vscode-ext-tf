@@ -18,20 +18,11 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     modalAnimated = !completed ? 'animated' : '',
     warningHTML = preferences.showWarning && false ? '<div class="title prefs warning">Preferences Active</div>' : "",
     planSuccess = isPlanCompleted && planSucceded,
-    credentials = isExplorer ? `<h4 class="title env-vars section-title">Environment Variables Script</h4><div class="desc">Set required variables here or in terminal.</div><br><textarea id="credentials" name="credentials" rows="5" cols="40" placeholder="Enter a script such as (in case terminal is powershell):\n$Env:AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE;\n$Env:AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY;\n..."></textarea>` : "",
     commandsTitle = isExplorer ? `<h4 title="Terraform Commands" id="commands-title" class="commands-title section-title"></h4>` : ""
-    isMissingCredentials = credentials.length && _missingCredentials && feedback && feedback.type === "error",
-    missingCredentials = isMissingCredentials ? `setTimeout(() => {
-      const credentials = document.getElementById("credentials")
-      if (!credentials) return
-      credentials.scrollIntoView({ behavior: "smooth" })
-      credentials.classList.toggle("blinking-border")
-      setTimeout(() => credentials.classList.toggle("blinking-border"), 5000)
-    }, 1000)` : "",
     outputContent = _outputFileContent ? _outputFileContent : "",
     outputFileContent = isExplorer ? `<textarea disabled class="${feedback ? feedback.type + " feedback" : "shine" }" id="output-file" name="output-file" rows="9" >${completed ? outputContent : `
     
-    Click A Terraform Command To Run`}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs" class="${!feedback ? "shine" : "" }" >&#x2922;
+    Select A Terraform Command`}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs" class="${!feedback ? "shine" : "" }" >&#x2922;
     <div class="toggle-fullscreen">Full Screen</div></div>` : "",
     overlayClass = completed ? 'active' : "",
     overlayCall = completed && isExplorer ? "document.querySelector('.tf-modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : "",
@@ -80,12 +71,7 @@ ${ explorerHTML }
           </div>
         </div>
       </div>
-          ${seperator}
-          <div class="accordion desc creds project-block">Set Credentials</div>
-            <div class="tf-panel creds">
-            <br>
-              ${credentials}
-          </div>
+          
         <br>
     </div>
   </div>
@@ -96,9 +82,7 @@ ${ explorerHTML }
     scrollOutputDown(false)
     ${isExplorer ? `initAccordions()` : ""}
     
-    setTimeout(scrollToCheckbox)
-    ${missingCredentials}
-    
+    setTimeout(scrollToCheckbox)    
     let maxPercentage = 0
     window.addEventListener('message', incomingMessageHandler);
     var IS_EXPLORER = null

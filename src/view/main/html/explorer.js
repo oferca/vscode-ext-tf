@@ -42,7 +42,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
         <input type="checkbox" id="myCheckbox" ${checked} aria-label="Checkbox for following text input">
       </div>
     </div>
-    Always open on startup
+    Show on startup
   </div>
 
   <script>
@@ -59,8 +59,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
   </script>
 
       <div id="filemanager" >
-      <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} "><span class="folderName">One-Click Terraform Commands Runner </span>
-      <br><br><div class="breadcrumbs"><span class="folderName ${!completed && withAnimation ? 'anim-text': 'static'}">Select A Terraform Project</span></div>
+       <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} "><span class="folderName">Select A Terraform Project</span>
       </div>
       <ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list, stateManager)}
@@ -97,16 +96,17 @@ module.exports.scripts = selectedProject => {
         const projectInfoEl = document.getElementById("project-info") || {}
         const commandsTitleEl = document.getElementById("commands-title") || {}
         const projectCredsEl = document.getElementById("credentials") || { style: {} }
+        const projectCredsTitle = document.getElementById("creds-title") || { style: {} }
         const isCurrentTerminal = !workspace || workspace === "Active Terminal"
         const folderTitle = isCurrentTerminal ? "Current Terminal Path" : folder
         const currentStyle = isCurrentTerminal ? "margin-top: 10px;" : ""
         document.getElementById("commands-title").style.color = folderColor
         commandsTitleEl.innerHTML = \`
-        Run in \${(projectTitle).replace("Active Terminal", "Current Terminal Folder")}
+        Project \${(projectTitle).replace("Active Terminal", "Current Terminal Folder")}
         \`
         projectInfoEl.innerHTML = \`
         <h4 style="\${currentStyle} color:\${folderColor};" title="\${name} project" class="section-title">
-        \${(projectTitle).replace("Active Terminal", "Current Terminal Folder")}
+        Project information
         </h4>
         <ol>
              <li class="path" title="\${folder}">\${folderTitle}</li>
@@ -118,7 +118,7 @@ module.exports.scripts = selectedProject => {
         projectCredsEl.onkeyup="this.style.color='inherit';this.style.fontWeight='normal';"
 
         if (credentials !== "${credentialsSetText}") return
-
+        projectCredsTitle.style.display = "none"
         projectCredsEl.style.color = "var(--vscode-editorOverviewRuler-currentContentForeground)"
         projectCredsEl.style.fontWeight = "bold"
     }

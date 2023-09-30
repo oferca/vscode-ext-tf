@@ -117,7 +117,7 @@ module.exports.getFunctions = isExplorer => `
         acc[i].addEventListener("click", function() {
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        const actualHeight = panel.classList.contains("creds") ? "auto" : "133px"
+        const actualHeight = panel.classList.contains("creds") ? "270px" : "133px"
         if (panel.style.height === actualHeight) {
             panel.style.height = "0px"
         } else {
