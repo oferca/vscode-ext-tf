@@ -113,7 +113,11 @@ class FileHandler {
     referUserToTerminal() {
         if (!this.initialized) return
         const content = this.getOutputFileContent()
-        fs.writeFileSync(this.outputFileNoColor, content + "\n " + additionalText || "")
+       fs.writeFileSync(
+        this.outputFileNoColor.replaceAll("/n", ""),
+        content + "\n " + additionalText || "",
+        { encoding: this.shellHandler.fileEncoding || "utf-8"}
+        )
     }
 
     convertOutputToReadable() {
@@ -121,8 +125,8 @@ class FileHandler {
             const outputFile = fs.readFileSync(
                 this.outputFile,
                 this.shellHandler.fileEncoding
-            ).replaceAll("/n", "")
-            const contentNoColors = removeColors(outputFile)
+            )
+            const contentNoColors = removeColors(outputFile).replaceAll("/n", "")
             this.updateCompletionsSummary(contentNoColors)
             true && fs.writeFile(
                 this.outputFileNoColor,

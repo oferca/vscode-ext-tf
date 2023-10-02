@@ -366,7 +366,7 @@ a.command:hover, a.command, a.command:focus {
   #output-file-fs{
     position: absolute;
     margin-top: -45px;
-    margin-left: 5px;
+    margin-left: 24px;
     font-size: 48px;
     color: var(--vscode-button-background) transition: 0.5s opacity;
     opacity: 0.1;

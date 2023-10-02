@@ -28,7 +28,7 @@ const {
 
 let defaultTarget
 let defaultVarFile
-const hideInitialDefinitionsDelay = 1000
+const hideInitialDefinitionsDelay = 2600
 
 const getDefaultOption = commandId =>
     [tfPlanTargetCommandId, tfApplyTargetCommandId].includes(commandId) && defaultTarget || 
@@ -129,7 +129,7 @@ class CommandHandlerPrototype {
             if (!activeTerminal) return
             await runCommandScriptCallback()
         }
-        if (!this.redirect && this.commandId.indexOf(".target") === -1){
+        if (this.commandId.indexOf(".target") === -1){
             this.overlayTerminal && this.overlayTerminal.dispose()
             this.overlayTerminal = vscode.window.createTerminal();
             this.overlayTerminal.show();
