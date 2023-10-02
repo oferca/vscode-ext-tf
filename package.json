@@ -4,7 +4,7 @@
   "displayName": "Terraform UI Plus",
   "publisher": "oferkafry",
   "description": "A comprehensive UI for Terraform and real time progress monitoring. All within the comfort of your code editor.",
-  "version": "2.8.9",
+  "version": "2.9.0",
   "engines": {
     "vscode": "^1.67.2"
   },
