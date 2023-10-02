@@ -754,6 +754,7 @@ POPUP
     box-shadow: 0.5px 0.5px 1px var(--vscode-notifications-border);
     font-size: 2vh;
 	margin-left: 19px;
+	line-height: 2.6vh;
 }
 
 @media all and (max-width: 860px) {

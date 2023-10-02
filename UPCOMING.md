@@ -1,3 +1,4 @@
+masking not working
 feate: shortcut
 feature: obfuscate tokens
 add search project
