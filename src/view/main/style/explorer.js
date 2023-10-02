@@ -756,7 +756,9 @@ POPUP
 	margin-left: 19px;
 	line-height: 2.6vh;
 }
-
+#output-file{
+	width: 45vw;
+}
 @media all and (max-width: 860px) {
 	#output-file{
 		width: 50vw;
