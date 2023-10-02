@@ -1,3 +1,4 @@
+plan ddoesnt send output to terminal
 feate: shortcut
 feature: obfuscate tokens
 add search project

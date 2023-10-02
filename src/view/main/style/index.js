@@ -359,7 +359,7 @@ a.command:hover, a.command, a.command:focus {
 
   #tf-progress{
     margin-top: 5px;
-    width: 75vw;
+    width: 62vw;
     background: rgba(0, 0, 0, 0.25);
   }
 
@@ -550,7 +550,7 @@ u.logs{
 
 .container .progress1 {
   margin: 0 auto;
-  width: 75vw;
+  width: 62vw;
   text-align: left;
 }
 

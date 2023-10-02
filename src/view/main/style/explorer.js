@@ -710,7 +710,7 @@ POPUP
     background: var(--vscode-panelSectionHeader-background);
     margin-top: -12px;
     padding: 5px;
-    width: 75vw;
+    width: 62vw;
 	border-bottom: 1px var(--vscode-notifications-border) solid;
 }
 .explorer .expandable.seperator{
@@ -728,7 +728,8 @@ POPUP
 
 #credentials{
 	padding: 3px;
-	width: 75vw;
+	width: 62vw;
+	max-width: 62vw;
 	margin-top: -35px;
 	border: 1px solid var(--vscode-notifications-border);
 	font-size: 14px;
@@ -742,7 +743,7 @@ POPUP
 }
 
 #output-file{
-	width: 51vw;
+	width: 45vw;
     height: 204px;
     padding: 3px;
     margin-top: 22px;
