@@ -1,15 +1,12 @@
 const path = require('path');
 const vscode = require('vscode');
-const { capitalizeFirst, getNamespacedCredentialsKey, sortProjects } = require('../../../shared/methods');
+const { capitalizeFirst, sortProjects } = require('../../../shared/methods');
 const { createShellHandler } = require('../../../shared/methods-cycle');
-const { credentialsSetText, disableShowOnStartupKey } = require('../../../shared/constants');
+const { disableShowOnStartupKey } = require('../../../shared/constants');
 
 const folders = (list, stateManager) => list && list.sort(sortProjects).map(
     project => {
         const { current, projectPath, projectPathRelative, name, regions, projectRoot, folderColor } = project,
-          namespacedCredentialsKey = getNamespacedCredentialsKey(projectPath),
-          credentials = stateManager.getState(namespacedCredentialsKey),
-          credentialsTxt = credentials && credentials.length ? credentialsSetText : "",
           shellHandler = createShellHandler(vscode.window.activeTerminal),
           projectPathSynthesized = shellHandler.synthesizePath(projectPath),
           projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative),
@@ -18,7 +15,7 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
           details = current ? "Run commands in current folder" : `Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}. Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
           title = details.replaceAll("<br>", ", ").replaceAll("<b>", "")
         return`
-            <div class="card shadow button-pulse ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${credentialsTxt}', '${current ? "Active Terminal" : projectRoot}', '${current ? "Active Terminal" : path.basename(projectRoot)}', '${folderColor}');" >
+            <div class="card shadow button-pulse ${current ? "current" : ""}" onclick="vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER }); CURRENT_PATH='${projectPathSynthesized}'; appear('${name}', '${projectPathSynthesized}', '${projectPathRelativeSynthesized}', '${current ? "Active Terminal" : projectRoot}', '${current ? "Active Terminal" : path.basename(projectRoot)}', '${folderColor}');" >
                 <div class="card-header">
                 ${current ? "Integrated Teminal" : capitalizeFirst(workspaceFolder)}
                 </div>
@@ -68,7 +65,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
 `}
 
 module.exports.scripts = selectedProject => {
-    const { name, projectPathRelative, credentials, projectRoot, folderColor } = selectedProject || {}
+    const { name, projectPathRelative, projectRoot, folderColor } = selectedProject || {}
     const shellHandler = createShellHandler(vscode.window.activeTerminal),
     displayedWorkspace = projectRoot ? path.basename(projectRoot) : "Active Terminal",
     projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
@@ -85,18 +82,16 @@ module.exports.scripts = selectedProject => {
         foldersList.style.animation = "none"
     }, 5000)
     ${selectedProject ? `
-        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${credentials}", "${projectRoot || ""}", "${displayedWorkspace}", "${folderColor}")` : ""
+        renderProjectInfo("${name}", "${projectPathRelativeSynthesized}", "${projectRoot || ""}", "${displayedWorkspace}", "${folderColor}")` : ""
     }
     function capitalizeFirst (str) {
         return  str.charAt(0).toUpperCase() + str.slice(1)
     }
-    function renderProjectInfo(name, folder, credentials, workspace, displayedWorkspace, folderColor) {
+    function renderProjectInfo(name, folder, workspace, displayedWorkspace, folderColor) {
         if (!name) return
         const projectTitle = name.charAt(0).toUpperCase() + name.slice(1)
         const projectInfoEl = document.getElementById("project-info") || {}
         const commandsTitleEl = document.getElementById("commands-title") || {}
-        const projectCredsEl = document.getElementById("credentials") || { style: {} }
-        const projectCredsTitle = document.getElementById("creds-title") || { style: {} }
         const isCurrentTerminal = !workspace || workspace === "Active Terminal"
         const folderTitle = isCurrentTerminal ? "Current Terminal Path" : folder
         const currentStyle = isCurrentTerminal ? "margin-top: 10px;" : ""
@@ -114,13 +109,6 @@ module.exports.scripts = selectedProject => {
              <li style="\${currentStyle}" class="workspace" title="\${workspace}">\${workspace ? capitalizeFirst(displayedWorkspace) : ""}</li>
         </ol>
         \`
-        projectCredsEl.innerHTML = \`\${credentials || ''}\`
-        projectCredsEl.onkeyup="this.style.color='inherit';this.style.fontWeight='normal';"
-
-        if (credentials !== "${credentialsSetText}") return
-        projectCredsTitle.style.display = "none"
-        projectCredsEl.style.color = "var(--vscode-editorOverviewRuler-currentContentForeground)"
-        projectCredsEl.style.fontWeight = "bold"
     }
     
     function addOverlay(){
@@ -130,8 +118,8 @@ module.exports.scripts = selectedProject => {
         })
     }
 
-    function appear(name, folder, pathRelative, credentials, workspace, displayedWorkspace, folderColor) {
-        renderProjectInfo(name, pathRelative, credentials, workspace, displayedWorkspace, folderColor)
+    function appear(name, folder, pathRelative, workspace, displayedWorkspace, folderColor) {
+        renderProjectInfo(name, pathRelative, workspace, displayedWorkspace, folderColor)
         parent.style.display = "block";
         const tfProgressBar1 = document.getElementById("tf-progress")
         if (tfProgressBar1){

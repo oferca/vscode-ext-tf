@@ -1,4 +1,4 @@
-const { isWindows, credentialsKey, noColorExt } = require("../constants")
+const { isWindows, noColorExt } = require("../constants")
 const { sendTextShell } = require("./helpers")
 
 class ShellHandler {
@@ -18,7 +18,6 @@ class ShellHandler {
         for (let key in shellCommands){
             await sendTextShell(activeTerminal, shellCommands[key])
         }
-        activeTerminal.tfCredentials = this.stateManager.getState(credentialsKey)
         activeTerminal.tfFolder = this.stateManager.getUserFolder()
         if (simpleMode) return
         if (!bashDefined) await sendTextShell(activeTerminal, definitions)
@@ -47,9 +46,6 @@ class ShellHandler {
         return folder ? `cd "${folder}";` :""
     }
     
-    getCredentialsSetter() {
-        return this.stateManager.getState(credentialsKey) || ""
-    }
 
     constructor(commandId, tfOption = null, redirect = true, stateManager, transformOutputColors, sendConsoleOutput = true) {
         this.commandId = commandId

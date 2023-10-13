@@ -8,14 +8,12 @@ module.exports.getFunctions = isExplorer => `
       outputArea.classList.add("running")
       const mainModal = document.getElementById("main-tf-modal")
     })
-    const credentials = getExplorerCredentials()
     el.classList.add('animated-button');
 
     const message = {
       tfCommand,
       isExplorer: IS_EXPLORER,
       folder: CURRENT_PATH,
-      credentials
     }
     vscode.postMessage(message);
 
@@ -36,21 +34,12 @@ module.exports.getFunctions = isExplorer => `
   }
 
   function postMessageFromWebview(command) {
-    const credentials = getExplorerCredentials()
-
     const message = {
       command,
       isExplorer: IS_EXPLORER,
       folder: CURRENT_PATH,
-      credentials
     }
     vscode.postMessage(message);
-  }
-
-  function getExplorerCredentials() {
-    const explorerCredentials = document.getElementById("credentials")
-    if (!explorerCredentials) return
-    return document.getElementById("credentials").value
   }
 
   function incomingMessageHandler(event) {
@@ -117,7 +106,7 @@ module.exports.getFunctions = isExplorer => `
         acc[i].addEventListener("click", function() {
         this.classList.toggle("active");
         var panel = this.nextElementSibling;
-        const actualHeight = panel.classList.contains("creds") ? "270px" : "133px"
+        const actualHeight = "133px"
         if (panel.style.height === actualHeight) {
             panel.style.height = "0px"
         } else {

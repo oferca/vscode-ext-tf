@@ -3,7 +3,6 @@ const { actions } = require("../shared/actions")
 const {
     lastActionKey,
     lastOutputKey,
-    credentialsKey,
     changeFolderKey,
     openTerminalTxt,
     pickACommandText,
@@ -32,7 +31,7 @@ class CommandsLauncher {
         let showMenuAttempts = 0
         let selectionDurationMS = 0
 
-        const preferencesSet = this.stateManager.getState(credentialsKey) ||  this.stateManager.getState(changeFolderKey)
+        const preferencesSet = this.stateManager.getState(changeFolderKey)
         const placeHolder = preferencesSet ? preferencesSetText : pickACommandText
 
         while (!selection && (selectionDurationMS < 1000) && showMenuAttempts < 4){

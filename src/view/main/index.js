@@ -4,9 +4,7 @@ const { html } = require("./html");
 const { actions } = require('../../shared/actions');
 
 const {
-  credentialsKey,
   changeFolderKey,
-  credentialsSetText,
   selectedProjectPathKey,
   lastSelectedProjectPathKey
 } = require("../../shared/constants");
@@ -14,7 +12,6 @@ const {
 const {
   getProjectsCache,
   createWebviewPanel,
-  getNamespacedCredentialsKey
 } = require("../../shared/methods");
 
 const { handleCommand, createCompletedCallback } = require('./messages');
@@ -28,13 +25,11 @@ class WebViewManager {
   webViewProviderScm
   webViewProviderExplorer
 
-    async render(completed = false, tfCommand, missingCredentials, feedback, isExplorer = true){
+    async render(completed = false, tfCommand, feedback, isExplorer = true){
 
       const folder = this.stateManager.getState(changeFolderKey),
-        namespacedCredentialsKey = getNamespacedCredentialsKey(folder),
-        credentials = this.stateManager.getState(namespacedCredentialsKey),
-        showWarning = folder || credentials,
-        preferences = { folder, credentials, showWarning },
+        showWarning = folder,
+        preferences = { folder, showWarning },
         params = [
           preferences,
           actions,
@@ -52,11 +47,9 @@ class WebViewManager {
       if (!this.projectExplorer || !isExplorer) return
 
       tfProjectsCache = (await getProjectsCache(tfProjectsCache))
-        .map(this.addCredentials)
       
       const paramsExplorer = [...params]
       const selected = this.selectedProject || {}
-      selected.credentials = credentials ? credentialsSetText : ""
 
       const lastSelectedProject = tfProjectsCache.find(project => project.projectPath === this.stateManager.getState(lastSelectedProjectPathKey))
       if (lastSelectedProject) lastSelectedProject.lastModifiedTimestamp = Date.now()
@@ -67,7 +60,6 @@ class WebViewManager {
         this.context,
         this.stateManager,
         this.outputFileContent,
-        missingCredentials,
         feedback
       )
       
@@ -79,16 +71,10 @@ class WebViewManager {
       if (!message.folder) return
      // if (!message.isExplorer) return
 
-      const credentialsAlreadySet = message.credentials === credentialsSetText,
-        explorerCredentialsNamespace = getNamespacedCredentialsKey(message.folder),
-        credentialsToUse = credentialsAlreadySet ? this.stateManager.getState(explorerCredentialsNamespace) : message.credentials,
-        oldPreferences = {
+      const oldPreferences = {
           userFolder: this.stateManager.getUserFolder(),
-          credentials: this.stateManager.getState(credentialsKey)
         }  
       
-      this.stateManager.updateState(explorerCredentialsNamespace, credentialsToUse)
-      this.stateManager.updateState(credentialsKey, credentialsToUse)
       this.stateManager.setUserFolder(message.folder)
 
       return oldPreferences
@@ -190,11 +176,6 @@ class WebViewManager {
       const selectedProject = tfProjectsCache.find(p => p.projectPath === selectedProjectPath)
       return selectedProject
     }
-    
-    addCredentials (project) {
-        project.credentials = this.stateManager.getState(getNamespacedCredentialsKey(project.projectPath)) || ""
-        return project
-    }
 
     updateOutputFile () {
       try {
@@ -214,7 +195,6 @@ class WebViewManager {
         this.commandLaunched = false
         this.render = this.render.bind(this)
         this.messageHandler = this.messageHandler.bind(this)
-        this.addCredentials = this.addCredentials.bind(this)
         this.handleWebviewMessage = this.handleWebviewMessage.bind(this)
     }
 }

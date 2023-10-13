@@ -8,7 +8,6 @@ const {
     stationIdKey,
     instructions,
     powershellType,
-    credentialsKey,
     changeFolderKey,
     welcomeNotifiedKey,
     lastTerminalNoticeKey,
@@ -124,7 +123,6 @@ class StateManager {
         this.shouldRemind = this.lastRunTS > 0 && this.timeSinceLastUseSec > intervalUsageReminderSec
         this.shellType = isPowershell(this.activeTerminal) ? powershellType : ""
         this.logger.uniqueId = this.uniqueId
-        this.credentials = this.getState(credentialsKey)
         this.logger.stationId = this.getState(stationIdKey) || this.updateState(stationIdKey, this.uniqueId)
     }
     getUserFolder () {

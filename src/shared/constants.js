@@ -144,8 +144,6 @@ module.exports.targetTxt = 'Enter targets seperated by comma. e.g: "module.rds, 
 
 module.exports.changeFolderKey = "tfChangeFolderKey"
 
-module.exports.credentialsKey = "tfCredentialsKey"
-
 module.exports.selectedProjectPathKey = "tfselectedProjectPath"
 
 module.exports.lastSelectedProjectPathKey = "tflastSelectedProjectPath"
@@ -187,8 +185,6 @@ module.exports.addedToken = "+ "
 module.exports.removedToken = "- "
 
 module.exports.chatGPTFirstLine = "Please summarize and explain the following terraform plan output: "
-
-module.exports.credentialsSetText = "Credentials Saved. Overwrite to change."
 
 module.exports.noProjectsExistsTxt = "No terraform projects were found in this workspace"
 

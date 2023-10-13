@@ -10,7 +10,7 @@ const { success, error, warning, info } = require('./feedback');
 const { getCommandButtonsHTML } = require('./helpers')
 const { getFunctions } = require("./functions")
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, _missingCredentials, feedback) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, feedback) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     isExplorer = !!explorerParams,
     modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,

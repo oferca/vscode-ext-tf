@@ -726,22 +726,6 @@ POPUP
   font-size: 28px;
 }
 
-#credentials{
-	padding: 3px;
-	width: 62vw;
-	max-width: 62vw;
-	margin-top: -35px;
-	border: 1px solid var(--vscode-notifications-border);
-	font-size: 14px;
-}
-#credentials, #output-file{
-	background: var(--vscode-settings-focusedRowBackground);
-	color: var(--vscode-input-foreground);
-}
-#credentials::placeholder{
-	color: var(--vscode-input-placeholderForeground)
-}
-
 #output-file{
 	width: 45vw;
     height: 204px;

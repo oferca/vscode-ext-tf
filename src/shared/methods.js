@@ -9,7 +9,6 @@ const {
     tfVarsPostix,
     rootFolderName,
     tfTargetPostix,
-    credentialsKey,
     powershellType,
     tfUpgradePostix,
     initSuccessMessage,
@@ -19,8 +18,6 @@ const {
     tfForceUnlockPostix,
     tfPlanVarsCommandId,
     tfApplyVarsCommandId,
-    tfPlanTargetCommandId,
-    tfApplyTargetCommandId,
     tfInitUpgradeCommandId,
     validateSuccessMessage,
     tfForceUnlockCommandId,
@@ -301,7 +298,6 @@ module.exports.getProjectsCache = async (tfProjectsCache) => {
 
 module.exports.capitalizeFirst = str => str.charAt(0).toUpperCase() + str.slice(1)
 
-module.exports.getNamespacedCredentialsKey = projectPath => credentialsKey + "_" + projectPath
 
 module.exports.createWebviewPanel = () => {
     const panel = vscode.window.createWebviewPanel(

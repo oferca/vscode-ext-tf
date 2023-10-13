@@ -1,7 +1,7 @@
 const fs = require('fs');
 const vscode = require('vscode');
 const { ChatGPTHandler }  = require('../../commands/chat-gpt')
-const { openMenuCommandId, credentialsKey, selectedProjectPathKey, disableShowOnStartupKey, reRenderTimout, lastSelectedProjectPathKey } = require("../../shared/constants")
+const { openMenuCommandId, selectedProjectPathKey, disableShowOnStartupKey, reRenderTimout, lastSelectedProjectPathKey } = require("../../shared/constants")
 
 module.exports.handleCommand = async (command, logger, launchHandler, launch, tfCommandCallback, webViewManager, message, stateManager) =>
 {
@@ -66,9 +66,8 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
 module.exports.createCompletedCallback = (message, handler, reRender, oldPrefs, stateManager) => feedback => {
     if (oldPrefs){
         stateManager.setUserFolder(oldPrefs.userFolder)
-        stateManager.updateState(credentialsKey, oldPrefs.credentials)
     }
-    setTimeout(() => reRender(true, message.tfCommand, stateManager.missingCredentials, feedback, !!message.isExplorer),
+    setTimeout(() => reRender(true, message.tfCommand, feedback, !!message.isExplorer),
     reRenderTimout)
     
     if (!handler) return

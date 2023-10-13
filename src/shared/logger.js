@@ -46,11 +46,6 @@ class Logger {
             rec.date = new Date(Date.now())
             rec.runCount = this.stateManager.getState(runCountKey)
 
-            // Remove credentials info in logs
-            if (rec.credentials) try { 
-                rec.credentials = rec.credentials.substring(0,15)
-            }catch (e) {}
-
             try {
                 await addDoc(collection, rec);
             } catch (e) {

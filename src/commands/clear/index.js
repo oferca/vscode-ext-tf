@@ -1,4 +1,4 @@
-const { credentialsKey, changeFolderKey } = require("../../shared/constants")
+const { changeFolderKey } = require("../../shared/constants")
 
 class ClearStateHandler {
     logger
@@ -7,7 +7,6 @@ class ClearStateHandler {
     stateManager
 
     async execute (source, cb = () => {}) {
-        this.stateManager.updateState(credentialsKey, undefined) 
         this.stateManager.updateState(changeFolderKey, undefined) 
         cb()
     }
