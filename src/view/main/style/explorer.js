@@ -740,9 +740,9 @@ POPUP
     font-size: 2vh;
 	margin-left: 19px;
 	line-height: 2.6vh;
-}
-#output-file{
 	width: 45vw;
+	background: transparent;
+	color: var(--vscode-button-foreground);
 }
 @media all and (max-width: 860px) {
 	#output-file{

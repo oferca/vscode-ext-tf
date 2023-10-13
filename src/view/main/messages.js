@@ -1,7 +1,13 @@
 const fs = require('fs');
 const vscode = require('vscode');
 const { ChatGPTHandler }  = require('../../commands/chat-gpt')
-const { openMenuCommandId, selectedProjectPathKey, disableShowOnStartupKey, reRenderTimout, lastSelectedProjectPathKey } = require("../../shared/constants")
+const {
+    reRenderTimout,
+    openMenuCommandId,
+    selectedProjectPathKey,
+    disableShowOnStartupKey,
+    lastSelectedProjectPathKey
+} = require("../../shared/constants")
 
 module.exports.handleCommand = async (command, logger, launchHandler, launch, tfCommandCallback, webViewManager, message, stateManager) =>
 {
@@ -26,10 +32,12 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
         case 'selected-project':
             stateManager.updateState(selectedProjectPathKey, message.projectPath )
             stateManager.updateState(lastSelectedProjectPathKey, message.projectPath )
+            stateManager.openProjectTerminal(message.projectPath)
             return command
             break;
         case 'unselected-project':
             stateManager.updateState(selectedProjectPathKey, null )
+            stateManager.openPreviousTerminal()
             return command
             break;
         case 'show-on-startup':

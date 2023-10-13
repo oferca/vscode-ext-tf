@@ -1,3 +1,4 @@
+const path = require('path');
 const vscode = require('vscode');
 const {
     reminder,
@@ -20,7 +21,7 @@ const {
     shellNoticeIntervalHasSupportedSec
 } = require("../shared/constants")
 
-const { unsupportedShellNote, isCmd, sendText } = require("../shared/methods")
+const { unsupportedShellNote, isCmd, sendText, capitalizeFirst } = require("../shared/methods")
 const { createShellHandler, isPowershell } = require("../shared/methods-cycle")
 
 const secondsInWeek = 60 * 60 * 24 * 7
@@ -35,6 +36,7 @@ class StateManager {
     activeTerminal
     commandHandler
     timeSinceLastUseSec
+    previouslyOpenedTerminal
 
     get isFirstActivation() {
         return !(this.usedOnce && !this.shouldRemind)
@@ -130,6 +132,24 @@ class StateManager {
     }
     setUserFolder (folder) {
         this.updateState(changeFolderKey, folder) 
+    }
+    openProjectTerminal(projectKey) {
+        this.previouslyOpenedTerminal = vscode.window.activeTerminal
+        const projectTerminal = vscode.window.terminals.find(terminal => terminal.tfProjectKey === projectKey)
+         || vscode.window.createTerminal()
+        const alreadyCreated = projectTerminal.tfProjectKey
+        projectTerminal.tfProjectKey = projectTerminal.tfProjectKey || projectKey 
+        projectTerminal.show()
+        let projectName = capitalizeFirst(path.basename(projectKey))
+        let asteriks = ""
+        let text = `Terraform Terminal for \"${projectName}\"`
+        if (!(projectName.length > 1)) text = "Multi Project Terraform Terminal"
+        for(let i = 0; i< text.length + 2; i++) asteriks += "-"
+        if (alreadyCreated) return
+        projectTerminal.sendText(`clear;echo "${asteriks}\n${text}\n${asteriks}\nPlease set environment variables for running terraform.\n"`)
+    }
+    openPreviousTerminal() {
+        this.previouslyOpenedTerminal.show()
     }
     
     constructor(context, logger, disableStateUpdate = false, disableStateRead = false, keyPostfix = "") {
