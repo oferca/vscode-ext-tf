@@ -49,7 +49,6 @@ module.exports.getFunctions = isExplorer => `
     const content = document.getElementById("output-file")
     content.value = event.data.outputFileContent
     content.classList.remove("shine")
-    content.value = "";
     scrollOutputDown()
     content.style.backgroundImage = "none"
     content.style.opacity = "1"
