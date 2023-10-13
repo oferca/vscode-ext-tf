@@ -3,7 +3,7 @@ const vscode = require('vscode');
 module.exports.style= context => `
 #main-container{
   max-width: 200px;
-  display: inline-flex;
+  display: block;
 }
 
 #quicklaunch-menu{
@@ -172,11 +172,16 @@ a.command:hover, a.command, a.command:focus {
     justify-content: left;
     align-items: top;
     flex-wrap: wrap;
+    margin-top: 10px;
   }
   .commands-title{
     position: absolute;
   }
-
+  .commands-title.main{
+    position: relative;
+    display: block;
+    margin: 0;
+  }
   .tf-button:not(.disabled):hover {
     background-color: var(--vscode-button-secondaryHoverBackground);
   }
@@ -359,7 +364,7 @@ a.command:hover, a.command, a.command:focus {
 
   #tf-progress{
     margin-top: 5px;
-    width: 62vw;
+    width: 97%;
     background: rgba(0, 0, 0, 0.25);
   }
 
@@ -394,10 +399,6 @@ a.command:hover, a.command, a.command:focus {
     justify-content: left;
   }
   
-
-
-
-
 
 .wrapper {
   display: inline-flex;

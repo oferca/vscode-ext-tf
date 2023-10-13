@@ -142,9 +142,9 @@ class StateManager {
         projectTerminal.show()
         let projectName = capitalizeFirst(path.basename(projectKey))
         let asteriks = ""
-        let text = `Terraform Terminal for \"${projectName}\"`
-        if (!(projectName.length > 1)) text = "Multi Project Terraform Terminal"
-        for(let i = 0; i< text.length + 2; i++) asteriks += "-"
+        let text = `Terraform Terminal for \\\"${projectName}\\\" Project`
+        if (!(projectName.length > 1)) text = "Any Project Terraform Terminal"
+        for(let i = 0; i< text.length; i++) asteriks += "-"
         if (alreadyCreated) return
         projectTerminal.sendText(`clear;echo "${asteriks}\n${text}\n${asteriks}\nPlease set environment variables for running terraform.\n"`)
     }

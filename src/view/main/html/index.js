@@ -18,7 +18,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     modalAnimated = !completed ? 'animated' : '',
     warningHTML = preferences.showWarning && false ? '<div class="title prefs warning">Preferences Active</div>' : "",
     planSuccess = isPlanCompleted && planSucceded,
-    commandsTitle = isExplorer ? `<h4 title="Terraform Commands" id="commands-title" class="commands-title section-title"></h4>` : ""
+    commandsTitle = isExplorer ? `<h4 title="Terraform Commands" id="commands-title" class="commands-title display-4 main"></h4>` : ""
     outputContent = _outputFileContent ? _outputFileContent : "",
     outputFileContent = isExplorer ? `<textarea disabled class="${feedback ? feedback.type + " feedback" : "shine" }" id="output-file" name="output-file" rows="9" >${completed ? outputContent : `
     
@@ -58,8 +58,6 @@ ${ explorerHTML }
   <div class="tf-modal-parent" id="tf-modal-container" ${modalParentStyle}>
   <div id="snackbar"></div>
     <div id="main-tf-modal" class="tf-modal ${modalAnimated}"">
-     
-    ${seperator}
         ${warningHTML}
           ${x}
         <div id="main-container" class="project-block">

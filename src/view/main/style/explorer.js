@@ -690,7 +690,11 @@ POPUP
   font-size: 15px;
 }
 
-.explorer h4 {
+.explorer h4.main{
+	font-size: 2.8rem;
+	overflow-wrap: break-word;
+}
+.explorer h4:not(.main):not(.title-section) {
   color: var(--vscode-editor-foreground);
   word-spacing: normal;
   font-size: 14px;
@@ -727,7 +731,7 @@ POPUP
 }
 
 #output-file{
-	width: 45vw;
+	width: 38vw;
     height: 204px;
     padding: 3px;
     margin-top: 22px;
@@ -740,7 +744,6 @@ POPUP
     font-size: 2vh;
 	margin-left: 19px;
 	line-height: 2.6vh;
-	width: 45vw;
 	background: transparent;
 	color: var(--vscode-button-foreground);
 }

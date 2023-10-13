@@ -29,10 +29,12 @@ class PowershellHandler extends ShellHandler {
         echo ([Math]::Floor($($endVscTfPlan - $p2) / 1000)) > "$p1${"." + timeExt + "\";; \ "}
         ${this.redirect ? `;while ($true) {if (Test-Path "$p1${this.outputFileExt}") {Start-Sleep -Seconds 1; break;}Start-Sleep -Seconds 0.1;}; \
         $tf_output=$(cat "$p1${this.outputFileExt}"); ` : ``} \
+        ${this.redirect ? `if ( $tf_output ){
+            ${this.sendConsoleOutput !== false ? 'echo "$(cat "$p1")";' : ''} 
+        };  ` : ""}\
         ${this.redirect ? `if ( $tf_output -and $tf_output.Contains("${successMessage(this.commandId)}") ){
-            ${this.sendConsoleOutput ? 'echo "$(cat "$p1")";' : ''} 
             finalize.${this.commandId} -1 "$p1" "$startTSCommand"; 
-        };  ` : ""}
+        };  ` : ""}\
         ${this.redirect ? `
         echo \`n; line; echo "| Click here to view full output: ( Cmd + Click ): | "; line;
         echo "$p1${this.outputFileExt}"; echo \`n; ` : ``} \
