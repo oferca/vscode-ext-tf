@@ -3,8 +3,8 @@
 The [Advanced Terraform Client](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention brings effortless, UI-driven execution and real-time monitoring of common terraform tasks.
 
 # Features
-* One-Click Execution of terraform commands.
-* Persistence of execution logs
+* One-Click execution of terraform commands.
+* Persistence of execution logs.
 * Seamless navigation and transition between Terraform projects.
 * Convenient dashboard within VSCode, unrestricted by integrated terminal limitations.
 * Real-time visualization of execution progress with a progress bar.
