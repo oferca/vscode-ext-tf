@@ -130,7 +130,7 @@ module.exports.lastTerminalNoticeKey = "tfLastTerminalNotice"
 
 module.exports.instructions = "Thank you for installing Terraform Dashboard Plus. Expand \"TERRAFORM\" panel for dashboard."
 
-module.exports.reminder = "Click \"> TERRAFORM\" panel to run commands."
+module.exports.reminder = "Click \"Terraform Projects\" button in status bar to run commands."
 
 module.exports.instructionsEnvVar = "Define needed environment variables (e.g AWS_ACCESS... ) in terminal normally."
 

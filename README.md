@@ -1,6 +1,6 @@
-# [Terraform Shortcuts + ChatGPT](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+# [Terraform Shortcuts +](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-Say goodbye to tedious typing! the [Terraform Shortcuts + ChatGPT](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention brings effortless, UI-driven execution and real-time monitoring of common terraform tasks.
+Say goodbye to tedious typing! the [Terraform Shortcuts +](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention brings effortless, UI-driven execution and real-time monitoring of common terraform tasks.
 
 # Features
 * Execute terraform commands at a click of a button.
