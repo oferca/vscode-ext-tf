@@ -16,7 +16,7 @@
     "onStartupFinished"
   ],
   "main": "./src/extension.js",
-  "contributes": {
+  "contributes":{ 
     "viewsContainers": {
       "activitybar": [
         {
@@ -57,11 +57,11 @@
     ],
     "keybindings": [
       {
-        "command": "terraform.action",
+        "command": "terraform.projects",
         "key": "cmd+shift+t"
       },
       {
-        "command": "terraform.action",
+        "command": "terraform.projects",
         "key": "ctrl+shift+t"
       }
     ]

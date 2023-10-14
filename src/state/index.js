@@ -142,7 +142,7 @@ class StateManager {
         projectTerminal.show()
         let projectName = capitalizeFirst(path.basename(projectKey))
         let asteriks = ""
-        let text = `Terraform Terminal for \\\"${projectName}\\\" Project`
+        let text = `Terraform Terminal for '${projectName}' Project`
         if (!(projectName.length > 1)) text = "Any Project Terraform Terminal"
         for(let i = 0; i< text.length; i++) asteriks += "-"
         if (alreadyCreated) return

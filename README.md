@@ -11,7 +11,7 @@ Supercharge your Terraform journey with a control center. Say goodbye to tedious
 
 # Demos
 <p align="left">
-<img src="assets/matrix1.gif" width=75%>
+<img src="assets/e2e.gif" width=75%>
 <br/>
 <em>Interactive Dashboard</em>
 </p>
@@ -19,7 +19,7 @@ Supercharge your Terraform journey with a control center. Say goodbye to tedious
 <br>
 
 <p align="left">
-<img src="assets/launcher.gif" width=75%>
+<img src="assets/activate.png" width=75%>
 <br/>
 <em>From sidebar</em>
 </p>
