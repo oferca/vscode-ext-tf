@@ -246,13 +246,38 @@ module.exports.getWarnings = outputFile => {
     return warningsArr.map(section => section.split("│")[0]).join(", ").replace("╷ ,","")
 }
 
-module.exports.createFolderCollapser = (fileName, listener) => (document => {
+module.exports.createFolderCollapser = fileName => (document => {
     if (document.fileName === fileName) {
-        // for (let workspaceFolder in vscode.workspace.workspaceFolders){
-        //     const uri = vscode.Uri.file(workspaceFolder.uri.fsPath + "/.terraform");
-        //     vscode.commands.executeCommand('workbench.files.action.collapseExplorerFolders', uri);
-        // }
-        listener && listener.dispose()
+
+  // Define a regular expression to match '+'
+  const plusRegExp = /\~/g;
+
+  // Define the color style
+  const decorationType = vscode.window.createTextEditorDecorationType({
+    color: 'red',
+  });
+
+  const decorations = [];
+
+  // Search for '+' in the text and add decorations
+  for (let i = 0; i < document.lineCount; i++) {
+    const line = document.lineAt(i);
+    const text = line.text;
+    let match;
+    while ((match = plusRegExp.exec(text))) {
+      const startPos = new vscode.Position(i, match.index);
+      const endPos = new vscode.Position(i, match.index + 1);
+      const range = new vscode.Range(startPos, endPos);
+      decorations.push({ range, hoverMessage: 'Green Plus' });
+    }
+  }
+
+  // Apply the decorations to the editor
+  setTimeout(() => {
+    const editor = vscode.window.activeTextEditor;
+    editor.setDecorations(decorationType, decorations);
+  }, 1000)
+
     }
 })
 

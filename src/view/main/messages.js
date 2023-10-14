@@ -11,7 +11,7 @@ const {
 
 module.exports.handleCommand = async (command, logger, launchHandler, launch, tfCommandCallback, webViewManager, message, stateManager) =>
 {
-    logger.log({ command, source: "webview" })
+    logger.log({ command, source: "webview", message })
     switch(command){
         case 'openTFLauncher':
             vscode.commands.executeCommand(openMenuCommandId, 'workbench.view.easy-terraform-commands');

@@ -769,7 +769,7 @@ POPUP
 	/*background-image: url(${matrixBackground});*/
 	/*transition: 0.5s border;*/
 	color: #fff;
-	background: linear-gradient(to right, #4d4d4d 0, #fff 10%, #4d4d4d 20%);
+	background: linear-gradient(to right, #4d4d4d 0, #fff 10%, #636161 20%);
 	background-position: 0;
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
@@ -783,6 +783,7 @@ POPUP
 	line-height: 50px;
 	word-wrap: break-word;
 	text-align: center;
+	padding-top: 50px;
 }
 
 

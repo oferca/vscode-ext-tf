@@ -46,9 +46,13 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         const outputLogsTxt = ` [ Watch Logs.](file:${this.fileHandler.outputFileVSCodePath})`
         this.progressFileMsg = this.redirect ? outputLogsTxt : ''
 
-        let listener
-        const openDocumentHandler = createFolderCollapser(this.fileHandler.outputFileNoColor, listener, this.fileHandler)
-        listener = vscode.workspace.onDidOpenTextDocument(openDocumentHandler)
+        const openDocumentHandler = createFolderCollapser(this.fileHandler.outputFileNoColor, this.fileHandler)
+        const textDocumentLister = vscode.workspace.onDidOpenTextDocument(openDocumentHandler)
+        const closeDocumentHandler = document => {
+            if (document !== this.fileHandler.outputFileNoColor) return
+            textDocumentLister.dispose()
+        }
+        vscode.workspace.onDidCloseTextDocument(closeDocumentHandler)
 
         this.fileHandler.outputCB = (bottom = false, content) => {
             outputUpdatedCallback && outputUpdatedCallback(content, this.completionPercentage)
@@ -61,8 +65,6 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
                 editor.revealRange(range, vscode.TextEditorRevealType.Default);
             }
         }
-
-        this.textDocumentListener = listener
 
         vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,

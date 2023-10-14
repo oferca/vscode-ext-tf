@@ -52,7 +52,6 @@ class CommandHandlerPrototype {
     skipTFCommand
     averageFromCmd
     overlayTerminal
-    textDocumentListener
 
     async logOp(source) {
         const op = {
