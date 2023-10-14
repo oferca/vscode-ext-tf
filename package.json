@@ -3,8 +3,8 @@
   "name": "easy-terraform-commands",
   "displayName": "Advanced Terraform Client",
   "publisher": "oferkafry",
-  "description": "Powerfull client for terraform tasks with ChatGPT support",
-  "version": "3.0.4",
+  "description": "Buttons and UI for convenient execution of terraform tasks with ChatGPT support",
+  "version": "3.0.5",
   "engines": {
     "vscode": "^1.67.2"
   },
