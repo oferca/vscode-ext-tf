@@ -4,7 +4,7 @@
   "displayName": "Terraform Shortcuts +",
   "publisher": "oferkafry",
   "description": "Powerfull shortcuts for terraform tasks and ChatGPT support",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "engines": {
     "vscode": "^1.67.2"
   },
