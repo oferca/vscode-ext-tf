@@ -1,13 +1,13 @@
-# [Terraform UI Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+# [Terraform Shortcuts + ChatGPT](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-Supercharge your Terraform journey with a control center. Say goodbye to tedious typing! the [Terraform UI Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention brings effortless, UI-driven execution and real-time monitoring of Terraform commands.
+Say goodbye to tedious typing! the [Terraform Shortcuts + ChatGPT](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention brings effortless, UI-driven execution and real-time monitoring of common terraform tasks.
 
 # Features
-* Effortless persistence and retrieval of terraform plan logs history.
-* Work comfortably from within your code editor, unrestricted by the limitations of the integrated terminal.
+* Execute terraform commands at a click of a button.
+* Work comfortably from within VSCode, unrestricted by integrated terminal limitations.
 * Seamlessly navigate and transition between all your Terraform projects.
-* Visualize real-time execution progress of Terraform commands with a progress bar
-* Get **Free** ChatGPT insight summary into "terraform plan"
+* Visualize real-time execution progress of Terraform commands with a progress bar.
+* Get **Free** ChatGPT insight summary into "terraform plan".
 
 # Demos
 <p align="left">
@@ -19,20 +19,11 @@ Supercharge your Terraform journey with a control center. Say goodbye to tedious
 <br>
 
 <p align="left">
-<img src="assets/activate.png" width=75%>
+<img src="assets/activate.png" width=50%>
 <br/>
-<em>From sidebar</em>
+<em>Activate from status bar</em>
 </p>
 <br>
-<br>
-
-<p align="left">
-<img src="assets/plan.gif" width=75%>
-<br/>
-<em>A Quick Launcher and Progress indicator</em>
-</p>
-<br>
-
 
 # How to use
 
@@ -47,7 +38,7 @@ Then click desired command. That's it. You are ready to Go &nbsp;&nbsp; 🎉🎉
 <br>
 
 ## Notes
-* On non-bash terminals (e.g windows cmd) some features are disabled.
+* Works best with bash or powershell terminals
 * Initial time estimates might not be accurate as the system needs to "learn" the execution times.
 
 ## Improvements
