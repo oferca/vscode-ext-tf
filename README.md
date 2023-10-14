@@ -1,6 +1,6 @@
-# [Advanced Terraform Client](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+# [Terraform Buttons Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-The [Advanced Terraform Client](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention brings effortless, UI-driven execution and real-time monitoring of common terraform tasks.
+The [Terraform Buttons Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention provides convenient buttons for effortless execution of common terraform tasks.
 
 # Features
 * One-Click execution of terraform commands.
