@@ -246,20 +246,33 @@ module.exports.getWarnings = outputFile => {
     return warningsArr.map(section => section.split("│")[0]).join(", ").replace("╷ ,","")
 }
 
-module.exports.createFolderCollapser = fileName => (document => {
+module.exports.createTextColorChanger = fileName => (document => {
     if (document.fileName === fileName) {
 
   // Define a regular expression to match '+'
-  const plusRegExp = /\~/g;
+  const plusRegExp = /\+ /g;
+  const minusRegExp = /\- /g;
+  const tildaRegExp = /\~ /g;
 
   // Define the color style
-  const decorationType = vscode.window.createTextEditorDecorationType({
+  const decorationTypeGreen = vscode.window.createTextEditorDecorationType({
+    color: 'green',
+  });
+
+  const decorationTypeRed = vscode.window.createTextEditorDecorationType({
     color: 'red',
   });
 
-  const decorations = [];
+  const decorationTypeYellow = vscode.window.createTextEditorDecorationType({
+    color: 'yellow',
+  });
+
+  const decorationsGreen = [];
+  const decorationsRed = [];
+  const decorationsYellow = [];
 
   // Search for '+' in the text and add decorations
+
   for (let i = 0; i < document.lineCount; i++) {
     const line = document.lineAt(i);
     const text = line.text;
@@ -268,28 +281,35 @@ module.exports.createFolderCollapser = fileName => (document => {
       const startPos = new vscode.Position(i, match.index);
       const endPos = new vscode.Position(i, match.index + 1);
       const range = new vscode.Range(startPos, endPos);
-      decorations.push({ range, hoverMessage: 'Green Plus' });
+      decorationsGreen.push({ range });
+    }
+    while ((match = minusRegExp.exec(text))) {
+        const startPos = new vscode.Position(i, match.index);
+        const endPos = new vscode.Position(i, match.index + 1);
+        const range = new vscode.Range(startPos, endPos);
+        decorationsRed.push({ range });
+      }
+    while ((match = tildaRegExp.exec(text))) {
+        const startPos = new vscode.Position(i, match.index);
+        const endPos = new vscode.Position(i, match.index + 1);
+        const range = new vscode.Range(startPos, endPos);
+        decorationsYellow.push({ range  });
     }
   }
 
   // Apply the decorations to the editor
   setTimeout(() => {
     const editor = vscode.window.activeTextEditor;
-    editor.setDecorations(decorationType, decorations);
-  }, 1000)
+    editor.setDecorations(decorationTypeGreen, decorationsGreen);
+    editor.setDecorations(decorationTypeYellow, decorationsYellow);
+    editor.setDecorations(decorationTypeRed, decorationsRed);
+  }, 500)
 
     }
 })
 
-
 const targetExtension = '.tf';
 const fileList = [];
-
-const getWorkspaceProjects = () => {
-
-
-
-}
 
 module.exports.getProjectsCache = async (tfProjectsCache) => {
     if (tfProjectsCache) return tfProjectsCache

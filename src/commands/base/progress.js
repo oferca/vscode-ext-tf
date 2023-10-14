@@ -6,7 +6,7 @@ const {
     getProgressMsg,
     capitalizeFirst,
     featuresDisabled,
-    createFolderCollapser,
+    createTextColorChanger,
     getCompletionPercentage
 } = require("../../shared/methods")
 
@@ -46,7 +46,7 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
         const outputLogsTxt = ` [ Watch Logs.](file:${this.fileHandler.outputFileVSCodePath})`
         this.progressFileMsg = this.redirect ? outputLogsTxt : ''
 
-        const openDocumentHandler = createFolderCollapser(this.fileHandler.outputFileNoColor, this.fileHandler)
+        const openDocumentHandler = createTextColorChanger(this.fileHandler.outputFileNoColor, this.fileHandler)
         const textDocumentLister = vscode.workspace.onDidOpenTextDocument(openDocumentHandler)
         const closeDocumentHandler = document => {
             if (document !== this.fileHandler.outputFileNoColor) return
