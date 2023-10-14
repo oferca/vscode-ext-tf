@@ -1,10 +1,10 @@
 {
   "icon": "assets/terraform_logo.png",
   "name": "easy-terraform-commands",
-  "displayName": "Advanced Terraform Client",
+  "displayName": "Terraform Buttons Plus",
   "publisher": "oferkafry",
-  "description": "Buttons and UI for convenient execution of terraform tasks with ChatGPT support",
-  "version": "3.0.5",
+  "description": "Smart buttons for convenient execution of terraform tasks with ChatGPT support",
+  "version": "3.0.6",
   "engines": {
     "vscode": "^1.67.2"
   },
