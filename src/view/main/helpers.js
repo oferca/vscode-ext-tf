@@ -38,9 +38,9 @@ async function findFilesWithExtension (startPath, targetExtension, fileList = {}
     const projectName = path.basename(path.dirname(filePath)),
       content = fs.readFileSync(filePath, 'utf8').replace(/\s/g, ''),
       stats = await statAsync(filePath),
-      hasTerraformBlock = content.indexOf("terraform{") > -1,
+      hasProviderBlock = content.indexOf("provider\"") > -1,
       fileIsTFState = filePath.indexOf("terraform.tfstate") > -1,
-      folderIsTerraformProject = hasTerraformBlock || fileIsTFState,
+      folderIsTerraformProject = hasProviderBlock || fileIsTFState,
       { resources, modules, datasources, lastModifiedTimestamp, providers, regions } = fileList[projectName] || {}
 
     fileList[projectName] = fileList[projectName] || {}

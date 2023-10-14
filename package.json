@@ -4,7 +4,7 @@
   "displayName": "Terraform Buttons Plus",
   "publisher": "oferkafry",
   "description": "Smart buttons for convenient execution of terraform tasks with ChatGPT support",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "engines": {
     "vscode": "^1.67.2"
   },
