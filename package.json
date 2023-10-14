@@ -1,10 +1,10 @@
 {
   "icon": "assets/terraform_logo.png",
   "name": "easy-terraform-commands",
-  "displayName": "Terraform Shortcuts +",
+  "displayName": "Advanced Terraform Client",
   "publisher": "oferkafry",
-  "description": "Powerfull shortcuts for terraform tasks and ChatGPT support",
-  "version": "3.0.3",
+  "description": "Powerfull client for terraform tasks with ChatGPT support",
+  "version": "3.0.4",
   "engines": {
     "vscode": "^1.67.2"
   },
