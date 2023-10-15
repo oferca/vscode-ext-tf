@@ -1,9 +1,9 @@
-# [Terraform UI Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+# [Terraform Command Center](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-User-friendly yet powerful UI for terraform.
+User-friendly yet powerful command center for terraform.
 
 # Features
-* One-click execution.
+* One-click command execution.
 * Logs persistence.
 * Easy transition between modules.
 * Unlimited log length.
