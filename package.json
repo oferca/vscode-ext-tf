@@ -1,10 +1,10 @@
 {
   "icon": "assets/terraform_logo.png",
   "name": "easy-terraform-commands",
-  "displayName": "Terraform UI Plus",
+  "displayName": "Terraform Command Center",
   "publisher": "oferkafry",
-  "description": "User-friendly yet powerful UI for Terraform",
-  "version": "3.1.1",
+  "description": "User-friendly yet powerful command center for Terraform",
+  "version": "3.1.2",
   "engines": {
     "vscode": "^1.67.2"
   },
