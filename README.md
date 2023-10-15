@@ -1,7 +1,6 @@
-# [Terraform Buttons Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+# [Terraform Express Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-The [Terraform Buttons Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention provides convenient buttons for effortless execution of common terraform tasks.
-
+The [Terraform Express Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention provides user-friendly interface and convenient buttons for effortless execution of terraform tasks.
 # Features
 * One-Click execution of terraform commands.
 * Persistence of execution logs.
