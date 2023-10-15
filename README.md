@@ -1,13 +1,14 @@
-# [Terraform Express Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+# [Terraform UI Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-The [Terraform Express Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) VSCode extention provides user-friendly interface and convenient buttons for effortless execution of terraform tasks.
+User-friendly yet powerful UI for terraform.
+
 # Features
-* One-Click execution of terraform commands.
-* Persistence of execution logs.
-* Seamless navigation and transition between Terraform projects.
-* Convenient dashboard within VSCode, unrestricted by integrated terminal limitations.
-* Real-time visualization of execution progress with a progress bar.
-* **Free** ChatGPT insight summary into "terraform plan".
+* One-click execution.
+* Logs persistence.
+* Easy transition between modules.
+* Unlimited log length.
+* Progress indication.
+* **Free** ChatGPT summary.
 
 # Demos
 <p align="left">
