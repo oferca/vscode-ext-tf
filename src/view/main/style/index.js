@@ -583,6 +583,8 @@ u.logs{
   width: 0%;
   text-align: right;
   padding-right: 5px;
+  background-color: white !important;
+  color: black !important;
 }
 
 /*
@@ -619,9 +621,9 @@ u.logs{
 
 .btn.cmd {
   display: block;
-  color: var(--vscode-button-foreground);
+  /*color: var(--vscode-button-foreground);*/
   font-size: 14px;
-  min-width: 173px;
+  min-width: 205px;
   margin: 8px 0px;
   text-align: left;
   position: relative;
@@ -634,8 +636,8 @@ u.logs{
   display: flex;
   text-align: right;
   flex-direction: column;
-  margin-left: 150px;
-  padding-left: 31px;
+  margin-left: 176px;
+  padding-left: 30px;
   margin-top: -6px;
   cursor: pointer;
   height: 45px;
@@ -661,6 +663,11 @@ u.logs{
   transform: scale(1);
   opacity: 1;
   transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  min-width: 185px;
+  margin-left: 5px;
+}
+.btn.cmd i {
+  opacity: 0.7;
 }
 .cmd-icon.right{
   z-index: 9999999;

@@ -253,6 +253,8 @@ module.exports.createTextColorChanger = fileName => (document => {
   const plusRegExp = /\+ /g;
   const minusRegExp = /\- /g;
   const tildaRegExp = /\~ /g;
+  const warningRegExp = /Warning:/g;
+  const commentRegExp = /# /g;
 
   // Define the color style
   const decorationTypeGreen = vscode.window.createTextEditorDecorationType({
@@ -267,9 +269,14 @@ module.exports.createTextColorChanger = fileName => (document => {
     color: 'yellow',
   });
 
+  const decorationTypeLightGrey = vscode.window.createTextEditorDecorationType({
+    color: 'lightgrey',
+  });
+
   const decorationsGreen = [];
   const decorationsRed = [];
   const decorationsYellow = [];
+  const decorationsLightGrey = [];
 
   // Search for '+' in the text and add decorations
 
@@ -295,6 +302,18 @@ module.exports.createTextColorChanger = fileName => (document => {
         const range = new vscode.Range(startPos, endPos);
         decorationsYellow.push({ range  });
     }
+    while ((match = warningRegExp.exec(text))) {
+        const startPos = new vscode.Position(i, match.index);
+        const endPos = new vscode.Position(i, match.index + 1);
+        const range = new vscode.Range(startPos, endPos);
+        decorationsYellow.push({ range  });
+    }
+    while ((match = lightGreyRegExp.exec(text))) {
+        const startPos = new vscode.Position(i, match.index);
+        const endPos = new vscode.Position(i, match.index + 1);
+        const range = new vscode.Range(startPos, endPos);
+        decorationsLightGrey.push({ range  });
+    }
   }
 
   // Apply the decorations to the editor
@@ -303,6 +322,7 @@ module.exports.createTextColorChanger = fileName => (document => {
     editor.setDecorations(decorationTypeGreen, decorationsGreen);
     editor.setDecorations(decorationTypeYellow, decorationsYellow);
     editor.setDecorations(decorationTypeRed, decorationsRed);
+    editor.setDecorations(decorationTypeLightGrey, decorationsLightGrey);
   }, 500)
 
     }

@@ -29,12 +29,12 @@ module.exports.actions = [
             label: 'Terraform Actions',
             kind: vscode.QuickPickItemKind.Separator
         },
-        { handler: ChatGPTHandler, label: "ChatGPT Synopsis", icon: "$(ports-open-browser-icon)", onPlanSuccess: true,  topLevel, bType: "info"  },
-        { handler: TerraformInitHandler, label: "Init", icon: "$(extensions-install-count)", topLevel, bType: "primary", isParent: true },
-        { handler: TerraformValidateHandler, label: "Validate", icon: "$(issue-closed)", topLevel, bType: "success" },
-        { handler: TerraformOutputHandler, label: "Output", icon: "$(note)", topLevel, bType: "secondary" },
-        { handler: TerraformPlanHandler, label: "Plan", icon: "$(settings-sync-view-icon)", topLevel, bType: "warning", isParent: true },
-        { handler: TerraformApplyHandler, label: "Apply", icon: "$(play-circle)", topLevel, bType: "danger", isParent: true },
+        { handler: ChatGPTHandler, label: "ChatGPT Synopsis", icon: "$(ports-open-browser-icon)", onPlanSuccess: true,  topLevel, bType: "light"  },
+        { handler: TerraformInitHandler, label: "Init", icon: "$(extensions-install-count)", topLevel, bType: "light", isParent: true },
+        { handler: TerraformValidateHandler, label: "Validate", icon: "$(issue-closed)", topLevel, bType: "light" },
+        { handler: TerraformOutputHandler, label: "Output", icon: "$(note)", topLevel, bType: "light" },
+        { handler: TerraformPlanHandler, label: "Plan", icon: "$(settings-sync-view-icon)", topLevel, bType: "light", isParent: true },
+        { handler: TerraformApplyHandler, label: "Apply", icon: "$(play-circle)", topLevel, bType: "light", isParent: true },
         {
             label: 'Miscellaneous',
             kind: vscode.QuickPickItemKind.Separator,

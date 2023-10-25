@@ -35,7 +35,7 @@ const getButtonHTML = (action, isExplorer, actionParent) => {
             title="${title}"
             onclick="${onclick}">
             ${addSpinner ? spinner : ""}
-            <i class="cmd-icon ${addSpinner ? "" : "no-spinner"} fas fa-${buttonIconType}"></i> &nbsp ${buttonText}
+            <i class="cmd-icon ${addSpinner ? "" : "no-spinner"} fas fa-${buttonIconType}"></i> &nbsp&nbsp&nbsp ${buttonText}
             ${options ? '<i class="cmd-icon right fas fa-list-ul"></i>' : ""}
         </button>
         ` : `
@@ -87,9 +87,7 @@ module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent, 
             const seperatorClass = !firstSeperator ? "first" : ""
             firstSeperator = (firstSeperator || 0) + 1
             const terminal = isExplorer && (firstSeperator == 2) ? `
-            <div class="expandable">
                 ${outputFileContent}
-            </div>
             <div class="progress" id="tf-progress">
                 ${progressBar}
 

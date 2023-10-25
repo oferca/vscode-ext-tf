@@ -699,7 +699,8 @@ POPUP
   word-spacing: normal;
   font-size: 14px;
 }
-
+.explorer .expandable{
+}
 .explorer .expandable h4.title{
     text-align: left;
     margin-left: 10px;
@@ -731,7 +732,7 @@ POPUP
 }
 
 #output-file{
-	width: 38vw;
+	width: 65%;
     height: 204px;
     padding: 3px;
     margin-top: 22px;
@@ -747,21 +748,38 @@ POPUP
 	background: transparent;
 	color: var(--vscode-button-foreground);
 }
+
+.fa-download:before {
+    color: #318ca9;
+}
+.fa-check:before {
+    color: green;
+}
+.fa-clipboard-list:before {
+    color: darkblue;
+}
+.fa-paper-plane:before {
+    color: darkorange;
+}
+.fa-upload:before {
+    color: darkred;
+}
+
 @media all and (max-width: 860px) {
 	#output-file{
-		width: 50vw;
+		width: 55%;
 	}
 }
 
 @media all and (max-width: 820px) {
-	#output-file{
+	#outp1ut-file{
 		width: 44vw;
 	}
 }
 
 @media all and (max-width: 665px) {
 	#output-file{
-		width: 40vw;
+		width: 35%;
 	}
 }
 

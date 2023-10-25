@@ -146,7 +146,7 @@ class StateManager {
         if (!(projectName.length > 1)) text = "Any Project Terraform Terminal"
         for(let i = 0; i< text.length; i++) asteriks += "-"
         if (alreadyCreated) return
-        projectTerminal.sendText(`clear;echo "${asteriks}\n${text}\n${asteriks}\nPlease set environment variables for running terraform.\n"`)
+        projectTerminal.sendText(`clear;echo "${asteriks}\n${text}\n${asteriks}\nPlease set environment variables for running terraform.\nFor example: export AWS_ACCESS_KEY_ID=\"ASIA...\"; export AWS_SECRET_ACCESS_KEY==\"abcde...\"; \n"`)
     }
     openPreviousTerminal() {
         this.previouslyOpenedTerminal.show()
