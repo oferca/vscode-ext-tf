@@ -370,10 +370,9 @@ a.command:hover, a.command, a.command:focus {
 
   #output-file-fs{
     position: absolute;
-    margin-top: -45px;
-    margin-left: 24px;
+    margin-top: 190px;
+    margin-left: 225px;
     font-size: 48px;
-    color: var(--vscode-button-background) transition: 0.5s opacity;
     opacity: 0.1;
     width: 95%;
     cursor: pointer;
@@ -383,9 +382,11 @@ a.command:hover, a.command, a.command:focus {
     display: none;
   }
   #output-file-fs:hover{
-    opacity: 1;
+    opacity: 0.81;
     transition: 0.5s opacity;
-
+    color: var(--vscode-button-foreground);
+    background: var(--vscode-button-secondaryBackground);
+    width: 174px;
   }
  
   .seperator{

@@ -192,4 +192,4 @@ module.exports.disableShowOnStartupKey = "tfShowOnStartup"
 
 module.exports.tfResourcesSelectionKey = "tfResourcesSelection"
 
-module.exports.additionalText = "- Kindly examine the logs in the terminal as well"
+module.exports.additionalText = "=== More Logs IN TERMINAL BELOW ==="
