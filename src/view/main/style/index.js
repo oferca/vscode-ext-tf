@@ -677,4 +677,52 @@ u.logs{
   font-size: 14px;
   top: 10px;
 }
+
+
+
+.msg-icn {
+  z-index: 9999;
+  display: inline-block;
+  position: fixed;
+  padding: 10px 20px;
+  color: #fff;
+  box-sizing: border-box;
+  max-width: 300px;
+  min-width: 80px;
+  min-height: 38px;
+  bottom: 18px;
+  left: 175px;
+  background: #737373;
+}
+.msg-icn:before {
+  z-index: 9999;
+  color: orange;
+
+  content: "";
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  border: 1px solid #e5a002;
+  border-radius: 2px;
+  box-sizing: border-box;
+  clip-path: polygon(0% 105%, 0% 0%, 105% 0%, 105% 105%, 43px 105%, 43px 80%, 21px 80%, 21px 105%);
+}
+.msg-icn:after {
+  z-index: 9999;
+  color: orange;
+  content: "";
+  position: absolute;
+  display: block;
+  width: 25px;
+  height: 20px;
+  background: #e5a002;
+  top: calc(100% - 1px);
+  left: 20px;
+  box-sizing: border-box;
+  clip-path: polygon(0 0, 0% 100%, 100% 0%, calc(100% - 2px) 0, 1px calc(100% - 2px), 1px 0);
+}
+
 `

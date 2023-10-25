@@ -15,6 +15,7 @@ const {
     shellNoticeIntervalSec,
     lastShellDisclaimerKey,
     hasSupportedTerminalKey,
+    selectedProjectTerminal,
     dontRemindDisclaimerKey,
     intervalUsageReminderSec,
     dashboardExpendedOnceKey,
@@ -126,6 +127,9 @@ class StateManager {
         this.shellType = isPowershell(this.activeTerminal) ? powershellType : ""
         this.logger.uniqueId = this.uniqueId
         this.logger.stationId = this.getState(stationIdKey) || this.updateState(stationIdKey, this.uniqueId)
+        const instructionsCount = this.getState('tfInstructions') || 0
+        this.updateState('tfInstructions', instructionsCount + 1)
+        if (instructionsCount > 20) this.showInstructions = false
     }
     getUserFolder () {
         return this.getState(changeFolderKey)
@@ -147,6 +151,9 @@ class StateManager {
         for(let i = 0; i< text.length; i++) asteriks += "-"
         if (alreadyCreated) return
         projectTerminal.sendText(`clear;echo "${asteriks}\n${text}\n${asteriks}\nPlease set environment variables for running terraform.\nFor example: export AWS_ACCESS_KEY_ID=\"ASIA...\"; export AWS_SECRET_ACCESS_KEY==\"abcde...\"; \n"`)
+        projectTerminal.counter = projectTerminal.counter ? projectTerminal.counter + 1 : 1
+        this.selectedProjectTerminal = projectTerminal
+        this.showInstructions = false
     }
     openPreviousTerminal() {
         this.previouslyOpenedTerminal.show()
@@ -159,6 +166,7 @@ class StateManager {
         this.disableStateRead = disableStateRead
         this.keyPostfix = keyPostfix
         this.uniqueId = new Date().valueOf()
+        this.showInstructions = true
     }
 
 }

@@ -53,14 +53,15 @@ class WebViewManager {
 
       const lastSelectedProject = tfProjectsCache.find(project => project.projectPath === this.stateManager.getState(lastSelectedProjectPathKey))
       if (lastSelectedProject) lastSelectedProject.lastModifiedTimestamp = Date.now()
-
+      const showInstructions = this.stateManager.showInstructions
       paramsExplorer.push(
         tfProjectsCache,
         this.selectedProject,
         this.context,
         this.stateManager,
         this.outputFileContent,
-        feedback
+        feedback,
+        showInstructions
       )
       
       this.projectExplorer.html = html(...paramsExplorer)
