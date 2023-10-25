@@ -82,8 +82,9 @@ ${ explorerHTML }
   
   const text = [
     "Enter cloud credentials in terminal below as you would normally.",
-    "Then select a terraform command by clicking command button.",
-    "Watch for output in terminal and window."
+    "Then select a terraform command using above buttons.",
+    "Watch for output in terminal and window.",
+    "Use \\\"Terraform Projects\\\" button in status bar to open command center."
   ]
   
   var mi = 0;
