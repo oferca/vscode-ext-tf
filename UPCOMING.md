@@ -1,3 +1,4 @@
+init upgrade ends with error although no error
 kindky missing plan
 isolation account not showing ?
 check working with active terminal 

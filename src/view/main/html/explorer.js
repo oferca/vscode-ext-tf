@@ -98,9 +98,9 @@ module.exports.scripts = selectedProject => {
         document.getElementById("commands-title").style.color = folderColor
         commandsTitleEl.innerHTML = \`\${(projectTitle).replace("Active Terminal", "Current Terminal")}\`
         projectInfoEl.innerHTML = \`
-        <h4 style="\${currentStyle} color:\${folderColor};" title="\${name} project" class="display-5 title-section">
-        Project information
-        </h4>
+        <h5 style="\${currentStyle} color:\${folderColor};" title="\${name} project" class="display-6 title-section">
+        Project metadata
+        </h5>
         <ol>
              <li class="path" title="\${folder}">\${folderTitle}</li>
              <li style="\${currentStyle}" class="seperator"></li>
