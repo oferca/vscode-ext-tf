@@ -10,6 +10,8 @@ const { success, error, warning, info } = require('./feedback');
 const { getCommandButtonsHTML } = require('./helpers')
 const { getFunctions } = require("./functions")
 
+notified = {}
+
 module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, feedback, showInstructions) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     isExplorer = !!explorerParams,
@@ -35,6 +37,14 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
       feedback.type === "error" && error(feedback.msg)
     ): "",
     commandButtons = getCommandButtonsHTML(actions, isExplorer, outputFileContent, planSuccess)
+    
+    
+    const enterCredsClass = "msg-icn",
+    notifiedJson = JSON.stringify(notified)
+    if (selectedProject) {
+      notified[selectedProject.projectPath] = true
+      selectedProject.alreadyNotified = true
+    }
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>
@@ -72,7 +82,9 @@ ${ explorerHTML }
         <br>
     </div>
 
-  ${showInstructions ? `<span class="msg-icn">Instructions</span>` : ""}
+    <span class="${enterCredsClass}">Enter Cloud Credentials</span>
+
+  
   </div>
 
   <script>
@@ -81,7 +93,7 @@ ${ explorerHTML }
     var demiElement = { value: {}, style: {}, classList: {add: () => {}, remove: () => {} } }
     scrollOutputDown(false)
     ${isExplorer ? `initAccordions()` : ""}
-    
+    document.querySelector(".msg-icn").style.display = "none"
     setTimeout(scrollToCheckbox)    
     let maxPercentage = 0
     window.addEventListener('message', incomingMessageHandler);
@@ -92,7 +104,7 @@ ${ explorerHTML }
     ${overlayCall}
     ${isExplorer && explorerScripts(selectedProject) }
     ${feedbackScript}
-    ${getFunctions(isExplorer)}
+    ${getFunctions(isExplorer, notifiedJson)}
   </script>
 
 </body>

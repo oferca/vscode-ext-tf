@@ -15,7 +15,6 @@ const {
     shellNoticeIntervalSec,
     lastShellDisclaimerKey,
     hasSupportedTerminalKey,
-    selectedProjectTerminal,
     dontRemindDisclaimerKey,
     intervalUsageReminderSec,
     dashboardExpendedOnceKey,
@@ -27,6 +26,8 @@ const { createShellHandler, isPowershell } = require("../shared/methods-cycle")
 
 const secondsInWeek = 60 * 60 * 24 * 7
 const secondsInHour = 60 * 60
+const twelveHoursInMilliseconds = 12 * 60 * 60 * 1000;
+
 class StateManager {
 
     now
@@ -142,7 +143,9 @@ class StateManager {
         const projectTerminal = vscode.window.terminals.find(terminal => terminal.tfProjectKey === projectKey)
          || vscode.window.createTerminal()
         const alreadyCreated = projectTerminal.tfProjectKey
-        projectTerminal.tfProjectKey = projectTerminal.tfProjectKey || projectKey 
+        projectTerminal.tfProjectKey = projectTerminal.tfProjectKey || projectKey
+        // if (alreadyCreated && (new Date().getTime() - projectTerminal.lastOpenedTS > 1 )) this.showInstructions = true
+        projectTerminal.lastOpenedTS = new Date().getTime()
         projectTerminal.show()
         let projectName = capitalizeFirst(path.basename(projectKey))
         let asteriks = ""

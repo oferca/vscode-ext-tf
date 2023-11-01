@@ -73,6 +73,8 @@ module.exports.scripts = selectedProject => {
     const shellHandler = createShellHandler(vscode.window.activeTerminal),
     displayedWorkspace = projectRoot ? path.basename(projectRoot) : "Active Terminal",
     projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
+    const alreadyNotified = selectedProject && selectedProject.alreadyNotified
+    if (selectedProject) selectedProject.alreadyNotified = true
     return `
     var parent = document.querySelector(".tf-modal-parent")
     X = document.querySelector(".x")
@@ -134,7 +136,9 @@ module.exports.scripts = selectedProject => {
         }
         addOverlay()
         scrollInterval = undefined
-        showInteractiveInstructions()
+        ${alreadyNotified ? "": "showInteractiveInstructions(name)"}
+        document.getElementById("tf-modal-container").onclick = () => {document.querySelector(".msg-icn").style.display = "none";}
+
     }
 
     function removeOverlay(){

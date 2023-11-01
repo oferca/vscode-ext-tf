@@ -4,7 +4,7 @@
   "displayName": "Terraform Command Center",
   "publisher": "oferkafry",
   "description": "User-friendly yet powerful command center for Terraform",
-  "version": "3.1.7",
+  "version": "3.1.9",
   "engines": {
     "vscode": "^1.67.2"
   },

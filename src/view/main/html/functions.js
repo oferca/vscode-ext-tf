@@ -1,4 +1,4 @@
-module.exports.getFunctions = isExplorer => `
+module.exports.getFunctions = (isExplorer, notifiedJson) => `
   function launchTFCommand(tfCommand, el) {
     setTimeout(() => {
       const outputArea = document.getElementById("output-file") || demiElement
@@ -115,19 +115,28 @@ module.exports.getFunctions = isExplorer => `
     }
   }
 
-  function showInteractiveInstructions() {
-   
+  let text = [
+    "Enter cloud credentials in integrated terminal below as you would normally.",
+    "Then click a terraform command button in popup.",
+    "Watch for output in terminal and window.",
+    "To re-open command center, type '⌘⇧T' ( control / command + shift + T ).",
+    "Or        ",
+    "Click \\\"Terraform Projects\\\" button in status bar."
+  ]
+  let changeText
+
+  function showInteractiveInstructions(projectName) {
+    document.querySelector(".msg-icn").style.display = "inline-block"
+    const notified = Object.keys(JSON.parse('${notifiedJson}'))
+    if(notified.length > 0) text = [
+      "Enter cloud credentials in integrated terminal."
+    ]
+    if (notified.find(n => n.indexOf(projectName) > -1)) {
+      document.querySelector(".msg-icn").style.display = "none";
+      return
+    }
     const typSpd = 70; 
     const waitTime = 500;
-    
-    const text = [
-      "Enter cloud credentials in terminal below as you would normally.",
-      "Then click a terraform command button in popup.",
-      "Watch for output in terminal and window.",
-      "To re-open command center, type '⌘⇧T' ( control / command + shift + T ).",
-      "Or        ",
-      "Click \\\"Terraform Projects\\\" button in status bar."
-    ]
     
     var mi = 0;
     
@@ -156,10 +165,16 @@ module.exports.getFunctions = isExplorer => `
         setTimeout(writeString, typSpd * i, e, str, i);
       }
     }
-    
+
     const msg = document.querySelector(".msg-icn");
+    if (msg) {
+      slowlyDelete(msg);
+    }
     
-    if (msg) slowlyDelete(msg);
+    const msgCredentials = document.querySelector(".enter-credentials");
+    if (msgCredentials) {
+      slowlyDelete(msgCredentials, 1);
+    }
     
   }
 `

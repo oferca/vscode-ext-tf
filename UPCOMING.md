@@ -1,3 +1,4 @@
+- Bad Login "Instructions"
 - BUG - existing terminal seems to be 
 - Plan target not working or very long time
 opened instead of overlat

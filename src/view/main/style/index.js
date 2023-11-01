@@ -681,7 +681,7 @@ u.logs{
 
 
 
-.msg-icn {
+.msg-icn, .enter-credentials {
   z-index: 9999;
   display: inline-block;
   position: fixed;
@@ -695,7 +695,7 @@ u.logs{
   left: 175px;
   background: #737373;
 }
-.msg-icn:before {
+.msg-icn:before, .enter-credentials:before{
   z-index: 9999;
   color: orange;
 
@@ -711,7 +711,7 @@ u.logs{
   box-sizing: border-box;
   clip-path: polygon(0% 105%, 0% 0%, 105% 0%, 105% 105%, 43px 105%, 43px 80%, 21px 80%, 21px 105%);
 }
-.msg-icn:after {
+.msg-icn:after, .enter-credentials:after {
   z-index: 9999;
   color: orange;
   content: "";
@@ -725,5 +725,7 @@ u.logs{
   box-sizing: border-box;
   clip-path: polygon(0 0, 0% 100%, 100% 0%, calc(100% - 2px) 0, 1px calc(100% - 2px), 1px 0);
 }
-
+.none{
+  display: none;
+}
 `
