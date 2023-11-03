@@ -115,21 +115,20 @@ module.exports.getFunctions = (isExplorer, notifiedJson) => `
     }
   }
 
+  function showInteractiveInstructions(projectName) {
+
   let text = [
-    "Enter cloud credentials in integrated terminal below as you would normally.",
+    "Enter cloud credentials for for \\\"" + projectName + "\\\" environment in terminal below ↓ as you would normally.",
     "Then click a terraform command button in popup.",
     "Watch for output in terminal and window.",
     "To re-open command center, type '⌘⇧T' ( control / command + shift + T ).",
     "Or        ",
     "Click \\\"Terraform Projects\\\" button in status bar."
   ]
-  let changeText
-
-  function showInteractiveInstructions(projectName) {
     document.querySelector(".msg-icn").style.display = "inline-block"
     const notified = Object.keys(JSON.parse('${notifiedJson}'))
     if(notified.length > 0) text = [
-      "Enter cloud credentials in integrated terminal."
+      "Enter cloud credentials for \\\"" + projectName + "\\\" environment in terminal below ↓"
     ]
     if (notified.find(n => n.indexOf(projectName) > -1)) {
       document.querySelector(".msg-icn").style.display = "none";

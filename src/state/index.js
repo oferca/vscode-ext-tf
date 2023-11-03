@@ -130,7 +130,7 @@ class StateManager {
         this.logger.stationId = this.getState(stationIdKey) || this.updateState(stationIdKey, this.uniqueId)
         const instructionsCount = this.getState('tfInstructions') || 0
         this.updateState('tfInstructions', instructionsCount + 1)
-        if (instructionsCount > 20) this.showInstructions = false
+        // if (instructionsCount > 20) this.showInstructions = false
     }
     getUserFolder () {
         return this.getState(changeFolderKey)

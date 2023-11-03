@@ -254,7 +254,7 @@ module.exports.createTextColorChanger = fileName => (document => {
   const minusRegExp = /\- /g;
   const tildaRegExp = /\~ /g;
   const warningRegExp = /Warning:/g;
-  const commentRegExp = /# /g;
+  const lightGreyRegExp = /# /g;
 
   // Define the color style
   const decorationTypeGreen = vscode.window.createTextEditorDecorationType({
@@ -304,7 +304,7 @@ module.exports.createTextColorChanger = fileName => (document => {
     }
     while ((match = warningRegExp.exec(text))) {
         const startPos = new vscode.Position(i, match.index);
-        const endPos = new vscode.Position(i, match.index + 1);
+        const endPos = new vscode.Position(i, match.index + 8);
         const range = new vscode.Range(startPos, endPos);
         decorationsYellow.push({ range  });
     }
