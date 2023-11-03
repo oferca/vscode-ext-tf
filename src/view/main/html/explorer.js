@@ -4,7 +4,7 @@ const { capitalizeFirst, sortProjects } = require('../../../shared/methods');
 const { createShellHandler } = require('../../../shared/methods-cycle');
 const { disableShowOnStartupKey } = require('../../../shared/constants');
 
-const folders = (list, stateManager) => list && list.sort(sortProjects).map(
+const folders = list => list && list.sort(sortProjects).map(
     project => {
         const { current, projectPath, projectPathRelative, name, regions, projectRoot, folderColor } = project,
           shellHandler = createShellHandler(vscode.window.activeTerminal),
@@ -23,8 +23,12 @@ const folders = (list, stateManager) => list && list.sort(sortProjects).map(
                 <div class="card-header">
                 ${current ? "Integrated Teminal" : capitalizeFirst(workspaceFolder)}
                 </div>
+
                 <div class="card-body">
+
                     <h5 class="card-title">${capitalizeFirst(name)}</h5>
+                    <button type="button" class="btn btn-light dashboard">Project Dashboard</button>
+
                     <p title="${title}" class="card-text">${details}</p>
                 </div>
             </div>
@@ -60,7 +64,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
   </script>
 
       <div id="filemanager" >
-       <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} "><span class="folderName">Select A Terraform Project</span>
+       <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} "><span class="folderName">Terraform Projects</span>
       </div>
       <ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list, stateManager)}
@@ -95,7 +99,7 @@ module.exports.scripts = selectedProject => {
     }
     function renderProjectInfo(name, folder, workspace, displayedWorkspace, folderColor) {
         if (!name) return
-        const projectTitle = name.charAt(0).toUpperCase() + name.slice(1)
+        const projectTitle = name.charAt(0).toUpperCase() + name.slice(1) + " dashboard"
         const projectInfoEl = document.getElementById("project-info") || {}
         const commandsTitleEl = document.getElementById("commands-title") || {}
         const isCurrentTerminal = !workspace || workspace === "Active Terminal"

@@ -693,6 +693,7 @@ POPUP
 .explorer h4.main{
 	font-size: 2.8rem;
 	overflow-wrap: break-word;
+	color: whitesmoke;
 }
 .explorer h4:not(.main):not(.title-section) {
   color: var(--vscode-editor-foreground);
@@ -742,9 +743,9 @@ POPUP
     z-index: 9999;
     position: relative;
     box-shadow: 0.5px 0.5px 1px var(--vscode-notifications-border);
-    font-size: 2vh;
-	margin-left: 19px;
-	line-height: 2.6vh;
+    font-size: 1.5vw;
+    margin-left: 19px;
+    line-height: 3.9vh;
 	background: transparent;
 	color: var(--vscode-button-foreground);
 }
@@ -1085,6 +1086,15 @@ POPUP
 	background-color: #343a40!important;
 	color: #fff;
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+.card:not(:hover) .btn.dashboard{
+	background-color: #343a40;
+	color: #fff;
+}
+.btn.dashboard{
+	position: absolute;
+    right: 13px;
+    top: 49px;
 }
 .card-text{
 	color: gray;
