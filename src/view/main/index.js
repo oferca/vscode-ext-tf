@@ -60,8 +60,7 @@ class WebViewManager {
         this.context,
         this.stateManager,
         this.outputFileContent,
-        feedback,
-        showInstructions
+        feedback
       )
       
       this.projectExplorer.html = html(...paramsExplorer)
@@ -156,17 +155,10 @@ class WebViewManager {
     }
 
     async handleWebviewMessage (message){
-        this.log(message)
         const res = await this.messageHandler(message);
         if (res === "render") this.render()
         return res
       }
-
-    log(message){
-      const loggedMessage = typeof message === "string" ? { message, source: "explorer" } : message
-      loggedMessage.source = "explorer"
-      this.logger.log(loggedMessage)
-    }
 
     async updateProjectsCache() {
       tfProjectsCache = await getProjectsCache(tfProjectsCache)

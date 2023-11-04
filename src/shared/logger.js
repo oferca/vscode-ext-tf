@@ -7,6 +7,7 @@ class Logger {
     _db
     uniqueId
     stationId
+    history
     async initFireBase () {
         try {
             const { initializeApp } = require("firebase/app");
@@ -33,21 +34,24 @@ class Logger {
     
     async log (_rec) {
         if (this.disabled) return
+        const _recOrig = Object.assign({}, _rec)
         const rec = typeof _rec === "string" ? { message : _rec } : _rec
         try{
             const { collection: fsCollection , addDoc } = require("firebase/firestore");
             var pjson = require(appRoot + '/../../package.json');
             rec.version = pjson.version;    
             const collection = fsCollection(await this.getDb(), "tfh")
-            rec.uniqueId = this.uniqueId
             rec.stationId = this.stationId
             rec.ts = Date.now()
             rec.platform = os.platform()
             rec.date = new Date(Date.now())
             rec.runCount = this.stateManager.getState(runCountKey)
+            rec.terminal = this.stateManager.activeTerminal && this.stateManager.activeTerminal.name || "N/A"
+            rec.sessionHistory = JSON.stringify(this.history)
 
             try {
-                await addDoc(collection, rec);
+                const hist = await addDoc(collection, rec);
+                if (rec.runCount < 4000) this.history.push(_recOrig)
             } catch (e) {
                 console.log(e)
             }
@@ -59,13 +63,14 @@ class Logger {
     logError(e) {
         const { message, stack } = e
 		const errorObj = JSON.parse(JSON.stringify(e))
-		errorObj.msg = message
+		errorObj.message = message
 		errorObj.stack = stack
 		this.log(errorObj)
     }
     constructor(disabled = false, stateManager) {
         this.disabled = disabled
         this.stateManager = stateManager
+        this.history = []
     }
 }
 

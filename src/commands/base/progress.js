@@ -114,12 +114,14 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             notification = vscode.window.showInformationMessage(successMessage);
         }
 
-        completedCallback(
-            generalMessage && { type: 'info', msg: generalMessage } ||
+        const feedback = generalMessage && { type: 'info', msg: generalMessage } ||
             hasErrors && { type: 'error', msg: errTxtPref} ||
             hasWarnings && { type: 'warning', msg: warnTxtPref} ||
             { type: 'success', msg: (successMessage || "").replace(outputLogsMsg, "") }
-        )
+  
+        this.logger.log(feedback)
+
+        completedCallback(feedback)
         this.fileHandler.referUserToTerminal()
 
         return notification
@@ -152,10 +154,6 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             const completedIntervalId = setInterval(() => {
                 const completed = self.completed()
                 if (completed || self._abort) {
-                    self.logger.log({
-                        completed,
-                        commandId: self.commandId
-                    })
                     clearInterval(self.intervalID);
                     clearInterval(completedIntervalId)
                     resolve()

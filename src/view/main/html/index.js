@@ -12,7 +12,7 @@ const { getFunctions } = require("./functions")
 
 notified = {}
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, feedback, showInstructions) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, feedback, logger) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     isExplorer = !!explorerParams,
     modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,

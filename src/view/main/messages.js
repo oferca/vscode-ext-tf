@@ -11,7 +11,7 @@ const {
 
 module.exports.handleCommand = async (command, logger, launchHandler, launch, tfCommandCallback, webViewManager, message, stateManager) =>
 {
-    logger.log({ command, source: "webview", message })
+    logger.log({ command, message })
     switch(command){
         case 'openTFLauncher':
             vscode.commands.executeCommand(openMenuCommandId, 'workbench.view.easy-terraform-commands');
@@ -23,7 +23,7 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
             break;
 
         case 'ChatGPT Synopsis':
-            if (!launchHandler || !launchHandler.fileHandler) return logger.log({ message: "failed-chat-gpt", source: "webview"})
+            if (!launchHandler || !launchHandler.fileHandler) return logger.log({ message: "failed-chat-gpt" })
             webViewManager.outputFileContent = fs.readFileSync(
                 launchHandler.fileHandler.outputFileNoColor,
                 launchHandler.shellHandler.fileEncoding)

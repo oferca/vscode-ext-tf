@@ -126,7 +126,6 @@ class StateManager {
         this.timeSinceLastUseSec = (this.now - this.lastRunTS) / 1000
         this.shouldRemind = this.lastRunTS > 0 && this.timeSinceLastUseSec > intervalUsageReminderSec
         this.shellType = isPowershell(this.activeTerminal) ? powershellType : ""
-        this.logger.uniqueId = this.uniqueId
         this.logger.stationId = this.getState(stationIdKey) || this.updateState(stationIdKey, this.uniqueId)
         const instructionsCount = this.getState('tfInstructions') || 0
         this.updateState('tfInstructions', instructionsCount + 1)

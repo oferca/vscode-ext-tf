@@ -53,13 +53,8 @@ class CommandHandlerPrototype {
     averageFromCmd
     overlayTerminal
 
-    async logOp(source) {
-        const op = {
-            source,
-            cId: this.commandId,
-            terminal: this.stateManager.activeTerminal && this.stateManager.activeTerminal.name
-        }
-        return await this.logger.log(op)
+    async logOp() {
+        return await this.logger.log({ command: this.commandId })
     }
     
     updateRunCount () {
@@ -184,7 +179,7 @@ class CommandHandlerPrototype {
 
     abort () {
         this._abort = true
-        this.logger.log({msg: "abort"})
+        this.logger.log({message: "abort"})
     }
     constructor(context, logger, stateManager, commandId) {
         this._abort = false
