@@ -738,7 +738,7 @@ POPUP
     padding: 3px;
     margin-top: 22px;
     border-radius: 8px;
-    opacity: 0.4;
+    opacity: 1;
     transition: 0.5s border, 0.5 background-image;
     z-index: 9999;
     position: relative;
@@ -747,7 +747,7 @@ POPUP
     margin-left: 19px;
     line-height: 3.9vh;
 	background: transparent;
-	color: var(--vscode-button-foreground);
+	color: var(--vscode-foreground);
 }
 
 .fa-download:before {
@@ -803,6 +803,7 @@ POPUP
 	word-wrap: break-word;
 	text-align: center;
 	padding-top: 50px;
+	opacity: 0.4;
 }
 
 

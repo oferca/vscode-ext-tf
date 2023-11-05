@@ -384,11 +384,6 @@ a.command:hover, a.command, a.command:focus {
   #output-file-fs.shine{
     display: none;
   }
-  #output-file-fs:hover{
-    opacity: 0.81;
-    transition: 0.5s opacity;
-    
-  }
  
   .seperator{
     width: 63vw;
@@ -540,7 +535,7 @@ u.logs{
   left: 3px;
   font-size: 13px;
   text-shadow: var(--vscode-button-background) 1px 0px 10px;
-  color: #e1dfdf;
+  color:var(--vscode-foreground);
 }
 
 
