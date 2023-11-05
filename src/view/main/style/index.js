@@ -536,8 +536,11 @@ u.logs{
   font-size: 13px;
   text-shadow: var(--vscode-button-background) 1px 0px 10px;
   color:var(--vscode-foreground);
+  opacity: 0.5;
 }
-
+.toggle-fullscreen:hover{
+  opacity: 1;
+}
 
 /* Progress */
 

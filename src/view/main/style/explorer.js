@@ -691,7 +691,7 @@ POPUP
 }
 
 .explorer h4.main{
-	font-size: 2.8rem;
+	font-size: 2.6rem;
 	overflow-wrap: break-word;
 	color: whitesmoke;
 }
