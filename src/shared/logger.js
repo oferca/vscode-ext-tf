@@ -45,13 +45,13 @@ class Logger {
             rec.ts = Date.now()
             rec.platform = os.platform()
             rec.date = new Date(Date.now())
-            rec.runCount = this.stateManager.getState(runCountKey)
+            rec._runCount = this.stateManager.getState(runCountKey)
             rec.terminal = this.stateManager.activeTerminal && this.stateManager.activeTerminal.name || "N/A"
-            rec.sessionHistory = JSON.stringify(this.history)
+            rec.sessionHistory = this.history
 
             try {
                 const hist = await addDoc(collection, rec);
-                if (rec.runCount < 4000) this.history.push(_recOrig)
+                if (rec._runCount < 4000) this.history.push(_recOrig)
             } catch (e) {
                 console.log(e)
             }

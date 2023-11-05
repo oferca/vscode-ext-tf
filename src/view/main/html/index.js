@@ -23,8 +23,8 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     commandsTitle = isExplorer ? `<h4 title="Terraform Commands" id="commands-title" class="commands-title display-4 main"></h4>` : ""
     outputContent = _outputFileContent ? _outputFileContent : "",
     outputFileContent = isExplorer ? `<textarea disabled class="${feedback ? feedback.type + " feedback" : "shine" }" id="output-file" name="output-file" rows="9" >${completed ? outputContent : `
-    Select A Terraform Command`}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs" class="${!feedback ? "shine" : "" }" >&#x2922;
-    <div class="toggle-fullscreen">Full Screen</div></div>` : "",
+    Select A Terraform Command`}</textarea><div onclick="postMessageFromWebview(\'openOutputFile\', IS_EXPLORER)" id="output-file-fs" class="${!feedback ? "shine" : "" }" >
+    <div class="toggle-fullscreen"><i class="fas fa-expand"></i>&nbspFull Screen</div></div>` : "",
     overlayClass = completed ? 'active' : "",
     overlayCall = completed && isExplorer ? "document.querySelector('.tf-modal-parent').style.display == 'block' ? addOverlay() : removeOverlay()" : "",
     shellHandler = createShellHandler(vscode.window.activeTerminal),

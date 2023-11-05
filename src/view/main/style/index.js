@@ -363,7 +363,7 @@ a.command:hover, a.command, a.command:focus {
   }
 
   #tf-progress{
-    margin-top: 5px;
+    margin-top: 14px;
     width: 97%;
     background: rgba(0, 0, 0, 0.25);
   }
@@ -373,20 +373,21 @@ a.command:hover, a.command, a.command:focus {
     margin-top: 190px;
     margin-left: 225px;
     font-size: 48px;
-    opacity: 0.1;
+    opacity: 1;
     width: 95%;
     cursor: pointer;
     z-index: 99999;
+    color: var(--vscode-button-foreground);
+    background: var(--vscode-button-secondaryBackground);
   }
+
   #output-file-fs.shine{
     display: none;
   }
   #output-file-fs:hover{
     opacity: 0.81;
     transition: 0.5s opacity;
-    color: var(--vscode-button-foreground);
-    background: var(--vscode-button-secondaryBackground);
-    width: 174px;
+    
   }
  
   .seperator{
@@ -535,11 +536,11 @@ u.logs{
 
 .toggle-fullscreen{
   position: absolute;
-  top: 4px;
-  left: 45px; 
-  font-size: 18px;
+  top: 31px;
+  left: 3px;
+  font-size: 13px;
   text-shadow: var(--vscode-button-background) 1px 0px 10px;
-  color: white;
+  color: #e1dfdf;
 }
 
 

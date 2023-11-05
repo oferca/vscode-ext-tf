@@ -118,7 +118,7 @@ module.exports.getFunctions = (isExplorer, notifiedJson) => `
   function showInteractiveInstructions(projectName) {
 
   let text = [
-    "Enter cloud credentials for for \\\"" + projectName + "\\\" environment in terminal below ↓ as you would normally.",
+    "Enter cloud credentials for \\\"" + projectName + "\\\" environment in terminal below ↓ as you would normally.",
     "Then click a terraform command button in popup.",
     "Watch for output in terminal and window.",
     "To re-open command center, type '⌘⇧T' ( control / command + shift + T ).",

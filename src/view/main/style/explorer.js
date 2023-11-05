@@ -743,7 +743,7 @@ POPUP
     z-index: 9999;
     position: relative;
     box-shadow: 0.5px 0.5px 1px var(--vscode-notifications-border);
-    font-size: 1.5vw;
+    font-size: 13px;
     margin-left: 19px;
     line-height: 3.9vh;
 	background: transparent;
