@@ -47,7 +47,7 @@ class Logger {
             rec.date = new Date(Date.now())
             rec._runCount = this.stateManager.getState(runCountKey)
             rec.terminal = this.stateManager.activeTerminal && this.stateManager.activeTerminal.name || "N/A"
-            rec.sessionHistory = this.history
+            rec._sessionHistory = this.history
 
             try {
                 const hist = await addDoc(collection, rec);

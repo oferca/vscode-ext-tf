@@ -31,6 +31,7 @@ module.exports.getFunctions = (isExplorer, notifiedJson) => `
     }, 600)
 
     content.style.backgroundImage = "none"
+    document.querySelector(".button-pulse").forEach(el => el.classList.remove("button-pulse"))
   }
 
   function postMessageFromWebview(command) {

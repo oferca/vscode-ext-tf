@@ -363,7 +363,7 @@ a.command:hover, a.command, a.command:focus {
   }
 
   #tf-progress{
-    margin-top: 14px;
+    margin-top: 23px;
     width: 97%;
     background: rgba(0, 0, 0, 0.25);
   }

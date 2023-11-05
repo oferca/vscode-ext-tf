@@ -31,7 +31,7 @@ const getButtonHTML = (action, isExplorer, actionParent) => {
     return modernTheme ? `
        ${options}
         <button type="button"
-            class="btn cmd btn-${action.bType || actionParent.bType}"
+            class="btn cmd button-pulse btn-${action.bType || actionParent.bType}"
             title="${title}"
             onclick="${onclick}">
             ${addSpinner ? spinner : ""}

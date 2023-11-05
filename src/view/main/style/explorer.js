@@ -796,7 +796,7 @@ POPUP
 	animation-fill-mode: forwards;
 	-webkit-text-size-adjust: none;
 	font-weight: 600;
-	font-size: 38px;
+	font-size: 30px;
 	text-decoration: none;
 	white-space: pre-line;
 	line-height: 50px;
@@ -1005,7 +1005,7 @@ POPUP
 		box-shadow: 0 0 0 0 white;
 	}
 	18%{
-		box-shadow: 0 0 0 14px rgba(255, 255, 255, 0); 
+		box-shadow: 0 0 0 7px rgba(255, 255, 255, 0); 
 	}
   }
 
