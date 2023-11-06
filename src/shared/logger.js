@@ -47,7 +47,7 @@ class Logger {
             rec.date = new Date(Date.now())
             rec._runCount = this.stateManager.getState(runCountKey)
             rec.terminal = this.stateManager.activeTerminal && this.stateManager.activeTerminal.name || "N/A"
-            rec._sessionHistory = this.history
+            rec._sessionHistory = this.history.map(rec => (rec.command || rec.msg || rec.tfCommand || rec.projectPath || JSON.stringify(rec)) + (rec.folder || rec.projectPath || "")).join()
 
             try {
                 const hist = await addDoc(collection, rec);
