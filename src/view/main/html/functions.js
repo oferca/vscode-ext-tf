@@ -31,7 +31,9 @@ module.exports.getFunctions = (isExplorer, notifiedJson) => `
     }, 600)
 
     content.style.backgroundImage = "none"
-    document.querySelector(".button-pulse").forEach(el => el.classList.remove("button-pulse"))
+    const buttonsPulse = document.querySelector(".button-pulse")
+    if (!buttonsPulse) return
+    Object.keys(buttonsPulse).forEach(el => buttonsPulse[el].classList.remove("button-pulse"))
   }
 
   function postMessageFromWebview(command) {
@@ -127,11 +129,14 @@ module.exports.getFunctions = (isExplorer, notifiedJson) => `
     "Click \\\"Terraform Projects\\\" button in status bar."
   ]
     document.querySelector(".msg-icn").style.display = "inline-block"
-    const notified = Object.keys(JSON.parse('${notifiedJson}'))
+    const notifiedRaw = JSON.parse('${notifiedJson}')
+    const notified = Object.keys(notifiedRaw)
     if(notified.length > 0) text = [
       "Enter cloud credentials for \\\"" + projectName + "\\\" environment in terminal below ↓"
     ]
-    if (notified.find(n => n.indexOf(projectName) > -1)) {
+    const projectNotificationStatus = notified.find(n => n.indexOf(projectName) > -1) 
+    console.log("notifiedRaw", notifiedRaw, notifiedRaw[projectNotificationStatus])
+    if (projectNotificationStatus && notifiedRaw[projectNotificationStatus] === null) {
       document.querySelector(".msg-icn").style.display = "none";
       return
     }

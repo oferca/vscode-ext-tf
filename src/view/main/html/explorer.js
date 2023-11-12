@@ -13,7 +13,7 @@ const folders = list => list && list.sort(sortProjects).map(
           workspaceFolder = current ? "." : path.basename(projectRoot),
           regionsStr = current ? "": regions.length ? `Regions: ${regions.join(', ')}. ` : "", 
           details = current ? "Run commands in current folder" : `Path: ${projectPathRelative}<br>${regionsStr}Providers: ${project.providers.filter(p => p !== "").join(', ') || "none"}. Definitions: ${project.resources} resources, ${project.modules} modules, ${project.datasources} datasources`,
-          title = details.replaceAll("<br>", ", ").replaceAll("<b>", "")
+          title = details.replaceAll("<br>", ", ").replaceAll("<b>", "").replaceAll("\\\"", "'")
         return`
             <div class="card shadow button-pulse ${current ? "current" : ""}" onclick="\
                vscode.postMessage({ command: 'selected-project', projectPath: '${projectPathSynthesized}', isExplorer: IS_EXPLORER });\
@@ -77,7 +77,6 @@ module.exports.scripts = selectedProject => {
     const shellHandler = createShellHandler(vscode.window.activeTerminal),
     displayedWorkspace = projectRoot ? path.basename(projectRoot) : "Active Terminal",
     projectPathRelativeSynthesized = shellHandler.synthesizePath(projectPathRelative)
-    const alreadyNotified = selectedProject && selectedProject.alreadyNotified
     if (selectedProject) selectedProject.alreadyNotified = true
     return `
     var parent = document.querySelector(".tf-modal-parent")
@@ -140,7 +139,7 @@ module.exports.scripts = selectedProject => {
         }
         addOverlay()
         scrollInterval = undefined
-        ${alreadyNotified ? "": "showInteractiveInstructions(name)"}
+        showInteractiveInstructions(name)
         document.getElementById("tf-modal-container").onclick = () => {document.querySelector(".msg-icn").style.display = "none";}
 
     }

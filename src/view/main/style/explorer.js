@@ -739,14 +739,14 @@ POPUP
     margin-top: 22px;
     border-radius: 8px;
     opacity: 1;
-    transition: 0.5s border, 0.5 background-image;
+    transition: 0.5s border, 0.5s background-image, 0.8s background-color;
     z-index: 9999;
     position: relative;
     box-shadow: 0.5px 0.5px 1px var(--vscode-notifications-border);
     font-size: 13px;
     margin-left: 19px;
-    line-height: 3.9vh;
-	background: transparent;
+    line-height: 16px;
+	background: var(--vscode-scrollbar-shadow);
 	color: var(--vscode-foreground);
 }
 
@@ -785,8 +785,7 @@ POPUP
 }
 
 #output-file.shine{
-	/*background-image: url(${matrixBackground});*/
-	/*transition: 0.5s border;*/
+    transition: 0.5s border, 0.5s background-image, 0.8s background-color;
 	color: #fff;
 	background: linear-gradient(to right, #4d4d4d 0, #fff 10%, #636161 20%);
 	background-position: 0;

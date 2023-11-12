@@ -11,6 +11,7 @@ const { getCommandButtonsHTML } = require('./helpers')
 const { getFunctions } = require("./functions")
 
 notified = {}
+notifiedTS = {}
 
 module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, feedback, logger) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
@@ -39,12 +40,17 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     commandButtons = getCommandButtonsHTML(actions, isExplorer, outputFileContent, planSuccess)
     
     
-    const enterCredsClass = "msg-icn",
-    notifiedJson = JSON.stringify(notified)
+    const enterCredsClass = "msg-icn"
     if (selectedProject) {
-      notified[selectedProject.projectPath] = true
-      selectedProject.alreadyNotified = true
+      notified[selectedProject.projectPath] = completed ? null : true
+      if (!selectedProject.alreadyNotified) notifiedTS[selectedProject.projectPath] = Date.now()
+      const currentTS = Date.now();
+      const hoursPassed = Math.abs(currentTS - notifiedTS[selectedProject.projectPath]) / 36e5;
+      selectedProject.alreadyNotified = (hoursPassed >= 12) ? false : true
+      if (hoursPassed >= 12) delete notified[selectedProject.projectPath]
     }
+    const notifiedJson = JSON.stringify(notified)
+
     x = isExplorer ? `<span class="x">&times;</span>` : ""
     return `
 <html>
