@@ -4,6 +4,7 @@ const { html } = require("./html");
 const { actions } = require('../../shared/actions');
 
 const {
+  tofuKey,
   changeFolderKey,
   selectedProjectPathKey,
   lastSelectedProjectPathKey
@@ -60,7 +61,8 @@ class WebViewManager {
         this.context,
         this.stateManager,
         this.outputFileContent,
-        feedback
+        feedback,
+        this.stateManager.getState(tofuKey) ? "tofu" : "terraform",
       )
       
       this.projectExplorer.html = html(...paramsExplorer)

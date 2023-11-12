@@ -11,9 +11,10 @@ class ShellHandler {
     terminalNoticeTextL2
 
     async handleDefinitions(simpleMode = false) {
+        this.cmd = this.stateManager && this.stateManager.getState(tofuKey) ? "tofu" : "terraform"
         const { activeTerminal } = this.stateManager
         if (!activeTerminal.definitions) activeTerminal.definitions = {}
-        const bashDefined = activeTerminal.definitions[this.commandId + (this.tfOption || "")]
+        const bashDefined = activeTerminal.definitions[this.commandId + (this.tfOption || "") + this.cmd]
         const definitions = simpleMode ? null : this.tfCommandDefinitions();
         const shellCommands = this.getInitShellCommands().filter(c => c != null)
         for (let key in shellCommands){
@@ -27,6 +28,7 @@ class ShellHandler {
 
     async runTfCommand (outputFile, options) {
         const { activeTerminal } = this.stateManager
+
         await this.handleDefinitions()
         await sendTextShell(activeTerminal, `clear`);
         await sendTextShell(activeTerminal, `terraform.${this.commandId} ${this.paramName}"${outputFile}" '${options}'\ `);
@@ -57,7 +59,6 @@ class ShellHandler {
         this.fileEncoding = isWindows ? "UTF-16LE" : "utf-8"
         this.outputFileExt = transformOutputColors ? `.${noColorExt}` : ""
         this.par = commandId && commandId.indexOf("var.file") > -1 ? "'" : "\""
-        this.cmd = this.stateManager && this.stateManager.getState(tofuKey) ? "tofu" : "terraform"
     }
 }
 

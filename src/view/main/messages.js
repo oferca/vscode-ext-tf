@@ -49,9 +49,11 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
             break;
         case 'terraform': 
             stateManager.updateState(tofuKey, false)
+            return "render"
             break;
         case 'tofu': 
             stateManager.updateState(tofuKey, true)
+            return "render"
             break;
         default:
             if (!command) break;

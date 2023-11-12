@@ -13,7 +13,7 @@ const { getFunctions } = require("./functions")
 notified = {}
 notifiedTS = {}
 
-module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, feedback, logger) => {
+module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand, completed, withAnimation, commandLaunched, explorerParams, selectedProject, context, stateManager, _outputFileContent, feedback, cmd) => {
   const isPlanCompleted = completed && tfCommand && tfCommand.toLowerCase().indexOf("plan") > -1,
     isExplorer = !!explorerParams,
     modalParentStyle = `style="${completed ? 'display: block;' : ''}"`,
@@ -37,7 +37,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
       feedback.type === "warning" && warning(feedback.msg, planSuccess) ||
       feedback.type === "error" && error(feedback.msg)
     ): "",
-    commandButtons = getCommandButtonsHTML(actions, isExplorer, outputFileContent, planSuccess)
+    commandButtons = getCommandButtonsHTML(actions, isExplorer, outputFileContent, planSuccess, cmd)
     
     
     const enterCredsClass = "msg-icn"

@@ -1,6 +1,6 @@
 # [Terraform Command Center](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-User-friendly yet powerful command center for terraform.
+User-friendly yet powerful command center for Terraform and OpenTofu.
 
 # Features
 * One-click command execution.

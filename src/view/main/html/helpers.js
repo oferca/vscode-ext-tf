@@ -1,7 +1,8 @@
 const { actions } = require("../../../shared/actions")
 const { isWindows } = require("../../../shared/constants")
+const { capitalizeFirst } = require("../../../shared/methods")
 
-const getButtonHTML = (action, isExplorer, actionParent) => {
+const getButtonHTML = (action, isExplorer, actionParent, cmd) => {
     const title =  `Run Terraform ${action.label.replace(" -", " with ")} in terminal`
     const onclick = `launchTFCommand('${action.label}', this)`
     const spinner = `<i class="fas fa-solid fa-spinner fa-spin"></i>`
@@ -13,7 +14,7 @@ const getButtonHTML = (action, isExplorer, actionParent) => {
         isExplorer && isTargetButton && "With Target" ||
         isExplorer && isUpgradeButton && "Init and Upgrade" ||
         isExplorer && isHistoryButton && "History" ||
-        (`${isExplorer ? "Terraform " : ""}${action.label}`
+        (`${isExplorer ? `${cmd ? capitalizeFirst(cmd) : ""} ` : ""}${action.label}`
         .replace("Terraform ChatGPT", "ChatGPT"))
     const label = action.label.toLowerCase()
     const addSpinner = label.indexOf("chatgpt") === -1
@@ -26,7 +27,7 @@ const getButtonHTML = (action, isExplorer, actionParent) => {
     
     const modernTheme = action.topLevel && isExplorer || actionParent
     const isChild = actionParent
-    const options = !isChild ? getOptions(action) : ""
+    const options = !isChild ? getOptions(action, cmd) : ""
     if (!action.topLevel && isExplorer && !actionParent && !action.misc) return ""
     return modernTheme ? `
        ${options}
@@ -50,11 +51,11 @@ const getButtonHTML = (action, isExplorer, actionParent) => {
     `
 }
 
-const getOptions = _action => {
+const getOptions = (_action, cmd) => {
     if (!_action.isParent) return ""
     const buttons = actions
         .filter(action => action.parent === _action.label)
-        .map(action => getButtonHTML(action, true, _action)).join("")
+        .map(action => getButtonHTML(action, true, _action, cmd)).join("")
     return buttons ? `
     <div class="button-options expandable">
         ${buttons}
@@ -70,7 +71,7 @@ const progressBar = `<div class="progress-bar" id="progress-bar-bt" style="visib
 
 const actionLabel = (action, isExplorer) => isExplorer ? action.label.replace("Terraform Actions"," ") : action.label
 
-module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent, planSuccess) => {
+module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent, planSuccess, cmd) => {
     let firstSeperator
     const projectInfoStyle = `style="display: ${isExplorer ? 'block' : 'none'}; margin-top: 20px;"`
     const script = isWindows ?
@@ -81,7 +82,7 @@ module.exports.getCommandButtonsHTML = (actions, isExplorer, outputFileContent, 
         if (action.menuOnly) return
         if (action.onPlanSuccess && !planSuccess) return
         if (action.excludeExplorer && isExplorer) return
-        if (action.handler) return (getButtonHTML(action, isExplorer))
+        if (action.handler) return (getButtonHTML(action, isExplorer, undefined, cmd))
         if (weakSeperator(action, isExplorer) ) return ('<h4 class="title">' + action.label + '</h4>' )
         if (strongSeperator(action, isExplorer)) {
             const seperatorClass = !firstSeperator ? "first" : ""

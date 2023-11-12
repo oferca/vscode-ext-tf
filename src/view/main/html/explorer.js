@@ -2,7 +2,7 @@ const path = require('path');
 const vscode = require('vscode');
 const { capitalizeFirst, sortProjects } = require('../../../shared/methods');
 const { createShellHandler } = require('../../../shared/methods-cycle');
-const { disableShowOnStartupKey } = require('../../../shared/constants');
+const { disableShowOnStartupKey, tofuKey } = require('../../../shared/constants');
 
 const folders = list => list && list.sort(sortProjects).map(
     project => {
@@ -37,10 +37,9 @@ const folders = list => list && list.sort(sortProjects).map(
 ).join("")
 
 module.exports.html = (list, completed, withAnimation, stateManager) => {
+    const cmd = stateManager.getState(tofuKey) ? "tofu" : "terraform"
     const checked = !stateManager.getState(disableShowOnStartupKey) ? "checked" : ""
     return `
-    
-
     <div class="input-group mb-3 show-startup">
     <div class="input-group-prepend">
       <div class="input-group-text">
@@ -52,10 +51,10 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
 
 
   <div class="btn-group btn-group-toggle" id="terraform-tofu" data-toggle="buttons">
-    <label class="btn btn-secondary active">
-        <input type="radio" name="options" id="terraform-button" autocomplete="off" class="btn-primary"> Terraform
+    <label class="btn btn-secondary ${cmd === "terraform" ? "active" : ""}">
+        <input type="radio" name="options" id="terraform-button" autocomplete="off"> Terraform
     </label>
-    <label class="btn btn-secondary">
+    <label class="btn btn-secondary ${cmd === "tofu" ? "active" : ""}">
         <input type="radio" name="options" id="tofu-button" autocomplete="off"> Tofu
     </label>
 </div>
@@ -66,19 +65,23 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
     const checkbox = document.getElementById('myCheckbox');
     const terraformButton = document.getElementById('terraform-button');
     const tofuButton = document.getElementById('tofu-button');
-    terraformButton.addEventListener("change", () => {
+    console.log(tofuButton)
+    terraformButton.addEventListener("change", el => {
         console.log("terraform")
         vscode.postMessage({ command: 'terraform' })
+        tofuButton.parentElement.classList.remove("active")
+        terraformButton.parentElement.classList.add("active")
     });
-    tofuButton.addEventListener("change", () => {
+    tofuButton.addEventListener("change", el => {
         console.log("tofu")
         vscode.postMessage({ command: 'tofu' });
+        terraformButton.parentElement.classList.remove("active")
+        tofuButton.parentElement.classList.add("active")
     });
     document.body.scrollTop = document.documentElement.scrollTop;
     const inter = setInterval(() => {
-        console.log(document.documentElement.scrollTop)
         if (document.documentElement.scrollTop > 0) {
-            document.documentElement.scrollTop = document.documentElement.scrollTop - 2;
+            document.documentElement.scrollTop = document.documentElement.scrollTop - 3;
         } else {
             clearInterval(inter)
         }

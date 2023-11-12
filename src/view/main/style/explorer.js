@@ -1132,24 +1132,32 @@ body.explorer {
 	font-size: 20px;
 	margin-bottom: none !important;
 	margin-top: 20px;
+	cursor: pointer;
 
 }
 .show-startup .input-group-text{
    background: transparent !important;
    margin-top: 25px;
+   cursor: pointer;
 }
 .show-startup .input-group-prepend{
 	position: absolute;
     right: 143px;
 	margin-top: -22px;
+	cursor: pointer;
 }
 .folderName{
 	margin-top: 0px;
 }
 
+#terraform-tofu *{
+	cursor: pointer;
+}
 #terraform-tofu{
 	position: absolute;
     left: 34px;
 	margin-top: 20px;
+	z-index: 999;
+	cursor: pointer;
 }
 `
