@@ -1,8 +1,9 @@
-const { isWindows, noColorExt } = require("../constants")
+const { isWindows, noColorExt, tofuKey } = require("../constants")
 const { sendTextShell } = require("./helpers")
 
 class ShellHandler {
     par
+    cmd
     fileEncoding
     stateManager
     outputFileExt
@@ -34,7 +35,7 @@ class ShellHandler {
     async runSimpleCommand (command, options) {
         const { activeTerminal } = this.stateManager
         await this.handleDefinitions(true)
-        await sendTextShell(activeTerminal, `terraform ${command} ${options}`)
+        await sendTextShell(activeTerminal, `${this.cmd} ${command} ${options}`)
     }
 
     synthesizePath(_path) {
@@ -56,6 +57,7 @@ class ShellHandler {
         this.fileEncoding = isWindows ? "UTF-16LE" : "utf-8"
         this.outputFileExt = transformOutputColors ? `.${noColorExt}` : ""
         this.par = commandId && commandId.indexOf("var.file") > -1 ? "'" : "\""
+        this.cmd = this.stateManager && this.stateManager.getState(tofuKey) ? "tofu" : "terraform"
     }
 }
 

@@ -47,14 +47,12 @@ body {
 	width: 95%;
 	max-width:1340px;
 	position: relative;
-	margin: 100px auto 50px;
   text-align: left;
-  margin-top: 63px;	
+  padding-top: 60px;
 }
 
 @media all and (max-width: 965px) {
 	#filemanager {
-		margin: 30px auto 0;
 		padding: 1px;
 	}
 }
@@ -75,12 +73,13 @@ body {
     background-repeat: no-repeat;
 	text-align: center;
 	font-size: 30px;
-	margin-top: 33px;
 }
 #filemanager .breadcrumbs.header.anim-text {
+	margin-top: 65px;
 	animation: h1anim 8s linear forwards;
 }
 #filemanager .breadcrumbs.header.static {
+	margin-top: 80px;
 	animation: h1animstatic 8s linear forwards;
 	font-size: auto;
 }
@@ -1123,16 +1122,34 @@ body.explorer {
 }
 .show-startup{
     text-align: right;
-    position: absolute !important;
-    right: 50px;
-    top: 15px;
+    display: block !important;
+	position: absolute !important;
+	right: 50px;
     width: auto !important;
 	height: 20px;
     line-height: 30px;
 	background-color: transparent !important;
 	font-size: 20px;
+	margin-bottom: none !important;
+	margin-top: 20px;
+
 }
 .show-startup .input-group-text{
    background: transparent !important;
+   margin-top: 25px;
+}
+.show-startup .input-group-prepend{
+	position: absolute;
+    right: 143px;
+	margin-top: -22px;
+}
+.folderName{
+	margin-top: 0px;
+}
+
+#terraform-tofu{
+	position: absolute;
+    left: 34px;
+	margin-top: 20px;
 }
 `

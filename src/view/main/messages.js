@@ -2,6 +2,7 @@ const fs = require('fs');
 const vscode = require('vscode');
 const { ChatGPTHandler }  = require('../../commands/chat-gpt')
 const {
+    tofuKey,
     reRenderTimout,
     openMenuCommandId,
     selectedProjectPathKey,
@@ -45,6 +46,12 @@ module.exports.handleCommand = async (command, logger, launchHandler, launch, tf
             break;
         case 'dont-show-on-startup': 
             stateManager.updateState(disableShowOnStartupKey, true)
+            break;
+        case 'terraform': 
+            stateManager.updateState(tofuKey, false)
+            break;
+        case 'tofu': 
+            stateManager.updateState(tofuKey, true)
             break;
         default:
             if (!command) break;

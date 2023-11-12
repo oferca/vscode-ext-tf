@@ -44,16 +44,45 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
     <div class="input-group mb-3 show-startup">
     <div class="input-group-prepend">
       <div class="input-group-text">
-        <input type="checkbox" id="myCheckbox" ${checked} aria-label="Checkbox for following text input">
+        <input type="checkbox" id="myCheckbox" ${checked} aria-label="Show ib startup">
       </div>
     </div>
     Show on startup
   </div>
 
+
+  <div class="btn-group btn-group-toggle" id="terraform-tofu" data-toggle="buttons">
+    <label class="btn btn-secondary active">
+        <input type="radio" name="options" id="terraform-button" autocomplete="off" class="btn-primary"> Terraform
+    </label>
+    <label class="btn btn-secondary">
+        <input type="radio" name="options" id="tofu-button" autocomplete="off"> Tofu
+    </label>
+</div>
+
+
   <script>
     // JavaScript code to handle the checkbox change event
     const checkbox = document.getElementById('myCheckbox');
-
+    const terraformButton = document.getElementById('terraform-button');
+    const tofuButton = document.getElementById('tofu-button');
+    terraformButton.addEventListener("change", () => {
+        console.log("terraform")
+        vscode.postMessage({ command: 'terraform' })
+    });
+    tofuButton.addEventListener("change", () => {
+        console.log("tofu")
+        vscode.postMessage({ command: 'tofu' });
+    });
+    document.body.scrollTop = document.documentElement.scrollTop;
+    const inter = setInterval(() => {
+        console.log(document.documentElement.scrollTop)
+        if (document.documentElement.scrollTop > 0) {
+            document.documentElement.scrollTop = document.documentElement.scrollTop - 2;
+        } else {
+            clearInterval(inter)
+        }
+    }, 100)
     checkbox.addEventListener('change', (event) => {
       if (event.target.checked) {
         vscode.postMessage({ command: 'show-on-startup' })

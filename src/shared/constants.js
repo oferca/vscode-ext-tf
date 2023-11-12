@@ -150,6 +150,8 @@ module.exports.lastSelectedProjectPathKey = "tflastSelectedProjectPath"
 
 module.exports.stationIdKey = "tfStationId"
 
+module.exports.tofuKey = "tfTofu"
+
 module.exports.dashboardExpendedOnceKey = "tfFirstDashboardExpand"
 
 module.exports.preferencesSetText = "[ Preferences Selected ] Pick a command to run."
