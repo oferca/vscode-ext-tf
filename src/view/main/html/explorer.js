@@ -78,14 +78,9 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
         terraformButton.parentElement.classList.remove("active")
         tofuButton.parentElement.classList.add("active")
     });
-    document.body.scrollTop = document.documentElement.scrollTop;
-    const inter = setInterval(() => {
-        if (document.documentElement.scrollTop > 0) {
-            document.documentElement.scrollTop = document.documentElement.scrollTop - 3;
-        } else {
-            clearInterval(inter)
-        }
-    }, 100)
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    setTimeout(scrollToCheckbox)    
+
     checkbox.addEventListener('change', (event) => {
       if (event.target.checked) {
         vscode.postMessage({ command: 'show-on-startup' })

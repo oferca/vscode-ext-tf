@@ -98,7 +98,7 @@ module.exports.getFunctions = (isExplorer, notifiedJson) => `
     content.style.opacity = "1"
   }
   function scrollToCheckbox() {
-    const checkbox = document.getElementById("myCheckbox")
+    const checkbox = document.getElementById("topPixel")
     if (checkbox) checkbox.scrollIntoView({ behavior: "smooth" })
   }
   function initAccordions () {

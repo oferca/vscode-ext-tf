@@ -68,6 +68,7 @@ module.exports.html = (preferences, actions, invalidate, planSucceded, tfCommand
     </script>
 </head>
 <body class="${isExplorer ? "explorer" : "sidebar" } ${invalidate}" >
+<div id="topPixel" style="position: absolute; top: 0; left: 0; width: 1px; height: 1px; background: transparent;"></div>
 <div id="overlay" class="${overlayClass}"></div>
 ${ explorerHTML }
   <div class="tf-modal-parent" id="tf-modal-container" ${modalParentStyle}>
