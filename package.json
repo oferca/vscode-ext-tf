@@ -4,7 +4,7 @@
   "displayName": "Terraform Command Center",
   "publisher": "oferkafry",
   "description": "User-friendly yet powerful command center for Terraform and OpenTofu",
-  "version": "3.3.4",
+  "version": "3.3.5",
   "engines": {
     "vscode": "^1.67.2"
   },
