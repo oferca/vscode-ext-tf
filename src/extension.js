@@ -62,6 +62,7 @@ async function activate(context) {
 			withAnimation = false
 			disposables.push(explorer)
 			await webViewManager.render()
+			logger.log("startup")
 		}
 		
 		vscode.commands.registerCommand(
