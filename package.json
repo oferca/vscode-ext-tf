@@ -1,10 +1,10 @@
 {
   "icon": "assets/terraform_logo.png",
   "name": "easy-terraform-commands",
-  "displayName": "Terraform Command Center",
+  "displayName": "Terraform Plus",
   "publisher": "oferkafry",
-  "description": "User-friendly yet powerful command center for Terraform and OpenTofu",
-  "version": "3.3.5",
+  "description": "Easy command buttons for Terraform",
+  "version": "3.3.6",
   "engines": {
     "vscode": "^1.67.2"
   },
