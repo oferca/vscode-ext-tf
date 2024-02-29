@@ -7,10 +7,12 @@ const getButtonHTML = (action, isExplorer, actionParent, cmd) => {
     const onclick = `launchTFCommand('${action.label}', this)`
     const spinner = `<i class="fas fa-solid fa-spinner fa-spin"></i>`
     const isVarButton = action.label.toLowerCase().indexOf("var-file") > -1
+    const isNoLockButton = action.label.toLowerCase().indexOf("no-lock") > -1
     const isTargetButton = action.label.toLowerCase().indexOf("target") > -1
     const isHistoryButton = action.label.toLowerCase().indexOf("history") > -1
     const isUpgradeButton = action.label.toLowerCase().indexOf("upgrade") > -1
     const buttonText = isExplorer && isVarButton && "With Var File" ||
+        isExplorer && isNoLockButton && "No Lock" ||
         isExplorer && isTargetButton && "With Target" ||
         isExplorer && isUpgradeButton && "Init and Upgrade" ||
         isExplorer && isHistoryButton && "History" ||

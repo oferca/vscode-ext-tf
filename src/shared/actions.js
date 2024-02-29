@@ -9,6 +9,7 @@ const { OpenExplorerHandler } = require("../commands/open-explorer")
 const { TerraformValidateHandler } = require("../commands/validate")
 const { TerraformStateListHandler } = require("../commands/state-list")
 const { TerraformPlanTargetHandler } = require("../commands/plan/target")
+const { TerraformPlanNoLockHandler } = require("../commands/plan/no-lock")
 const { TerraformPlanVarsHandler } = require("../commands/plan/vars-file")
 const { TerraformPlanHistoryHandler } = require("../commands/plan-history")
 const { TerraformInitUpgradeHandler } = require('../commands/init/upgrade')
@@ -53,6 +54,7 @@ module.exports.actions = [
             kind: vscode.QuickPickItemKind.Separator
         },
         { handler: TerraformPlanVarsHandler, label: "Plan -var-file", icon: "$(settings-sync-view-icon)", parent: "Plan"   },
+        { handler: TerraformPlanNoLockHandler, label: "Plan -no-lock", icon: "$(settings-sync-view-icon)", parent: "Plan"   },
         { handler: TerraformApplyVarsHandler, label: "Apply -var-file", icon: "$(play-circle)", parent: "Apply" },
         {
             label: 'Optional',

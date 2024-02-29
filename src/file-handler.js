@@ -114,7 +114,7 @@ class FileHandler {
         if (!this.initialized) return
         const content = this.getOutputFileContent()
        fs.writeFileSync(
-        this.outputFileNoColor.replaceAll("/n", ""),
+        this.outputFileNoColor.replaceAll("\n", ""),
         content + "\n " + additionalText || "",
         { encoding: this.shellHandler.fileEncoding || "utf-8"}
         )
@@ -138,7 +138,7 @@ class FileHandler {
     }
 
     updateCompletionsSummary(outputFile) {
-        if (this.successMessage || !outputFile || outputFile.length < 50) return
+        if (this.successMessage || typeof outputFile !== "string") return
 
         const warnings = getWarnings(outputFile)
         this.successMessage = tfCommandSuccess(outputFile)

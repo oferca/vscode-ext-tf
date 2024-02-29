@@ -690,9 +690,10 @@ POPUP
 }
 
 .explorer h4.main{
-	font-size: 2.6rem;
-	overflow-wrap: break-word;
-	color: whitesmoke;
+	font-size: 1.6rem;
+    overflow-wrap: break-word;
+    color: whitesmoke;
+    margin-top: 12px;
 }
 .explorer h4:not(.main):not(.title-section) {
   color: var(--vscode-editor-foreground);
@@ -873,7 +874,7 @@ POPUP
 
 #output-file.running{
 	--angle: 0deg;
-	border: 3px solid;
+	border: 1px solid;
 	border-image: linear-gradient(var(--angle),  var(--vscode-button-background), var(--vscode-button-secondaryBackground)) 1;
 	animation: 10s rotate linear infinite;
 	transition: 0.5s border, 0.5 background-image;

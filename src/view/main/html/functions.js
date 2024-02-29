@@ -5,7 +5,7 @@ module.exports.getFunctions = (isExplorer, notifiedJson) => `
       const outputAreaFS = document.getElementById("output-file-fs") || demiElement
       if (outputArea.classList.length) outputArea.classList.remove(...outputArea.classList);
       outputAreaFS.classList.remove("shine");
-      outputArea.classList.add("running")
+      // outputArea.classList.add("running")
       const mainModal = document.getElementById("main-tf-modal")
     })
     el.classList.add('animated-button');
@@ -50,7 +50,7 @@ module.exports.getFunctions = (isExplorer, notifiedJson) => `
     if (completionPercentage) setTimeout(() => updateCompletionPercentage(completionPercentage))
     if (!outputFileContent) return
     const content = document.getElementById("output-file")
-    content.value = event.data.outputFileContent
+    content.value = event.data.outputFileContent.replace("\\n", "")
     content.classList.remove("shine")
     scrollOutputDown()
     content.style.backgroundImage = "none"

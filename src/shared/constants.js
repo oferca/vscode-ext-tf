@@ -26,6 +26,10 @@ const tfVarsPostix = ".var.file"
 
 module.exports.tfVarsPostix = tfVarsPostix
 
+const tfNoLockPostix = ".no.lock"
+
+module.exports.tfNoLockPostix = tfNoLockPostix
+
 const tfUpgradePostix = ".upgrade"
 
 module.exports.tfUpgradePostix = tfUpgradePostix
@@ -37,6 +41,8 @@ module.exports.tfForceUnlockCommandId = "force-unlock"
 module.exports.tfPlanTargetCommandId = "plan" + tfTargetPostix
 
 module.exports.tfPlanVarsCommandId = "plan" + tfVarsPostix
+
+module.exports.tfPlanNoLockCommandId = "plan" + tfNoLockPostix
 
 module.exports.tfApplyTargetCommandId = "apply" + tfTargetPostix
 
@@ -96,7 +102,7 @@ module.exports.planSuccessMessage1 = "Terraform will perform"
 
 module.exports.planSuccessMessage2 = "No changes. Your infrastructure matches the configuration"
 
-module.exports.initSuccessMessage = "Terraform has been successfully initialized"
+module.exports.initSuccessMessage = "Success"
 
 module.exports.initEmptyDirMessage = "Terraform initialized in an empty directory."
 
@@ -194,4 +200,4 @@ module.exports.disableShowOnStartupKey = "tfShowOnStartup"
 
 module.exports.tfResourcesSelectionKey = "tfResourcesSelection"
 
-module.exports.additionalText = "=== See Additional Logs IN TERMINAL BELOW ==="
+module.exports.additionalText = "* See Additional Logs IN TERMINAL BELOW *"

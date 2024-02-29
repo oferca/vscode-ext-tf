@@ -1,4 +1,4 @@
-const { tfTargetPostix, tfVarsPostix, tfUpgradePostix, tfForceUnlockPostix, tfPlanCommandId, planSuccessMessage1, planSuccessMessage2, tfValidateCommandId, validateSuccessMessage, tfInitCommandId, initSuccessMessage, tfStateListCommandId } = require("../constants")
+const { tfTargetPostix, tfVarsPostix, tfNoLockPostix, tfUpgradePostix, tfForceUnlockPostix, tfPlanCommandId, planSuccessMessage1, planSuccessMessage2, tfValidateCommandId, validateSuccessMessage, tfInitCommandId, initSuccessMessage, tfStateListCommandId } = require("../constants")
 
 module.exports.successMessage = commandId => {
     const rawCommand = commandId.replace(tfTargetPostix, "")
@@ -15,6 +15,7 @@ module.exports.getBashFunctionInvocation = getBashFunctionInvocation
 
 const getOptionKey = commandId =>
     commandId.indexOf(tfTargetPostix) > -1 && "target" ||
+    commandId.indexOf(tfNoLockPostix) > -1 && "no-lock" ||
     commandId.indexOf(tfVarsPostix) > -1 && "var-file" ||
     commandId.indexOf(tfUpgradePostix) > -1 && "upgrade" ||
     commandId.indexOf(tfForceUnlockPostix) > -1 && ""
@@ -31,6 +32,7 @@ module.exports.getTFCliCommand = (commandId, tfOption, par = "\"") => {
     return (tfOption ? `${rawCommand} -${optionKey}=${par}${tfOption}${par}` : commandId)
         .replace("init.upgrade", "init -upgrade")
         .replace("plan.target", "plan")
+        .replace("plan.no.lock", "plan -lock=false")
         .replace("apply.target", "plan")
         .replace(".", " ")
 }

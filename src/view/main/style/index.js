@@ -206,6 +206,7 @@ a.command:hover, a.command, a.command:focus {
   }
   .sidebar .tf-button.command.Explorer,
   .sidebar .tf-button.command.-var-file,
+  .sidebar .tf-button.command.-no-lock,
   .sidebar .tf-button.command.-upgrade,
   .sidebar .tf-button.command.Force-unlock,
   .sidebar .tf-button.command.-Target{
@@ -692,7 +693,7 @@ u.logs{
   min-height: 38px;
   bottom: 18px;
   left: 175px;
-  background: #737373;
+  background: #434343;
 }
 .msg-icn:before, .enter-credentials:before{
   z-index: 9999;

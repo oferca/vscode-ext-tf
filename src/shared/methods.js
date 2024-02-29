@@ -86,6 +86,7 @@ module.exports.getLastStateList = (dataFolder, encoding) => {
 const getOptionKey = commandId =>
     commandId.indexOf(tfTargetPostix) > -1 && "target" ||
     commandId.indexOf(tfVarsPostix) > -1 && "var-file" ||
+    commandId.indexOf(tfNoLockPostix) > -1 && "no-lock" ||
     commandId.indexOf(tfUpgradePostix) > -1 && "upgrade" ||
     commandId.indexOf(tfForceUnlockPostix) > -1 && ""
 
@@ -219,11 +220,11 @@ const planSuccessful = outputFile =>
 
 module.exports.planSuccessful = planSuccessful
 
-const initSuccessful = outputFile => outputFile.indexOf(initSuccessMessage) > -1
+const initSuccessful = outputFile => outputFile.toLowerCase().indexOf(initSuccessMessage) > -1
 
-const initEmptyDir = outputFile => outputFile.indexOf(initEmptyDirMessage) > -1
+const initEmptyDir = outputFile => outputFile.toLowerCase().indexOf(initEmptyDirMessage) > -1
 
-const validateSuccessful = outputFile => outputFile.indexOf(validateSuccessMessage) > -1
+const validateSuccessful = outputFile => outputFile.toLowerCase().indexOf(validateSuccessMessage) > -1
 
 const extractPlanTotal = outputFile => {
     const section = outputFile.split("Plan: ")

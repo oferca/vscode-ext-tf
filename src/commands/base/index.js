@@ -32,6 +32,7 @@ const hideInitialDefinitionsDelay = 2600
 
 const getDefaultOption = commandId =>
     [tfPlanTargetCommandId, tfApplyTargetCommandId].includes(commandId) && defaultTarget || 
+    [tfPlanNoLockCommandId].includes(commandId) && defaultNoLock || 
     [tfPlanVarsCommandId, tfApplyVarsCommandId].includes(commandId) && defaultVarFile
 
 const setDefaultOption = (commandId, option) =>{
