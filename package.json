@@ -3,7 +3,7 @@
   "name": "easy-terraform-commands",
   "displayName": "Terraform Plus",
   "publisher": "oferkafry",
-  "description": "Easy command buttons for Terraform",
+  "description": "Easy buttons to run terraform / tofu commands",
   "version": "3.3.6",
   "engines": {
     "vscode": "^1.67.2"
