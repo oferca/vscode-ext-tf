@@ -3,8 +3,8 @@
   "name": "easy-terraform-commands",
   "displayName": "Terraform Plus",
   "publisher": "oferkafry",
-  "description": "VSCode Buttons for executing Terraform commands",
-  "version": "3.3.93",
+  "description": "Easy Terraform buttons for your IDE",
+  "version": "3.3.94",
   "engines": {
     "vscode": "^1.67.2"
   },
