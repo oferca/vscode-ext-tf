@@ -3,8 +3,8 @@
   "name": "easy-terraform-commands",
   "displayName": "Terraform Plus",
   "publisher": "oferkafry",
-  "description": "One click Terraform commands in Visual Studio Code",
-  "version": "3.3.96",
+  "description": "One-click Terraform commands in Visual Studio Code",
+  "version": "3.3.97",
   "engines": {
     "vscode": "^1.67.2"
   },
