@@ -1,4 +1,4 @@
-# [Terraform Command Center](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
+# [Terraform Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
 User-friendly yet powerful dashboard for Terraform and OpenTofu.
 
