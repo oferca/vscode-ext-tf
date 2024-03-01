@@ -1,6 +1,6 @@
 # [Terraform Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands)
 
-User-friendly yet powerful dashboard for Terraform and OpenTofu.
+Say goodbye to tedious typing. [Terraform Plus](https://marketplace.visualstudio.com/items?itemName=oferkafry.easy-terraform-commands) adds a user-friendly yet powerful dashboard for Terraform and Open Tofu.
 
 # Features
 * One-click command execution.
