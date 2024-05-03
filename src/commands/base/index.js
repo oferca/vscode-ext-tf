@@ -19,6 +19,7 @@ const {
     tfPlanVarsCommandId,
     tfApplyVarsCommandId,
     tfPlanTargetCommandId,
+    tfPlanNoLockCommandId,
     tfApplyTargetCommandId,
     tfInitUpgradeCommandId,
     tfForceUnlockCommandId,

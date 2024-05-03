@@ -79,7 +79,10 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
         tofuButton.parentElement.classList.add("active")
     });
     document.body.scrollTop = document.documentElement.scrollTop = 0;
-    setTimeout(scrollToCheckbox)    
+    setTimeout(() => {
+        const checkbox = document.getElementById("topPixel")
+        if (checkbox) checkbox.scrollIntoView({ behavior: "smooth" })
+    })    
 
     checkbox.addEventListener('change', (event) => {
       if (event.target.checked) {

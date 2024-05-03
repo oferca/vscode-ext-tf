@@ -108,6 +108,8 @@ module.exports.initEmptyDirMessage = "Terraform initialized in an empty director
 
 module.exports.validateSuccessMessage = "The configuration is valid"
 
+module.exports.generalSuccessMessage = "Success"
+
 module.exports.runLogFileName = "run.log"
 
 module.exports.powershellType = "powershell"

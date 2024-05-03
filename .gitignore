@@ -4,4 +4,4 @@ node_modules
 .vscode
 local-scripts/*
 .idea
-
+.DS_Store

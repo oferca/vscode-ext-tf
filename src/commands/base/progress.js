@@ -97,7 +97,8 @@ class ProgressHandlerPrototype extends CommandHandlerPrototype {
             hasErrors = summary === errorStatus || summary === noCredentials,
             errTxt = `Terraform ${capitalized} ended with errors. ` + (summary === noCredentials ? noCredentialsMsg : outputLogsMsg),
             errTxtPref = errTxt.replace(outputLogsMsg, ""),
-            warnTxtPref = `Terraform ${capitalized} ended with warnings. ` + summary.message,
+            message = summary.message?.length > 20 ? summary.message : "",
+            warnTxtPref = `Terraform ${capitalized} ended with warnings. ` + message,
             warnTxt = warnTxtPref + outputLogsMsg
 
         if (hasErrors) notification = vscode.window.showErrorMessage(errTxt);

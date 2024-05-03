@@ -18,6 +18,7 @@ const {
     tfForceUnlockPostix,
     tfPlanVarsCommandId,
     tfApplyVarsCommandId,
+    generalSuccessMessage,
     tfInitUpgradeCommandId,
     validateSuccessMessage,
     tfForceUnlockCommandId,
@@ -226,6 +227,8 @@ const initEmptyDir = outputFile => outputFile.toLowerCase().indexOf(initEmptyDir
 
 const validateSuccessful = outputFile => outputFile.toLowerCase().indexOf(validateSuccessMessage) > -1
 
+const successful = outputFile => outputFile.toLowerCase().indexOf(generalSuccessMessage.toLowerCase()) > -1
+
 const extractPlanTotal = outputFile => {
     const section = outputFile.split("Plan: ")
     if (section.length === 1) return 'No changes.'
@@ -239,6 +242,7 @@ module.exports.tfCommandSuccess = outputFile => {
     if (initSuccessful(outputFile)) return initSuccessMessage
     if (initEmptyDir(outputFile)) return initEmptyDirMessage
     if (validateSuccessful(outputFile)) return validateSuccessMessage
+    if (successful(outputFile)) return generalSuccessMessage
 }
 
 module.exports.getWarnings = outputFile => {
