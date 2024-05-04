@@ -1,6 +1,31 @@
 const terraformUpAndRunning = "https://github.com/oferca/vscode-ext-tf/blob/main/assets/terraform-up-and-running.png?raw=true"
 
 module.exports.style = `
+.explorer .book-affiliate{
+	position: absolute;
+	top: 90px;
+	z-index: 9999999;
+}
+.explorer .book-affiliate.hashicorp{
+	right: 35px;
+}
+.explorer .book-affiliate img{
+	height: 145px;
+    opacity: 0; /* Start with transparency */
+    animation: fadeIn 3s ease-in-out 5s forwards; /* Animation name, duration, timing function, delay, and fill mode */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Start from fully transparent */
+    }
+    to {
+        opacity: 1; /* End with full opacity */
+    }
+}
+.explorer #folders-list{
+	margin-top: 110px;
+}
 .explorer .prefs{
   display: none;
 }
@@ -75,7 +100,7 @@ body {
 	font-size: 30px;
 }
 #filemanager .breadcrumbs.header.anim-text {
-	margin-top: 65px;
+	margin-top: 130px;
 	animation: h1anim 8s linear forwards;
 }
 #filemanager .breadcrumbs.header.static {
@@ -133,7 +158,7 @@ body {
 -------------------------*/
 
 #filemanager .data {
-	margin-top: 40px;
+	margin-top: 80px;
 	z-index: -3;
 }
 
@@ -246,6 +271,10 @@ body {
 	#filemanager .data li {
 		width: 100%;
 		margin: 5px 0;
+		margin-top: 95px;
+	}
+	#filemanager .data{
+		margin-top: 95px;
 	}
 
 }

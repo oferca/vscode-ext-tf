@@ -49,9 +49,14 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
     Show on startup
   </div>
 
-  <a target="_self" href="https://www.ebay.com/sch/i.html?_from=R40&_nkw=terraform+up+and+running&_sacat=0&LH_BIN=1&rt=nc&LH_ItemCondition=3&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339057267&customid=&toolid=10001&mkevt=1">https://www.ebay.com/sch/i.html?_from=R40&_nkw=terraform+up+and+running&_sacat=0&LH_BIN=1&rt=nc&LH_ItemCondition=3&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339057267&customid=&toolid=10001&mkevt=1</a><img style="text-decoration:none;border:0;padding:0;margin:0;" src="https://www.ebayadservices.com/marketingtracking/v1/impression?mpt=40710247&mkcid=1&mkrid=711-53200-19255-0&mkevt=2&siteid=0&campid=5339057267&ad_type=0&toolid=10001">
-     <img src="https://github.com/oferca/vscode-ext-tf/blob/main/assets/terraform-up-and-running.png?raw=true" alt="Terraform Up and Running">
+  <a target="_self" class="book-affiliate" href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2334524.m570.l1313&_nkw=Infrastructure+Terraform+running&_sacat=0&_odkw=Infrastructure+Terraform&_osacat=0&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339057267&customid=&toolid=10001&mkevt=1">
+    <img src="https://github.com/oferca/vscode-ext-tf/blob/main/assets/terraform-up-and-running.png?raw=true" alt="Terraform Up and Running"/>
   </a>
+
+  <a target="_self" class="book-affiliate hashicorp" href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2332490.m570.l1313&_nkw=HashiCorp+Infrastructure+Automation+terraform&_sacat=0&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339057267&customid=&toolid=10001&mkevt=1">
+    <img src="https://github.com/oferca/vscode-ext-tf/blob/main/assets/hashicorp-certificate.png?raw=true" alt="Terraform Up and Running"/>
+  </a>
+
   <div class="btn-group btn-group-toggle" id="terraform-tofu" data-toggle="buttons">
     <label class="btn btn-secondary ${cmd === "terraform" ? "active" : ""}">
         <input type="radio" name="options" id="terraform-button" autocomplete="off"> Terraform
