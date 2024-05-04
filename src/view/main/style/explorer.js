@@ -1,4 +1,4 @@
-const matrixBackground = "https://github.com/oferca/vscode-ext-tf/blob/main/assets/matrix.gif?raw=true"
+const terraformUpAndRunning = "https://github.com/oferca/vscode-ext-tf/blob/main/assets/terraform-up-and-running.png?raw=true"
 
 module.exports.style = `
 .explorer .prefs{
