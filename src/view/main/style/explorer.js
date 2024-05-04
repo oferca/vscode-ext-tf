@@ -2,17 +2,16 @@ const terraformUpAndRunning = "https://github.com/oferca/vscode-ext-tf/blob/main
 
 module.exports.style = `
 .explorer .book-affiliate{
-	position: absolute;
-	top: 90px;
 	z-index: 9999999;
 }
-.explorer .book-affiliate.hashicorp{
-	right: 0px;
+.explorer .promotional{
+   position: absolute;
 }
+
 .explorer .book-affiliate img{
-	height: 145px;
+	height: 115px;
     opacity: 0; /* Start with transparency */
-    animation: fadeIn 3s ease-in-out 5s forwards; /* Animation name, duration, timing function, delay, and fill mode */
+    animation: fadeIn 3s ease-in-out 8s forwards; /* Animation name, duration, timing function, delay, and fill mode */
 }
 
 @keyframes fadeIn {
@@ -88,6 +87,23 @@ body {
 
 
 
+#filemanager .breadcrumbs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#filemanager .breadcrumbs .book-affiliate {
+    flex: 0 0 auto; /* Prevent anchors from stretching */
+}
+
+#filemanager .breadcrumbs  span {
+    flex: 1; /* Allow the span to expand and take up remaining space */
+    text-align: center; /* Center the text within the span */
+}
+
+
+
 #filemanager .breadcrumbs.header {
     background:  linear-gradient(to right,  #343a40, var(--vscode-textLink-foreground), var(--vscode-textLink-foreground), #343a40, #343a40);
     -webkit-background-clip: text;
@@ -100,7 +116,7 @@ body {
 	font-size: 30px;
 }
 #filemanager .breadcrumbs.header.anim-text {
-	margin-top: 130px;
+	margin-top: 100px;
 	animation: h1anim 8s linear forwards;
 }
 #filemanager .breadcrumbs.header.static {
@@ -274,7 +290,7 @@ body {
 		margin-top: 95px;
 	}
 	#filemanager .data{
-		margin-top: 95px;
+		margin-top: 37px;
 	}
 
 }
@@ -841,7 +857,9 @@ POPUP
 		line-height: 43px;
 		font-size: 32px;
 	}
-
+	.explorer .book-affiliate.hashicorp{
+		right: 40px;
+	}
 }
 @-moz-keyframes shine {
 	0% {

@@ -49,14 +49,6 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
     Show on startup
   </div>
 
-  <a target="_self" class="book-affiliate" href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2334524.m570.l1313&_nkw=Infrastructure+Terraform+running&_sacat=0&_odkw=Infrastructure+Terraform&_osacat=0&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339057267&customid=&toolid=10001&mkevt=1">
-    <img src="https://github.com/oferca/vscode-ext-tf/blob/main/assets/terraform-up-and-running.png?raw=true" alt="Terraform Up and Running"/>
-  </a>
-
-  <a target="_self" class="book-affiliate hashicorp" href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2332490.m570.l1313&_nkw=HashiCorp+Infrastructure+Automation+terraform&_sacat=0&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339057267&customid=&toolid=10001&mkevt=1">
-    <img src="https://github.com/oferca/vscode-ext-tf/blob/main/assets/hashicorp-certificate-infra.png?raw=true" alt="Terraform Up and Running"/>
-  </a>
-
   <div class="btn-group btn-group-toggle" id="terraform-tofu" data-toggle="buttons">
     <label class="btn btn-secondary ${cmd === "terraform" ? "active" : ""}">
         <input type="radio" name="options" id="terraform-button" autocomplete="off"> Terraform
@@ -101,7 +93,21 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
   </script>
 
       <div id="filemanager" >
-       <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} "><span class="folderName">Terraform Projects</span>
+       <div class="breadcrumbs header ${!completed && withAnimation ? 'anim-text': 'static'} ">
+
+        <a target="_self" class="book-affiliate" href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2334524.m570.l1313&_nkw=Infrastructure+Terraform+running&_sacat=0&_odkw=Infrastructure+Terraform&_osacat=0&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339057267&customid=&toolid=10001&mkevt=1">
+            <img
+                onclick="vscode.postMessage({ command: 'affiliate-click', message: 'running' })"
+                src="https://github.com/oferca/vscode-ext-tf/blob/main/assets/terraform-up-and-running.png?raw=true" alt="Terraform Up and Running"/>
+        </a>
+
+       <span class="folderName">Terraform Projects</span>
+
+        <a target="_self" class="book-affiliate hashicorp" href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2332490.m570.l1313&_nkw=HashiCorp+Infrastructure+Automation+terraform&_sacat=0&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339057267&customid=&toolid=10001&mkevt=1" >
+           <img
+            onclick="vscode.postMessage({ command: 'affiliate-click', message: 'hashicorp' })"
+            src="https://github.com/oferca/vscode-ext-tf/blob/main/assets/hashicorp-certificate-infra.png?raw=true" alt="Terraform Up and Running"/>
+        </a>
       </div>
       <ul id="folders-list" class="data ${!completed && withAnimation ? 'animated': ''}" style="">
             ${folders(list, stateManager)}
@@ -177,7 +183,9 @@ module.exports.scripts = selectedProject => {
         addOverlay()
         scrollInterval = undefined
         showInteractiveInstructions(name)
-        document.getElementById("tf-modal-container").onclick = () => {document.querySelector(".msg-icn").style.display = "none";}
+        document.getElementById("tf-modal-container").onclick = () => {
+            document.querySelector(".msg-icn").style.display = "none";
+        }
 
     }
 
