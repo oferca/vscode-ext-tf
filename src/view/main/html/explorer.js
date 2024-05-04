@@ -54,7 +54,7 @@ module.exports.html = (list, completed, withAnimation, stateManager) => {
   </a>
 
   <a target="_self" class="book-affiliate hashicorp" href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2332490.m570.l1313&_nkw=HashiCorp+Infrastructure+Automation+terraform&_sacat=0&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=5339057267&customid=&toolid=10001&mkevt=1">
-    <img src="https://github.com/oferca/vscode-ext-tf/blob/main/assets/hashicorp-certificate.png?raw=true" alt="Terraform Up and Running"/>
+    <img src="https://github.com/oferca/vscode-ext-tf/blob/main/assets/hashicorp-certificate-infra.png?raw=true" alt="Terraform Up and Running"/>
   </a>
 
   <div class="btn-group btn-group-toggle" id="terraform-tofu" data-toggle="buttons">

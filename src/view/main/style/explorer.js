@@ -7,7 +7,7 @@ module.exports.style = `
 	z-index: 9999999;
 }
 .explorer .book-affiliate.hashicorp{
-	right: 35px;
+	right: 0px;
 }
 .explorer .book-affiliate img{
 	height: 145px;
